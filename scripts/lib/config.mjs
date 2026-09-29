@@ -198,6 +198,12 @@ export const SITEMAP_ONLY_EXCLUDE = (process.env.SITEMAP_ONLY_EXCLUDE ?? (proces
 export const REMOVE_SUBSITE_LINKS =
   (process.env.REMOVE_SUBSITE_LINKS ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// The site's old map sections (a picture of a Google Map on the "Local East Coast
+// Exterior Remodelers" band, and a Google Maps widget on Past Projects that needs the
+// live WordPress API) are replaced by the animated US map in custom/us-map/ — see
+// scripts/lib/customize.mjs. CUSTOM_US_MAP=0 keeps the original sections.
+export const CUSTOM_US_MAP = (process.env.CUSTOM_US_MAP ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 export function isSitemapOnlyExcluded(u) {
   const p = new URL(u).pathname;
   return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));

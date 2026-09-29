@@ -6,7 +6,7 @@ the network to go quiet, back to top, carousels stopped on their first slide, an
 compared with pixelmatch (threshold 0.1, anti-aliasing ignored). Where page heights differ, the extra area counts as
 different. Pages differing by more than 1% are flagged.
 
-**Result: 340 of 342 screenshots pass (99.4%).** Flagged: 2. Not counted: 6 screenshot(s) of pages edited on purpose (listed below).
+**Result: 320 of 320 screenshots pass (100.0%).** Flagged: 0. Not counted: 28 screenshot(s) of pages edited on purpose (listed below).
 
 Diff images (`<page>--<viewport>.jpg`, changed pixels in red) are saved next to this file for every screenshot
 that is not pixel-identical. Live screenshots are in `docs/screenshots/live/`.
@@ -15,34 +15,50 @@ that is not pixel-identical. Live screenshots are in `docs/screenshots/live/`.
 in Chromium; `as-delivered` = the server's original HTML (used where the rendered snapshot did not match live,
 typically because carousels or other scripts initialise a second time on already-rendered markup).
 
-## Flagged pages
-
-| Page | Viewport | Diff % | Height Δ (px) | Live-site requests | New JS errors | Note |
-| --- | --- | --- | --- | --- | --- | --- |
-| /gutters/ | mobile | 3.73 | 0 | 0 |  |  |
-| /siding/ | mobile | 3.47 | 0 | 0 |  |  |
 
 ## Pages edited on purpose
 
-These pages differ from live by design: their links to the city sub-sites were removed from the copy.
+These pages differ from live by design: links to the city sub-sites were removed from the copy, and the old map sections were replaced with the animated US map (`custom/us-map/`).
 
 | Page | Viewport | Diff % | Change |
 | --- | --- | --- | --- |
+| / | desktop | 43.30 | edited on purpose: old map section replaced with the animated US map |
+| / | mobile | 53.97 | edited on purpose: old map section replaced with the animated US map |
+| /about/ | desktop | 21.07 | edited on purpose: old map section replaced with the animated US map |
+| /about/ | mobile | 24.28 | edited on purpose: old map section replaced with the animated US map |
 | /blog/how-long-does-a-roof-really-last/ | desktop | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
 | /blog/how-long-does-a-roof-really-last/ | mobile | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
-| /service-areas/ | desktop | 19.76 | edited on purpose: 17 link(s) to city sub-sites removed |
-| /service-areas/ | mobile | 12.84 | edited on purpose: 17 link(s) to city sub-sites removed |
+| /commerical-roofing/ | desktop | 14.38 | edited on purpose: old map section replaced with the animated US map |
+| /commerical-roofing/ | mobile | 16.63 | edited on purpose: old map section replaced with the animated US map |
+| /faqs/ | desktop | 16.02 | edited on purpose: old map section replaced with the animated US map |
+| /faqs/ | mobile | 21.91 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | desktop | 25.33 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | mobile | 34.93 | edited on purpose: old map section replaced with the animated US map |
+| /past-projects/ | desktop | 64.79 | edited on purpose: old map section replaced with the animated US map |
+| /past-projects/ | mobile | 82.19 | edited on purpose: old map section replaced with the animated US map |
+| /podcast/ | desktop | 22.63 | edited on purpose: old map section replaced with the animated US map |
+| /podcast/ | mobile | 27.17 | edited on purpose: old map section replaced with the animated US map |
+| /reviews/ | desktop | 20.03 | edited on purpose: old map section replaced with the animated US map |
+| /reviews/ | mobile | 24.66 | edited on purpose: old map section replaced with the animated US map |
+| /roofing/ | desktop | 22.12 | edited on purpose: old map section replaced with the animated US map |
+| /roofing/ | mobile | 23.49 | edited on purpose: old map section replaced with the animated US map |
+| /service-areas/ | desktop | 56.63 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map |
+| /service-areas/ | mobile | 45.10 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map |
+| /siding/ | desktop | 12.93 | edited on purpose: old map section replaced with the animated US map |
+| /siding/ | mobile | 10.44 | edited on purpose: old map section replaced with the animated US map |
 | /site-map/ | desktop | 37.51 | edited on purpose: 16 link(s) to city sub-sites removed |
 | /site-map/ | mobile | 51.61 | edited on purpose: 16 link(s) to city sub-sites removed |
+| /solar/ | desktop | 27.67 | edited on purpose: old map section replaced with the animated US map |
+| /solar/ | mobile | 36.36 | edited on purpose: old map section replaced with the animated US map |
 
 ## All pages
 
 | Page | Viewport | Page HTML | Live size | Local size | Diff % | Result |
 | --- | --- | --- | --- | --- | --- | --- |
-| / | desktop | as-delivered | 1440×7954 | 1440×7954 | 0.000 | PASS |
-| / | mobile | as-delivered | 390×14621 | 390×14621 | 0.000 | PASS |
-| /about/ | desktop | rendered | 1440×4672 | 1440×4672 | 0.556 | PASS |
-| /about/ | mobile | rendered | 390×7396 | 390×7396 | 0.000 | PASS |
+| / | desktop | as-delivered | 1440×7954 | 1440×8875 | 43.299 | EDITED |
+| / | mobile | as-delivered | 390×14621 | 390×13848 | 53.971 | EDITED |
+| /about/ | desktop | rendered | 1440×4672 | 1440×4879 | 21.072 | EDITED |
+| /about/ | mobile | rendered | 390×7396 | 390×7862 | 24.283 | EDITED |
 | /affirm-payment/ | desktop | rendered | 1440×900 | 1440×900 | 0.000 | PASS |
 | /affirm-payment/ | mobile | rendered | 390×844 | 390×844 | 0.000 | PASS |
 | /blog/ | desktop | rendered | 1440×3303 | 1440×3303 | 0.000 | PASS |
@@ -317,8 +333,8 @@ These pages differ from live by design: their links to the city sub-sites were r
 | /charity-and-community/ | mobile | rendered | 390×6930 | 390×6930 | 0.000 | PASS |
 | /commercial-capabilities/ | desktop | rendered | 1934×4788 | 1934×4788 | 0.000 | PASS |
 | /commercial-capabilities/ | mobile | rendered | 1934×4843 | 1934×4843 | 0.002 | PASS |
-| /commerical-roofing/ | desktop | rendered | 1440×6847 | 1440×6847 | 0.000 | PASS |
-| /commerical-roofing/ | mobile | rendered | 390×11065 | 390×11065 | 0.000 | PASS |
+| /commerical-roofing/ | desktop | rendered | 1440×6847 | 1440×7055 | 14.378 | EDITED |
+| /commerical-roofing/ | mobile | rendered | 390×11065 | 390×11531 | 16.634 | EDITED |
 | /commerical-roofing/roof-replacement/ | desktop | rendered | 1440×3756 | 1440×3756 | 0.000 | PASS |
 | /commerical-roofing/roof-replacement/ | mobile | rendered | 390×6685 | 390×6685 | 0.000 | PASS |
 | /commerical-roofing/roof-types/ | desktop | rendered | 1440×3788 | 1440×3788 | 0.000 | PASS |
@@ -327,12 +343,12 @@ These pages differ from live by design: their links to the city sub-sites were r
 | /contact-us/ | mobile | rendered | 390×4723 | 390×4723 | 0.000 | PASS |
 | /customer-service/ | desktop | rendered | 1440×1395 | 1440×1395 | 0.000 | PASS |
 | /customer-service/ | mobile | rendered | 390×2875 | 390×2875 | 0.000 | PASS |
-| /faqs/ | desktop | rendered | 1440×4831 | 1440×4831 | 0.000 | PASS |
-| /faqs/ | mobile | rendered | 390×6163 | 390×6163 | 0.000 | PASS |
+| /faqs/ | desktop | rendered | 1440×4831 | 1440×5039 | 16.022 | EDITED |
+| /faqs/ | mobile | rendered | 390×6163 | 390×6628 | 21.908 | EDITED |
 | /gallery/ | desktop | rendered | 1440×3267 | 1440×3267 | 0.003 | PASS |
 | /gallery/ | mobile | rendered | 390×1943 | 390×1943 | 0.000 | PASS |
-| /gutters/ | desktop | rendered | 1440×5231 | 1440×5231 | 0.000 | PASS |
-| /gutters/ | mobile | rendered | 390×8639 | 390×8639 | 3.727 | **FLAG** |
+| /gutters/ | desktop | rendered | 1440×5231 | 1440×5439 | 25.327 | EDITED |
+| /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 34.929 | EDITED |
 | /gutters/gutter-guards/ | desktop | rendered | 1440×3733 | 1440×3733 | 0.000 | PASS |
 | /gutters/gutter-guards/ | mobile | rendered | 390×6743 | 390×6743 | 0.000 | PASS |
 | /interiors/ | desktop | rendered | 1440×5615 | 1440×5615 | 0.000 | PASS |
@@ -341,10 +357,10 @@ These pages differ from live by design: their links to the city sub-sites were r
 | /offers/ | mobile | rendered | 390×6145 | 390×6145 | 0.000 | PASS |
 | /pandav1-capture-404-check/ | desktop | rendered | 1440×900 | 1440×900 | 0.000 | PASS |
 | /pandav1-capture-404-check/ | mobile | rendered | 390×844 | 390×844 | 0.000 | PASS |
-| /past-projects/ | desktop | rendered | 1440×2768 | 1440×2768 | 0.000 | PASS |
-| /past-projects/ | mobile | rendered | 390×4259 | 390×4259 | 0.000 | PASS |
-| /podcast/ | desktop | rendered | 1440×4336 | 1440×4336 | 0.000 | PASS |
-| /podcast/ | mobile | rendered | 390×6562 | 390×6562 | 0.000 | PASS |
+| /past-projects/ | desktop | rendered | 1440×2768 | 1440×4213 | 64.790 | EDITED |
+| /past-projects/ | mobile | rendered | 390×4259 | 390×10113 | 82.190 | EDITED |
+| /podcast/ | desktop | rendered | 1440×4336 | 1440×4544 | 22.626 | EDITED |
+| /podcast/ | mobile | rendered | 390×6562 | 390×7028 | 27.166 | EDITED |
 | /position-details/ | desktop | rendered | 1440×919 | 1440×919 | 0.000 | PASS |
 | /position-details/ | mobile | rendered | 390×844 | 390×844 | 0.000 | PASS |
 | /privacy-policy/ | desktop | rendered | 1440×2690 | 1440×2690 | 0.000 | PASS |
@@ -353,12 +369,12 @@ These pages differ from live by design: their links to the city sub-sites were r
 | /referral/ | mobile | rendered | 390×2860 | 390×2860 | 0.000 | PASS |
 | /referrals/ | desktop | rendered | 1440×900 | 1440×900 | 0.891 | PASS |
 | /referrals/ | mobile | rendered | 390×1149 | 390×1149 | 0.000 | PASS |
-| /reviews/ | desktop | rendered | 1440×3965 | 1440×3965 | 0.000 | PASS |
-| /reviews/ | mobile | rendered | 390×6009 | 390×6009 | 0.000 | PASS |
+| /reviews/ | desktop | rendered | 1440×3965 | 1440×4172 | 20.028 | EDITED |
+| /reviews/ | mobile | rendered | 390×6009 | 390×6475 | 24.656 | EDITED |
 | /roofing-costs/ | desktop | rendered | 1440×3817 | 1440×3817 | 0.000 | PASS |
 | /roofing-costs/ | mobile | rendered | 390×6505 | 390×6505 | 0.000 | PASS |
-| /roofing/ | desktop | rendered | 1440×7189 | 1440×7189 | 0.000 | PASS |
-| /roofing/ | mobile | rendered | 390×11215 | 390×11215 | 0.000 | PASS |
+| /roofing/ | desktop | rendered | 1440×7189 | 1440×7396 | 22.123 | EDITED |
+| /roofing/ | mobile | rendered | 390×11215 | 390×11474 | 23.486 | EDITED |
 | /roofing/attic-insulation/ | desktop | rendered | 1440×3701 | 1440×3701 | 0.000 | PASS |
 | /roofing/attic-insulation/ | mobile | rendered | 390×6821 | 390×6821 | 0.000 | PASS |
 | /roofing/repairs/ | desktop | rendered | 1440×3778 | 1440×3778 | 0.000 | PASS |
@@ -369,16 +385,16 @@ These pages differ from live by design: their links to the city sub-sites were r
 | /roofing/residential/ | mobile | rendered | 390×8966 | 390×8966 | 0.000 | PASS |
 | /roofing/types/ | desktop | rendered | 1440×4986 | 1440×4986 | 0.000 | PASS |
 | /roofing/types/ | mobile | rendered | 390×7691 | 390×7691 | 0.000 | PASS |
-| /service-areas/ | desktop | rendered | 1440×4579 | 1440×4466 | 19.758 | EDITED |
-| /service-areas/ | mobile | rendered | 390×7608 | 390×7495 | 12.842 | EDITED |
+| /service-areas/ | desktop | rendered | 1440×4579 | 1440×5304 | 56.634 | EDITED |
+| /service-areas/ | mobile | rendered | 390×7608 | 390×8325 | 45.096 | EDITED |
 | /services/ | desktop | rendered | 1440×3798 | 1440×3798 | 0.000 | PASS |
 | /services/ | mobile | rendered | 390×7418 | 390×7418 | 0.000 | PASS |
-| /siding/ | desktop | rendered | 1440×5245 | 1440×5245 | 0.000 | PASS |
-| /siding/ | mobile | rendered | 390×9229 | 390×9229 | 3.470 | **FLAG** |
+| /siding/ | desktop | rendered | 1440×5245 | 1440×5383 | 12.931 | EDITED |
+| /siding/ | mobile | rendered | 390×9229 | 390×9364 | 10.443 | EDITED |
 | /site-map/ | desktop | rendered | 1440×2943 | 1440×2175 | 37.511 | EDITED |
 | /site-map/ | mobile | rendered | 390×3727 | 390×2735 | 51.612 | EDITED |
-| /solar/ | desktop | as-delivered | 1440×6810 | 1440×6810 | 0.000 | PASS |
-| /solar/ | mobile | as-delivered | 390×11188 | 390×11188 | 0.000 | PASS |
+| /solar/ | desktop | as-delivered | 1440×6810 | 1440×7027 | 27.671 | EDITED |
+| /solar/ | mobile | as-delivered | 390×11188 | 390×11119 | 36.361 | EDITED |
 | /solar/gaf-solar-roof/ | desktop | rendered | 1440×3074 | 1440×3074 | 0.000 | PASS |
 | /solar/gaf-solar-roof/ | mobile | rendered | 390×5527 | 390×5527 | 0.000 | PASS |
 | /solar/solar-panel-installations/ | desktop | rendered | 1440×3110 | 1440×3110 | 0.000 | PASS |
