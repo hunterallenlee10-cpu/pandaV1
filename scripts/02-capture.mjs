@@ -15,7 +15,7 @@
 // recursively, fonts, OG images, …) are downloaded.
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, trackerFor, isForbidden } from './lib/config.mjs';
+import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, isOriginAlias, trackerFor, isForbidden } from './lib/config.mjs';
 import { fetcher, ACCEPT } from './lib/fetcher.mjs';
 import { launchBrowser, newContext, visit, prepareForScreenshot, screenshot, collectDomUrls } from './lib/browser.mjs';
 import { extractFromHtml, cssRefs, siteUrlsInText, resolveUrl, looksLikeAsset } from './lib/extract.mjs';
@@ -180,7 +180,7 @@ async function downloadAssets() {
     url.hash = '';
     if (!/^https?:$/.test(url.protocol)) return;
     if (!(isSiteUrl(url) || isLocalizableHost(url.hostname))) return;
-    if (isSiteUrl(url) && isForbidden(url)) return;
+    if ((isSiteUrl(url) || isOriginAlias(url.hostname)) && isForbidden(url)) return;
     const href = url.href;
     if (!discovered.has(href)) discovered.set(href, new Set());
     discovered.get(href).add(kind);
