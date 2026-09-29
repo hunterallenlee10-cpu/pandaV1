@@ -89,16 +89,21 @@ async function main() {
         if (url.startsWith(server.base)) return route.continue();
         if (!/^https?:/i.test(url)) return route.continue();
         if (req.method() !== 'GET' && req.method() !== 'HEAD') return route.abort('blockedbyclient');
+        // Requests made inside third-party embeds (YouTube, Maps…) are the embed's own
+        // business: treat them exactly as the live capture did (trackers blocked,
+        // everything else loaded) and don't count them against the copy.
+        const frameUrl = req.frame()?.url?.() || '';
+        const fromCopy = !frameUrl || frameUrl === 'about:blank' || frameUrl.startsWith(server.base);
+        const u = new URL(url);
         if (trackerFor(url)) {
-          leaks.push({ url, reason: 'tracking request' });
+          if (fromCopy) leaks.push({ url, reason: 'tracking request' });
           return route.abort('blockedbyclient');
         }
-        const u = new URL(url);
         if (isSiteUrl(u)) {
           leaks.push({ url, reason: 'request to live site' });
           return route.abort('blockedbyclient');
         }
-        if (isLocalizableHost(u.hostname)) leaks.push({ url, reason: 'static CDN file not localized' });
+        if (fromCopy && isLocalizableHost(u.hostname)) leaks.push({ url, reason: 'static CDN file not localized' });
         external.add(u.host);
         return route.continue().catch(() => {});
       });

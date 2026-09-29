@@ -177,11 +177,43 @@ const META_IMAGE_KEYS = new Set([
 ]);
 const DOWNLOAD_EXT_RE = /\.(pdf|zip|docx?|xlsx?|pptx?|csv|rtf|jpe?g|png|gif|webp|avif|svg|mp4|webm|mov|mp3|txt)$/i;
 
+// Attributes that hold a single URL. data-* attributes are matched by exact
+// name or by a URL-ish suffix, never by prefix: data-lazy-sizes,
+// data-large_image_width or data-image-title hold text, not URLs.
+const DATA_URL_ATTR =
+  /^data-(src|lazy-src|original|orig-file|medium-file|large-file|full-url|large_image|bg|background|image|img|thumb|thumbnail|poster|video|mp4|webm|full|url|href|link|lazyload|splash|rocket-src|fallback)$|^data-[a-z0-9_-]*-(src|url|image|img|bg|background|poster|thumb|video)$/;
+
 function isUrlAttr(name) {
   return (
     name === 'src' || name === 'href' || name === 'poster' || name === 'data' || name === 'xlink:href' ||
-    name === 'background' || /(^|-)src$/.test(name) || /^data-(lazy-|original|orig-file|medium-file|large-file|full-url|large_image|bg|background|image|img|thumb|poster|video|mp4|webm|url|href|link|lazyload|splash|mobile|desktop|fallback)/.test(name)
+    name === 'background' || /(^|-)src$/.test(name) || DATA_URL_ATTR.test(name)
   );
+}
+
+/** Does an attribute value look like a URL at all (and not a size hint, number, MIME type or caption)? */
+export function looksLikeUrlValue(v) {
+  v = String(v || '').trim();
+  if (!v || /\s/.test(v)) return false;
+  if (/^\d+(\.\d+)?(px|%|w|x)?$/i.test(v)) return false;
+  if (/^(image|video|audio|font|text|application)\/[\w.+-]+$/i.test(v)) return false;
+  return /^(https?:)?\/\//i.test(v) || /^\.{0,2}\//.test(v) || /\.[a-z0-9]{2,5}([?#]|$)/i.test(v);
+}
+
+/** Heuristic for an already-resolved URL that came from a text-ish attribute. */
+export function isPlausibleAssetUrl(u) {
+  let p;
+  try {
+    p = new URL(u).pathname;
+  } catch {
+    return false;
+  }
+  try {
+    p = decodeURIComponent(p);
+  } catch {}
+  if (/[()\s]/.test(p) && !ASSET_EXT_RE.test(p)) return false; // "(max-width: 1000px) 100vw", captions
+  if (/\/\d+$/.test(p)) return false; // bare widths/heights resolved against the page
+  if (/\/(image|video|audio|font|text|application)\/[a-z0-9.+-]+$/i.test(p)) return false; // MIME types
+  return true;
 }
 
 /**
@@ -241,7 +273,7 @@ export function extractFromHtml(html, pageUrl) {
       }
       if (tag === 'a' || tag === 'area' || tag === 'link' || tag === 'form' || tag === 'iframe' || tag === 'frame' || tag === 'meta' || tag === 'base') {
         // handled below
-      } else if (isUrlAttr(name)) {
+      } else if (isUrlAttr(name) && (!name.startsWith('data-') || looksLikeUrlValue(value))) {
         addAsset(value, `${tag}[${name}]`);
       }
       if (/^data-/.test(name) && /https?:|\\\/|\/wp-content\//.test(value)) addTextUrls(value, `${tag}[${name}]`);

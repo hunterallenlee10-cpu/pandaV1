@@ -181,7 +181,12 @@ export function collectDomUrls() {
       if (/srcset$/.test(n)) addSrcset(v);
       else if (n === 'style') addCss(v);
       else if (el.tagName === 'A' || el.tagName === 'FORM') continue;
-      else if (n === 'src' || n === 'poster' || n === 'data' || n === 'xlink:href' || /(^|-)src$/.test(n) || /^data-(bg|background|image|img|thumb|poster|video|lazy|original|large|full|url)/.test(n)) add(v);
+      else if (n === 'src' || n === 'poster' || n === 'data' || n === 'xlink:href' || /(^|-)src$/.test(n)) add(v);
+      else if (
+        (/^data-(src|lazy-src|original|orig-file|medium-file|large-file|full-url|large_image|bg|background|image|img|thumb|thumbnail|poster|video|mp4|webm|full|url|lazyload|splash|rocket-src|fallback)$/.test(n) ||
+          /^data-[a-z0-9_-]*-(src|url|image|img|bg|background|poster|thumb|video)$/.test(n)) &&
+        !/\s/.test(v.trim()) && !/^\d+(\.\d+)?(px|%|w|x)?$/i.test(v.trim()) && !/^(image|video|audio|font|text|application)\/[\w.+-]+$/i.test(v.trim())
+      ) add(v);
       else if (n === 'href' && (el.tagName === 'LINK' || el.namespaceURI === 'http://www.w3.org/2000/svg')) {
         const rel = (el.getAttribute('rel') || '').toLowerCase();
         if (!/canonical|alternate|shortlink|pingback|edituri|wlwmanifest|api\.w\.org|preconnect|dns-prefetch|next|prev/.test(rel)) add(v);
