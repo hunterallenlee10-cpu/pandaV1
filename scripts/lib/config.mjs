@@ -209,6 +209,17 @@ export const CUSTOM_US_MAP = (process.env.CUSTOM_US_MAP ?? (process.env.SITE_ORI
 // SITE_FIXES=0 keeps the pages exactly as captured.
 export const SITE_FIXES = (process.env.SITE_FIXES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
+// nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
+// page about them. Removed pages are not built, links to them are removed like the
+// sub-site links, their sitemap entries and the files only they used are left out, and
+// their address redirects to the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/'))
+  .split(',')
+  .map((p) => p.trim())
+  .filter(Boolean);
+export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
+
 export function isSitemapOnlyExcluded(u) {
   const p = new URL(u).pathname;
   return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));

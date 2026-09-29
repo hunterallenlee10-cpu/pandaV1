@@ -6,7 +6,7 @@ the network to go quiet, back to top, carousels stopped on their first slide, an
 compared with pixelmatch (threshold 0.1, anti-aliasing ignored). Where page heights differ, the extra area counts as
 different. Pages differing by more than 1% are flagged.
 
-**Result: 290 of 290 screenshots pass (100.0%).** Flagged: 0. Not counted: 58 screenshot(s) of pages edited on purpose (listed below).
+**Result: 290 of 290 screenshots pass (100.0%).** Flagged: 0. Not counted: 56 screenshot(s) of pages edited on purpose (listed below).
 
 Diff images (`<page>--<viewport>.jpg`, changed pixels in red) are saved next to this file for every screenshot
 that differs by 0.5% or more. Live screenshots are in `docs/screenshots/live/`.
@@ -42,8 +42,6 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /gutters/ | mobile | 34.96 | edited on purpose: old map section replaced with the animated US map |
 | /gutters/gutter-guards/ | desktop | 2.97 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /gutters/gutter-guards/ | mobile | 29.40 | edited on purpose: testimonials: all 2 reviews shown side by side |
-| /interiors/ | desktop | 22.55 | edited on purpose: gallery tile with a missing photo removed |
-| /interiors/ | mobile | 2.59 | edited on purpose: gallery tile with a missing photo removed |
 | /past-projects/ | desktop | 64.83 | edited on purpose: old map section replaced with the animated US map |
 | /past-projects/ | mobile | 82.25 | edited on purpose: old map section replaced with the animated US map |
 | /podcast/ | desktop | 22.07 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
@@ -381,8 +379,6 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 34.958 | EDITED |
 | /gutters/gutter-guards/ | desktop | rendered | 1440×3733 | 1440×3723 | 2.972 | EDITED |
 | /gutters/gutter-guards/ | mobile | rendered | 390×6743 | 390×7286 | 29.401 | EDITED |
-| /interiors/ | desktop | rendered | 1440×5615 | 1440×5777 | 22.551 | EDITED |
-| /interiors/ | mobile | rendered | 390×12473 | 390×12422 | 2.594 | EDITED |
 | /offers/ | desktop | rendered | 1440×3944 | 1440×3944 | 0.041 | PASS |
 | /offers/ | mobile | rendered | 390×6145 | 390×6145 | 0.096 | PASS |
 | /pandav1-capture-404-check/ | desktop | rendered | 1440×900 | 1440×900 | 0.099 | PASS |

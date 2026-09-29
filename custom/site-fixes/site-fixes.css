@@ -51,7 +51,7 @@
   line-height: 1;
 }
 
-/* /interiors/ gallery without its tile whose photo is missing. At widths where all four
+/* A photo gallery without its tile whose photo is missing. At widths where all four
    tiles fit in one row (4 x 300px + 3 gaps), the ones left keep that size and are
    centered, instead of stretching over the empty column. Narrower, nothing changes. */
 @media (min-width: 1272px) {

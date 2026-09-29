@@ -10,7 +10,7 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 ## What's in scope
 
-The copy contains what a visitor can reach by clicking through the site: **173 pages** (40 main pages,
+The copy contains what a visitor can reach by clicking through the site: **172 pages** (39 main pages,
 114 blog posts and listing pages, and the 19 project pages the site links to), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
@@ -21,6 +21,11 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   redirect points at the main site's `/thank-you/` page instead of a city site's. Controlled by
   `REMOVE_SUBSITE_LINKS` in `scripts/lib/config.mjs`; pages changed this way are listed as "edited on purpose"
   in `docs/visual-diff/summary.md`.
+- **Panda Interiors / Panda Bath**, removed on request. `/interiors/` was the only page about them (nothing linked
+  to it; it was listed in the sitemap). The page, its sitemap entry and the 25 files only it used (its bathroom
+  photos and styles) are left out, and the old address redirects to the home page. It was captured, so it is
+  counted in `docs/capture-summary.md` rather than in the exclusions list. Controlled by `REMOVE_PAGES` in
+  `scripts/lib/config.mjs`.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -48,9 +53,8 @@ Most of these problems are on the live site too.
 - **Testimonials** (18 pages): the two-review carousel never started (its script ran before the carousel library
   loaded), so only the first review showed and the arrows did nothing. Both reviews are now shown side by side (one
   per row on phones), without the arrows. On `/service-areas/` the section is removed: it isn't about service areas.
-- **Missing photos** (missing on the live site too): reviewers without a photo on the Home page get their initials
-  in the round photo spot; the `/interiors/` gallery tile without a photo is removed, and the other three keep their
-  size.
+- **Missing photos** (missing on the live site too): reviewers without a photo on the Home and Services pages get
+  their initials in the round photo spot.
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
   made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
   picture.
@@ -58,9 +62,8 @@ Most of these problems are on the live site too.
   LinkedIn and email share links.
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
   positions on `/careers/`.
-- **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`),
-  placeholder "(XXX) XXX-XXXX" phone links on `/interiors/`, and typos ("Experts Your Can Trust", "Exterior
-  Modeling", "Commerical", "Our Services Areas").
+- **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`)
+  and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
 
 Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
 `docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual.

@@ -12,7 +12,7 @@ import path from 'node:path';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 import sharp from 'sharp';
-import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, trackerFor } from './lib/config.mjs';
+import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, trackerFor, isRemovedPage } from './lib/config.mjs';
 import { launchBrowser, newContext, visit, prepareForScreenshot, screenshot } from './lib/browser.mjs';
 import { startServer } from './lib/server.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, pool, listFiles } from './lib/util.mjs';
@@ -69,7 +69,9 @@ async function compare(liveFile, localFile, diffJpg) {
 
 async function main() {
   const captures = listFiles(path.join(PATHS.work, 'capture'), (f) => f.endsWith('.json')).map((f) => readJson(f));
-  let pages = captures.filter((c) => Object.values(c.viewports).some((v) => v.screenshot));
+  // Pages removed from the copy on request have nothing to compare.
+  const removed = (u) => isRemovedPage(new URL(u).pathname);
+  let pages = captures.filter((c) => Object.values(c.viewports).some((v) => v.screenshot) && !removed(c.url));
   if (ONLY) pages = pages.filter((p) => ONLY.some((o) => p.url.includes(o)));
   if (URLS) pages = pages.filter((p) => URLS.has(p.url));
   pages.sort((x, y) => x.url.localeCompare(y.url));
@@ -147,7 +149,8 @@ async function main() {
   if (MERGE) {
     const rerun = new Set(results.map((r) => r.url));
     const previous = readJson(path.join(PATHS.work, `visual-diff-${LABEL}.json`), []);
-    results = [...previous.filter((r) => !rerun.has(r.url)), ...results];
+    for (const r of previous.filter((x) => removed(x.url))) fs.rmSync(path.join(OUT_DIR, `${r.slug}--${r.viewport}.jpg`), { force: true });
+    results = [...previous.filter((r) => !rerun.has(r.url) && !removed(r.url)), ...results];
   }
   results.sort((a, b) => a.url.localeCompare(b.url) || a.viewport.localeCompare(b.viewport));
   const build = readJson(path.join(PATHS.work, 'build-report.json'), { pages: [] });
