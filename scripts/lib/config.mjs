@@ -204,6 +204,11 @@ export const REMOVE_SUBSITE_LINKS =
 // scripts/lib/customize.mjs. CUSTOM_US_MAP=0 keeps the original sections.
 export const CUSTOM_US_MAP = (process.env.CUSTOM_US_MAP ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// The homepage hero plays a muted, looping YouTube video behind its text; the copy
+// plays this video there instead of the live site's (see applyHeroVideo in
+// scripts/lib/customize.mjs). HERO_VIDEO_ID='' keeps the live site's video.
+export const HERO_VIDEO_ID = process.env.HERO_VIDEO_ID ?? (process.env.SITE_ORIGIN ? '' : 'EJPeFkhznTY');
+
 export function isSitemapOnlyExcluded(u) {
   const p = new URL(u).pathname;
   return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));

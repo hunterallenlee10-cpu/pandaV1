@@ -151,13 +151,17 @@ async function main() {
   const sourceOf = new Map(build.pages.map((p) => [p.url, p.source === 'raw' ? 'as-delivered' : 'rendered']));
   for (const r of results) r.source = sourceOf.get(r.url) || '';
   // Pages edited on purpose (links to removed sub-sites taken out, old map sections
-  // replaced by the animated US map) are expected to differ from live: report them
-  // separately instead of as failures.
-  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length).map((c) => [c.url, c]));
+  // replaced by the animated US map, the hero's background video swapped) are expected
+  // to differ from live: report them separately instead of as failures.
+  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length || c.heroVideo?.length).map((c) => [c.url, c]));
   for (const r of results) {
     const c = editedPages.get(r.url);
     const what = c
-      ? [c.removedLinks ? `${c.removedLinks} link(s) to city sub-sites removed` : '', c.customSections?.length ? 'old map section replaced with the animated US map' : '']
+      ? [
+          c.removedLinks ? `${c.removedLinks} link(s) to city sub-sites removed` : '',
+          c.customSections?.length ? 'old map section replaced with the animated US map' : '',
+          c.heroVideo?.length ? 'hero background video swapped' : '',
+        ]
       : [];
     r.intentional = c ? `edited on purpose: ${what.filter(Boolean).join('; ')}` : '';
   }
@@ -207,7 +211,7 @@ async function main() {
       flagged.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.heightDelta ?? '—', r.leaks, r.newJsErrors.join(' / ').slice(0, 120), r.error || '']),
     ) + '\n' : '',
     edited.length
-      ? '## Pages edited on purpose\n\nThese pages differ from live by design: links to the city sub-sites were removed from the copy, and the old map sections were replaced with the animated US map (`custom/us-map/`).\n\n' +
+      ? '## Pages edited on purpose\n\nThese pages differ from live by design: links to the city sub-sites were removed from the copy, the old map sections were replaced with the animated US map (`custom/us-map/`), and the homepage hero plays a different background video (`HERO_VIDEO_ID`).\n\n' +
         mdTable(['Page', 'Viewport', 'Diff %', 'Change'], edited.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.intentional])) +
         '\n'
       : '',
