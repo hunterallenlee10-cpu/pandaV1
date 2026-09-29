@@ -15,8 +15,12 @@ The copy contains what a visitor can reach by clicking through the site: **173 p
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
 - **17 city sections** (`/baltimore-md/`, `/charlotte-nc/`, … `/wilmington-de/`). Each is a separate WordPress
-  site in a multisite network, so per the capture rules they count as sub-sites. Links to them point at the
-  live site.
+  site in a multisite network, so per the capture rules they count as sub-sites. The build contains the main
+  website only: every link to a city site is removed (the Site Map's 16 city entries, the Service Areas city
+  carousel, and two in-text links in one blog post, which keep their words), and the lead form's post-submit
+  redirect points at the main site's `/thank-you/` page instead of a city site's. Controlled by
+  `REMOVE_SUBSITE_LINKS` in `scripts/lib/config.mjs`; pages changed this way are listed as "edited on purpose"
+  in `docs/visual-diff/summary.md`.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -101,10 +105,11 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 
 ## What doesn't work in a static copy
 
-- **Forms** (quote requests, contact, newsletter): there is no server to receive them. The markup is kept.
-  Submissions made on the copy go to the static host and fail harmlessly; they never reach the live site. Forms that
-  post to a third-party service were left pointing at it, so submitting one of those *would* reach that service.
-  Details in [`docs/forms.md`](docs/forms.md).
+- **Forms** (contact, newsletter): there is no server to receive them. The markup is kept.
+  Submissions made on the copy go to the static host and fail harmlessly; they never reach the live site.
+  **Exception: the free-estimate lead forms post straight to Salesforce (web-to-lead), so they keep working
+  in the copy — a test submission creates a real lead.** Their hidden fields (post-submit redirect, page URL)
+  are kept exactly as delivered. Details in [`docs/forms.md`](docs/forms.md).
 - **Site search** (`/?s=…`) and anything else that needs WordPress to run: **comments**, AJAX "load more",
   `admin-ajax.php` / REST API calls, logins, previews.
 - **Query-string URLs** show the same page as the path without the query, because a static host ignores the query.

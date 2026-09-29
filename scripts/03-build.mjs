@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
@@ -49,6 +49,10 @@ for (const a of assets) {
   }
 }
 
+function inSubsite(pathname) {
+  return subsitePrefixes.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/$/, ''));
+}
+
 function mapUrl(abs, { relative = false } = {}) {
   let u;
   try {
@@ -59,7 +63,7 @@ function mapUrl(abs, { relative = false } = {}) {
   const asset = assetIndex.get(stripHash(u.href));
   if (relative) return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
   if (isSiteUrl(u)) {
-    if (subsitePrefixes.some((p) => u.pathname.startsWith(p) || u.pathname === p.replace(/\/$/, ''))) return null; // separate site: keep live link
+    if (inSubsite(u.pathname)) return null; // separate site: keep live link (unless links to it are removed)
     if (asset && asset.renamed) return relToUrlPath(asset.rel) + u.hash;
     return u.pathname + u.search + u.hash || '/';
   }
@@ -106,6 +110,28 @@ for (const [key, a] of assetIndex) {
 
 // 2. Pages (+ the raw HTML as delivered, for reference)
 const pages = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status) === 200) || r.type === '404-page');
+
+// Links into excluded sub-sites (the city sections) are removed from the copy
+// when REMOVE_SUBSITE_LINKS is on; a sub-site URL inside a form value (e.g. the
+// lead form's post-submit redirect) becomes the matching main-site page.
+const pagePaths = new Set(pages.map((r) => new URL(r.url).pathname));
+const isRemovedLink = REMOVE_SUBSITE_LINKS
+  ? (abs) => {
+      try {
+        const u = new URL(abs);
+        return isSiteUrl(u) && inSubsite(u.pathname);
+      } catch {
+        return false;
+      }
+    }
+  : null;
+function replaceRemovedUrl(abs) {
+  const u = new URL(abs);
+  const prefix = subsitePrefixes.find((p) => u.pathname.startsWith(p) || u.pathname === p.replace(/\/$/, '')) || '';
+  const rest = '/' + u.pathname.slice(prefix.length).replace(/^\/+/, '');
+  return SITE_ORIGIN + (pagePaths.has(rest) ? rest : '/');
+}
+const intentionalChanges = [];
 const pageReports = [];
 const formsSeen = new Map();
 const trackersSeen = new Map();
@@ -126,9 +152,18 @@ for (const row of pages) {
   const srcHtml = useRendered ? fs.readFileSync(renderedPath, 'utf8') : raw.body.toString('utf8');
   if (useRendered) pagesFromRendered++;
   const charset = /<meta[^>]+charset=["']?([\w-]+)/i.exec(srcHtml)?.[1];
-  const { html, report, doc } = transformHtml(srcHtml, { pageUrl: row.url, mapUrl, siteOrigin: SITE_ORIGIN });
+  const { html, report, doc } = transformHtml(srcHtml, { pageUrl: row.url, mapUrl, siteOrigin: SITE_ORIGIN, isRemovedLink, replaceRemovedUrl });
   put(rel, html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
+  if (report.removedLinks || report.valueRewrites) {
+    intentionalChanges.push({
+      url: row.url,
+      removedLinks: report.removedLinks,
+      unwrappedLinks: report.unwrappedLinks,
+      removedBlocks: report.removedBlocks,
+      valueRewrites: report.valueRewrites,
+    });
+  }
 
   for (const t of report.trackers) {
     for (const name of t.names) {
@@ -474,6 +509,7 @@ writeJson(path.join(PATHS.work, 'build-report.json'), {
   trackers: [...trackersSeen].map(([n, v]) => ({ name: n, ids: [...v.ids], pages: v.pages.size })),
   forms: formsList.length,
   jsErrorsLive: jsErrors.length,
+  intentionalChanges,
 });
 writeJson(path.join(PATHS.work, 'live-js-errors.json'), jsErrors);
 
@@ -483,4 +519,12 @@ console.log(`  asset files: ${assetCount} (${fmtBytes(assetBytes)}); site total 
 console.log(`  redirects: ${redirectList.length} observed, ${netlify.length} written to site/_redirects`);
 console.log(`  tracking services disabled: ${[...trackersSeen.keys()].join(', ') || 'none'}`);
 console.log(`  forms: ${formsList.length} unique; external hosts referenced: ${new Set([...externalSeen.values()].map((e) => e.host)).size}`);
+if (REMOVE_SUBSITE_LINKS) {
+  const edited = intentionalChanges.filter((c) => c.removedLinks);
+  console.log(
+    `  sub-site links removed: ${edited.reduce((n, c) => n + c.removedLinks, 0)} on ${edited.length} page(s) ` +
+      `(${edited.reduce((n, c) => n + c.unwrappedLinks, 0)} unwrapped in text); ` +
+      `form values redirected to main-site pages: ${intentionalChanges.reduce((n, c) => n + c.valueRewrites, 0)}`,
+  );
+}
 if (collisions.length) console.log(`  WARNING: ${collisions.length} local path collisions (see .work/build-report.json)`);

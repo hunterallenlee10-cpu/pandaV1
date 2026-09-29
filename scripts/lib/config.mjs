@@ -191,6 +191,13 @@ export const SITEMAP_ONLY_EXCLUDE = (process.env.SITEMAP_ONLY_EXCLUDE ?? (proces
   .map((p) => p.trim())
   .filter(Boolean);
 
+// Remove every link to the excluded sub-sites (the city sections) from the copy
+// instead of pointing it at the live site; the owner wants the build to contain
+// the main website only. Form values that point into a sub-site are redirected
+// to the matching main-site page. REMOVE_SUBSITE_LINKS=0 keeps the links.
+export const REMOVE_SUBSITE_LINKS =
+  (process.env.REMOVE_SUBSITE_LINKS ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 export function isSitemapOnlyExcluded(u) {
   const p = new URL(u).pathname;
   return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));

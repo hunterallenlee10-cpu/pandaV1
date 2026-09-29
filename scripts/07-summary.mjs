@@ -17,7 +17,9 @@ const okAssets = assets.filter((a) => a.status === 200);
 const siteFiles = listFiles(PATHS.site);
 const siteBytes = siteFiles.reduce((s, f) => s + fs.statSync(f).size, 0);
 const shots = listFiles(path.join(PATHS.docs, 'screenshots', 'live'));
-const vdPass = vd.filter((r) => r.pass).length;
+const vdCompared = vd.filter((r) => !r.intentional);
+const vdPass = vdCompared.filter((r) => r.pass).length;
+const editedPages = (build.intentionalChanges || []).filter((c) => c.removedLinks);
 const lfsCount = fs.existsSync(path.join(ROOT, '.gitattributes'))
   ? fs.readFileSync(path.join(ROOT, '.gitattributes'), 'utf8').split('\n').filter((l) => l && !l.startsWith('#') && !l.startsWith('*.')).length
   : 0;
@@ -52,7 +54,9 @@ const rows = [
   ['site/ folder', `${siteFiles.length} files, ${fmtBytes(siteBytes)}`],
   ['Pages served from rendered DOM / as-delivered HTML', `${build.pagesFromRendered} / ${build.pages.length - build.pagesFromRendered}`],
   ['Live screenshots', shots.length],
-  ['Visual diff pass rate (≤ 1% different)', vd.length ? `${vdPass}/${vd.length} (${((vdPass / vd.length) * 100).toFixed(1)}%)` : 'not run'],
+  ['Visual diff pass rate (≤ 1% different)', vdCompared.length ? `${vdPass}/${vdCompared.length} (${((vdPass / vdCompared.length) * 100).toFixed(1)}%)` : 'not run'],
+  ['Links to city sub-sites removed', editedPages.length ? `${editedPages.reduce((n, c) => n + c.removedLinks, 0)} on ${editedPages.length} page(s): ${editedPages.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'],
+  ['Form values redirected from a city site to the main site', (build.intentionalChanges || []).reduce((n, c) => n + (c.valueRewrites || 0), 0)],
   ['Requests from the copy to the live site', vd.reduce((s, r) => s + (r.leaks || 0), 0)],
   ['Unresolved internal references (fixable)', lc ? `${lc.missing.length} (${lc.fixable})` : 'not run'],
   ['Broken links, HTTP crawl (fixable)', lc ? `${lc.linkinator.uniqueBroken} (${lc.linkinator.brokenFixable})` : 'not run'],
