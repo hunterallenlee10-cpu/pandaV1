@@ -181,6 +181,21 @@ export const ORIGIN_ALIASES = new Set(
     .filter(Boolean),
 );
 
+// Sitemap sections whose URLs are only captured when a page actually links to
+// them. pandaexteriors.com lists ~5,500 auto-generated /blog/project/ posts in
+// its sitemaps, of which only ~20 are linked from the site; the owner chose to
+// copy what a visitor can reach by clicking. Set SITEMAP_ONLY_EXCLUDE='' to
+// capture every sitemap URL.
+export const SITEMAP_ONLY_EXCLUDE = (process.env.SITEMAP_ONLY_EXCLUDE ?? (process.env.SITE_ORIGIN ? '' : '/blog/project/'))
+  .split(',')
+  .map((p) => p.trim())
+  .filter(Boolean);
+
+export function isSitemapOnlyExcluded(u) {
+  const p = new URL(u).pathname;
+  return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));
+}
+
 export function isOriginAlias(host) {
   return ORIGIN_ALIASES.has(String(host).toLowerCase());
 }

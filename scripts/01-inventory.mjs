@@ -6,7 +6,7 @@
 // Writes docs/url-inventory.csv, docs/url-exclusions.csv and .work/inventory.json.
 import zlib from 'node:zlib';
 import path from 'node:path';
-import { SITE_ORIGIN, SITE_HOST, PATHS, isSiteUrl, isSiteHost, isForbidden } from './lib/config.mjs';
+import { SITE_ORIGIN, SITE_HOST, PATHS, isSiteUrl, isSiteHost, isForbidden, isSitemapOnlyExcluded, SITEMAP_ONLY_EXCLUDE } from './lib/config.mjs';
 import { fetcher, ACCEPT } from './lib/fetcher.mjs';
 import { extractFromHtml, resolveUrl } from './lib/extract.mjs';
 import { ASSET_EXT_RE } from './lib/paths.mjs';
@@ -292,8 +292,18 @@ async function main() {
 
   // 2. Crawl: homepage first, then everything the sitemaps listed.
   enqueue(homeUrl, 'crawl', '(start)');
-  for (const u of sitemapUrls) enqueue(u, 'sitemap', '(sitemap)');
+  // Sections in SITEMAP_ONLY_EXCLUDE are not taken from the sitemap: they are
+  // captured only if a crawled page links to them.
+  for (const u of sitemapUrls) if (!isSitemapOnlyExcluded(u)) enqueue(u, 'sitemap', '(sitemap)');
   await crawl();
+  let sitemapOnly = 0;
+  for (const u of sitemapUrls) {
+    if (isSitemapOnlyExcluded(u) && !rows.has(u)) {
+      exclude(u, `listed only in the sitemap, not linked from any page (${SITEMAP_ONLY_EXCLUDE.join(', ')})`, '(sitemap)');
+      sitemapOnly++;
+    }
+  }
+  if (sitemapOnly) console.log(`sitemap-only URLs left out (not linked from any page): ${sitemapOnly}`);
 
   // 3. Special files
   const homeInfo = pageInfo.get(homeUrl);
