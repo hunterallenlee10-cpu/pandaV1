@@ -1371,65 +1371,11 @@ mark {
     }
 </style>
 <!--?php if (!is_admin()) : ?-->
-<link rel="prefetch" href="/blog/does-your-roof-help-or-hurt-your-curb-appeal/index.html"></head><body class="wp-singular post-template-default single single-post postid-1324 single-format-standard wp-theme-oxygen-zero oxygen breakdance"><div class="xai-weather-ribbon" data-debug="weather-ribbon">
-    <span class="weather-data">Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span></span>
+<link rel="prefetch" href="/blog/does-your-roof-help-or-hurt-your-curb-appeal/"><link rel="stylesheet" href="/_custom/site-fixes/site-fixes.css"><script src="/_custom/site-fixes/site-fixes.js" defer></script></head><body class="wp-singular post-template-default single single-post postid-1324 single-format-standard wp-theme-oxygen-zero oxygen breakdance"><div class="xai-weather-ribbon" data-debug="weather-ribbon">
+    <span class="weather-data">Free Estimates · Call <a class="pfix-ribbon-link" href="tel:+18772138536">(877) 213-8536</a></span>
 </div>
 <!--?php endif; ?-->
-<script>
-    console.log('Weather Ribbon:', document.querySelector('.xai-weather-ribbon'));
-    console.log('Potential Navigation Elements:', document.querySelectorAll('nav.nav, .nav, [class*="nav"], header, [class*="header"], .oxy-nav-menu, .oxy-header-container'));
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=fbf2a82ffc724c006d1581a1f31166a2`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Client Geolocation Data:', data);
-                        const temp = Math.round(data.main.temp);
-                        const windSpeed = Math.round(data.wind.speed);
-                        const condition = data.weather[0].main;
-
-                        let alert = '';
-                        if (windSpeed > 15) {
-                            alert = `High Winds (${windSpeed} MPH)`;
-                        } else if (condition === 'Clear') {
-                            alert = 'Clear Skies';
-                        } else if (condition === 'Clouds') {
-                            alert = 'Cloudy';
-                        } else if (condition === 'Rain' || condition === 'Drizzle') {
-                            alert = 'Rain';
-                        } else if (condition === 'Thunderstorm') {
-                            alert = 'Hail';
-                        } else if (condition === 'Snow') {
-                            alert = 'Snow';
-                        } else if (condition === 'Mist' || condition === 'Fog') {
-                            alert = 'Fog';
-                        } else {
-                            alert = condition;
-                        }
-
-                        const weatherElement = document.querySelector('.weather-data');
-                        weatherElement.innerHTML = `Local Weather: <span>${temp}</span>°F | Weather Alerts: <span>${alert}</span>`;
-                    })
-                    .catch(error => {
-                        console.error('Client Weather API Error:', error);
-                        const weatherElement = document.querySelector('.weather-data');
-                        weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-                    });
-            },
-            function (error) {
-                console.error('Geolocation Error:', error);
-                const weatherElement = document.querySelector('.weather-data');
-                weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-            }
-        );
-    } else {
-        console.log('Geolocation not supported by this browser.');
-        const weatherElement = document.querySelector('.weather-data');
-        weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-    }
-</script><noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>    <style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto;}</style><style id="wpr-lazyload-bg-container"></style><style id="wpr-lazyload-bg-exclusion">.Reviews-section{--wpr-bg-27e1f4a7-2df5-4376-989a-06093113f0af: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}.Blog-section{--wpr-bg-454513c1-6d26-49f5-9a1f-52c41a86ffa0: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}.site-map{--wpr-bg-95b9855d-6ffb-4ee0-8db0-96ff2956d52c: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}</style>
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>    <style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto;}</style><style id="wpr-lazyload-bg-container"></style><style id="wpr-lazyload-bg-exclusion">.Reviews-section{--wpr-bg-27e1f4a7-2df5-4376-989a-06093113f0af: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}.Blog-section{--wpr-bg-454513c1-6d26-49f5-9a1f-52c41a86ffa0: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}.site-map{--wpr-bg-95b9855d-6ffb-4ee0-8db0-96ff2956d52c: url('/wp-content/uploads/2025/03/V-1.0-Reviews.png');}</style>
 <noscript>
 <style id="wpr-lazyload-bg-nostyle">.hero-section{--wpr-bg-e9fad4dd-700e-46fb-ab36-34036dbbc96a: url('/wp-content/uploads/2025/03/eaf2e8a6-efc7-47c5-8d45-932796dd33bc-1-min.png');}.hero-section{--wpr-bg-50f5552b-9be0-45db-a482-f82cffaa0922: url('/wp-content/uploads/2025/03/eaf2e8a6-efc7-47c5-8d45-932796dd33bc-1-min.png');}.hero-section-service{--wpr-bg-6e8e27d8-2756-43c8-80df-0f203c280d24: url('/wp-content/uploads/2025/03/51d2ed67-a432-4105-a85b-e500c856ba9d-2-min.png');}.service-section{--wpr-bg-452d6bc3-e0df-48b6-84e1-cbcd9374aadd: url('/wp-content/uploads/2025/03/Mask-group.png');}.Hero-roofing{--wpr-bg-89049e22-5da8-4a59-b623-218c9f223b2e: url('/wp-content/uploads/2025/03/Group-9524.png');}.replacement{--wpr-bg-d9039f63-87d7-4575-92ed-1c34efe9cf6d: url('/wp-content/uploads/2025/04/Roof-Replacement.jpg');}.attic{--wpr-bg-6927aaff-a291-4966-8b53-5470473be8bd: url('/wp-content/uploads/2025/04/Attic-Insulation.jpg');}.repairs{--wpr-bg-2598b514-21c1-4db9-9bfd-b4d614709a9d: url('/wp-content/uploads/2025/04/Roofing-Repairs.jpg');}.resd{--wpr-bg-a6899dbb-5a17-4b68-b0d4-1f6ead5dbf86: url('/wp-content/uploads/2025/04/roofing-types-and-materials.jpg');}.types{--wpr-bg-9aa1fb50-9c6c-4556-a989-b67d085261f8: url('/wp-content/uploads/2025/04/Roofing-Shingles.jpg');}.commercial{--wpr-bg-718ba700-dc96-4c54-b380-5becec540b20: url('/wp-content/uploads/2025/04/hero-commercial-roofing.jpg');}.commercial-types{--wpr-bg-98da73e9-7812-46a1-bea7-a717c5e454d2: url('/wp-content/uploads/2025/04/Patient-First.jpg');}.commercial-replacement{--wpr-bg-a5ab5eb1-6eae-43ea-8791-98a6e0401fad: url('/wp-content/uploads/2025/04/6f4eb58b-0dae-4266-af83-75ef6935f60a.jpg');}.solar{--wpr-bg-3cb23163-6699-4ab2-b915-650e4e86af25: url('/wp-content/uploads/2025/03/Group-9557-1.png');}.parralel{--wpr-bg-b6e53ca8-b024-4d54-aaa1-94bd9864ab9f: url('/wp-content/uploads/2025/03/Group-9558-1.png');}.siding{--wpr-bg-93c42d48-6c8c-4e93-9437-587649aa2739: url('/wp-content/uploads/2025/03/Group-9560-1.png');}.window-replace{--wpr-bg-e6e83019-4303-46e8-b7ec-2091de941467: url('/wp-content/uploads/2025/03/Group-9561.png');}.powerwash-hero{--wpr-bg-148deb1b-165c-47ac-9a47-c13bb906ceac: url('/wp-content/uploads/2025/03/Group-9562.png');}.Gutter{--wpr-bg-815da174-268d-4d23-ad8d-1234461d2e25: url('/wp-content/uploads/2025/04/hero-gutters.jpg');}.Gutter-card{--wpr-bg-d9a6345c-7214-4c3a-be4e-eb49427398c5: url('/wp-content/uploads/2025/04/Gutter-System.jpg');}.about{--wpr-bg-01abc0b4-ac10-4f96-9477-ee65c0992390: url('/wp-content/uploads/2025/04/fb04fcac-9a54-45a7-8530-a3e13d544aae.jpg');}.reviews{--wpr-bg-86ad6b39-6a5e-41f1-b52c-58d81c9048ef: url('/wp-content/uploads/2025/04/Panda-Exteriors-Truck.jpg');}.career{--wpr-bg-9d7d0f4e-5fc5-4433-ab9f-58d8317fe0e1: url('/wp-content/uploads/2025/03/fb04fcac-9a54-45a7-8530-a3e13d544aae-1.png');}.customer{--wpr-bg-6c06baca-6228-4762-acbe-d41077100ecc: url('/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg');}.faq{--wpr-bg-30960cc6-5f7d-41d6-bf39-6955019ef1bc: url('/wp-content/uploads/2025/03/Group-9550-1-1.png');}.offers-hero-page{--wpr-bg-33de3a1a-b202-4aef-833d-9c6a689d37b6: url('/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg');}.roofing-hero{--wpr-bg-698fd5eb-30a5-4502-8856-ea9ac2d23804: url('/wp-content/uploads/2025/04/hero-roofing.jpg');}.service-area-hero{--wpr-bg-2787dc96-8222-442f-bdd6-88d0018447be: url('/wp-content/uploads/2025/04/Residential-Roofing.jpeg');}.past-projects-hero{--wpr-bg-6908f500-f94b-474a-86c6-60b84962cd8a: url('/wp-content/uploads/2025/04/hero-roofing.jpg');}.process-section{--wpr-bg-257afee7-080a-4d18-8ee8-806662d3381e: url('/wp-content/uploads/2025/04/Core-Logo-4c.jpeg');}.process-section-solar{--wpr-bg-0759695c-09ff-4cf1-baed-9ba70fc0064c: url('/wp-content/uploads/2025/04/Solar-Panda.jpeg');}.childe-page-hero{--wpr-bg-bd6a810a-84cf-413f-a349-405ef6978a4a: url('/wp-content/uploads/2025/04/fbea6d2d-0aa4-4c1b-a541-5ca3639b1cfc-1.jpg');}.map-background{--wpr-bg-0a63605b-77bb-4e35-93c2-62541e51373c: url('/wp-content/uploads/2025/03/Image-orange.png');}.landing-page{--wpr-bg-a4bee696-739c-4cef-a2bb-511651919c4d: url('/wp-content/uploads/2025/04/roofing-types-and-materials.jpg');}.landing-page-hero{--wpr-bg-06b9f499-bd87-4ca5-9121-00214ba8ab61: url('/wp-content/uploads/2025/04/hero-roofing.jpg');}</style>
 </noscript>
@@ -1443,7 +1389,7 @@ mark {
 		</noscript>
 -->
 		<!-- End Google Tag Manager (noscript) snippet added by Site Kit -->
-		    <div class="oxy-container-974-100 oxy-container nav"><div class="oxy-container-974-101 oxy-container container"><div class="oxy-container-974-102 oxy-container row-flex"><div class="oxy-container-974-103 oxy-container Nav-Logo"><a class="oxy-container-link-974-104 oxy-container-link Logo cursor-pointer" href="/index.html" target="_self"><img width="2337" height="2560" class="oxy-image-974-105 oxy-image Logo-nav" src="/wp-content/uploads/2025/07/bighead-scaled.png" srcset="/wp-content/uploads/2025/07/bighead-scaled.png 2337w, /wp-content/uploads/2025/07/bighead-274x300.png 274w, /wp-content/uploads/2025/07/bighead-935x1024.png 935w, /wp-content/uploads/2025/07/bighead-768x841.png 768w, /wp-content/uploads/2025/07/bighead-1402x1536.png 1402w, /wp-content/uploads/2025/07/bighead-1870x2048.png 1870w" sizes="(max-width: 2337px) 100vw, 2337px"></a></div><div class="oxy-container-974-106 oxy-container mobile_btn"><div class="oxy-html-code-974-107 oxy-html-code Mobile-icon">
+		    <div class="oxy-container-974-100 oxy-container nav"><div class="oxy-container-974-101 oxy-container container"><div class="oxy-container-974-102 oxy-container row-flex"><div class="oxy-container-974-103 oxy-container Nav-Logo"><a class="oxy-container-link-974-104 oxy-container-link Logo cursor-pointer" href="/" target="_self"><img width="2337" height="2560" class="oxy-image-974-105 oxy-image Logo-nav" src="/wp-content/uploads/2025/07/bighead-scaled.png" srcset="/wp-content/uploads/2025/07/bighead-scaled.png 2337w, /wp-content/uploads/2025/07/bighead-274x300.png 274w, /wp-content/uploads/2025/07/bighead-935x1024.png 935w, /wp-content/uploads/2025/07/bighead-768x841.png 768w, /wp-content/uploads/2025/07/bighead-1402x1536.png 1402w, /wp-content/uploads/2025/07/bighead-1870x2048.png 1870w" sizes="(max-width: 2337px) 100vw, 2337px"></a></div><div class="oxy-container-974-106 oxy-container mobile_btn"><div class="oxy-html-code-974-107 oxy-html-code Mobile-icon">
  <i class="fas fa-bars"></i>
 </div></div><div class="oxy-container-974-108 oxy-container main_menu"><div class="oxy-container-974-109 oxy-container Menus-ul ul"><div class="oxy-container-974-110 oxy-container Service-Menu li has_dropdown">
 <a class="oxy-container-link-845-100 oxy-container-link Nav-Link Nav-Link-flex" href="/services/" target="_self"><div class="oxy-text-845-101 oxy-text Nav-Link Nav-link-Dropdown">
@@ -1452,23 +1398,23 @@ Services
 <i class="fas fa-angle-down"></i>
 </div></a>
 <div class="oxy-container-974-112 oxy-container ul sub_menu"><div class="oxy-container-974-113 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/roofing/index.html" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
+<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/roofing/" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
 Roofing
 </div><div class="oxy-html-code-854-102 oxy-html-code">
 <i class="fas fa-angle-right"></i>
 </div></a>
-<div class="oxy-container-974-115 oxy-container ul sub_menu"><div class="oxy-container-974-221 oxy-container li mobile-show"><a class="oxy-text-link-974-222 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/index.html" target="_self">
+<div class="oxy-container-974-115 oxy-container ul sub_menu"><div class="oxy-container-974-221 oxy-container li mobile-show"><a class="oxy-text-link-974-222 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/" target="_self">
 Roofing
 </a></div>
 <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/residential/" target="_self">
 Residential Roofing
 </a></div>
 
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/types/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/types/" target="_self">
 Roofing Types
 </a></div>
 
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/replacement/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/replacement/" target="_self">
 Roof Replacement
 </a></div>
 
@@ -1480,35 +1426,35 @@ Roof Repairs
 Attic Insulation
 </a></div>
 </div></div><div class="oxy-container-974-121 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/commerical-roofing/index.html" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
+<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/commerical-roofing/" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
 Commercial
 </div><div class="oxy-html-code-854-102 oxy-html-code">
 <i class="fas fa-angle-right"></i>
 </div></a>
-<div class="oxy-container-974-123 oxy-container ul sub_menu"><div class="oxy-container-974-223 oxy-container li mobile-show"><a class="oxy-text-link-974-224 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/index.html" target="_self">
+<div class="oxy-container-974-123 oxy-container ul sub_menu"><div class="oxy-container-974-223 oxy-container li mobile-show"><a class="oxy-text-link-974-224 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/" target="_self">
 Commercial
 </a></div>
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-types/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-types/" target="_self">
 Roof Types
 </a></div>
 
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-replacement/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-replacement/" target="_self">
 Roof Replacement
 </a></div>
 </div></div><div class="oxy-container-974-126 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/solar/index.html" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
+<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/solar/" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
 Solar
 </div><div class="oxy-html-code-854-102 oxy-html-code">
 <i class="fas fa-angle-right"></i>
 </div></a>
-<div class="oxy-container-974-128 oxy-container ul sub_menu"><div class="oxy-container-974-225 oxy-container li mobile-show"><a class="oxy-text-link-974-226 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/index.html" target="_self">
+<div class="oxy-container-974-128 oxy-container ul sub_menu"><div class="oxy-container-974-225 oxy-container li mobile-show"><a class="oxy-text-link-974-226 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/" target="_self">
 Solar
 </a></div>
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/solar-panel-installations/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/solar-panel-installations/" target="_self">
 Solar Panel Installation
 </a></div>
 
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/gaf-solar-roof/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/gaf-solar-roof/" target="_self">
 GAF Solar Roof
 </a></div>
 </div></div><div class="oxy-container-974-178 oxy-container li has_dropdown">
@@ -1518,20 +1464,20 @@ Other
 <i class="fas fa-angle-right"></i>
 </div></a>
 <div class="oxy-container-974-180 oxy-container ul sub_menu">
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/" target="_self">
 Siding
 </a></div>
 <div class="oxy-container-974-186 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/gutters/index.html" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
+<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/gutters/" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
 Gutters
 </div><div class="oxy-html-code-854-102 oxy-html-code">
 <i class="fas fa-angle-right"></i>
 </div></a>
 <div class="oxy-container-974-188 oxy-container ul sub_menu">
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/" target="_self">
 Gutter Guards
 </a></div>
-<div class="oxy-container-974-227 oxy-container li mobile-show"><a class="oxy-text-link-974-228 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/index.html" target="_self">
+<div class="oxy-container-974-227 oxy-container li mobile-show"><a class="oxy-text-link-974-228 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/" target="_self">
 Gutters
 </a></div></div></div></div></div><div class="oxy-container-974-211 oxy-container li mobile-show"><a class="oxy-text-link-974-212 oxy-text-link Nav-Link Nav-Link-Hover" href="/services/" target="_self">
 Services
@@ -1552,7 +1498,7 @@ Roofing Costs
 Customer Service
 </a></div>
 
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/contact-us/index.html" target="_self">
+<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/contact-us/" target="_self">
 Contact Us
 </a></div>
 
@@ -1573,9 +1519,9 @@ Panda Shop
 </a></div>
 </div></div><div class="oxy-container-974-147 oxy-container Offers-menu li"><a class="oxy-text-link-974-230 oxy-text-link Nav-Link" href="/offers/" target="_self">
 Offers
-</a></div><div class="oxy-container-974-163 oxy-container service_Area_Link li"><a class="oxy-text-link-974-164 oxy-text-link Nav-Link" href="/service-areas/index.html" target="_self">
+</a></div><div class="oxy-container-974-163 oxy-container service_Area_Link li"><a class="oxy-text-link-974-164 oxy-text-link Nav-Link" href="/service-areas/" target="_self">
 Service Areas
-</a></div><div class="oxy-container-974-165 oxy-container Projects-Link li"><a class="oxy-text-link-974-166 oxy-text-link Nav-Link" href="/past-projects/index.html" target="_self">
+</a></div><div class="oxy-container-974-165 oxy-container Projects-Link li"><a class="oxy-text-link-974-166 oxy-text-link Nav-Link" href="/past-projects/" target="_self">
 Projects
 </a></div><div class="oxy-container-974-232 oxy-container Blog-menu li has_dropdown">
 <a class="oxy-container-link-845-100 oxy-container-link Nav-Link Nav-Link-flex" href="#" target="_self"><div class="oxy-text-845-101 oxy-text Nav-Link Nav-link-Dropdown">
@@ -1694,74 +1640,9 @@ Limited Time Savings - Act Now!
 </style>
 
 <!-- Target container -->
-<div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black">Unable to load review count</div>
-
-<script>
-  const placeIds = [
-    'ChIJSVWu_lPdt4kR1GEJrQ6tO-M', // Laurel, MD
-    'ChIJzTeqtXs1wYkRskJ4So9z2x0', // Marlton, NJ
-    'ChIJw1OMYkCVxokRC5SnEzU9w0I', // King of Prussia, PA
-    'ChIJ-fsxxawbcEsR6s8N3f-ZpE4', // Dover, DE
-    'ChIJsZ_aujmfVogRKzya3eUUujk'  // Charlotte, NC
-  ];
-
-  const apiKey = 'AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk';
-
- async function fetchReviewCount() {
-  try {
-    const response = await fetch('/wp-json/custom/v1/review-total');
-    const data = await response.json();
-
-    if (!data.total || isNaN(data.total)) {
-      console.error('Invalid review count received:', data);
-      return 0;
-    }
-
-    return data.total;
-  } catch (error) {
-    console.error('Error fetching review count from WordPress API:', error);
-    return 0;
-  }
-}
+<div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black"><a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a></div>
 
 
-  async function updateTotalReviews() {
-  try {
-    const total = await fetchReviewCount();
-    if (total === 0) {
-      document.getElementById('total-reviews').textContent = 'Unable to load review count';
-      return;
-    }
-    animateCountUp('review-count', total);
-  } catch (error) {
-    console.error('Failed to update reviews:', error);
-    document.getElementById('total-reviews').textContent = 'Error loading reviews';
-  }
-}
-
-  function animateCountUp(elementId, finalValue) {
-    const el = document.getElementById(elementId);
-    if (!el) {
-      console.error(`Element with ID ${elementId} not found`);
-      return;
-    }
-    let current = 0;
-    const duration = 1000;
-    const step = Math.ceil(finalValue / (duration / 30));
-
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= finalValue) {
-        current = finalValue;
-        clearInterval(interval);
-      }
-      el.textContent = current.toLocaleString();
-    }, 30);
-  }
-
-  // Run after DOM is loaded
-  document.addEventListener('DOMContentLoaded', updateTotalReviews);
-</script>
 </div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="oxy-html-code-333-108 oxy-html-code">
 <form id="lead-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST" onsubmit="submitToZapier(event)">
     <input type="hidden" name="oid" value="00DHo000002gd1g">
@@ -1798,7 +1679,7 @@ Limited Time Savings - Act Now!
         <div class="form-check mb-3" style="color: white; font-size: 14px;">
             <label class="form-check-label check-detail" for="consentCheckboxText">
                 <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxText">
-                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/index.html" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
+                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
             </label>
         </div>
         <div class="form-check mb-3" style="color: white; font-size: 14px;">
@@ -1886,76 +1767,9 @@ Limited Time Savings - Act Now!
 </style>
 
 <!-- Target container -->
-<div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black">
-  Based on <span id="review-count">0</span> reviews!
-</div>
-
-<script>
-  const placeIds = [
-    'ChIJSVWu_lPdt4kR1GEJrQ6tO-M', // Laurel, MD
-    'ChIJzTeqtXs1wYkRskJ4So9z2x0', // Marlton, NJ
-    'ChIJw1OMYkCVxokRC5SnEzU9w0I', // King of Prussia, PA
-    'ChIJ-fsxxawbcEsR6s8N3f-ZpE4', // Dover, DE
-    'ChIJsZ_aujmfVogRKzya3eUUujk'  // Charlotte, NC
-  ];
-
-  const apiKey = 'AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk';
-
- async function fetchReviewCount() {
-  try {
-    const response = await fetch('/wp-json/custom/v1/review-total');
-    const data = await response.json();
-
-    if (!data.total || isNaN(data.total)) {
-      console.error('Invalid review count received:', data);
-      return 0;
-    }
-
-    return data.total;
-  } catch (error) {
-    console.error('Error fetching review count from WordPress API:', error);
-    return 0;
-  }
-}
+<div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black"><a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a></div>
 
 
-  async function updateTotalReviews() {
-  try {
-    const total = await fetchReviewCount();
-    if (total === 0) {
-      document.getElementById('total-reviews').textContent = 'Unable to load review count';
-      return;
-    }
-    animateCountUp('review-count', total);
-  } catch (error) {
-    console.error('Failed to update reviews:', error);
-    document.getElementById('total-reviews').textContent = 'Error loading reviews';
-  }
-}
-
-  function animateCountUp(elementId, finalValue) {
-    const el = document.getElementById(elementId);
-    if (!el) {
-      console.error(`Element with ID ${elementId} not found`);
-      return;
-    }
-    let current = 0;
-    const duration = 1000;
-    const step = Math.ceil(finalValue / (duration / 30));
-
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= finalValue) {
-        current = finalValue;
-        clearInterval(interval);
-      }
-      el.textContent = current.toLocaleString();
-    }, 30);
-  }
-
-  // Run after DOM is loaded
-  document.addEventListener('DOMContentLoaded', updateTotalReviews);
-</script>
 </div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="oxy-html-code-333-108 oxy-html-code">
 <form id="lead-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST" onsubmit="submitToZapier(event)">
     <input type="hidden" name="oid" value="00DHo000002gd1g">
@@ -1992,7 +1806,7 @@ Limited Time Savings - Act Now!
         <div class="form-check mb-3" style="color: white; font-size: 14px;">
             <label class="form-check-label check-detail" for="consentCheckboxText">
                 <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxText">
-                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/index.html" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
+                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
             </label>
         </div>
         <div class="form-check mb-3" style="color: white; font-size: 14px;">
@@ -2042,16 +1856,16 @@ function submitToZapier(event) {
 </script>
 </div></div>
 </div></div></div></div><div class="oxy-container-945-116 oxy-container Blog-detail detail-static pt-lg-5 pt-3"><div class="bde-social-share-buttons-945-172 bde-social-share-buttons desktop-social-icons">
-<div class="bde-social-share-button bde-social-share-button-mobile js-breakdance-share-mobile">
+<a class="bde-social-share-button bde-social-share-button-mobile js-breakdance-share-mobile pfix-share-native" data-share-url="https://pandaexteriors.com/blog/the-components-of-a-roof-replacement/" data-share-title="The Components Of A Roof Replacement | Panda Exteriors" href="mailto:?subject=The%20Components%20Of%20A%20Roof%20Replacement%20%7C%20Panda%20Exteriors&amp;body=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F">
   <span class="bde-social-share-button-icon">
     <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
       <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12c.154.49.154 1.015 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.504 2.504 0 0 1 11 2.5Z" fill="currentColor"></path>
     </svg>
   </span>
     <span class="bde-social-share-button-text">Share</span>
-  </div>
+  </a>
 
-<div class="js-breakdance-share-button bde-social-share-button bde-social-share-button-facebook" data-network="Facebook">
+<a class="js-breakdance-share-button bde-social-share-button bde-social-share-button-facebook" data-network="Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F" target="_blank" rel="noopener">
     <span class="bde-social-share-button-icon">
         <svg aria-hidden="true" focusable="false" data-prefix="fab" class="svg-inline--fa fa-facebook fa-w-16" role="img" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
       <path d="M768 0H32C14.3 0 0 14.3 0 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32Zm-92.4 233.5h-63.9c-50.1 0-59.8 23.8-59.8 58.8v77.1h119.6l-15.6 120.7h-104V800H427.2V490.2H322.9V369.4h104.3v-89c0-103.3 63.1-159.6 155.3-159.6 44.2 0 82.1 3.3 93.2 4.8v107.9h-.1Z" fill="currentColor"></path>
@@ -2060,8 +1874,8 @@ function submitToZapier(event) {
       <span class="bde-social-share-button-text">
         Facebook
       </span>
-  </div>
-<div class="js-breakdance-share-button bde-social-share-button bde-social-share-button-twitter" data-network="Twitter">
+  </a>
+<a class="js-breakdance-share-button bde-social-share-button bde-social-share-button-twitter" data-network="Twitter" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F&amp;text=The%20Components%20Of%20A%20Roof%20Replacement%20%7C%20Panda%20Exteriors" target="_blank" rel="noopener">
     <span class="bde-social-share-button-icon">
         <svg aria-hidden="true" focusable="false" data-prefix="fab" class="svg-inline--fa fa-twitter fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
@@ -2070,8 +1884,8 @@ function submitToZapier(event) {
       <span class="bde-social-share-button-text">
         Twitter
       </span>
-  </div>
-<div class="js-breakdance-share-button bde-social-share-button bde-social-share-button-linkedin" data-network="LinkedIn">
+  </a>
+<a class="js-breakdance-share-button bde-social-share-button bde-social-share-button-linkedin" data-network="LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F" target="_blank" rel="noopener">
     <span class="bde-social-share-button-icon">
         <svg aria-hidden="true" focusable="false" data-prefix="fab" class="svg-inline--fa fa-linkedin fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
       <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path>
@@ -2080,8 +1894,8 @@ function submitToZapier(event) {
       <span class="bde-social-share-button-text">
         LinkedIn
       </span>
-  </div>
-<div class="js-breakdance-share-button bde-social-share-button bde-social-share-button-email" data-network="Email">
+  </a>
+<a class="js-breakdance-share-button bde-social-share-button bde-social-share-button-email" data-network="Email" href="mailto:?subject=The%20Components%20Of%20A%20Roof%20Replacement%20%7C%20Panda%20Exteriors&amp;body=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F">
     <span class="bde-social-share-button-icon">
         <svg class="svg-inline--fa fa-envelope-square fa-w-14" role="img" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 16">
       <path d="M18 0H2C.9 0 .01.9.01 2L0 14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V2l8 5 8-5v2Z" fill="currentColor"></path>
@@ -2090,14 +1904,14 @@ function submitToZapier(event) {
       <span class="bde-social-share-button-text">
         Email
       </span>
-  </div>
-<div class="js-breakdance-share-button bde-social-share-button bde-social-share-button-" data-network="">
+  </a>
+<a class="js-breakdance-share-button bde-social-share-button bde-social-share-button- pfix-share-native" data-network data-share-url="https://pandaexteriors.com/blog/the-components-of-a-roof-replacement/" data-share-title="The Components Of A Roof Replacement | Panda Exteriors" href="mailto:?subject=The%20Components%20Of%20A%20Roof%20Replacement%20%7C%20Panda%20Exteriors&amp;body=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fthe-components-of-a-roof-replacement%2F">
     <span class="bde-social-share-button-icon">
       </span>
       <span class="bde-social-share-button-text">
         
       </span>
-  </div>
+  </a>
 
 </div><div class="oxy-rich-text-945-115 oxy-rich-text rich-text-blog">
 
@@ -2159,7 +1973,7 @@ function submitToZapier(event) {
 Related Posts
 </div><div class="oxy-container-945-122 oxy-container Posts pt-2"><div class="bde-post-loop-945-138 bde-post-loop post-builder oxy-post-loop">
 <div class="bde-loop bde-loop-grid ee-posts ee-posts-grid">    <article class="bde-loop-item ee-post">
-        <a class="oxy-container-link-956-112-1381-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/often-overlooked-roofing-issues-and-items/index.html" target="_self"><div class="oxy-container-956-101-1381-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1381-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
+        <a class="oxy-container-link-956-112-1381-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/often-overlooked-roofing-issues-and-items/" target="_self"><div class="oxy-container-956-101-1381-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1381-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
 <source type="image/webp" data-lazy-srcset="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg.webp 1200w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-300x225.jpg.webp 300w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-1024x768.jpg.webp 1024w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-768x576.jpg.webp 768w" sizes="(max-width: 1200px) 100vw, 1200px" srcset="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg.webp 1200w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-300x225.jpg.webp 300w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-1024x768.jpg.webp 1024w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-768x576.jpg.webp 768w">
 <img src="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg" alt="Often Overlooked Roofing Issues and Items" data-lazy-srcset="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg 1200w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-300x225.jpg 300w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-1024x768.jpg 1024w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-768x576.jpg 768w" data-lazy-sizes="(max-width: 1200px) 100vw, 1200px" data-lazy-src="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg" data-ll-status="loaded" class="entered lazyloaded" sizes="(max-width: 1200px) 100vw, 1200px" srcset="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg 1200w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-300x225.jpg 300w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-1024x768.jpg 1024w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-768x576.jpg 768w"><noscript><img src="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg" alt="Often Overlooked Roofing Issues and Items" loading="lazy" srcset="/wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63.jpg 1200w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-300x225.jpg 300w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-1024x768.jpg 1024w, /wp-content/uploads/2025/03/7787921b-8bdb-477d-9025-aeba3f739e63-768x576.jpg 768w" sizes="(max-width: 1200px) 100vw, 1200px"/></noscript>
 </picture>
@@ -2176,7 +1990,7 @@ Often Overlooked Roofing Issues and Items
 
 </div></div></a>    </article>
     <article class="bde-loop-item ee-post">
-        <a class="oxy-container-link-956-112-1410-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/does-your-roof-help-or-hurt-your-curb-appeal/index.html" target="_self"><div class="oxy-container-956-101-1410-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1410-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
+        <a class="oxy-container-link-956-112-1410-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/does-your-roof-help-or-hurt-your-curb-appeal/" target="_self"><div class="oxy-container-956-101-1410-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1410-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
 <source type="image/webp" data-lazy-srcset="/wp-content/uploads/2025/03/preview-3.jpg.webp 1226w, /wp-content/uploads/2025/03/preview-3-300x206.jpg.webp 300w, /wp-content/uploads/2025/03/preview-3-1024x704.jpg.webp 1024w, /wp-content/uploads/2025/03/preview-3-768x528.jpg.webp 768w" sizes="(max-width: 1226px) 100vw, 1226px" srcset="/wp-content/uploads/2025/03/preview-3.jpg.webp 1226w, /wp-content/uploads/2025/03/preview-3-300x206.jpg.webp 300w, /wp-content/uploads/2025/03/preview-3-1024x704.jpg.webp 1024w, /wp-content/uploads/2025/03/preview-3-768x528.jpg.webp 768w">
 <img src="/wp-content/uploads/2025/03/preview-3.jpg" alt="Does your roof help or hurt your curb appeal?" data-lazy-srcset="/wp-content/uploads/2025/03/preview-3.jpg 1226w, /wp-content/uploads/2025/03/preview-3-300x206.jpg 300w, /wp-content/uploads/2025/03/preview-3-1024x704.jpg 1024w, /wp-content/uploads/2025/03/preview-3-768x528.jpg 768w" data-lazy-sizes="(max-width: 1226px) 100vw, 1226px" data-lazy-src="/wp-content/uploads/2025/03/preview-3.jpg" data-ll-status="loaded" class="entered lazyloaded" sizes="(max-width: 1226px) 100vw, 1226px" srcset="/wp-content/uploads/2025/03/preview-3.jpg 1226w, /wp-content/uploads/2025/03/preview-3-300x206.jpg 300w, /wp-content/uploads/2025/03/preview-3-1024x704.jpg 1024w, /wp-content/uploads/2025/03/preview-3-768x528.jpg 768w"><noscript><img src="/wp-content/uploads/2025/03/preview-3.jpg" alt="Does your roof help or hurt your curb appeal?" loading="lazy" srcset="/wp-content/uploads/2025/03/preview-3.jpg 1226w, /wp-content/uploads/2025/03/preview-3-300x206.jpg 300w, /wp-content/uploads/2025/03/preview-3-1024x704.jpg 1024w, /wp-content/uploads/2025/03/preview-3-768x528.jpg 768w" sizes="(max-width: 1226px) 100vw, 1226px"/></noscript>
 </picture>
@@ -2193,7 +2007,7 @@ Does your roof help or hurt your curb appeal?
 
 </div></div></a>    </article>
     <article class="bde-loop-item ee-post">
-        <a class="oxy-container-link-956-112-1416-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/the-top-5-benefits-of-solar-panels-for-homeowners/index.html" target="_self"><div class="oxy-container-956-101-1416-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1416-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
+        <a class="oxy-container-link-956-112-1416-956-1 oxy-container-link blog-post d-inline-block text-decoration-none cursor-pointer oxy-container-link-956-112" href="/blog/the-top-5-benefits-of-solar-panels-for-homeowners/" target="_self"><div class="oxy-container-956-101-1416-956-1 oxy-container Blog-image oxy-container-956-101"><picture class="oxy-image-956-102-1416-956-1 oxy-image blog-card-img hover-img width-full oxy-image-956-102" loading="lazy">
 <source type="image/webp" data-lazy-srcset="/wp-content/uploads/2025/03/preview-5.png.webp 1274w, /wp-content/uploads/2025/03/preview-5-300x176.png.webp 300w, /wp-content/uploads/2025/03/preview-5-1024x600.png.webp 1024w, /wp-content/uploads/2025/03/preview-5-768x450.png.webp 768w" sizes="(max-width: 1274px) 100vw, 1274px" srcset="/wp-content/uploads/2025/03/preview-5.png.webp 1274w, /wp-content/uploads/2025/03/preview-5-300x176.png.webp 300w, /wp-content/uploads/2025/03/preview-5-1024x600.png.webp 1024w, /wp-content/uploads/2025/03/preview-5-768x450.png.webp 768w">
 <img src="/wp-content/uploads/2025/03/preview-5.png" alt="The Top 5 Benefits of Solar Panels for Homeowners" data-lazy-srcset="/wp-content/uploads/2025/03/preview-5.png 1274w, /wp-content/uploads/2025/03/preview-5-300x176.png 300w, /wp-content/uploads/2025/03/preview-5-1024x600.png 1024w, /wp-content/uploads/2025/03/preview-5-768x450.png 768w" data-lazy-sizes="(max-width: 1274px) 100vw, 1274px" data-lazy-src="/wp-content/uploads/2025/03/preview-5.png" data-ll-status="loaded" class="entered lazyloaded" sizes="(max-width: 1274px) 100vw, 1274px" srcset="/wp-content/uploads/2025/03/preview-5.png 1274w, /wp-content/uploads/2025/03/preview-5-300x176.png 300w, /wp-content/uploads/2025/03/preview-5-1024x600.png 1024w, /wp-content/uploads/2025/03/preview-5-768x450.png 768w"><noscript><img src="/wp-content/uploads/2025/03/preview-5.png" alt="The Top 5 Benefits of Solar Panels for Homeowners" loading="lazy" srcset="/wp-content/uploads/2025/03/preview-5.png 1274w, /wp-content/uploads/2025/03/preview-5-300x176.png 300w, /wp-content/uploads/2025/03/preview-5-1024x600.png 1024w, /wp-content/uploads/2025/03/preview-5-768x450.png 768w" sizes="(max-width: 1274px) 100vw, 1274px"/></noscript>
 </picture>
@@ -2281,62 +2095,7 @@ Limited Time Savings - Act Now!
 <!-- Target container -->
 <div id="total-reviews-2" style="text-align: center; font-family: Roboto, sans-serif; color:black">Unable to load review count</div>
 
-<script>
-(function () {
-  async function fetchReviewCountScoped() {
-    try {
-      const response = await fetch('/wp-json/custom/v1/review-total');
-      const data = await response.json();
 
-      if (!data.total || isNaN(data.total)) {
-        console.error('Invalid review count received:', data);
-        return 0;
-      }
-
-      return data.total;
-    } catch (error) {
-      console.error('Error fetching review count from WordPress API:', error);
-      return 0;
-    }
-  }
-
-  async function updateTotalReviews2() {
-    try {
-      const total = await fetchReviewCountScoped();
-      if (total === 0) {
-        document.getElementById('total-reviews-2').textContent = 'Unable to load review count';
-        return;
-      }
-      animateCountUpScoped('review-count-2', total);
-    } catch (error) {
-      console.error('Failed to update reviews:', error);
-      document.getElementById('total-reviews-2').textContent = 'Error loading reviews';
-    }
-  }
-
-  function animateCountUpScoped(elementId, finalValue) {
-    const el = document.getElementById(elementId);
-    if (!el) {
-      console.error(`Element with ID ${elementId} not found`);
-      return;
-    }
-    let current = 0;
-    const duration = 1000;
-    const step = Math.ceil(finalValue / (duration / 30));
-
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= finalValue) {
-        current = finalValue;
-        clearInterval(interval);
-      }
-      el.textContent = current.toLocaleString();
-    }, 30);
-  }
-
-  document.addEventListener('DOMContentLoaded', updateTotalReviews2);
-})();
-</script>
 
 </div><div class="oxy-html-code-364-123 oxy-html-code">
 <form id="lead-form-2" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST">
@@ -2387,7 +2146,7 @@ Limited Time Savings - Act Now!
         also agreeing to Panda Exteriors’s
         <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of
           Use</a> and
-        <a href="/privacy-policy/index.html" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
+        <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
       </label>
     </div>
     <div class="">
@@ -2397,7 +2156,7 @@ Limited Time Savings - Act Now!
 </form>
 </div></div></div></div></div>
 
-<div data-wpr-lazyrender="1" class="oxy-container-368-100 oxy-container footer bg-black"><div class="oxy-container-368-101 oxy-container container footer-grid py-lg-5 py-3"><div class="oxy-container-368-102 oxy-container footer-logo-container"><a class="oxy-container-link-368-103 oxy-container-link d-inline logo-padd" href="/index.html" target="_self"><div class="oxy-container-368-104 oxy-container footer-logo"><picture class="oxy-image-368-105 oxy-image footer-logo-img width-full" loading="lazy">
+<div data-wpr-lazyrender="1" class="oxy-container-368-100 oxy-container footer bg-black"><div class="oxy-container-368-101 oxy-container container footer-grid py-lg-5 py-3"><div class="oxy-container-368-102 oxy-container footer-logo-container"><a class="oxy-container-link-368-103 oxy-container-link d-inline logo-padd" href="/" target="_self"><div class="oxy-container-368-104 oxy-container footer-logo"><picture class="oxy-image-368-105 oxy-image footer-logo-img width-full" loading="lazy">
 <source type="image/webp" data-lazy-srcset="/wp-content/uploads/2025/03/image-1-5.png.webp 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png.webp 226w" sizes="(max-width: 385px) 100vw, 385px" srcset="/wp-content/uploads/2025/03/image-1-5.png.webp 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png.webp 226w">
 <img src="/wp-content/uploads/2025/03/image-1-5.png" alt="footer-logo" data-lazy-srcset="/wp-content/uploads/2025/03/image-1-5.png 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png 226w" data-lazy-sizes="(max-width: 385px) 100vw, 385px" data-lazy-src="/wp-content/uploads/2025/03/image-1-5.png" data-ll-status="loaded" class="entered lazyloaded" sizes="(max-width: 385px) 100vw, 385px" srcset="/wp-content/uploads/2025/03/image-1-5.png 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png 226w"><noscript><img src="/wp-content/uploads/2025/03/image-1-5.png" alt="footer-logo" loading="lazy" srcset="/wp-content/uploads/2025/03/image-1-5.png 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png 226w" sizes="(max-width: 385px) 100vw, 385px"/></noscript>
 </picture>
@@ -2448,23 +2207,23 @@ Reviews
 </div><div class="oxy-container-368-110 oxy-container Products-grid">
 <div class="oxy-container-188-100 oxy-container Link-Grid"><div class="oxy-container-188-102 oxy-container link-heading"><div class="oxy-text-188-103 oxy-text Link-head">
 Products
-</div></div><div class="oxy-container-188-104 oxy-container Link"><a class="oxy-text-link-188-112 oxy-text-link Link-text text-decoration-none" href="/roofing/index.html" target="_self">
+</div></div><div class="oxy-container-188-104 oxy-container Link"><a class="oxy-text-link-188-112 oxy-text-link Link-text text-decoration-none" href="/roofing/" target="_self">
 Roofing
-</a></div><div class="oxy-container-188-117 oxy-container Link"><a class="oxy-text-link-188-119 oxy-text-link Link-text text-decoration-none Link-2" href="/solar/index.html" target="_self">
+</a></div><div class="oxy-container-188-117 oxy-container Link"><a class="oxy-text-link-188-119 oxy-text-link Link-text text-decoration-none Link-2" href="/solar/" target="_self">
 Solar
-</a></div><div class="oxy-container-188-115 oxy-container Link"><a class="oxy-text-link-188-120 oxy-text-link Link-text text-decoration-none Link-3" href="/commerical-roofing/index.html" target="_self">
+</a></div><div class="oxy-container-188-115 oxy-container Link"><a class="oxy-text-link-188-120 oxy-text-link Link-text text-decoration-none Link-3" href="/commerical-roofing/" target="_self">
 Commercial
-</a></div><div class="oxy-container-188-113 oxy-container Link"><a class="oxy-text-link-188-121 oxy-text-link Link-text text-decoration-none Link-4" href="/gutters/index.html" target="_self">
+</a></div><div class="oxy-container-188-113 oxy-container Link"><a class="oxy-text-link-188-121 oxy-text-link Link-text text-decoration-none Link-4" href="/gutters/" target="_self">
 Gutters
 </a></div></div>
 </div><div class="oxy-container-368-112 oxy-container help-grid">
 <div class="oxy-container-188-100 oxy-container Link-Grid"><div class="oxy-container-188-102 oxy-container link-heading"><div class="oxy-text-188-103 oxy-text Link-head">
 Help
-</div></div><div class="oxy-container-188-104 oxy-container Link"><a class="oxy-text-link-188-112 oxy-text-link Link-text text-decoration-none" href="/contact-us/index.html" target="_self">
+</div></div><div class="oxy-container-188-104 oxy-container Link"><a class="oxy-text-link-188-112 oxy-text-link Link-text text-decoration-none" href="/contact-us/" target="_self">
 Contact
 </a></div><div class="oxy-container-188-117 oxy-container Link"><a class="oxy-text-link-188-119 oxy-text-link Link-text text-decoration-none Link-2" href="/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/" target="_self">
 Warranty
-</a></div><div class="oxy-container-188-115 oxy-container Link"><a class="oxy-text-link-188-120 oxy-text-link Link-text text-decoration-none Link-3" href="/blog/offer/find-out-about-our-no-interest-financial-options/index.html" target="_self">
+</a></div><div class="oxy-container-188-115 oxy-container Link"><a class="oxy-text-link-188-120 oxy-text-link Link-text text-decoration-none Link-3" href="/blog/offer/find-out-about-our-no-interest-financial-options/" target="_self">
 Financing
 </a></div><div class="oxy-container-188-113 oxy-container Link"><a class="oxy-text-link-188-121 oxy-text-link Link-text text-decoration-none Link-4" href="/customer-service/" target="_self">
 Customer Service
@@ -2503,7 +2262,7 @@ Customer Service
 Site Map
 </a></div><div class="oxy-text-368-152 oxy-text dot_text text-white footer-dot">
 .
-</div><div class="oxy-container-368-148 oxy-container Link"><a class="oxy-text-link-368-149 oxy-text-link Link-text text-decoration-none footer-text" href="/privacy-policy/index.html" target="_self">
+</div><div class="oxy-container-368-148 oxy-container Link"><a class="oxy-text-link-368-149 oxy-text-link Link-text text-decoration-none footer-text" href="/privacy-policy/" target="_self">
 Privacy Policy
 </a></div><div class="oxy-text-368-153 oxy-text dot_text text-white footer-dot d-none">
 .
@@ -2607,9 +2366,7 @@ window._googlesitekit.contentEvents = {"postID":1324,"isSinglePost":true,"hasVim
         }
 
         window.OxygenFrontend.data = {"homeUrl":"https:\/\/pandaexteriors.com","ajaxUrl":"\/wp-admin\/admin-ajax.php","elementsPluginUrl":"\/wp-content\/plugins\/oxygen\/subplugins\/breakdance-elements\/","BASE_BREAKPOINT_ID":"breakpoint_base","breakpoints":[{"id":"breakpoint_base","label":"Desktop","defaultPreviewWidth":"100%"},{"id":"breakpoint_tablet_landscape","label":"Tablet Landscape","defaultPreviewWidth":1024,"maxWidth":1119},{"id":"breakpoint_tablet_portrait","label":"Tablet Portrait","defaultPreviewWidth":768,"maxWidth":1023},{"id":"breakpoint_phone_landscape","label":"Phone Landscape","defaultPreviewWidth":480,"maxWidth":767},{"id":"breakpoint_phone_portrait","label":"Phone Portrait","defaultPreviewWidth":400,"maxWidth":479}],"subscriptionMode":"pro"} }) </script>
-<script>document.addEventListener('DOMContentLoaded', function(){ 
-new BreakdanceSocialShareButtons('.breakdance .bde-social-share-buttons-945-172');
- }) </script>
+
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk&amp;libraries=places" data-rocket-defer="" defer=""></script>

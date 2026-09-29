@@ -204,6 +204,11 @@ export const REMOVE_SUBSITE_LINKS =
 // scripts/lib/customize.mjs. CUSTOM_US_MAP=0 keeps the original sections.
 export const CUSTOM_US_MAP = (process.env.CUSTOM_US_MAP ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// Fixes for problems found in the site audit (broken widgets, a carousel that never
+// starts, missing pictures, placeholder content, typos...) — see scripts/lib/site-fixes.mjs.
+// SITE_FIXES=0 keeps the pages exactly as captured.
+export const SITE_FIXES = (process.env.SITE_FIXES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 export function isSitemapOnlyExcluded(u) {
   const p = new URL(u).pathname;
   return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));

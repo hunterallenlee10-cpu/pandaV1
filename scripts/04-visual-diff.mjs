@@ -23,6 +23,9 @@ const LABEL = opts.label || 'local';
 const PORT = Number(opts.port || 4173);
 const PARALLEL = Number(opts.parallel || 3);
 const FLAG_PCT = Number(opts.threshold || 1);
+// Diff images are kept for screenshots at least this different; below that they only show
+// noise-level changes (such as the top bar's new text on every page).
+const IMAGE_PCT = 0.5;
 const ONLY = opts.only ? String(opts.only).split(',') : null;
 const URLS = opts['urls-file'] ? new Set(readJson(path.resolve(opts['urls-file']))) : null;
 // --merge: re-check only some pages (--only / --urls-file) and merge the results
@@ -57,7 +60,7 @@ async function compare(liveFile, localFile, diffJpg) {
   const diff = new PNG({ width, height });
   const diffPixels = pixelmatch(A.data, B.data, diff.data, width, height, { threshold: 0.1, includeAA: false, alpha: 0.15 });
   const pct = (diffPixels / (width * height)) * 100;
-  if (diffPixels > 0) {
+  if (pct >= IMAGE_PCT) {
     fs.mkdirSync(path.dirname(diffJpg), { recursive: true });
     await sharp(PNG.sync.write(diff), { limitInputPixels: false }).jpeg({ quality: 60, mozjpeg: true }).toFile(diffJpg);
   } else if (fs.existsSync(diffJpg)) fs.rmSync(diffJpg);
@@ -151,13 +154,17 @@ async function main() {
   const sourceOf = new Map(build.pages.map((p) => [p.url, p.source === 'raw' ? 'as-delivered' : 'rendered']));
   for (const r of results) r.source = sourceOf.get(r.url) || '';
   // Pages edited on purpose (links to removed sub-sites taken out, old map sections
-  // replaced by the animated US map) are expected to differ from live: report them
-  // separately instead of as failures.
-  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length).map((c) => [c.url, c]));
+  // replaced by the animated US map, a section or message changed by a site-audit fix)
+  // are expected to differ from live: report them separately instead of as failures.
+  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length || c.siteFixSections?.length).map((c) => [c.url, c]));
   for (const r of results) {
     const c = editedPages.get(r.url);
     const what = c
-      ? [c.removedLinks ? `${c.removedLinks} link(s) to city sub-sites removed` : '', c.customSections?.length ? 'old map section replaced with the animated US map' : '']
+      ? [
+          c.removedLinks ? `${c.removedLinks} link(s) to city sub-sites removed` : '',
+          c.customSections?.length ? 'old map section replaced with the animated US map' : '',
+          (c.siteFixSections || []).join('; '),
+        ]
       : [];
     r.intentional = c ? `edited on purpose: ${what.filter(Boolean).join('; ')}` : '';
   }
@@ -196,7 +203,7 @@ async function main() {
       (edited.length ? ` Not counted: ${edited.length} screenshot(s) of pages edited on purpose (listed below).` : ''),
     '',
     `Diff images (\`<page>--<viewport>.jpg\`, changed pixels in red) are saved next to this file for every screenshot`,
-    `that is not pixel-identical. Live screenshots are in \`docs/screenshots/live/\`.`,
+    `that differs by ${IMAGE_PCT}% or more. Live screenshots are in \`docs/screenshots/live/\`.`,
     '',
     `"Page HTML" says which version the copy serves: \`rendered\` = the DOM captured after the page finished rendering`,
     `in Chromium; \`as-delivered\` = the server's original HTML (used where the rendered snapshot did not match live,`,
@@ -207,7 +214,7 @@ async function main() {
       flagged.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.heightDelta ?? '—', r.leaks, r.newJsErrors.join(' / ').slice(0, 120), r.error || '']),
     ) + '\n' : '',
     edited.length
-      ? '## Pages edited on purpose\n\nThese pages differ from live by design: links to the city sub-sites were removed from the copy, and the old map sections were replaced with the animated US map (`custom/us-map/`).\n\n' +
+      ? '## Pages edited on purpose\n\nThese pages differ from live by design: links to the city sub-sites were removed from the copy, the old map sections were replaced with the animated US map (`custom/us-map/`), and some site-audit fixes change a whole section or message (`scripts/lib/site-fixes.mjs`). Pages with only small fixes (top bar text, review link, typos) are compared with live as usual.\n\n' +
         mdTable(['Page', 'Viewport', 'Diff %', 'Change'], edited.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.intentional])) +
         '\n'
       : '',

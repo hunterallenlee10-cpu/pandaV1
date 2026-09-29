@@ -140,7 +140,7 @@ export function renderCompactMap({ theme = 'orange', uid = 'pmap' } = {}) {
 }
 
 /** Large interactive map: state buttons zoom the map and update the panel next to it. */
-export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/index.html', ctaText = 'Get a free estimate' } = {}) {
+export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/', ctaText = 'Get a free estimate' } = {}) {
   const map = loadUsMap();
   const { statesText, officesText } = describe(map);
   const boxes = Object.fromEntries(map.states.map((s) => [s.code, s.box.map(r1)]));

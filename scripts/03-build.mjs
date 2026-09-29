@@ -9,11 +9,12 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
+import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -63,10 +64,19 @@ function mapUrl(abs, { relative = false } = {}) {
     return null;
   }
   const asset = assetIndex.get(stripHash(u.href));
-  if (relative) return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
+  // Links to pages keep clean URLs (/service-areas/, not /service-areas/index.html),
+  // even when the browser also fetched the page as a resource (prefetch) during the
+  // capture; a page reached through a redirect is linked at its final address.
+  const page = asset && /html/.test(asset.contentType || '') && isSiteUrl(asset.finalUrl) ? new URL(asset.finalUrl) : null;
+  const pageHref = page && !inSubsite(page.pathname) ? page.pathname + page.search + u.hash : null;
+  if (relative) {
+    if (page) return pageHref && stripHash(asset.finalUrl) !== stripHash(u.href) ? pageHref : null;
+    return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
+  }
   if (isSiteUrl(u)) {
     if (inSubsite(u.pathname)) return null; // separate site: keep live link (unless links to it are removed)
-    if (asset && asset.renamed) return relToUrlPath(asset.rel) + u.hash;
+    if (pageHref) return pageHref;
+    if (asset && asset.renamed && !page) return relToUrlPath(asset.rel) + u.hash;
     return u.pathname + u.search + u.hash || '/';
   }
   if (asset) return relToUrlPath(asset.rel) + u.hash;
@@ -156,18 +166,26 @@ for (const row of pages) {
   const charset = /<meta[^>]+charset=["']?([\w-]+)/i.exec(srcHtml)?.[1];
   const transformed = transformHtml(srcHtml, { pageUrl: row.url, mapUrl, siteOrigin: SITE_ORIGIN, isRemovedLink, replaceRemovedUrl });
   const { report } = transformed;
-  // Deliberate changes on top of the copy: the old map sections -> the animated US map.
-  const custom = CUSTOM_US_MAP ? applyCustomizations(transformed.html, { pageUrl: row.url }) : { html: transformed.html, changes: [] };
+  // Deliberate changes on top of the copy: the old map sections -> the animated US map
+  // (CUSTOM_US_MAP), and the fixes from the site audit (SITE_FIXES).
+  const custom =
+    CUSTOM_US_MAP || SITE_FIXES
+      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, siteDir: OUT, siteOrigin: SITE_ORIGIN })
+      : { html: transformed.html, changes: { map: [], fixes: [] } };
   put(rel, custom.html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
-  if (report.removedLinks || report.valueRewrites || custom.changes.length) {
+  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length) {
     intentionalChanges.push({
       url: row.url,
       removedLinks: report.removedLinks,
       unwrappedLinks: report.unwrappedLinks,
       removedBlocks: report.removedBlocks,
       valueRewrites: report.valueRewrites,
-      customSections: custom.changes,
+      customSections: custom.changes.map,
+      siteFixes: custom.changes.fixes,
+      // Fixes that change a whole section or message (the visual diff lists these pages
+      // as edited on purpose; pages with only the small fixes must still match live).
+      siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
     });
   }
 
@@ -201,6 +219,10 @@ for (const row of pages) {
 const mapPages = intentionalChanges.filter((c) => c.customSections?.length);
 if (mapPages.length) {
   for (const [name, url] of Object.entries(US_MAP_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(US_MAP_DIR, name)), `custom/us-map/${name}`);
+}
+const fixPages = intentionalChanges.filter((c) => c.siteFixes?.length);
+if (fixPages.length) {
+  for (const [name, url] of Object.entries(SITE_FIXES_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SITE_FIXES_DIR, name)), `custom/site-fixes/${name}`);
 }
 
 // 3. Special files kept verbatim: robots.txt, sitemaps (+ XSL), feeds
@@ -541,5 +563,11 @@ if (REMOVE_SUBSITE_LINKS) {
 }
 if (CUSTOM_US_MAP) {
   console.log(`  animated US map: ${mapPages.length} page(s) — ${mapPages.map((c) => new URL(c.url).pathname).join(', ') || 'no map sections found'}`);
+}
+if (SITE_FIXES) {
+  const counts = {};
+  for (const c of fixPages) for (const f of c.siteFixes) { const k = f.replace(/\s*\(.*$/, '').replace(/:.*$/, ''); counts[k] = (counts[k] || 0) + 1; }
+  console.log(`  site fixes: ${fixPages.length} page(s)`);
+  for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`    ${String(n).padStart(3)} × ${k}`);
 }
 if (collisions.length) console.log(`  WARNING: ${collisions.length} local path collisions (see .work/build-report.json)`);
