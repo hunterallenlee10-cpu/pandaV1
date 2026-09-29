@@ -11,6 +11,8 @@
 //    WordPress API and cannot work in a static copy) becomes the large interactive
 //    map, and the page's hidden project list becomes a visible grid;
 //  - /service-areas/: the large map goes where the city list used to be.
+//
+// Separately, applyHeroVideo swaps the homepage hero's background video.
 import { parse } from 'parse5';
 import { Parser as TagScanner } from 'htmlparser2';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
@@ -172,6 +174,37 @@ const explorerBlock = (uid) =>
   `<p class="pmap-block__intro">Select a state to zoom in and see our local offices.</p>` +
   `<div class="pmap-card">${renderExplorerMap({ uid })}</div>` +
   `</div>`;
+
+// ------------------------------------------------------------ hero video
+// The homepage hero plays a muted, looping YouTube video behind its text: an iframe in
+// .hero .video-background (lazy-loaded by WP Rocket from data-lazy-src) plus a
+// <noscript> copy. This points both at another video and keeps every player setting
+// (mute, autoplay, loop, no controls); the old video's share-tracking "si" is dropped.
+const YT_EMBED = /(https:\/\/www\.youtube(?:-nocookie)?\.com\/embed\/)([\w-]{11})([^"'\s<>]*)/g;
+export function applyHeroVideo(html, { videoId } = {}) {
+  if (!videoId) return { html, changes: [] };
+  if (!/^[\w-]{11}$/.test(videoId)) throw new Error(`customize: "${videoId}" is not a YouTube video ID`);
+  const doc = parse(html, { sourceCodeLocationInfo: true });
+  const hero = find(doc, (c) => hasClass(c, 'hero') && find(c, (x) => hasClass(x, 'video-background')));
+  const bg = hero && find(hero, (c) => hasClass(c, 'video-background'));
+  if (!bg) return { html, changes: [] };
+  const { startOffset, endOffset } = bg.sourceCodeLocation;
+  const before = html.slice(startOffset, endOffset);
+  const was = new Set();
+  const after = before.replace(YT_EMBED, (url, base, id, query) => {
+    if (id === videoId) return url;
+    was.add(id);
+    const q = query
+      .replace(/^\?si=[^&"'\s<>]*(?:&#0?38;|&amp;|&)?/, '?')
+      .replace(new RegExp(`(playlist=)${id}(?![\\w-])`, 'g'), `$1${videoId}`);
+    return base + videoId + q;
+  });
+  if (after === before) return { html, changes: [] };
+  return {
+    html: html.slice(0, startOffset) + after + html.slice(endOffset),
+    changes: [`hero background video ${[...was].join(', ')} -> ${videoId}`],
+  };
+}
 
 // ----------------------------------------------------------------- main
 export function applyCustomizations(html, { pageUrl } = {}) {

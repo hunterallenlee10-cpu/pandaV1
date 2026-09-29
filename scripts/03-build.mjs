@@ -9,10 +9,10 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, HERO_VIDEO_ID } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
-import { applyCustomizations } from './lib/customize.mjs';
+import { applyCustomizations, applyHeroVideo } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
@@ -156,11 +156,13 @@ for (const row of pages) {
   const charset = /<meta[^>]+charset=["']?([\w-]+)/i.exec(srcHtml)?.[1];
   const transformed = transformHtml(srcHtml, { pageUrl: row.url, mapUrl, siteOrigin: SITE_ORIGIN, isRemovedLink, replaceRemovedUrl });
   const { report } = transformed;
-  // Deliberate changes on top of the copy: the old map sections -> the animated US map.
+  // Deliberate changes on top of the copy: the old map sections -> the animated US map,
+  // and the homepage hero's background video -> HERO_VIDEO_ID.
   const custom = CUSTOM_US_MAP ? applyCustomizations(transformed.html, { pageUrl: row.url }) : { html: transformed.html, changes: [] };
-  put(rel, custom.html, row.url);
+  const hero = applyHeroVideo(custom.html, { videoId: HERO_VIDEO_ID });
+  put(rel, hero.html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
-  if (report.removedLinks || report.valueRewrites || custom.changes.length) {
+  if (report.removedLinks || report.valueRewrites || custom.changes.length || hero.changes.length) {
     intentionalChanges.push({
       url: row.url,
       removedLinks: report.removedLinks,
@@ -168,6 +170,7 @@ for (const row of pages) {
       removedBlocks: report.removedBlocks,
       valueRewrites: report.valueRewrites,
       customSections: custom.changes,
+      heroVideo: hero.changes,
     });
   }
 
@@ -541,5 +544,9 @@ if (REMOVE_SUBSITE_LINKS) {
 }
 if (CUSTOM_US_MAP) {
   console.log(`  animated US map: ${mapPages.length} page(s) — ${mapPages.map((c) => new URL(c.url).pathname).join(', ') || 'no map sections found'}`);
+}
+if (HERO_VIDEO_ID) {
+  const heroPages = intentionalChanges.filter((c) => c.heroVideo?.length);
+  console.log(`  hero background video ${HERO_VIDEO_ID}: ${heroPages.map((c) => new URL(c.url).pathname).join(', ') || 'no hero video found'}`);
 }
 if (collisions.length) console.log(`  WARNING: ${collisions.length} local path collisions (see .work/build-report.json)`);
