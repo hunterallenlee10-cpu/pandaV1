@@ -170,6 +170,36 @@ export const LOCALIZE_HOSTS = [
 // Subdomains of the main site that only serve static files (e.g. a CDN) are
 // also localized; see isLocalizableHost().
 
+// Other hostnames of the SAME server that the pages load files from (e.g. the
+// hosting provider's app URL embedded in image srcsets). Their files are copied
+// like the site's own, share the site's request limit (same machine), and
+// their own robots.txt is honoured. Pages on these hosts are never crawled.
+export const ORIGIN_ALIASES = new Set(
+  (process.env.ORIGIN_ALIASES ?? (process.env.SITE_ORIGIN ? '' : 'wordpressmu-1425697-5386286.cloudwaysapps.com'))
+    .split(',')
+    .map((h) => h.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+// Sitemap sections whose URLs are only captured when a page actually links to
+// them. pandaexteriors.com lists ~5,500 auto-generated /blog/project/ posts in
+// its sitemaps, of which only ~20 are linked from the site; the owner chose to
+// copy what a visitor can reach by clicking. Set SITEMAP_ONLY_EXCLUDE='' to
+// capture every sitemap URL.
+export const SITEMAP_ONLY_EXCLUDE = (process.env.SITEMAP_ONLY_EXCLUDE ?? (process.env.SITE_ORIGIN ? '' : '/blog/project/'))
+  .split(',')
+  .map((p) => p.trim())
+  .filter(Boolean);
+
+export function isSitemapOnlyExcluded(u) {
+  const p = new URL(u).pathname;
+  return SITEMAP_ONLY_EXCLUDE.some((prefix) => p.startsWith(prefix));
+}
+
+export function isOriginAlias(host) {
+  return ORIGIN_ALIASES.has(String(host).toLowerCase());
+}
+
 export const CACHE_BUSTING_KEYS = new Set(['ver', 'v', 'version', 't', 'ts', 'timestamp', '_', 'rev', 'cb', 'm', 'time', 'build', 'itok']);
 
 export function isSiteHost(host) {
@@ -205,6 +235,7 @@ export function trackerFor(u) {
 
 export function isLocalizableHost(host) {
   host = String(host).toLowerCase();
+  if (isOriginAlias(host)) return true;
   if (LOCALIZE_HOSTS.some((re) => re.test(host))) return true;
   // e.g. cdn.pandaexteriors.com, but not the apex/www (those are the site itself).
   if (host.endsWith(`.${SITE_HOST}`) && !isSiteHost(host) && /^(cdn|static|assets|media|img|images)\d*\./.test(host)) return true;

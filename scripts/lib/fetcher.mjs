@@ -16,6 +16,7 @@ import {
   UA_MOBILE,
   isSiteUrl,
   isForbidden,
+  isOriginAlias,
 } from './config.mjs';
 import { Robots } from './robots.mjs';
 
@@ -73,13 +74,15 @@ class Fetcher {
     this.inflight = new Map();
     this.robots = new Robots('');
     this.robotsText = null;
+    this.aliasRobots = new Map(); // origin -> Promise<Robots> for ORIGIN_ALIASES hosts
     this.stats = { network: 0, cacheHits: 0, blockedRobots: 0, blockedForbidden: 0, errors: 0, bytes: 0 };
     this.logFile = path.join(PATHS.work, 'fetch-log.ndjson');
     fs.mkdirSync(PATHS.work, { recursive: true });
   }
 
   limiterFor(url) {
-    if (isSiteUrl(url)) return this.siteLimiter;
+    // Alias hostnames are the same server, so they share the site's limit.
+    if (isSiteUrl(url) || isOriginAlias(new URL(url).hostname)) return this.siteLimiter;
     const host = new URL(url).host;
     if (!this.externalLimiters.has(host)) {
       this.externalLimiters.set(host, new Limiter(POLITENESS.externalMaxConcurrent, POLITENESS.externalDelayMs));
@@ -102,6 +105,19 @@ class Fetcher {
       this.siteLimiter.delayMs = Math.max(this.siteLimiter.delayMs, this.robots.crawlDelay * 1000);
     }
     return this.robots;
+  }
+
+  // robots.txt of an alias hostname of the same server (loaded once per origin).
+  aliasRobotsFor(u) {
+    if (!this.aliasRobots.has(u.origin)) {
+      this.aliasRobots.set(
+        u.origin,
+        this.get(`${u.origin}/robots.txt`, { skipRobots: true, accept: 'text/plain,*/*' }).then(
+          (res) => new Robots(res.status === 200 ? res.body.toString('utf8') : '', UA_DESKTOP),
+        ),
+      );
+    }
+    return this.aliasRobots.get(u.origin);
   }
 
   cachePaths(key) {
@@ -153,17 +169,18 @@ class Fetcher {
   async #fetchAndStore(url, variant, key, opts) {
     const u = new URL(url);
     if (!/^https?:$/.test(u.protocol)) return { url, status: -1, blocked: 'unsupported-protocol', headers: {}, body: Buffer.alloc(0) };
-    if (isSiteUrl(u)) {
+    const alias = isOriginAlias(u.hostname);
+    if (isSiteUrl(u) || alias) {
       if (isForbidden(u)) {
         this.stats.blockedForbidden++;
         this.log({ url, blocked: 'forbidden' });
         return { url, status: -1, blocked: 'forbidden', headers: {}, body: Buffer.alloc(0) };
       }
       if (!opts.skipRobots) {
-        await this.loadRobots();
-        if (!this.robots.isAllowed(u.pathname + u.search)) {
+        const robots = alias ? await this.aliasRobotsFor(u) : await this.loadRobots();
+        if (!robots.isAllowed(u.pathname + u.search)) {
           this.stats.blockedRobots++;
-          const rule = this.robots.matchingRule(u.pathname + u.search);
+          const rule = robots.matchingRule(u.pathname + u.search);
           this.log({ url, blocked: 'robots', rule });
           return { url, status: -1, blocked: 'robots', rule, headers: {}, body: Buffer.alloc(0) };
         }

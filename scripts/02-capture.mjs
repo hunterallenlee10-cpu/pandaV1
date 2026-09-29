@@ -15,16 +15,17 @@
 // recursively, fonts, OG images, …) are downloaded.
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, trackerFor, isForbidden } from './lib/config.mjs';
+import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, isOriginAlias, trackerFor, isForbidden } from './lib/config.mjs';
 import { fetcher, ACCEPT } from './lib/fetcher.mjs';
 import { launchBrowser, newContext, visit, prepareForScreenshot, screenshot, collectDomUrls } from './lib/browser.mjs';
-import { extractFromHtml, cssRefs, siteUrlsInText, resolveUrl, looksLikeAsset } from './lib/extract.mjs';
+import { extractFromHtml, cssRefs, siteUrlsInText, resolveUrl, looksLikeAsset, isPlausibleAssetUrl } from './lib/extract.mjs';
 import { pageLocalPath, slugForUrl } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, args, pool, fmtBytes } from './lib/util.mjs';
 
 const opts = args();
 const PARALLEL = Number(opts.parallel || 2);
 const ONLY = opts.only ? String(opts.only).split(',') : null;
+const URLS = opts['urls-file'] ? new Set(readJson(path.resolve(opts['urls-file']))) : null;
 const FORCE = Boolean(opts.force);
 const SKIP_PAGES = Boolean(opts['assets-only']);
 
@@ -41,9 +42,11 @@ const FULFILL_HEADERS = new Set([
   'x-content-type-options', 'content-security-policy', 'x-frame-options', 'link', 'refresh',
 ]);
 
-function pagesToCapture() {
+function pagesToCapture({ all = false } = {}) {
   let rows = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status) === 200) || r.type === '404-page');
+  if (all) return rows.map((r) => ({ url: r.url, slug: r.type === '404-page' ? '404' : slugForUrl(r.url), is404: r.type === '404-page' }));
   if (ONLY) rows = rows.filter((r) => ONLY.some((o) => r.url.includes(o)));
+  if (URLS) rows = rows.filter((r) => URLS.has(r.url));
   return rows.map((r) => ({ url: r.url, slug: r.type === '404-page' ? '404' : slugForUrl(r.url), is404: r.type === '404-page' }));
 }
 
@@ -167,7 +170,9 @@ async function capturePages() {
 
 // ------------------------------------------------------------------ assets
 async function downloadAssets() {
-  const pages = pagesToCapture();
+  // Always the whole site (cache hits for everything already fetched), so
+  // re-capturing a few pages never shrinks the asset list.
+  const pages = pagesToCapture({ all: true });
   const discovered = new Map(); // url -> Set(kinds)
   const add = (u, kind) => {
     if (!u) return;
@@ -180,7 +185,7 @@ async function downloadAssets() {
     url.hash = '';
     if (!/^https?:$/.test(url.protocol)) return;
     if (!(isSiteUrl(url) || isLocalizableHost(url.hostname))) return;
-    if (isSiteUrl(url) && isForbidden(url)) return;
+    if ((isSiteUrl(url) || isOriginAlias(url.hostname)) && isForbidden(url)) return;
     const href = url.href;
     if (!discovered.has(href)) discovered.set(href, new Set());
     discovered.get(href).add(kind);
@@ -193,7 +198,9 @@ async function downloadAssets() {
     // (a) what the browser actually requested, (b) what the rendered DOM refers to
     for (const vp of Object.values(rec?.viewports || {})) {
       for (const r of vp.siteRequests || []) if (r.type !== 'document') add(r.url, `browser:${r.type}`);
-      for (const u of vp.domUrls || []) if (!pageUrls.has(u)) add(u, `dom:${vp.viewport}`);
+      // DOM scans of text-ish attributes can yield non-URLs (size hints, widths, MIME
+      // types); what the browser actually requested is always kept.
+      for (const u of vp.domUrls || []) if (!pageUrls.has(u) && isPlausibleAssetUrl(u)) add(u, `dom:${vp.viewport}`);
     }
     // (c) static parse of the raw HTML and of the rendered HTML (srcset variants, data-src, noscript…)
     const raw = fetcher.readCache(p.url);
@@ -203,7 +210,7 @@ async function downloadAssets() {
     if (rendered && fs.existsSync(rendered)) htmls.push(fs.readFileSync(rendered, 'utf8'));
     for (const html of htmls) {
       const { assets } = extractFromHtml(html, p.url);
-      for (const [u, kinds] of assets) if (!pageUrls.has(u)) for (const k of kinds) add(u, `html:${k}`);
+      for (const [u, kinds] of assets) if (!pageUrls.has(u) && isPlausibleAssetUrl(u)) for (const k of kinds) add(u, `html:${k}`);
     }
   }
   for (const u of inv.sitemapImages || []) add(u, 'sitemap-image');

@@ -8,6 +8,19 @@ It was captured as an anonymous visitor using only GET requests to public URLs. 
 polite: at most 2 requests in flight, with a pause after each. The headline numbers (pages, assets, sizes, visual-diff
 pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
+## What's in scope
+
+The copy contains what a visitor can reach by clicking through the site: **173 pages** (40 main pages,
+114 blog posts and listing pages, and the 19 project pages the site links to), plus the 404 page, feed,
+sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
+
+- **17 city sections** (`/baltimore-md/`, `/charlotte-nc/`, … `/wilmington-de/`). Each is a separate WordPress
+  site in a multisite network, so per the capture rules they count as sub-sites. Links to them point at the
+  live site.
+- **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
+  page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
+- Admin, login and API URLs, which are never requested.
+
 ## What's in the repo
 
 ```
@@ -19,6 +32,7 @@ site/                    the website — deploy this folder
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
   _redirects, _headers                Netlify / Cloudflare Pages rules (redirects seen on the live site)
+  (../vercel.json)                    the same rules for Vercel, next to site/
   serve.json                          the same rules for `npx serve`
 docs/
   url-inventory.csv        every URL found (url, source, HTTP status, redirect target, type, …)
@@ -108,6 +122,10 @@ The `site/` folder is a plain static site and works on any static host that serv
 > repository may receive LFS *pointer files* instead of the real files unless LFS is enabled for the build. Deploying
 > from a checkout with the LFS files pulled (`git lfs pull`) via each host's CLI avoids this.
 
+- **Vercel** — import the GitHub repo. The generated `vercel.json` (written by `scripts/03-build.mjs`) makes Vercel
+  skip the install and build steps and serve `site/` as static files, with trailing slashes like WordPress and the
+  redirects seen on the live site. In the Vercel project, turn on **Git LFS** (Settings → Git) so large images and
+  videos deploy as real files. A deployment only succeeds once the captured `site/` folder is in the repository.
 - **Netlify** — drag-and-drop `site/` in the Netlify UI, or `npx netlify-cli deploy --dir site --prod`. `_redirects`
   and `_headers` are applied automatically.
 - **Cloudflare Pages** — `npx wrangler pages deploy site`. Also honours `_redirects` and `_headers`.

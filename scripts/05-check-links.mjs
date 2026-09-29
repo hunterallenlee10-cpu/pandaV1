@@ -30,7 +30,11 @@ const keyOf = (u) => {
   return x.pathname + x.search;
 };
 for (const r of inv.rows) liveStatus.set(keyOf(r.url), String(r.http_status));
-for (const a of assets) liveStatus.set(keyOf(a.url), String(a.status || a.blocked || a.error));
+for (const a of assets) {
+  const st = String(a.status || a.blocked || a.error);
+  if (isSiteUrl(a.url)) liveStatus.set(keyOf(a.url), st);
+  else liveStatus.set(`ext:${new URL(a.url).host}${keyOf(a.url)}`, st);
+}
 
 // ------------------------------------------------------------ resolution
 const rules = new Map();
@@ -70,13 +74,21 @@ function resolveLocal(pathname, depth = 0) {
   return { ok: false };
 }
 
+const inSubsite = (pathname) => subsitePrefixes.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/$/, ''));
+
 function classify(abs) {
-  const u = new URL(abs);
-  if (subsitePrefixes.some((p) => u.pathname.startsWith(p))) return 'excluded sub-site (links to live)';
+  let u = new URL(abs);
+  // /_external/<host>/<path> is where a third-party (or second-hostname) file lives
+  // locally: look up the original URL's live status.
+  const ext = /^\/_external\/([^/]+)(\/.*)$/.exec(u.pathname);
+  if (ext) u = new URL(`https://${ext[1]}${ext[2]}${u.search}`);
+  if (inSubsite(u.pathname)) return 'excluded sub-site (links to live)';
   if (isForbidden(u)) return 'back-end/admin URL (intentionally not copied)';
   const ex = excludedUrls.get(abs);
   if (ex) return `excluded in Phase 1: ${ex}`;
-  const live = liveStatus.get(u.pathname + u.search) || liveStatus.get(u.pathname);
+  const live = ext
+    ? liveStatus.get(`ext:${u.host}${u.pathname}${u.search}`) || liveStatus.get(`ext:${u.host}${u.pathname}`)
+    : liveStatus.get(u.pathname + u.search) || liveStatus.get(u.pathname);
   if (live && /^(4|5)\d\d$/.test(live)) return `missing on the live site too (HTTP ${live})`;
   if (live === 'robots') return 'disallowed by robots.txt (not downloaded)';
   if (live === '0' || /error/i.test(live || '')) return 'download failed (network error)';
@@ -183,6 +195,9 @@ for (const row of inv.rows) {
     if (u.search) {
       present = 'n/a';
       note = 'query-string redirect: listed in docs/redirects.csv only';
+    } else if (t && isSiteUrl(t) && inSubsite(t.pathname)) {
+      present = 'n/a';
+      note = 'redirect into an excluded sub-site (links point to the live site)';
     } else if (r.ok) {
       present = 'yes';
       note = r.via;

@@ -25,6 +25,9 @@ const PARALLEL = Number(opts.parallel || 3);
 const FLAG_PCT = Number(opts.threshold || 1);
 const ONLY = opts.only ? String(opts.only).split(',') : null;
 const URLS = opts['urls-file'] ? new Set(readJson(path.resolve(opts['urls-file']))) : null;
+// --merge: re-check only some pages (--only / --urls-file) and merge the results
+// into the previous run's, so the summary still covers every page.
+const MERGE = Boolean(opts.merge);
 const OUT_DIR = opts.out ? path.resolve(opts.out) : path.join(PATHS.docs, 'visual-diff');
 
 const livePng = path.join(PATHS.work, 'screens', 'live');
@@ -70,7 +73,7 @@ async function main() {
   const server = await startServer(SITE_DIR, PORT);
   console.log(`Serving ${SITE_DIR} at ${server.base}; comparing ${pages.length} pages × ${Object.keys(VIEWPORTS).length} viewports`);
   const browser = await launchBrowser();
-  const results = [];
+  let results = [];
   let done = 0;
 
   await pool(pages, PARALLEL, async (p) => {
@@ -89,16 +92,21 @@ async function main() {
         if (url.startsWith(server.base)) return route.continue();
         if (!/^https?:/i.test(url)) return route.continue();
         if (req.method() !== 'GET' && req.method() !== 'HEAD') return route.abort('blockedbyclient');
+        // Requests made inside third-party embeds (YouTube, Maps…) are the embed's own
+        // business: treat them exactly as the live capture did (trackers blocked,
+        // everything else loaded) and don't count them against the copy.
+        const frameUrl = req.frame()?.url?.() || '';
+        const fromCopy = !frameUrl || frameUrl === 'about:blank' || frameUrl.startsWith(server.base);
+        const u = new URL(url);
         if (trackerFor(url)) {
-          leaks.push({ url, reason: 'tracking request' });
+          if (fromCopy) leaks.push({ url, reason: 'tracking request' });
           return route.abort('blockedbyclient');
         }
-        const u = new URL(url);
         if (isSiteUrl(u)) {
           leaks.push({ url, reason: 'request to live site' });
           return route.abort('blockedbyclient');
         }
-        if (isLocalizableHost(u.hostname)) leaks.push({ url, reason: 'static CDN file not localized' });
+        if (fromCopy && isLocalizableHost(u.hostname)) leaks.push({ url, reason: 'static CDN file not localized' });
         external.add(u.host);
         return route.continue().catch(() => {});
       });
@@ -133,6 +141,11 @@ async function main() {
   await browser.close();
   server.stop();
 
+  if (MERGE) {
+    const rerun = new Set(results.map((r) => r.url));
+    const previous = readJson(path.join(PATHS.work, `visual-diff-${LABEL}.json`), []);
+    results = [...previous.filter((r) => !rerun.has(r.url)), ...results];
+  }
   results.sort((a, b) => a.url.localeCompare(b.url) || a.viewport.localeCompare(b.viewport));
   const build = readJson(path.join(PATHS.work, 'build-report.json'), { pages: [] });
   const sourceOf = new Map(build.pages.map((p) => [p.url, p.source === 'raw' ? 'as-delivered' : 'rendered']));
