@@ -1,0 +1,31 @@
+{
+  "name": "pandav1",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Offline static copy of the public pandaexteriors.com website, plus the scripts that capture and verify it.",
+  "type": "module",
+  "scripts": {
+    "inventory": "node scripts/01-inventory.mjs",
+    "capture": "node scripts/02-capture.mjs",
+    "build": "node scripts/03-build.mjs",
+    "verify:visual": "node scripts/04-visual-diff.mjs",
+    "verify:links": "node scripts/05-check-links.mjs",
+    "verify": "npm run verify:links && npm run verify:visual",
+    "all": "bash scripts/capture-all.sh",
+    "serve": "serve site"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "htmlparser2": "^12.0.0",
+    "linkinator": "^8.1.0",
+    "parse5": "^8.0.1",
+    "pixelmatch": "^7.2.0",
+    "playwright": "1.56.1",
+    "pngjs": "^7.0.0",
+    "serve": "^14.2.6",
+    "sharp": "^0.35.5",
+    "undici": "^8.11.2"
+  }
+}
