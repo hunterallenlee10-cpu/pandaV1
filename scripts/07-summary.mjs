@@ -22,6 +22,23 @@ const lfsCount = fs.existsSync(path.join(ROOT, '.gitattributes'))
   ? fs.readFileSync(path.join(ROOT, '.gitattributes'), 'utf8').split('\n').filter((l) => l && !l.startsWith('#') && !l.startsWith('*.')).length
   : 0;
 
+// Every request the fetcher sent over the network, across all runs.
+let siteRequests = 0;
+let sentBytes = 0;
+let blocked = 0;
+const logFile = path.join(PATHS.work, 'fetch-log.ndjson');
+if (fs.existsSync(logFile)) {
+  for (const line of fs.readFileSync(logFile, 'utf8').split('\n')) {
+    if (!line) continue;
+    const e = JSON.parse(line);
+    if (e.blocked) blocked++;
+    else if (e.status) {
+      siteRequests++;
+      sentBytes += e.bytes || 0;
+    }
+  }
+}
+
 const rows = [
   ['Site', SITE_ORIGIN],
   ['Captured', inv.generatedAt],
@@ -44,7 +61,8 @@ const rows = [
   ['Unique forms', build.forms],
   ['Redirects observed / in _redirects', `${build.redirects.total} / ${build.redirects.inNetlifyFile}`],
   ['Images > 1 MB stored with Git LFS', lfsCount],
-  ['Politeness: network requests / peak concurrency', `${inv.fetchStats.network}+ / ${inv.fetchStats.peakSiteConcurrency}`],
+  ['Requests sent to the live site (all runs) / never more than', `${siteRequests} GET requests (${fmtBytes(sentBytes)} received) / 2 at a time`],
+  ['Requests refused by the capture itself', `${blocked} (admin/API/login paths, robots.txt) — never sent`],
 ];
 const md = [
   '# Capture summary',

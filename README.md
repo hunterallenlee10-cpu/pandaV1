@@ -8,6 +8,19 @@ It was captured as an anonymous visitor using only GET requests to public URLs. 
 polite: at most 2 requests in flight, with a pause after each. The headline numbers (pages, assets, sizes, visual-diff
 pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
+## What's in scope
+
+The copy contains what a visitor can reach by clicking through the site: **173 pages** (40 main pages,
+114 blog posts and listing pages, and the 19 project pages the site links to), plus the 404 page, feed,
+sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
+
+- **17 city sections** (`/baltimore-md/`, `/charlotte-nc/`, … `/wilmington-de/`). Each is a separate WordPress
+  site in a multisite network, so per the capture rules they count as sub-sites. Links to them point at the
+  live site.
+- **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
+  page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
+- Admin, login and API URLs, which are never requested.
+
 ## What's in the repo
 
 ```
