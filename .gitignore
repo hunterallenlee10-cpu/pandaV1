@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Capture working state (HTTP response cache, per-page capture records,
+# full-size PNG screenshots, alternate builds). Re-created by scripts/capture-all.sh.
+.cache/
+.work/
+
+# Playwright caches / reports
+.playwright/
+playwright-report/
+test-results/
+ms-playwright/
+
+# Temp / OS / editor files
+*.tmp
+*.temp
+*.log
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.env
+.env.*
