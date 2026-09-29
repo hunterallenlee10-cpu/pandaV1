@@ -22,38 +22,38 @@ These pages differ from live by design: links to the city sub-sites were removed
 
 | Page | Viewport | Diff % | Change |
 | --- | --- | --- | --- |
-| / | desktop | 17.54 | edited on purpose: old map section replaced with the animated US map |
+| / | desktop | 17.49 | edited on purpose: old map section replaced with the animated US map |
 | / | mobile | 16.66 | edited on purpose: old map section replaced with the animated US map |
-| /about/ | desktop | 20.57 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /about/ | desktop | 20.50 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /about/ | mobile | 40.99 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /blog/how-long-does-a-roof-really-last/ | desktop | 0.04 | edited on purpose: 2 link(s) to city sub-sites removed |
 | /blog/how-long-does-a-roof-really-last/ | mobile | 0.07 | edited on purpose: 2 link(s) to city sub-sites removed |
 | /commercial-capabilities/ | desktop | 40.94 | edited on purpose: testimonials: all 2 reviews shown side by side; case-study picture: 8 links placed over its QR codes and listed below it |
 | /commercial-capabilities/ | mobile | 77.61 | edited on purpose: testimonials: all 2 reviews shown side by side; case-study picture: 8 links placed over its QR codes and listed below it |
-| /commerical-roofing/ | desktop | 14.00 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /commerical-roofing/ | desktop | 13.95 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /commerical-roofing/ | mobile | 29.09 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /commerical-roofing/roof-replacement/ | desktop | 2.96 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /commerical-roofing/roof-replacement/ | mobile | 29.63 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /commerical-roofing/roof-types/ | desktop | 3.27 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /commerical-roofing/roof-types/ | mobile | 29.30 | edited on purpose: testimonials: all 2 reviews shown side by side |
-| /faqs/ | desktop | 16.05 | edited on purpose: old map section replaced with the animated US map |
-| /faqs/ | mobile | 22.00 | edited on purpose: old map section replaced with the animated US map |
-| /gutters/ | desktop | 25.36 | edited on purpose: old map section replaced with the animated US map |
-| /gutters/ | mobile | 34.96 | edited on purpose: old map section replaced with the animated US map |
+| /faqs/ | desktop | 15.99 | edited on purpose: old map section replaced with the animated US map |
+| /faqs/ | mobile | 21.99 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | desktop | 31.31 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | mobile | 35.04 | edited on purpose: old map section replaced with the animated US map |
 | /gutters/gutter-guards/ | desktop | 2.97 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /gutters/gutter-guards/ | mobile | 29.40 | edited on purpose: testimonials: all 2 reviews shown side by side |
-| /past-projects/ | desktop | 64.83 | edited on purpose: old map section replaced with the animated US map |
-| /past-projects/ | mobile | 82.25 | edited on purpose: old map section replaced with the animated US map |
-| /podcast/ | desktop | 22.07 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
-| /podcast/ | mobile | 47.68 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /past-projects/ | desktop | 65.10 | edited on purpose: old map section replaced with the animated US map |
+| /past-projects/ | mobile | 82.14 | edited on purpose: old map section replaced with the animated US map |
+| /podcast/ | desktop | 22.00 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /podcast/ | mobile | 45.47 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /position-details/ | desktop | 0.46 | edited on purpose: job details page: "Failed to load job details." -> pointer to the open positions on /careers/ |
 | /position-details/ | mobile | 5.85 | edited on purpose: job details page: "Failed to load job details." -> pointer to the open positions on /careers/ |
-| /reviews/ | desktop | 20.07 | edited on purpose: old map section replaced with the animated US map |
+| /reviews/ | desktop | 19.99 | edited on purpose: old map section replaced with the animated US map |
 | /reviews/ | mobile | 24.75 | edited on purpose: old map section replaced with the animated US map |
 | /roofing-costs/ | desktop | 3.25 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /roofing-costs/ | mobile | 30.39 | edited on purpose: testimonials: all 2 reviews shown side by side |
-| /roofing/ | desktop | 21.69 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
-| /roofing/ | mobile | 41.02 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /roofing/ | desktop | 21.65 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /roofing/ | mobile | 41.06 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /roofing/attic-insulation/ | desktop | 3.00 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /roofing/attic-insulation/ | mobile | 29.07 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /roofing/repairs/ | desktop | 1.54 | edited on purpose: testimonials: all 2 reviews shown side by side |
@@ -64,13 +64,13 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /roofing/residential/ | mobile | 17.19 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /roofing/types/ | desktop | 1.37 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /roofing/types/ | mobile | 26.84 | edited on purpose: testimonials: all 2 reviews shown side by side |
-| /service-areas/ | desktop | 31.68 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map; testimonials section removed |
-| /service-areas/ | mobile | 30.92 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map; testimonials section removed |
-| /siding/ | desktop | 19.88 | edited on purpose: old map section replaced with the animated US map |
-| /siding/ | mobile | 10.51 | edited on purpose: old map section replaced with the animated US map |
+| /service-areas/ | desktop | 31.56 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map; testimonials section removed |
+| /service-areas/ | mobile | 29.69 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map; testimonials section removed |
+| /siding/ | desktop | 13.04 | edited on purpose: old map section replaced with the animated US map |
+| /siding/ | mobile | 13.92 | edited on purpose: old map section replaced with the animated US map |
 | /site-map/ | desktop | 37.54 | edited on purpose: 16 link(s) to city sub-sites removed |
 | /site-map/ | mobile | 51.70 | edited on purpose: 16 link(s) to city sub-sites removed |
-| /solar/ | desktop | 20.16 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
+| /solar/ | desktop | 19.70 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /solar/ | mobile | 27.97 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /solar/gaf-solar-roof/ | desktop | 1.98 | edited on purpose: testimonials: all 2 reviews shown side by side |
 | /solar/gaf-solar-roof/ | mobile | 18.58 | edited on purpose: testimonials: all 2 reviews shown side by side |
@@ -83,10 +83,10 @@ These pages differ from live by design: links to the city sub-sites were removed
 
 | Page | Viewport | Page HTML | Live size | Local size | Diff % | Result |
 | --- | --- | --- | --- | --- | --- | --- |
-| / | desktop | as-delivered | 1440×7954 | 1440×8161 | 17.536 | EDITED |
+| / | desktop | as-delivered | 1440×7954 | 1440×8161 | 17.495 | EDITED |
 | / | mobile | as-delivered | 390×14621 | 390×15087 | 16.663 | EDITED |
-| /about/ | desktop | rendered | 1440×4672 | 1440×4869 | 20.569 | EDITED |
-| /about/ | mobile | rendered | 390×7396 | 390×8405 | 40.993 | EDITED |
+| /about/ | desktop | rendered | 1440×4672 | 1440×4869 | 20.504 | EDITED |
+| /about/ | mobile | rendered | 390×7396 | 390×8405 | 40.992 | EDITED |
 | /affirm-payment/ | desktop | rendered | 1440×900 | 1440×900 | 0.099 | PASS |
 | /affirm-payment/ | mobile | rendered | 390×844 | 390×844 | 0.391 | PASS |
 | /blog/ | desktop | rendered | 1440×3303 | 1440×3303 | 0.049 | PASS |
@@ -361,8 +361,8 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /charity-and-community/ | mobile | rendered | 390×6930 | 390×6930 | 0.048 | PASS |
 | /commercial-capabilities/ | desktop | rendered | 1934×4788 | 1440×4915 | 40.938 | EDITED |
 | /commercial-capabilities/ | mobile | rendered | 1934×4843 | 390×5788 | 77.615 | EDITED |
-| /commerical-roofing/ | desktop | rendered | 1440×6847 | 1440×7045 | 13.995 | EDITED |
-| /commerical-roofing/ | mobile | rendered | 390×11065 | 390×12074 | 29.087 | EDITED |
+| /commerical-roofing/ | desktop | rendered | 1440×6847 | 1440×7045 | 13.948 | EDITED |
+| /commerical-roofing/ | mobile | rendered | 390×11065 | 390×12074 | 29.086 | EDITED |
 | /commerical-roofing/roof-replacement/ | desktop | rendered | 1440×3756 | 1440×3746 | 2.958 | EDITED |
 | /commerical-roofing/roof-replacement/ | mobile | rendered | 390×6685 | 390×7228 | 29.633 | EDITED |
 | /commerical-roofing/roof-types/ | desktop | rendered | 1440×3788 | 1440×3778 | 3.273 | EDITED |
@@ -371,22 +371,22 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /contact-us/ | mobile | rendered | 390×4723 | 390×4723 | 0.073 | PASS |
 | /customer-service/ | desktop | rendered | 1440×1395 | 1440×1395 | 0.064 | PASS |
 | /customer-service/ | mobile | rendered | 390×2875 | 390×2875 | 0.115 | PASS |
-| /faqs/ | desktop | rendered | 1440×4831 | 1440×5039 | 16.054 | EDITED |
-| /faqs/ | mobile | rendered | 390×6163 | 390×6628 | 21.997 | EDITED |
+| /faqs/ | desktop | rendered | 1440×4831 | 1440×5039 | 15.989 | EDITED |
+| /faqs/ | mobile | rendered | 390×6163 | 390×6628 | 21.995 | EDITED |
 | /gallery/ | desktop | rendered | 1440×3267 | 1440×3267 | 0.501 | PASS |
 | /gallery/ | mobile | rendered | 390×1943 | 390×1943 | 0.170 | PASS |
-| /gutters/ | desktop | rendered | 1440×5231 | 1440×5439 | 25.357 | EDITED |
-| /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 34.958 | EDITED |
+| /gutters/ | desktop | rendered | 1440×5231 | 1440×5439 | 31.313 | EDITED |
+| /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 35.035 | EDITED |
 | /gutters/gutter-guards/ | desktop | rendered | 1440×3733 | 1440×3723 | 2.972 | EDITED |
 | /gutters/gutter-guards/ | mobile | rendered | 390×6743 | 390×7286 | 29.401 | EDITED |
 | /offers/ | desktop | rendered | 1440×3944 | 1440×3944 | 0.041 | PASS |
 | /offers/ | mobile | rendered | 390×6145 | 390×6145 | 0.096 | PASS |
 | /pandav1-capture-404-check/ | desktop | rendered | 1440×900 | 1440×900 | 0.099 | PASS |
 | /pandav1-capture-404-check/ | mobile | rendered | 390×844 | 390×844 | 0.391 | PASS |
-| /past-projects/ | desktop | rendered | 1440×2768 | 1440×4213 | 64.828 | EDITED |
-| /past-projects/ | mobile | rendered | 390×4259 | 390×10113 | 82.249 | EDITED |
-| /podcast/ | desktop | rendered | 1440×4336 | 1440×4534 | 22.074 | EDITED |
-| /podcast/ | mobile | rendered | 390×6562 | 390×7681 | 47.683 | EDITED |
+| /past-projects/ | desktop | rendered | 1440×2768 | 1440×4213 | 65.104 | EDITED |
+| /past-projects/ | mobile | rendered | 390×4259 | 390×10160 | 82.136 | EDITED |
+| /podcast/ | desktop | rendered | 1440×4336 | 1440×4534 | 22.005 | EDITED |
+| /podcast/ | mobile | rendered | 390×6562 | 390×7571 | 45.472 | EDITED |
 | /position-details/ | desktop | rendered | 1440×919 | 1440×919 | 0.460 | EDITED |
 | /position-details/ | mobile | rendered | 390×844 | 390×844 | 5.845 | EDITED |
 | /privacy-policy/ | desktop | rendered | 1440×2690 | 1440×2690 | 0.033 | PASS |
@@ -395,12 +395,12 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /referral/ | mobile | rendered | 390×2860 | 390×2860 | 0.124 | PASS |
 | /referrals/ | desktop | rendered | 1440×900 | 1440×900 | 0.099 | PASS |
 | /referrals/ | mobile | rendered | 390×1149 | 390×1149 | 0.287 | PASS |
-| /reviews/ | desktop | rendered | 1440×3965 | 1440×4172 | 20.067 | EDITED |
-| /reviews/ | mobile | rendered | 390×6009 | 390×6475 | 24.747 | EDITED |
+| /reviews/ | desktop | rendered | 1440×3965 | 1440×4172 | 19.988 | EDITED |
+| /reviews/ | mobile | rendered | 390×6009 | 390×6475 | 24.745 | EDITED |
 | /roofing-costs/ | desktop | rendered | 1440×3817 | 1440×3807 | 3.248 | EDITED |
 | /roofing-costs/ | mobile | rendered | 390×6505 | 390×7048 | 30.394 | EDITED |
-| /roofing/ | desktop | rendered | 1440×7189 | 1440×7386 | 21.693 | EDITED |
-| /roofing/ | mobile | rendered | 390×11215 | 390×12266 | 41.025 | EDITED |
+| /roofing/ | desktop | rendered | 1440×7189 | 1440×7386 | 21.651 | EDITED |
+| /roofing/ | mobile | rendered | 390×11215 | 390×12266 | 41.056 | EDITED |
 | /roofing/attic-insulation/ | desktop | rendered | 1440×3701 | 1440×3691 | 2.999 | EDITED |
 | /roofing/attic-insulation/ | mobile | rendered | 390×6821 | 390×7364 | 29.071 | EDITED |
 | /roofing/repairs/ | desktop | rendered | 1440×3778 | 1440×3768 | 1.545 | EDITED |
@@ -411,15 +411,15 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /roofing/residential/ | mobile | rendered | 390×8966 | 390×9509 | 17.193 | EDITED |
 | /roofing/types/ | desktop | rendered | 1440×4986 | 1440×4976 | 1.372 | EDITED |
 | /roofing/types/ | mobile | rendered | 390×7691 | 390×8234 | 26.837 | EDITED |
-| /service-areas/ | desktop | rendered | 1440×4579 | 1440×4671 | 31.681 | EDITED |
-| /service-areas/ | mobile | rendered | 390×7608 | 390×7360 | 30.925 | EDITED |
+| /service-areas/ | desktop | rendered | 1440×4579 | 1440×4671 | 31.561 | EDITED |
+| /service-areas/ | mobile | rendered | 390×7608 | 390×7407 | 29.694 | EDITED |
 | /services/ | desktop | rendered | 1440×3798 | 1440×3798 | 0.072 | PASS |
 | /services/ | mobile | rendered | 390×7418 | 390×7418 | 0.136 | PASS |
-| /siding/ | desktop | rendered | 1440×5245 | 1440×5383 | 19.884 | EDITED |
-| /siding/ | mobile | rendered | 390×9229 | 390×9364 | 10.506 | EDITED |
+| /siding/ | desktop | rendered | 1440×5245 | 1440×5383 | 13.038 | EDITED |
+| /siding/ | mobile | rendered | 390×9229 | 390×9364 | 13.916 | EDITED |
 | /site-map/ | desktop | rendered | 1440×2943 | 1440×2175 | 37.542 | EDITED |
 | /site-map/ | mobile | rendered | 390×3727 | 390×2735 | 51.703 | EDITED |
-| /solar/ | desktop | as-delivered | 1440×6810 | 1440×7007 | 20.158 | EDITED |
+| /solar/ | desktop | as-delivered | 1440×6810 | 1440×7007 | 19.699 | EDITED |
 | /solar/ | mobile | as-delivered | 390×11188 | 390×12197 | 27.969 | EDITED |
 | /solar/gaf-solar-roof/ | desktop | rendered | 1440×3074 | 1440×3064 | 1.983 | EDITED |
 | /solar/gaf-solar-roof/ | mobile | rendered | 390×5527 | 390×6070 | 18.576 | EDITED |
