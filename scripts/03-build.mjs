@@ -246,6 +246,43 @@ writeJson(path.join(OUT, 'serve.json'), {
 });
 writeFile(path.join(OUT, '.nojekyll'), '');
 
+// Vercel reads neither _redirects/_headers nor serve.json, so write vercel.json
+// next to site/ (the repo root): a Git-connected Vercel project then serves the
+// folder as plain static files — no install, no build — with the same rules.
+const vercelSource = (p) => p.replace(/[()[\]{}*+?:!]/g, '\\$&');
+const vercelRedirects = redirectList
+  .filter((r) => r.note === 'in site/_redirects')
+  .map((r) => {
+    const f = new URL(r.from);
+    const t = new URL(r.to, r.from);
+    const status = [301, 302, 303, 307, 308].includes(Number(r.status)) ? Number(r.status) : 301;
+    return { from: f.pathname, destination: isSiteUrl(t) ? t.pathname + t.search + t.hash : t.href, statusCode: status };
+  });
+const rawHeaders = [
+  { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+  { key: 'X-Robots-Tag', value: 'noindex' },
+];
+const vercel = {
+  $schema: 'https://openapi.vercel.sh/vercel.json',
+  framework: null,
+  installCommand: '',
+  buildCommand: "echo 'Static copy of the site: nothing to build'",
+  outputDirectory: path.basename(OUT),
+  trailingSlash: true,
+  rewrites: rewrites.map((r) => ({ source: vercelSource(r.from), destination: r.to })),
+  headers: [{ source: '/_raw/(.*)', headers: rawHeaders }],
+};
+// Every redirect/rewrite/header rule counts toward Vercel's 2,048 routes per
+// deployment; past that, redirects go to a bulk-redirects file instead.
+if (vercelRedirects.length <= 2000 - vercel.rewrites.length - vercel.headers.length) {
+  vercel.redirects = vercelRedirects.map((r) => ({ source: vercelSource(r.from), destination: r.destination, statusCode: r.statusCode }));
+} else {
+  const bulk = vercelRedirects.map((r) => ({ source: r.from, destination: r.destination, permanent: r.statusCode === 301 || r.statusCode === 308 }));
+  writeJson(path.join(path.dirname(OUT), 'vercel-redirects.json'), bulk);
+  vercel.bulkRedirectsPath = 'vercel-redirects.json';
+}
+writeJson(path.join(path.dirname(OUT), 'vercel.json'), vercel);
+
 // ------------------------------------------------------------------ docs
 const docs = PATHS.docs;
 const pagesList = (set, max = 8) => {

@@ -19,6 +19,7 @@ site/                    the website — deploy this folder
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
   _redirects, _headers                Netlify / Cloudflare Pages rules (redirects seen on the live site)
+  (../vercel.json)                    the same rules for Vercel, next to site/
   serve.json                          the same rules for `npx serve`
 docs/
   url-inventory.csv        every URL found (url, source, HTTP status, redirect target, type, …)
@@ -108,6 +109,10 @@ The `site/` folder is a plain static site and works on any static host that serv
 > repository may receive LFS *pointer files* instead of the real files unless LFS is enabled for the build. Deploying
 > from a checkout with the LFS files pulled (`git lfs pull`) via each host's CLI avoids this.
 
+- **Vercel** — import the GitHub repo. The generated `vercel.json` (written by `scripts/03-build.mjs`) makes Vercel
+  skip the install and build steps and serve `site/` as static files, with trailing slashes like WordPress and the
+  redirects seen on the live site. In the Vercel project, turn on **Git LFS** (Settings → Git) so large images and
+  videos deploy as real files. A deployment only succeeds once the captured `site/` folder is in the repository.
 - **Netlify** — drag-and-drop `site/` in the Netlify UI, or `npx netlify-cli deploy --dir site --prod`. `_redirects`
   and `_headers` are applied automatically.
 - **Cloudflare Pages** — `npx wrangler pages deploy site`. Also honours `_redirects` and `_headers`.
