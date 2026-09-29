@@ -103,18 +103,26 @@ export async function visit(page, url, vpName) {
   return response;
 }
 
-/** Freeze moving parts (carousels on slide 1, videos at 0s) and wait for fonts. */
+/**
+ * Freeze moving parts so live and local screenshots compare like with like:
+ * every carousel on its first slide (Swiper instances are found by the live
+ * object on the element, whatever class names the page builder uses), videos
+ * at 0s, every lazy image loaded, fonts ready.
+ */
 export async function prepareForScreenshot(page) {
   await page
     .evaluate(async () => {
-      try {
-        document.querySelectorAll('.swiper, .swiper-container, .swiper-initialized, .elementor-swiper .swiper-container').forEach((el) => {
-          const s = el.swiper;
-          if (!s) return;
-          try { s.autoplay && s.autoplay.stop(); } catch {}
-          try { s.params && s.params.loop ? s.slideToLoop(0, 0, false) : s.slideTo(0, 0, false); } catch {}
-        });
-      } catch {}
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      const swipers = new Set();
+      document.querySelectorAll('[class*="swiper"]').forEach((el) => {
+        if (el.swiper) swipers.add(el.swiper);
+      });
+      for (const s of swipers) {
+        try { s.autoplay && s.autoplay.stop && s.autoplay.stop(); } catch {}
+        try { if (s.params) s.params.autoplay = false; } catch {}
+        try { s.update && s.update(); } catch {}
+        try { s.params && s.params.loop ? s.slideToLoop(0, 0, false) : s.slideTo(0, 0, false); } catch {}
+      }
       try {
         const $ = window.jQuery;
         if ($) {
@@ -134,9 +142,21 @@ export async function prepareForScreenshot(page) {
       document.querySelectorAll('video').forEach((v) => {
         try { v.pause(); v.currentTime = 0; } catch {}
       });
-      if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 5000))]);
+      // Load every image now (native lazy ones included) and wait, so the
+      // full-page screenshot never catches a half-loaded slide or avatar.
+      document.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; });
+      const pending = [...document.images].filter((img) => !img.complete);
+      await Promise.race([
+        Promise.all(pending.map((img) => new Promise((r) => {
+          img.addEventListener('load', r, { once: true });
+          img.addEventListener('error', r, { once: true });
+        }))),
+        sleep(8000),
+      ]);
+      if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, sleep(5000)]);
     })
     .catch(() => {});
+  await page.waitForLoadState('networkidle', { timeout: 5000 }).catch(() => {});
   await page.waitForTimeout(600);
 }
 

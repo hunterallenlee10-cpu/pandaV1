@@ -52,7 +52,7 @@ function addSource(row, src) {
 
 function subsitePrefixFor(url) {
   const p = new URL(url).pathname;
-  for (const prefix of subsitePrefixes.keys()) if (p.startsWith(prefix)) return prefix;
+  for (const prefix of subsitePrefixes.keys()) if (p.startsWith(prefix) || p === prefix.replace(/\/$/, '')) return prefix;
   return null;
 }
 

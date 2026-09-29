@@ -25,6 +25,7 @@ import { readJson, writeJson, writeFile, args, pool, fmtBytes } from './lib/util
 const opts = args();
 const PARALLEL = Number(opts.parallel || 2);
 const ONLY = opts.only ? String(opts.only).split(',') : null;
+const URLS = opts['urls-file'] ? new Set(readJson(path.resolve(opts['urls-file']))) : null;
 const FORCE = Boolean(opts.force);
 const SKIP_PAGES = Boolean(opts['assets-only']);
 
@@ -41,9 +42,11 @@ const FULFILL_HEADERS = new Set([
   'x-content-type-options', 'content-security-policy', 'x-frame-options', 'link', 'refresh',
 ]);
 
-function pagesToCapture() {
+function pagesToCapture({ all = false } = {}) {
   let rows = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status) === 200) || r.type === '404-page');
+  if (all) return rows.map((r) => ({ url: r.url, slug: r.type === '404-page' ? '404' : slugForUrl(r.url), is404: r.type === '404-page' }));
   if (ONLY) rows = rows.filter((r) => ONLY.some((o) => r.url.includes(o)));
+  if (URLS) rows = rows.filter((r) => URLS.has(r.url));
   return rows.map((r) => ({ url: r.url, slug: r.type === '404-page' ? '404' : slugForUrl(r.url), is404: r.type === '404-page' }));
 }
 
@@ -167,7 +170,9 @@ async function capturePages() {
 
 // ------------------------------------------------------------------ assets
 async function downloadAssets() {
-  const pages = pagesToCapture();
+  // Always the whole site (cache hits for everything already fetched), so
+  // re-capturing a few pages never shrinks the asset list.
+  const pages = pagesToCapture({ all: true });
   const discovered = new Map(); // url -> Set(kinds)
   const add = (u, kind) => {
     if (!u) return;

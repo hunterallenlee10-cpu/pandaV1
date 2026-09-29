@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
@@ -59,11 +59,15 @@ function mapUrl(abs, { relative = false } = {}) {
   const asset = assetIndex.get(stripHash(u.href));
   if (relative) return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
   if (isSiteUrl(u)) {
-    if (subsitePrefixes.some((p) => u.pathname.startsWith(p))) return null; // separate site: keep live link
+    if (subsitePrefixes.some((p) => u.pathname.startsWith(p) || u.pathname === p.replace(/\/$/, ''))) return null; // separate site: keep live link
     if (asset && asset.renamed) return relToUrlPath(asset.rel) + u.hash;
     return u.pathname + u.search + u.hash || '/';
   }
   if (asset) return relToUrlPath(asset.rel) + u.hash;
+  // A file on the site's second hostname that is missing on the live server too:
+  // point at where it would be locally, so the copy never contacts the live server
+  // (it stays broken, exactly as on the live site).
+  if (isOriginAlias(u.hostname)) return relToUrlPath(assetLocalPath(u.href, '').rel) + u.hash;
   return null;
 }
 

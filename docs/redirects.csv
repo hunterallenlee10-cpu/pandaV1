@@ -1,0 +1,12 @@
+from,status,to,kind,note
+https://pandaexteriors.com/blog,301,https://pandaexteriors.com/blog/,page,trailing-slash redirect (static hosts handle this themselves)
+https://pandaexteriors.com/favicon.ico,302,https://pandaexteriors.com/wp-content/uploads/2025/04/favicon-16x16-1.png,page,in site/_redirects
+https://pandaexteriors.com/laurel-md,301,https://pandaexteriors.com/laurel-md/,page,trailing-slash redirect (static hosts handle this themselves)
+https://pandaexteriors.com/philadelphia-pa,301,https://pandaexteriors.com/philadelphia-pa/,page,trailing-slash redirect (static hosts handle this themselves)
+https://pandaexteriors.com/privacy-policy,301,https://pandaexteriors.com/privacy-policy/,page,trailing-slash redirect (static hosts handle this themselves)
+https://pandaexteriors.com/services,301,https://pandaexteriors.com/services/,page,trailing-slash redirect (static hosts handle this themselves)
+https://pandaexteriors.com/terms-and-conditions,301,https://pandaexteriors.com/terms-and-conditions/,page,trailing-slash redirect (static hosts handle this themselves)
+https://www.pandaexteriors.com/customer-service/,301,https://pandaexteriors.com/customer-service/,page,protocol/host-only redirect (not needed on a static host)
+https://www.pandaexteriors.com/gallery/,301,https://pandaexteriors.com/gallery/,page,protocol/host-only redirect (not needed on a static host)
+https://www.pandaexteriors.com/past-projects/,301,https://pandaexteriors.com/past-projects/,page,protocol/host-only redirect (not needed on a static host)
+https://www.pandaexteriors.com/privacy-policy/,301,https://pandaexteriors.com/privacy-policy/,page,protocol/host-only redirect (not needed on a static host)
