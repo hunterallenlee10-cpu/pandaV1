@@ -12,6 +12,7 @@
 //    map, and the page's hidden project list becomes a visible grid;
 //  - /service-areas/: the large map goes where the city list used to be.
 import { parse } from 'parse5';
+import { Parser as TagScanner } from 'htmlparser2';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 
 const attr = (n, k) => n.attrs?.find((a) => a.name === k)?.value;
@@ -70,6 +71,10 @@ function makeEditor(html) {
     },
     get count() {
       return edits.length;
+    },
+    // Where the first edit starts (all map edits are inside <body>).
+    get firstStart() {
+      return Math.min(...edits.map((e) => e.start));
     },
   };
 }
@@ -207,15 +212,37 @@ export function applyCustomizations(html, { pageUrl } = {}) {
   }
 
   if (!changes.length) return { html, changes };
+  // The map's stylesheet and script go just before the page's own </head>. If a page has
+  // none, they go right before the first map instead (still valid HTML), never above
+  // the doctype: anything before <!doctype html> switches the browser to quirks mode.
   const assets = `<link rel="stylesheet" href="${US_MAP_FILES['us-map.css']}">` + `<script src="${US_MAP_FILES['us-map.js']}" defer></script>`;
-  const head = find(doc, (c) => c.tagName === 'head');
-  if (head?.sourceCodeLocation?.endTag) ed.append(head, assets);
-  else {
-    const body = find(doc, (c) => c.tagName === 'body');
-    const at = body?.sourceCodeLocation?.startOffset ?? 0;
-    ed.replace(at, at, assets);
+  const headEnd = headEndOffset(html);
+  const at = headEnd >= 0 ? headEnd : ed.firstStart;
+  ed.replace(at, at, assets);
+  const out = ed.apply();
+  if (/^\s*<!doctype/i.test(html) && !/^\s*<!doctype/i.test(out)) {
+    throw new Error(`customize: ${pageUrl} would no longer start with its doctype`);
   }
-  return { html: ed.apply(), changes };
+  return { html: out, changes };
+}
+
+// Offset of the page's literal </head> end tag. parse5 builds the tree the way a
+// browser does, which can close <head> early (it does on the raw WP Rocket HTML of
+// / and /solar/) and then records no end tag; htmlparser2 reports the tag where it
+// actually is in the source (script and style contents are skipped correctly).
+function headEndOffset(html) {
+  let pos = -1;
+  const p = new TagScanner(
+    {
+      onclosetag(name, implied) {
+        if (pos < 0 && name === 'head' && !implied) pos = p.startIndex;
+      },
+    },
+    { decodeEntities: false, lowerCaseTags: true }
+  );
+  p.write(html);
+  p.end();
+  return pos;
 }
 
 function isInside(node, ancestor) {

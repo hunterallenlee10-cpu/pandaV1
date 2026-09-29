@@ -22,8 +22,8 @@ These pages differ from live by design: links to the city sub-sites were removed
 
 | Page | Viewport | Diff % | Change |
 | --- | --- | --- | --- |
-| / | desktop | 43.30 | edited on purpose: old map section replaced with the animated US map |
-| / | mobile | 53.97 | edited on purpose: old map section replaced with the animated US map |
+| / | desktop | 17.50 | edited on purpose: old map section replaced with the animated US map |
+| / | mobile | 16.60 | edited on purpose: old map section replaced with the animated US map |
 | /about/ | desktop | 21.07 | edited on purpose: old map section replaced with the animated US map |
 | /about/ | mobile | 24.28 | edited on purpose: old map section replaced with the animated US map |
 | /blog/how-long-does-a-roof-really-last/ | desktop | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
@@ -32,8 +32,8 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /commerical-roofing/ | mobile | 16.63 | edited on purpose: old map section replaced with the animated US map |
 | /faqs/ | desktop | 16.02 | edited on purpose: old map section replaced with the animated US map |
 | /faqs/ | mobile | 21.91 | edited on purpose: old map section replaced with the animated US map |
-| /gutters/ | desktop | 25.33 | edited on purpose: old map section replaced with the animated US map |
-| /gutters/ | mobile | 34.93 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | desktop | 32.88 | edited on purpose: old map section replaced with the animated US map |
+| /gutters/ | mobile | 34.91 | edited on purpose: old map section replaced with the animated US map |
 | /past-projects/ | desktop | 64.79 | edited on purpose: old map section replaced with the animated US map |
 | /past-projects/ | mobile | 82.19 | edited on purpose: old map section replaced with the animated US map |
 | /podcast/ | desktop | 22.63 | edited on purpose: old map section replaced with the animated US map |
@@ -41,22 +41,22 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /reviews/ | desktop | 20.03 | edited on purpose: old map section replaced with the animated US map |
 | /reviews/ | mobile | 24.66 | edited on purpose: old map section replaced with the animated US map |
 | /roofing/ | desktop | 22.12 | edited on purpose: old map section replaced with the animated US map |
-| /roofing/ | mobile | 23.49 | edited on purpose: old map section replaced with the animated US map |
+| /roofing/ | mobile | 28.39 | edited on purpose: old map section replaced with the animated US map |
 | /service-areas/ | desktop | 56.63 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map |
 | /service-areas/ | mobile | 45.10 | edited on purpose: 17 link(s) to city sub-sites removed; old map section replaced with the animated US map |
 | /siding/ | desktop | 12.93 | edited on purpose: old map section replaced with the animated US map |
-| /siding/ | mobile | 10.44 | edited on purpose: old map section replaced with the animated US map |
+| /siding/ | mobile | 13.86 | edited on purpose: old map section replaced with the animated US map |
 | /site-map/ | desktop | 37.51 | edited on purpose: 16 link(s) to city sub-sites removed |
 | /site-map/ | mobile | 51.61 | edited on purpose: 16 link(s) to city sub-sites removed |
-| /solar/ | desktop | 27.67 | edited on purpose: old map section replaced with the animated US map |
-| /solar/ | mobile | 36.36 | edited on purpose: old map section replaced with the animated US map |
+| /solar/ | desktop | 20.43 | edited on purpose: old map section replaced with the animated US map |
+| /solar/ | mobile | 21.87 | edited on purpose: old map section replaced with the animated US map |
 
 ## All pages
 
 | Page | Viewport | Page HTML | Live size | Local size | Diff % | Result |
 | --- | --- | --- | --- | --- | --- | --- |
-| / | desktop | as-delivered | 1440×7954 | 1440×8875 | 43.299 | EDITED |
-| / | mobile | as-delivered | 390×14621 | 390×13848 | 53.971 | EDITED |
+| / | desktop | as-delivered | 1440×7954 | 1440×8161 | 17.503 | EDITED |
+| / | mobile | as-delivered | 390×14621 | 390×15087 | 16.597 | EDITED |
 | /about/ | desktop | rendered | 1440×4672 | 1440×4879 | 21.072 | EDITED |
 | /about/ | mobile | rendered | 390×7396 | 390×7862 | 24.283 | EDITED |
 | /affirm-payment/ | desktop | rendered | 1440×900 | 1440×900 | 0.000 | PASS |
@@ -347,8 +347,8 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /faqs/ | mobile | rendered | 390×6163 | 390×6628 | 21.908 | EDITED |
 | /gallery/ | desktop | rendered | 1440×3267 | 1440×3267 | 0.003 | PASS |
 | /gallery/ | mobile | rendered | 390×1943 | 390×1943 | 0.000 | PASS |
-| /gutters/ | desktop | rendered | 1440×5231 | 1440×5439 | 25.327 | EDITED |
-| /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 34.929 | EDITED |
+| /gutters/ | desktop | rendered | 1440×5231 | 1440×5439 | 32.876 | EDITED |
+| /gutters/ | mobile | rendered | 390×8639 | 390×9105 | 34.910 | EDITED |
 | /gutters/gutter-guards/ | desktop | rendered | 1440×3733 | 1440×3733 | 0.000 | PASS |
 | /gutters/gutter-guards/ | mobile | rendered | 390×6743 | 390×6743 | 0.000 | PASS |
 | /interiors/ | desktop | rendered | 1440×5615 | 1440×5615 | 0.000 | PASS |
@@ -374,7 +374,7 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /roofing-costs/ | desktop | rendered | 1440×3817 | 1440×3817 | 0.000 | PASS |
 | /roofing-costs/ | mobile | rendered | 390×6505 | 390×6505 | 0.000 | PASS |
 | /roofing/ | desktop | rendered | 1440×7189 | 1440×7396 | 22.123 | EDITED |
-| /roofing/ | mobile | rendered | 390×11215 | 390×11474 | 23.486 | EDITED |
+| /roofing/ | mobile | rendered | 390×11215 | 390×11681 | 28.386 | EDITED |
 | /roofing/attic-insulation/ | desktop | rendered | 1440×3701 | 1440×3701 | 0.000 | PASS |
 | /roofing/attic-insulation/ | mobile | rendered | 390×6821 | 390×6821 | 0.000 | PASS |
 | /roofing/repairs/ | desktop | rendered | 1440×3778 | 1440×3778 | 0.000 | PASS |
@@ -390,11 +390,11 @@ These pages differ from live by design: links to the city sub-sites were removed
 | /services/ | desktop | rendered | 1440×3798 | 1440×3798 | 0.000 | PASS |
 | /services/ | mobile | rendered | 390×7418 | 390×7418 | 0.000 | PASS |
 | /siding/ | desktop | rendered | 1440×5245 | 1440×5383 | 12.931 | EDITED |
-| /siding/ | mobile | rendered | 390×9229 | 390×9364 | 10.443 | EDITED |
+| /siding/ | mobile | rendered | 390×9229 | 390×9364 | 13.862 | EDITED |
 | /site-map/ | desktop | rendered | 1440×2943 | 1440×2175 | 37.511 | EDITED |
 | /site-map/ | mobile | rendered | 390×3727 | 390×2735 | 51.612 | EDITED |
-| /solar/ | desktop | as-delivered | 1440×6810 | 1440×7027 | 27.671 | EDITED |
-| /solar/ | mobile | as-delivered | 390×11188 | 390×11119 | 36.361 | EDITED |
+| /solar/ | desktop | as-delivered | 1440×6810 | 1440×7017 | 20.432 | EDITED |
+| /solar/ | mobile | as-delivered | 390×11188 | 390×11654 | 21.871 | EDITED |
 | /solar/gaf-solar-roof/ | desktop | rendered | 1440×3074 | 1440×3074 | 0.000 | PASS |
 | /solar/gaf-solar-roof/ | mobile | rendered | 390×5527 | 390×5527 | 0.000 | PASS |
 | /solar/solar-panel-installations/ | desktop | rendered | 1440×3110 | 1440×3110 | 0.000 | PASS |
