@@ -29,6 +29,11 @@
   max-width: none !important;
   height: auto !important;
   margin: 0 !important;
+  /* side by side the cards line up: stars at the top, the reviewer at the bottom */
+  justify-content: flex-start !important;
+}
+.pfix-testimonials .pfix-testimonials__grid > .swiper-slide > .review-text {
+  flex-grow: 1;
 }
 
 /* Reviewer without a photo: initials in the photo's place. */
