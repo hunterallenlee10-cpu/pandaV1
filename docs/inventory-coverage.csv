@@ -1,0 +1,226 @@
+url,type,http_status,expected_file,present,note
+https://pandaexteriors.com/,page,200,site/index.html,yes,
+https://pandaexteriors.com/about/,page,200,site/about/index.html,yes,
+https://pandaexteriors.com/affirm-payment/,page,200,site/affirm-payment/index.html,yes,
+https://pandaexteriors.com/blog/,page,200,site/blog/index.html,yes,
+https://pandaexteriors.com/blog/10-questions-to-ask-before-signing-a-roof-replacement-contract/,page,200,site/blog/10-questions-to-ask-before-signing-a-roof-replacement-contract/index.html,yes,
+https://pandaexteriors.com/blog/15-questions-to-ask-before-you-hire-a-roofer/,page,200,site/blog/15-questions-to-ask-before-you-hire-a-roofer/index.html,yes,
+https://pandaexteriors.com/blog/5-benefits-of-hiring-a-professional-for-roof-replacement/,page,200,site/blog/5-benefits-of-hiring-a-professional-for-roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/5-benefits-of-replacing-your-roof-before-the-holidays/,page,200,site/blog/5-benefits-of-replacing-your-roof-before-the-holidays/index.html,yes,
+https://pandaexteriors.com/blog/5-signs-its-time-to-replace-your-roof-before-it-costs-you-more/,page,200,site/blog/5-signs-its-time-to-replace-your-roof-before-it-costs-you-more/index.html,yes,
+https://pandaexteriors.com/blog/actual-cash-value-vs-replacement-cost-how-your-roof-insurance-payout-is-calculated/,page,200,site/blog/actual-cash-value-vs-replacement-cost-how-your-roof-insurance-payout-is-calculated/index.html,yes,
+https://pandaexteriors.com/blog/adding-solar-to-your-mid-atlantic-home-what-to-know/,page,200,site/blog/adding-solar-to-your-mid-atlantic-home-what-to-know/index.html,yes,
+https://pandaexteriors.com/blog/are-skylights-for-you-and-your-roof/,page,200,site/blog/are-skylights-for-you-and-your-roof/index.html,yes,
+https://pandaexteriors.com/blog/beat-summer-energy-bills-cut-your-costs-by-90/,page,200,site/blog/beat-summer-energy-bills-cut-your-costs-by-90/index.html,yes,
+https://pandaexteriors.com/blog/beat-the-next-noreaster-why-scheduling-your-roof-replacement-before-deep-winter-saves-you-money/,page,200,site/blog/beat-the-next-noreaster-why-scheduling-your-roof-replacement-before-deep-winter-saves-you-money/index.html,yes,
+https://pandaexteriors.com/blog/before-school-starts-august-is-the-perfect-time-for-solar-roof-installation/,page,200,site/blog/before-school-starts-august-is-the-perfect-time-for-solar-roof-installation/index.html,yes,
+https://pandaexteriors.com/blog/best-exterior-upgrades-before-peak-summer-heat-roofing-and-siding-improvements-that-help-protect-your-home/,page,200,site/blog/best-exterior-upgrades-before-peak-summer-heat-roofing-and-siding-improvements-that-help-protect-your-home/index.html,yes,
+https://pandaexteriors.com/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/,page,200,site/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/index.html,yes,
+https://pandaexteriors.com/blog/can-you-repair-a-roof-in-freezing-weather-what-homeowners-need-to-know/,page,200,site/blog/can-you-repair-a-roof-in-freezing-weather-what-homeowners-need-to-know/index.html,yes,
+https://pandaexteriors.com/blog/can-you-replace-a-roof-in-the-winter-yes-but-heres-the-catch/,page,200,site/blog/can-you-replace-a-roof-in-the-winter-yes-but-heres-the-catch/index.html,yes,
+https://pandaexteriors.com/blog/commercial-roofing-industry-and-the-future/,page,200,site/blog/commercial-roofing-industry-and-the-future/index.html,yes,
+https://pandaexteriors.com/blog/denied-or-lowballed-how-panda-exteriors-helps-you-re-open-your-winter-roof-insurance-claim/,page,200,site/blog/denied-or-lowballed-how-panda-exteriors-helps-you-re-open-your-winter-roof-insurance-claim/index.html,yes,
+https://pandaexteriors.com/blog/do-you-need-a-new-roof/,page,200,site/blog/do-you-need-a-new-roof/index.html,yes,
+https://pandaexteriors.com/blog/does-homeowners-insurance-cover-roof-leaks-what-homeowners-need-to-know/,page,200,site/blog/does-homeowners-insurance-cover-roof-leaks-what-homeowners-need-to-know/index.html,yes,
+https://pandaexteriors.com/blog/does-your-roof-help-or-hurt-your-curb-appeal/,page,200,site/blog/does-your-roof-help-or-hurt-your-curb-appeal/index.html,yes,
+https://pandaexteriors.com/blog/freeze-thaw-damage-the-hidden-problem-after-cold-snaps/,page,200,site/blog/freeze-thaw-damage-the-hidden-problem-after-cold-snaps/index.html,yes,
+https://pandaexteriors.com/blog/from-emergency-tarp-to-full-replacement-turning-winter-roof-damage-into-a-long-term-upgrade/,page,200,site/blog/from-emergency-tarp-to-full-replacement-turning-winter-roof-damage-into-a-long-term-upgrade/index.html,yes,
+https://pandaexteriors.com/blog/gaf-solar-shingles-maintenance/,page,200,site/blog/gaf-solar-shingles-maintenance/index.html,yes,
+https://pandaexteriors.com/blog/gaf-timberline-solar-shingles-installation/,page,200,site/blog/gaf-timberline-solar-shingles-installation/index.html,yes,
+https://pandaexteriors.com/blog/gutters-after-winter-cleaning-realignment-and-downspout-flow-tests/,page,200,site/blog/gutters-after-winter-cleaning-realignment-and-downspout-flow-tests/index.html,yes,
+https://pandaexteriors.com/blog/gutters-after-winter-signs-its-time-for-repair-or-replacement/,page,200,site/blog/gutters-after-winter-signs-its-time-for-repair-or-replacement/index.html,yes,
+https://pandaexteriors.com/blog/home-exteriors-replacement-tips/,page,200,site/blog/home-exteriors-replacement-tips/index.html,yes,
+https://pandaexteriors.com/blog/how-a-new-roof-can-lower-your-heating-bills-this-winter/,page,200,site/blog/how-a-new-roof-can-lower-your-heating-bills-this-winter/index.html,yes,
+https://pandaexteriors.com/blog/how-did-solar-energy-become-so-cheap/,page,200,site/blog/how-did-solar-energy-become-so-cheap/index.html,yes,
+https://pandaexteriors.com/blog/how-hot-weather-affects-solar-roof-output/,page,200,site/blog/how-hot-weather-affects-solar-roof-output/index.html,yes,
+https://pandaexteriors.com/blog/how-long-do-you-have-to-file-a-roof-insurance-claim-after-a-storm/,page,200,site/blog/how-long-do-you-have-to-file-a-roof-insurance-claim-after-a-storm/index.html,yes,
+https://pandaexteriors.com/blog/how-long-does-a-roof-really-last/,page,200,site/blog/how-long-does-a-roof-really-last/index.html,yes,
+https://pandaexteriors.com/blog/how-summer-heat-damages-your-roof-shingle-curling-granule-loss-and-ventilation-warning-signs/,page,200,site/blog/how-summer-heat-damages-your-roof-shingle-curling-granule-loss-and-ventilation-warning-signs/index.html,yes,
+https://pandaexteriors.com/blog/how-to-budget-for-a-new-roof-without-the-sticker-shock/,page,200,site/blog/how-to-budget-for-a-new-roof-without-the-sticker-shock/index.html,yes,
+https://pandaexteriors.com/blog/how-to-choose-the-right-roofing-contractor/,page,200,site/blog/how-to-choose-the-right-roofing-contractor/index.html,yes,
+https://pandaexteriors.com/blog/how-to-clean-solar-panels-and-shingles/,page,200,site/blog/how-to-clean-solar-panels-and-shingles/index.html,yes,
+https://pandaexteriors.com/blog/how-we-were-able-to-rank-50-nationwide-as-the-fastest-growing-company-by-inc-5000/,page,200,site/blog/how-we-were-able-to-rank-50-nationwide-as-the-fastest-growing-company-by-inc-5000/index.html,yes,
+https://pandaexteriors.com/blog/ice-dams-101-what-they-are-and-how-to-stop-them/,page,200,site/blog/ice-dams-101-what-they-are-and-how-to-stop-them/index.html,yes,
+https://pandaexteriors.com/blog/insurance-paid-roof-replacements-a-simple-guide-for-wind-hail-and-ice-damage-claims/,page,200,site/blog/insurance-paid-roof-replacements-a-simple-guide-for-wind-hail-and-ice-damage-claims/index.html,yes,
+https://pandaexteriors.com/blog/insurance-roofing-in-spring-the-homeowners-field-guide-to-wind-and-hail-claims/,page,200,site/blog/insurance-roofing-in-spring-the-homeowners-field-guide-to-wind-and-hail-claims/index.html,yes,
+https://pandaexteriors.com/blog/is-it-safe-to-install-a-new-roof-in-the-winter-myths-vs-facts/,page,200,site/blog/is-it-safe-to-install-a-new-roof-in-the-winter-myths-vs-facts/index.html,yes,
+https://pandaexteriors.com/blog/is-your-attic-costing-you-money-this-spring-how-insulation-affects-roof-health-and-energy-bills/,page,200,site/blog/is-your-attic-costing-you-money-this-spring-how-insulation-affects-roof-health-and-energy-bills/index.html,yes,
+https://pandaexteriors.com/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/,page,200,site/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/index.html,yes,
+https://pandaexteriors.com/blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/,page,200,site/blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/index.html,yes,
+https://pandaexteriors.com/blog/offer/10-off-roof-replacement/,page,200,site/blog/offer/10-off-roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/offer/1500-off-solar-project/,page,200,site/blog/offer/1500-off-solar-project/index.html,yes,
+https://pandaexteriors.com/blog/offer/find-out-about-our-no-interest-financial-options/,page,200,site/blog/offer/find-out-about-our-no-interest-financial-options/index.html,yes,
+https://pandaexteriors.com/blog/offer/our-installation-work-is-completed-by-certified-professionals/,page,200,site/blog/offer/our-installation-work-is-completed-by-certified-professionals/index.html,yes,
+https://pandaexteriors.com/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/,page,200,site/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/index.html,yes,
+https://pandaexteriors.com/blog/often-overlooked-roofing-issues-and-items/,page,200,site/blog/often-overlooked-roofing-issues-and-items/index.html,yes,
+https://pandaexteriors.com/blog/page/10/,page,200,site/blog/page/10/index.html,yes,
+https://pandaexteriors.com/blog/page/11/,page,200,site/blog/page/11/index.html,yes,
+https://pandaexteriors.com/blog/page/12/,page,200,site/blog/page/12/index.html,yes,
+https://pandaexteriors.com/blog/page/13/,page,200,site/blog/page/13/index.html,yes,
+https://pandaexteriors.com/blog/page/14/,page,200,site/blog/page/14/index.html,yes,
+https://pandaexteriors.com/blog/page/15/,page,200,site/blog/page/15/index.html,yes,
+https://pandaexteriors.com/blog/page/16/,page,200,site/blog/page/16/index.html,yes,
+https://pandaexteriors.com/blog/page/2/,page,200,site/blog/page/2/index.html,yes,
+https://pandaexteriors.com/blog/page/3/,page,200,site/blog/page/3/index.html,yes,
+https://pandaexteriors.com/blog/page/4/,page,200,site/blog/page/4/index.html,yes,
+https://pandaexteriors.com/blog/page/5/,page,200,site/blog/page/5/index.html,yes,
+https://pandaexteriors.com/blog/page/6/,page,200,site/blog/page/6/index.html,yes,
+https://pandaexteriors.com/blog/page/7/,page,200,site/blog/page/7/index.html,yes,
+https://pandaexteriors.com/blog/page/8/,page,200,site/blog/page/8/index.html,yes,
+https://pandaexteriors.com/blog/page/9/,page,200,site/blog/page/9/index.html,yes,
+https://pandaexteriors.com/blog/project/brookfield-properties/,page,200,site/blog/project/brookfield-properties/index.html,yes,
+https://pandaexteriors.com/blog/project/bylt-restoration/,page,200,site/blog/project/bylt-restoration/index.html,yes,
+https://pandaexteriors.com/blog/project/chapel-branch-apartments/,page,200,site/blog/project/chapel-branch-apartments/index.html,yes,
+https://pandaexteriors.com/blog/project/enterprise-rent-a-car/,page,200,site/blog/project/enterprise-rent-a-car/index.html,yes,
+https://pandaexteriors.com/blog/project/expert-tpo-roofing/,page,200,site/blog/project/expert-tpo-roofing/index.html,yes,
+https://pandaexteriors.com/blog/project/linear-accelerator-roof-replacement/,page,200,site/blog/project/linear-accelerator-roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-11425/,page,200,site/blog/project/panda-ext-11425/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-11531/,page,200,site/blog/project/panda-ext-11531/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-14098/,page,200,site/blog/project/panda-ext-14098/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-14513/,page,200,site/blog/project/panda-ext-14513/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-14532/,page,200,site/blog/project/panda-ext-14532/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-ext-15321/,page,200,site/blog/project/panda-ext-15321/index.html,yes,
+https://pandaexteriors.com/blog/project/panda-exteriors-hq/,page,200,site/blog/project/panda-exteriors-hq/index.html,yes,
+https://pandaexteriors.com/blog/project/roof-replacement-2/,page,200,site/blog/project/roof-replacement-2/index.html,yes,
+https://pandaexteriors.com/blog/project/roof-replacement-3/,page,200,site/blog/project/roof-replacement-3/index.html,yes,
+https://pandaexteriors.com/blog/project/roof-replacement-gutter-guards/,page,200,site/blog/project/roof-replacement-gutter-guards/index.html,yes,
+https://pandaexteriors.com/blog/project/roof-replacement/,page,200,site/blog/project/roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/project/sbs-siding/,page,200,site/blog/project/sbs-siding/index.html,yes,
+https://pandaexteriors.com/blog/project/spanish-tile/,page,200,site/blog/project/spanish-tile/index.html,yes,
+https://pandaexteriors.com/blog/quarterly-inspection/,page,200,site/blog/quarterly-inspection/index.html,yes,
+https://pandaexteriors.com/blog/repair-or-replace-how-to-decide-after-a-winter-storm-beats-up-your-roof/,page,200,site/blog/repair-or-replace-how-to-decide-after-a-winter-storm-beats-up-your-roof/index.html,yes,
+https://pandaexteriors.com/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/,page,200,site/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/index.html,yes,
+https://pandaexteriors.com/blog/replacing-a-roof-in-2024/,page,200,site/blog/replacing-a-roof-in-2024/index.html,yes,
+https://pandaexteriors.com/blog/replacing-your-roof-with-gaf-timberline-solar-shingles/,page,200,site/blog/replacing-your-roof-with-gaf-timberline-solar-shingles/index.html,yes,
+https://pandaexteriors.com/blog/roof-flashing-repair/,page,200,site/blog/roof-flashing-repair/index.html,yes,
+https://pandaexteriors.com/blog/roof-insurance-deductibles-explained-what-will-you-pay-after-storm-damage/,page,200,site/blog/roof-insurance-deductibles-explained-what-will-you-pay-after-storm-damage/index.html,yes,
+https://pandaexteriors.com/blog/roof-leak-season-is-here-why-spring-rain-exposes-hidden-winter-damage/,page,200,site/blog/roof-leak-season-is-here-why-spring-rain-exposes-hidden-winter-damage/index.html,yes,
+https://pandaexteriors.com/blog/roof-repair-or-replace/,page,200,site/blog/roof-repair-or-replace/index.html,yes,
+https://pandaexteriors.com/blog/roof-replacement-timeline/,page,200,site/blog/roof-replacement-timeline/index.html,yes,
+https://pandaexteriors.com/blog/seasonal-roof-maintenance-tips-for-every-time-of-year/,page,200,site/blog/seasonal-roof-maintenance-tips-for-every-time-of-year/index.html,yes,
+https://pandaexteriors.com/blog/shielding-new-jersey-homes-the-essential-role-of-quality-roof-replacement-in-extreme-weather-preparedness/,page,200,site/blog/shielding-new-jersey-homes-the-essential-role-of-quality-roof-replacement-in-extreme-weather-preparedness/index.html,yes,
+https://pandaexteriors.com/blog/should-you-repair-or-replace-your-roof-after-a-spring-storm/,page,200,site/blog/should-you-repair-or-replace-your-roof-after-a-spring-storm/index.html,yes,
+https://pandaexteriors.com/blog/siding-and-exterior-cleaning-the-safe-way-to-remove-algae-mildew-and-pollen/,page,200,site/blog/siding-and-exterior-cleaning-the-safe-way-to-remove-algae-mildew-and-pollen/index.html,yes,
+https://pandaexteriors.com/blog/signs-you-need-attic-insulation/,page,200,site/blog/signs-you-need-attic-insulation/index.html,yes,
+https://pandaexteriors.com/blog/solar-financing-gaf-solar-shingles/,page,200,site/blog/solar-financing-gaf-solar-shingles/index.html,yes,
+https://pandaexteriors.com/blog/solar-roof-inspection-summer-maintenance-for-maximum-performance/,page,200,site/blog/solar-roof-inspection-summer-maintenance-for-maximum-performance/index.html,yes,
+https://pandaexteriors.com/blog/solar-shingles-vs-traditional-solar-panels/,page,200,site/blog/solar-shingles-vs-traditional-solar-panels/index.html,yes,
+https://pandaexteriors.com/blog/spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together/,page,200,site/blog/spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together/index.html,yes,
+https://pandaexteriors.com/blog/spring-is-a-great-season-for-roof-inspections/,page,200,site/blog/spring-is-a-great-season-for-roof-inspections/index.html,yes,
+https://pandaexteriors.com/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/,page,200,site/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/index.html,yes,
+https://pandaexteriors.com/blog/spring-rain-leak-season-why-roof-leaks-show-up-in-march-and-april/,page,200,site/blog/spring-rain-leak-season-why-roof-leaks-show-up-in-march-and-april/index.html,yes,
+https://pandaexteriors.com/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/,page,200,site/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/index.html,yes,
+https://pandaexteriors.com/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/,page,200,site/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/index.html,yes,
+https://pandaexteriors.com/blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/,page,200,site/blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/index.html,yes,
+https://pandaexteriors.com/blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/,page,200,site/blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/index.html,yes,
+https://pandaexteriors.com/blog/the-components-of-a-roof-replacement/,page,200,site/blog/the-components-of-a-roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/the-end-of-winter-roof-survival-checklist/,page,200,site/blog/the-end-of-winter-roof-survival-checklist/index.html,yes,
+https://pandaexteriors.com/blog/the-greatness-of-gutters/,page,200,site/blog/the-greatness-of-gutters/index.html,yes,
+https://pandaexteriors.com/blog/the-role-of-solar-panels-in-reducing-peak-electricity-demand/,page,200,site/blog/the-role-of-solar-panels-in-reducing-peak-electricity-demand/index.html,yes,
+https://pandaexteriors.com/blog/the-top-5-benefits-of-solar-panels-for-homeowners/,page,200,site/blog/the-top-5-benefits-of-solar-panels-for-homeowners/index.html,yes,
+https://pandaexteriors.com/blog/understanding-roof-warranties-whats-covered-and-whats-not/,page,200,site/blog/understanding-roof-warranties-whats-covered-and-whats-not/index.html,yes,
+https://pandaexteriors.com/blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/,page,200,site/blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/index.html,yes,
+https://pandaexteriors.com/blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/,page,200,site/blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/index.html,yes,
+https://pandaexteriors.com/blog/what-is-a-roofing-insurance-supplement-and-why-might-your-claim-need-one/,page,200,site/blog/what-is-a-roofing-insurance-supplement-and-why-might-your-claim-need-one/index.html,yes,
+https://pandaexteriors.com/blog/what-questions-should-i-ask-a-roofing-contractor/,page,200,site/blog/what-questions-should-i-ask-a-roofing-contractor/index.html,yes,
+https://pandaexteriors.com/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/,page,200,site/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/index.html,yes,
+https://pandaexteriors.com/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-2-3/,page,200,site/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-2-3/index.html,yes,
+https://pandaexteriors.com/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-3-3/,page,200,site/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-3-3/index.html,yes,
+https://pandaexteriors.com/blog/why-fall-2024-is-the-best-time-to-combine-roof-upgrades-with-solar-installation-in-the-mid-atlantic/,page,200,site/blog/why-fall-2024-is-the-best-time-to-combine-roof-upgrades-with-solar-installation-in-the-mid-atlantic/index.html,yes,
+https://pandaexteriors.com/blog/why-fall-is-the-best-season-to-replace-your-roof/,page,200,site/blog/why-fall-is-the-best-season-to-replace-your-roof/index.html,yes,
+https://pandaexteriors.com/blog/why-your-upstairs-gets-so-hot-in-summer-the-connection-between-roofing-ventilation-and-exterior-materials/,page,200,site/blog/why-your-upstairs-gets-so-hot-in-summer-the-connection-between-roofing-ventilation-and-exterior-materials/index.html,yes,
+https://pandaexteriors.com/blog/wind-and-hail-prep-what-to-fix-now-before-the-next-storm/,page,200,site/blog/wind-and-hail-prep-what-to-fix-now-before-the-next-storm/index.html,yes,
+https://pandaexteriors.com/blog/winter-proof-your-home-roof-gutters-and-attic-upgrades-that-stop-ice-dams-and-heat-loss/,page,200,site/blog/winter-proof-your-home-roof-gutters-and-attic-upgrades-that-stop-ice-dams-and-heat-loss/index.html,yes,
+https://pandaexteriors.com/blog/winter-ready-roofs-why-every-roof-needs-a-tune-up-before-first-freeze/,page,200,site/blog/winter-ready-roofs-why-every-roof-needs-a-tune-up-before-first-freeze/index.html,yes,
+https://pandaexteriors.com/blog/winter-roof-repair-checklist-9-small-issues-to-fix-before-they-turn-into-big-leaks/,page,200,site/blog/winter-roof-repair-checklist-9-small-issues-to-fix-before-they-turn-into-big-leaks/index.html,yes,
+https://pandaexteriors.com/blog/winter-roof-replacement/,page,200,site/blog/winter-roof-replacement/index.html,yes,
+https://pandaexteriors.com/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/,page,200,site/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/index.html,yes,
+https://pandaexteriors.com/careers/,page,200,site/careers/index.html,yes,
+https://pandaexteriors.com/charity-and-community/,page,200,site/charity-and-community/index.html,yes,
+https://pandaexteriors.com/commercial-capabilities/,page,200,site/commercial-capabilities/index.html,yes,
+https://pandaexteriors.com/commerical-roofing/,page,200,site/commerical-roofing/index.html,yes,
+https://pandaexteriors.com/commerical-roofing/roof-replacement/,page,200,site/commerical-roofing/roof-replacement/index.html,yes,
+https://pandaexteriors.com/commerical-roofing/roof-types/,page,200,site/commerical-roofing/roof-types/index.html,yes,
+https://pandaexteriors.com/contact-us/,page,200,site/contact-us/index.html,yes,
+https://pandaexteriors.com/customer-service/,page,200,site/customer-service/index.html,yes,
+https://pandaexteriors.com/faqs/,page,200,site/faqs/index.html,yes,
+https://pandaexteriors.com/gallery/,page,200,site/gallery/index.html,yes,
+https://pandaexteriors.com/gutters/,page,200,site/gutters/index.html,yes,
+https://pandaexteriors.com/gutters/gutter-guards/,page,200,site/gutters/gutter-guards/index.html,yes,
+https://pandaexteriors.com/interiors/,page,200,site/interiors/index.html,yes,
+https://pandaexteriors.com/offers/,page,200,site/offers/index.html,yes,
+https://pandaexteriors.com/past-projects/,page,200,site/past-projects/index.html,yes,
+https://pandaexteriors.com/podcast/,page,200,site/podcast/index.html,yes,
+https://pandaexteriors.com/position-details/,page,200,site/position-details/index.html,yes,
+https://pandaexteriors.com/privacy-policy/,page,200,site/privacy-policy/index.html,yes,
+https://pandaexteriors.com/referral/,page,200,site/referral/index.html,yes,
+https://pandaexteriors.com/referrals/,page,200,site/referrals/index.html,yes,
+https://pandaexteriors.com/reviews/,page,200,site/reviews/index.html,yes,
+https://pandaexteriors.com/roofing-costs/,page,200,site/roofing-costs/index.html,yes,
+https://pandaexteriors.com/roofing/,page,200,site/roofing/index.html,yes,
+https://pandaexteriors.com/roofing/attic-insulation/,page,200,site/roofing/attic-insulation/index.html,yes,
+https://pandaexteriors.com/roofing/repairs/,page,200,site/roofing/repairs/index.html,yes,
+https://pandaexteriors.com/roofing/replacement/,page,200,site/roofing/replacement/index.html,yes,
+https://pandaexteriors.com/roofing/residential/,page,200,site/roofing/residential/index.html,yes,
+https://pandaexteriors.com/roofing/types/,page,200,site/roofing/types/index.html,yes,
+https://pandaexteriors.com/service-areas/,page,200,site/service-areas/index.html,yes,
+https://pandaexteriors.com/services/,page,200,site/services/index.html,yes,
+https://pandaexteriors.com/siding/,page,200,site/siding/index.html,yes,
+https://pandaexteriors.com/site-map/,page,200,site/site-map/index.html,yes,
+https://pandaexteriors.com/solar/,page,200,site/solar/index.html,yes,
+https://pandaexteriors.com/solar/gaf-solar-roof/,page,200,site/solar/gaf-solar-roof/index.html,yes,
+https://pandaexteriors.com/solar/solar-panel-installations/,page,200,site/solar/solar-panel-installations/index.html,yes,
+https://pandaexteriors.com/terms-and-conditions/,page,200,site/terms-and-conditions/index.html,yes,
+https://pandaexteriors.com/thank-you/,page,200,site/thank-you/index.html,yes,
+https://pandaexteriors.com/pandav1-capture-404-check/,404-page,404,site/404.html,yes,
+https://pandaexteriors.com/blog,redirect,301,,yes,file
+https://pandaexteriors.com/favicon.ico,redirect,302,,yes,redirect → /wp-content/uploads/2025/04/favicon-16x16-1.png
+https://pandaexteriors.com/laurel-md,redirect,301,,n/a,redirect into an excluded sub-site (links point to the live site)
+https://pandaexteriors.com/philadelphia-pa,redirect,301,,n/a,redirect into an excluded sub-site (links point to the live site)
+https://pandaexteriors.com/privacy-policy,redirect,301,,yes,file
+https://pandaexteriors.com/services,redirect,301,,yes,file
+https://pandaexteriors.com/terms-and-conditions,redirect,301,,yes,file
+https://www.pandaexteriors.com/customer-service/,redirect,301,,yes,file
+https://www.pandaexteriors.com/gallery/,redirect,301,,yes,file
+https://www.pandaexteriors.com/past-projects/,redirect,301,,yes,file
+https://www.pandaexteriors.com/privacy-policy/,redirect,301,,yes,file
+https://pandaexteriors.com/powerwash/,error,404,,n/a,live returned HTTP 404 — nothing to copy
+https://pandaexteriors.com/window-replacement/,error,404,,n/a,live returned HTTP 404 — nothing to copy
+https://pandaexteriors.com/feed/,feed,200,site/feed/index.xml,yes,kept verbatim
+https://pandaexteriors.com/local-sitemap.xml,sitemap,200,site/local-sitemap.xml,yes,kept verbatim
+https://pandaexteriors.com/page-sitemap.xml,sitemap,200,site/page-sitemap.xml,yes,kept verbatim
+https://pandaexteriors.com/post-sitemap.xml,sitemap,200,site/post-sitemap.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap1.xml,sitemap,200,site/project-sitemap1.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap10.xml,sitemap,200,site/project-sitemap10.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap11.xml,sitemap,200,site/project-sitemap11.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap12.xml,sitemap,200,site/project-sitemap12.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap13.xml,sitemap,200,site/project-sitemap13.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap14.xml,sitemap,200,site/project-sitemap14.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap15.xml,sitemap,200,site/project-sitemap15.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap16.xml,sitemap,200,site/project-sitemap16.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap17.xml,sitemap,200,site/project-sitemap17.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap18.xml,sitemap,200,site/project-sitemap18.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap19.xml,sitemap,200,site/project-sitemap19.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap2.xml,sitemap,200,site/project-sitemap2.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap20.xml,sitemap,200,site/project-sitemap20.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap21.xml,sitemap,200,site/project-sitemap21.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap22.xml,sitemap,200,site/project-sitemap22.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap23.xml,sitemap,200,site/project-sitemap23.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap24.xml,sitemap,200,site/project-sitemap24.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap25.xml,sitemap,200,site/project-sitemap25.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap26.xml,sitemap,200,site/project-sitemap26.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap27.xml,sitemap,200,site/project-sitemap27.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap28.xml,sitemap,200,site/project-sitemap28.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap3.xml,sitemap,200,site/project-sitemap3.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap4.xml,sitemap,200,site/project-sitemap4.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap5.xml,sitemap,200,site/project-sitemap5.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap6.xml,sitemap,200,site/project-sitemap6.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap7.xml,sitemap,200,site/project-sitemap7.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap8.xml,sitemap,200,site/project-sitemap8.xml,yes,kept verbatim
+https://pandaexteriors.com/project-sitemap9.xml,sitemap,200,site/project-sitemap9.xml,yes,kept verbatim
+https://pandaexteriors.com/sitemap_index.xml,sitemap,200,site/sitemap_index.xml,yes,kept verbatim
+https://pandaexteriors.com/main-sitemap.xsl,sitemap-stylesheet,200,site/main-sitemap.xsl,yes,
+https://pandaexteriors.com/robots.txt,robots,200,site/robots.txt,yes,
+https://pandaexteriors.com/site.webmanifest,manifest,404,,n/a,live returned HTTP 404 — nothing to copy
+https://pandaexteriors.com/wp-content/uploads/2025/04/favicon-16x16-1.png,icon,200,site/wp-content/uploads/2025/04/favicon-16x16-1.png,yes,
+https://pandaexteriors.com/locations.kml,xml,200,site/locations.kml,yes,
