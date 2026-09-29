@@ -57,6 +57,7 @@ const rows = [
   ['Visual diff pass rate (≤ 1% different)', vdCompared.length ? `${vdPass}/${vdCompared.length} (${((vdPass / vdCompared.length) * 100).toFixed(1)}%)` : 'not run'],
   ['Links to city sub-sites removed', editedPages.length ? `${editedPages.reduce((n, c) => n + c.removedLinks, 0)} on ${editedPages.length} page(s): ${editedPages.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'],
   ['Form values redirected from a city site to the main site', (build.intentionalChanges || []).reduce((n, c) => n + (c.valueRewrites || 0), 0)],
+  ['Old map sections replaced with the animated US map', ((m) => (m.length ? `${m.length} page(s): ${m.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'))((build.intentionalChanges || []).filter((c) => c.customSections?.length))],
   ['Requests from the copy to the live site', vd.reduce((s, r) => s + (r.leaks || 0), 0)],
   ['Unresolved internal references (fixable)', lc ? `${lc.missing.length} (${lc.fixable})` : 'not run'],
   ['Broken links, HTTP crawl (fixable)', lc ? `${lc.linkinator.uniqueBroken} (${lc.linkinator.brokenFixable})` : 'not run'],

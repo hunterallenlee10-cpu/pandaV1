@@ -25,6 +25,17 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
 
+## Deliberate changes
+
+Besides removing the city links (above), the copy differs from the live site in one place on purpose: **the old map
+sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs` during the
+build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10 pages (it
+showed a screenshot of a Google Map) and the Google Maps "Projects | Map" widget on `/past-projects/` (it needs the
+live WordPress API, so it could never work in a static copy); `/service-areas/` also gets the map where its city list
+used to be. The map shows which states Panda serves and its local offices, with no numbers for now — see
+[`custom/us-map/README.md`](custom/us-map/README.md) to edit the areas or add job numbers. Pages changed this way are
+listed as "edited on purpose" in `docs/visual-diff/summary.md`.
+
 ## What's in the repo
 
 ```
@@ -32,6 +43,7 @@ site/                    the website — deploy this folder
   index.html, roofing/index.html, …   every page, at the same path as on the live site
   wp-content/, wp-includes/, …        CSS, JS, fonts, images (every srcset size), video, icons
   _external/<host>/…                  third-party static files made local (e.g. Google Fonts)
+  _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
@@ -52,6 +64,7 @@ docs/
   redirects.csv            every redirect hit during the capture
   asset-manifest.csv       every asset URL -> local file, status, type, size
 scripts/                   the capture / build / verification pipeline (Node.js + Playwright)
+custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
 ```
 
 ## View it locally
@@ -71,7 +84,7 @@ root-relative (`/roofing/`), so the copy must be served from the root of a host.
 | --- | --- | --- |
 | 1 | `01-inventory.mjs` | Reads `robots.txt` and every sitemap (recursively), then crawls links from the homepage and every sitemap URL (nav, footer, pagination, categories, tags, authors). Adds the 404 page, favicons / app icons, the web manifest and the RSS feeds. Detects sub-sites (other subdomains, or subdirectories running a separate install) and leaves them out. Writes `docs/url-inventory.csv`. |
 | 2 | `02-capture.mjs` | Opens every page in Chromium at 1440 px and at 390 px, scrolls slowly to the bottom so lazy images, sliders and delayed scripts load, waits for the network to go quiet, and saves the rendered HTML and full-page screenshots. **Every** browser request is intercepted: non-GET requests are dropped, analytics/ads/call-tracking requests are blocked, and requests to the site go through one shared, rate-limited, cached fetcher, so each file is downloaded only once. It then downloads every asset: all `srcset` sizes, `data-src` / `data-lazy-src`, `<picture>` sources, CSS backgrounds, `url()` references inside every stylesheet (recursively), `@font-face` fonts, SVGs, video and posters, icons and OG images. |
-| 3 | `03-build.mjs` | Assembles `site/` from the cache. Main-site URLs become root-relative and tracking snippets are commented out behind `<!-- TRACKING DISABLED -->` markers. Everything else is left byte-for-byte intact, including titles, meta descriptions, canonicals, OG/Twitter tags and JSON-LD. Also writes the redirect files and the docs. |
+| 3 | `03-build.mjs` | Assembles `site/` from the cache. Main-site URLs become root-relative and tracking snippets are commented out behind `<!-- TRACKING DISABLED -->` markers. Everything else is left byte-for-byte intact, including titles, meta descriptions, canonicals, OG/Twitter tags and JSON-LD, apart from the [deliberate changes](#deliberate-changes). Also writes the redirect files and the docs. |
 | 4 | `04-visual-diff.mjs` | Serves `site/` with `serve`, screenshots every page exactly like the live capture, and pixel-diffs it against the live screenshots with pixelmatch. Pages that differ by more than 1% are flagged. It also blocks and reports any request the copy makes to the live site. |
 | 4b | `04b-choose-page-source.mjs` | For flagged pages, builds the page from the HTML as delivered instead of the rendered DOM and keeps whichever matches live (see below). |
 | 5 | `05-check-links.mjs` | Checks that every internal reference in every page, stylesheet and manifest resolves to a file, runs `linkinator` over the served copy, and confirms every inventory URL has its file. |

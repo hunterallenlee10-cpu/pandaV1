@@ -1,0 +1,461 @@
+/* Panda Exteriors — animated "areas we serve" map (see README.md in this folder).
+   Everything is scoped to .pmap / .pmap-* so the site's own styles are untouched. */
+
+.pmap {
+  --pmap-land: #eceef1;
+  --pmap-border: #ffffff;
+  --pmap-served: #f26924;
+  --pmap-served-stroke: #b9491a;
+  --pmap-pin: #111111;
+  --pmap-pin-ring: #ffffff;
+  --pmap-pulse: #9acd32;
+  --pmap-ink: #111111;
+  --pmap-ink-2: #4b5563;
+  position: relative;
+  width: 100%;
+  color: var(--pmap-ink);
+  font-family: var(--robboto, Roboto), system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  text-align: left;
+}
+/* On the orange band: the country in a deeper orange, served states lit in white. */
+.pmap--on-orange {
+  --pmap-land: #de5818;
+  --pmap-border: rgba(255, 255, 255, 0.4);
+  --pmap-served: #fff8f2;
+  --pmap-served-stroke: #f26924;
+  --pmap-ink: #ffffff;
+}
+
+/* ---------------------------------------------------------------- the map */
+.pmap__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+}
+.pmap .pmap__svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: hidden;
+}
+.pmap__land {
+  fill: var(--pmap-land);
+}
+/* The map fades out at its edges instead of ending in a hard rectangle. */
+.pmap .pmap__svg {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  mask-composite: intersect;
+}
+.pmap__borders {
+  fill: none;
+  stroke: var(--pmap-border);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.pmap__state {
+  fill: var(--pmap-served);
+  stroke: var(--pmap-served-stroke);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+/* Markers are drawn in screen pixels (the script scales them to the zoom level). */
+.pmap__area {
+  cursor: pointer;
+  outline: none;
+}
+.pmap__pin,
+.pmap__pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.pmap__hit {
+  fill: transparent;
+}
+.pmap__dot {
+  fill: var(--pmap-pin);
+  stroke: var(--pmap-pin-ring);
+  stroke-width: 2.5;
+  transition: stroke 0.15s ease;
+}
+.pmap__pulse {
+  fill: none;
+  stroke: var(--pmap-pulse);
+  stroke-width: 3;
+  opacity: 0;
+}
+.pmap__count {
+  fill: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.pmap__area:hover .pmap__dot,
+.pmap__area:focus-visible .pmap__dot,
+.pmap__area.is-active .pmap__dot {
+  stroke: var(--pmap-pulse);
+  stroke-width: 4;
+}
+
+/* --------------------------------------------------------------- tooltip */
+.pmap__tip {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, calc(-100% - 16px));
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+.pmap [hidden],
+.pmap__tip[hidden] {
+  display: none !important;
+}
+.pmap__tip strong {
+  color: #ffffff;
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+}
+.pmap__tip span {
+  display: block;
+  color: #d1d5db;
+  font-size: 13px;
+}
+.pmap__tip::after {
+  content: "";
+  position: absolute;
+  left: var(--pmap-tip-arrow, 50%);
+  bottom: -5px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  background: inherit;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+/* ---------------------------------------------------------------- legend */
+.pmap .pmap__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 14px 0 0;
+  padding: 0;
+  color: var(--pmap-ink);
+  font-size: 14px;
+  line-height: 1.4;
+}
+.pmap--on-orange .pmap__legend {
+  display: inline-flex;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.88);
+}
+.pmap .pmap__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pmap__key {
+  display: inline-block;
+  flex: none;
+}
+.pmap__key--state {
+  width: 16px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--pmap-served);
+  box-shadow: inset 0 0 0 1px var(--pmap-served-stroke);
+}
+.pmap__key--office {
+  width: 11px;
+  height: 11px;
+  margin: 0 3px;
+  border-radius: 50%;
+  background: var(--pmap-pin);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--pmap-pulse);
+}
+
+/* ------------------------------------------------------------- animation
+   The script adds pmap--armed as soon as it runs (map at the whole-US view, states
+   unlit, markers hidden), then pmap--play / --lit / --pins / --idle as the section
+   scrolls into view. Without the script the map simply shows its final state. */
+.pmap--armed .pmap__svg {
+  opacity: 0;
+}
+.pmap--armed .pmap__state {
+  opacity: 0;
+}
+.pmap--armed .pmap__pin {
+  opacity: 0;
+  transform: scale(0);
+}
+.pmap--play .pmap__svg {
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+.pmap--lit .pmap__state {
+  opacity: 1;
+  transition: opacity 0.7s ease calc(var(--i, 0) * 110ms);
+}
+.pmap--pins .pmap__pin {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 130ms),
+    opacity 0.2s linear calc(var(--i, 0) * 130ms);
+}
+.pmap--idle .pmap__pulse {
+  animation: pmap-pulse 3s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  animation-delay: calc(var(--i, 0) * 500ms);
+}
+@keyframes pmap-pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
+/* ------------------------------------------------ explorer (large) version */
+.pmap--explorer .pmap__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+.pmap .pmap__chip {
+  appearance: none;
+  margin: 0;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.pmap .pmap__chip:hover {
+  border-color: #111111;
+}
+.pmap .pmap__chip[aria-pressed="true"] {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+.pmap .pmap__chip:focus-visible,
+.pmap .pmap__cta:focus-visible {
+  outline: 3px solid #f26924;
+  outline-offset: 2px;
+}
+.pmap--explorer .pmap__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: center;
+}
+.pmap--explorer .pmap__stage {
+  aspect-ratio: 4 / 3;
+}
+.pmap--explorer .pmap__state {
+  cursor: pointer;
+}
+.pmap--explorer.pmap--has-selection .pmap__state {
+  opacity: 0.45;
+}
+.pmap--explorer.pmap--has-selection .pmap__state.is-selected {
+  opacity: 1;
+}
+.pmap--explorer.pmap--has-selection .pmap__area:not(.is-selected) {
+  opacity: 0.35;
+}
+.pmap__info {
+  padding: 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f9fafb;
+}
+.pmap__info p {
+  margin: 0;
+  padding: 0;
+}
+.pmap .pmap__info-title {
+  margin-bottom: 6px;
+  color: #111111;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pmap .pmap__info-text {
+  margin-bottom: 14px;
+  color: var(--pmap-ink-2);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.pmap .pmap__info-offices {
+  margin-bottom: 20px;
+  color: #111111;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.pmap .pmap__info-offices[hidden] {
+  display: none;
+}
+.pmap__info-label {
+  display: block;
+  margin-bottom: 2px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pmap .pmap__info-jobs {
+  margin-bottom: 18px;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 700;
+}
+.pmap .pmap__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.pmap .pmap__cta:hover {
+  background: #333333;
+  color: #ffffff;
+}
+
+@media (max-width: 991px) {
+  .pmap--explorer .pmap__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .pmap__stage,
+  .pmap--explorer .pmap__stage {
+    aspect-ratio: 1 / 1;
+  }
+  .pmap .pmap__chip {
+    padding: 9px 14px;
+    font-size: 14px;
+  }
+}
+
+/* ------------------------------------------- page sections that hold a map */
+/* The orange "Local East Coast Exterior Remodelers" band (it used to be a picture). */
+.pmap-section--orange {
+  background-color: var(--seconday, #f26924);
+}
+.pmap-section .image-container {
+  width: 100%;
+  max-width: 640px;
+}
+/* Blocks added around the large map use the same font as the map. */
+.pmap-block,
+.pmap-projects {
+  font-family: var(--robboto, Roboto), system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+/* White card around the large map (Service Areas, Past Projects). */
+.pmap-card {
+  margin-top: 8px;
+  padding: clamp(16px, 3vw, 32px);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+.pmap-block {
+  padding: 8px 0 48px;
+}
+.pmap-block .pmap-block__intro {
+  margin: 0 0 20px;
+  color: #4b5563;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+}
+.pmap-block + .pmap-block {
+  padding-top: 24px;
+}
+/* Featured projects grid on Past Projects. */
+.pmap-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+}
+.pmap-projects a {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pmap-projects a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+.pmap-projects a:focus-visible {
+  outline: 3px solid #f26924;
+  outline-offset: 2px;
+}
+.pmap-projects .pmap-projects__item img {
+  display: block;
+  width: 100%;
+  /* the site forces .breakdance img { height: 100% !important } */
+  height: auto !important;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+.pmap-projects span {
+  display: block;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pmap *,
+  .pmap-projects a {
+    animation: none !important;
+    transition: none !important;
+  }
+}
