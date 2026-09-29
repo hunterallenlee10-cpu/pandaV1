@@ -24,7 +24,7 @@ for (const r of rendered) {
   if (!byUrl.has(r.url)) byUrl.set(r.url, []);
   byUrl.get(r.url).push(r);
 }
-const flagged = [...byUrl].filter(([url, rows]) => !overrides[url] && rows.some((r) => !r.pass)).map(([url]) => url);
+const flagged = [...byUrl].filter(([url, rows]) => !overrides[url] && rows.some((r) => !r.pass && !r.intentional)).map(([url]) => url);
 if (!flagged.length) {
   console.log('No flagged rendered pages — every page keeps the rendered DOM.');
   process.exit(0);

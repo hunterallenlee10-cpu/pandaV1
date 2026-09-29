@@ -6,7 +6,7 @@ the network to go quiet, back to top, carousels stopped on their first slide, an
 compared with pixelmatch (threshold 0.1, anti-aliasing ignored). Where page heights differ, the extra area counts as
 different. Pages differing by more than 1% are flagged.
 
-**Result: 347 of 348 screenshots pass (99.7%).** Flagged: 1.
+**Result: 340 of 342 screenshots pass (99.4%).** Flagged: 2. Not counted: 6 screenshot(s) of pages edited on purpose (listed below).
 
 Diff images (`<page>--<viewport>.jpg`, changed pixels in red) are saved next to this file for every screenshot
 that is not pixel-identical. Live screenshots are in `docs/screenshots/live/`.
@@ -20,6 +20,20 @@ typically because carousels or other scripts initialise a second time on already
 | Page | Viewport | Diff % | Height Δ (px) | Live-site requests | New JS errors | Note |
 | --- | --- | --- | --- | --- | --- | --- |
 | /gutters/ | mobile | 3.73 | 0 | 0 |  |  |
+| /siding/ | mobile | 3.47 | 0 | 0 |  |  |
+
+## Pages edited on purpose
+
+These pages differ from live by design: their links to the city sub-sites were removed from the copy.
+
+| Page | Viewport | Diff % | Change |
+| --- | --- | --- | --- |
+| /blog/how-long-does-a-roof-really-last/ | desktop | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
+| /blog/how-long-does-a-roof-really-last/ | mobile | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
+| /service-areas/ | desktop | 19.76 | edited on purpose: 17 link(s) to city sub-sites removed |
+| /service-areas/ | mobile | 12.84 | edited on purpose: 17 link(s) to city sub-sites removed |
+| /site-map/ | desktop | 37.51 | edited on purpose: 16 link(s) to city sub-sites removed |
+| /site-map/ | mobile | 51.61 | edited on purpose: 16 link(s) to city sub-sites removed |
 
 ## All pages
 
@@ -27,7 +41,7 @@ typically because carousels or other scripts initialise a second time on already
 | --- | --- | --- | --- | --- | --- | --- |
 | / | desktop | as-delivered | 1440×7954 | 1440×7954 | 0.000 | PASS |
 | / | mobile | as-delivered | 390×14621 | 390×14621 | 0.000 | PASS |
-| /about/ | desktop | rendered | 1440×4672 | 1440×4672 | 0.000 | PASS |
+| /about/ | desktop | rendered | 1440×4672 | 1440×4672 | 0.556 | PASS |
 | /about/ | mobile | rendered | 390×7396 | 390×7396 | 0.000 | PASS |
 | /affirm-payment/ | desktop | rendered | 1440×900 | 1440×900 | 0.000 | PASS |
 | /affirm-payment/ | mobile | rendered | 390×844 | 390×844 | 0.000 | PASS |
@@ -71,7 +85,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/do-you-need-a-new-roof/ | mobile | rendered | 390×6083 | 390×6083 | 0.000 | PASS |
 | /blog/does-homeowners-insurance-cover-roof-leaks-what-homeowners-need-to-know/ | desktop | rendered | 1440×6089 | 1440×6089 | 0.000 | PASS |
 | /blog/does-homeowners-insurance-cover-roof-leaks-what-homeowners-need-to-know/ | mobile | rendered | 390×12103 | 390×12103 | 0.000 | PASS |
-| /blog/does-your-roof-help-or-hurt-your-curb-appeal/ | desktop | rendered | 1440×3481 | 1440×3481 | 0.000 | PASS |
+| /blog/does-your-roof-help-or-hurt-your-curb-appeal/ | desktop | rendered | 1440×3481 | 1440×3481 | 0.064 | PASS |
 | /blog/does-your-roof-help-or-hurt-your-curb-appeal/ | mobile | rendered | 390×6687 | 390×6687 | 0.000 | PASS |
 | /blog/freeze-thaw-damage-the-hidden-problem-after-cold-snaps/ | desktop | rendered | 1440×5627 | 1440×5627 | 0.000 | PASS |
 | /blog/freeze-thaw-damage-the-hidden-problem-after-cold-snaps/ | mobile | rendered | 390×12270 | 390×12270 | 0.000 | PASS |
@@ -95,8 +109,8 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/how-hot-weather-affects-solar-roof-output/ | mobile | rendered | 390×10865 | 390×10865 | 0.000 | PASS |
 | /blog/how-long-do-you-have-to-file-a-roof-insurance-claim-after-a-storm/ | desktop | rendered | 1440×6552 | 1440×6552 | 0.000 | PASS |
 | /blog/how-long-do-you-have-to-file-a-roof-insurance-claim-after-a-storm/ | mobile | rendered | 390×12552 | 390×12552 | 0.000 | PASS |
-| /blog/how-long-does-a-roof-really-last/ | desktop | rendered | 1440×5754 | 1440×5754 | 0.000 | PASS |
-| /blog/how-long-does-a-roof-really-last/ | mobile | rendered | 390×10954 | 390×10954 | 0.000 | PASS |
+| /blog/how-long-does-a-roof-really-last/ | desktop | rendered | 1440×5754 | 1440×5754 | 0.011 | EDITED |
+| /blog/how-long-does-a-roof-really-last/ | mobile | rendered | 390×10954 | 390×10954 | 0.015 | EDITED |
 | /blog/how-summer-heat-damages-your-roof-shingle-curling-granule-loss-and-ventilation-warning-signs/ | desktop | rendered | 1440×8691 | 1440×8691 | 0.000 | PASS |
 | /blog/how-summer-heat-damages-your-roof-shingle-curling-granule-loss-and-ventilation-warning-signs/ | mobile | rendered | 390×14996 | 390×14996 | 0.000 | PASS |
 | /blog/how-to-budget-for-a-new-roof-without-the-sticker-shock/ | desktop | rendered | 1440×5816 | 1440×5816 | 0.000 | PASS |
@@ -121,13 +135,13 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/ | mobile | rendered | 390×9931 | 390×9931 | 0.000 | PASS |
 | /blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/ | desktop | rendered | 1440×10969 | 1440×10969 | 0.000 | PASS |
 | /blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/ | mobile | rendered | 390×17921 | 390×17921 | 0.000 | PASS |
-| /blog/offer/10-off-roof-replacement/ | desktop | rendered | 1440×2467 | 1440×2467 | 0.000 | PASS |
+| /blog/offer/10-off-roof-replacement/ | desktop | rendered | 1440×2467 | 1440×2467 | 0.012 | PASS |
 | /blog/offer/10-off-roof-replacement/ | mobile | rendered | 390×4302 | 390×4302 | 0.000 | PASS |
 | /blog/offer/1500-off-solar-project/ | desktop | rendered | 1440×2346 | 1440×2346 | 0.000 | PASS |
 | /blog/offer/1500-off-solar-project/ | mobile | rendered | 390×4050 | 390×4050 | 0.000 | PASS |
-| /blog/offer/find-out-about-our-no-interest-financial-options/ | desktop | rendered | 1440×2909 | 1440×2909 | 0.000 | PASS |
+| /blog/offer/find-out-about-our-no-interest-financial-options/ | desktop | rendered | 1440×2909 | 1440×2909 | 0.593 | PASS |
 | /blog/offer/find-out-about-our-no-interest-financial-options/ | mobile | rendered | 390×5302 | 390×5302 | 0.000 | PASS |
-| /blog/offer/our-installation-work-is-completed-by-certified-professionals/ | desktop | rendered | 1440×2497 | 1440×2497 | 0.000 | PASS |
+| /blog/offer/our-installation-work-is-completed-by-certified-professionals/ | desktop | rendered | 1440×2497 | 1440×2497 | 0.012 | PASS |
 | /blog/offer/our-installation-work-is-completed-by-certified-professionals/ | mobile | rendered | 390×4639 | 390×4639 | 0.000 | PASS |
 | /blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/ | desktop | rendered | 1440×2895 | 1440×2895 | 0.000 | PASS |
 | /blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/ | mobile | rendered | 390×5579 | 390×5579 | 0.000 | PASS |
@@ -137,7 +151,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/page/10/ | mobile | rendered | 390×7536 | 390×7536 | 0.000 | PASS |
 | /blog/page/11/ | desktop | rendered | 1440×3239 | 1440×3239 | 0.000 | PASS |
 | /blog/page/11/ | mobile | rendered | 390×7280 | 390×7280 | 0.000 | PASS |
-| /blog/page/12/ | desktop | rendered | 1440×3159 | 1440×3159 | 0.000 | PASS |
+| /blog/page/12/ | desktop | rendered | 1440×3159 | 1440×3159 | 0.489 | PASS |
 | /blog/page/12/ | mobile | rendered | 390×7120 | 390×7120 | 0.000 | PASS |
 | /blog/page/13/ | desktop | rendered | 1440×3111 | 1440×3111 | 0.000 | PASS |
 | /blog/page/13/ | mobile | rendered | 390×7120 | 390×7120 | 0.000 | PASS |
@@ -237,7 +251,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/solar-roof-inspection-summer-maintenance-for-maximum-performance/ | mobile | rendered | 390×11656 | 390×11656 | 0.000 | PASS |
 | /blog/solar-shingles-vs-traditional-solar-panels/ | desktop | rendered | 1440×6702 | 1440×6702 | 0.000 | PASS |
 | /blog/solar-shingles-vs-traditional-solar-panels/ | mobile | rendered | 390×12173 | 390×12173 | 0.000 | PASS |
-| /blog/spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together/ | desktop | rendered | 1440×4796 | 1440×4796 | 0.000 | PASS |
+| /blog/spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together/ | desktop | rendered | 1440×4796 | 1440×4796 | 0.004 | PASS |
 | /blog/spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together/ | mobile | rendered | 390×9597 | 390×9597 | 0.000 | PASS |
 | /blog/spring-is-a-great-season-for-roof-inspections/ | desktop | rendered | 1440×3432 | 1440×3432 | 0.000 | PASS |
 | /blog/spring-is-a-great-season-for-roof-inspections/ | mobile | rendered | 390×6437 | 390×6437 | 0.000 | PASS |
@@ -249,7 +263,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/ | mobile | rendered | 390×9653 | 390×9653 | 0.000 | PASS |
 | /blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/ | desktop | rendered | 1440×6278 | 1440×6278 | 0.000 | PASS |
 | /blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/ | mobile | rendered | 390×11109 | 390×11109 | 0.000 | PASS |
-| /blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/ | desktop | rendered | 1440×5023 | 1440×5023 | 0.000 | PASS |
+| /blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/ | desktop | rendered | 1440×5023 | 1440×5023 | 0.002 | PASS |
 | /blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/ | mobile | rendered | 390×9807 | 390×9807 | 0.000 | PASS |
 | /blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/ | desktop | rendered | 1440×10464 | 1440×10464 | 0.000 | PASS |
 | /blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/ | mobile | rendered | 390×17024 | 390×17024 | 0.000 | PASS |
@@ -265,7 +279,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/the-top-5-benefits-of-solar-panels-for-homeowners/ | mobile | rendered | 390×8755 | 390×8755 | 0.000 | PASS |
 | /blog/understanding-roof-warranties-whats-covered-and-whats-not/ | desktop | rendered | 1440×6304 | 1440×6304 | 0.000 | PASS |
 | /blog/understanding-roof-warranties-whats-covered-and-whats-not/ | mobile | rendered | 390×11858 | 390×11858 | 0.000 | PASS |
-| /blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/ | desktop | rendered | 1440×4094 | 1440×4094 | 0.005 | PASS |
+| /blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/ | desktop | rendered | 1440×4094 | 1440×4094 | 0.000 | PASS |
 | /blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/ | mobile | rendered | 390×7500 | 390×7500 | 0.000 | PASS |
 | /blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/ | desktop | rendered | 1440×5521 | 1440×5521 | 0.000 | PASS |
 | /blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/ | mobile | rendered | 390×10655 | 390×10655 | 0.000 | PASS |
@@ -293,7 +307,7 @@ typically because carousels or other scripts initialise a second time on already
 | /blog/winter-ready-roofs-why-every-roof-needs-a-tune-up-before-first-freeze/ | mobile | rendered | 390×10231 | 390×10231 | 0.000 | PASS |
 | /blog/winter-roof-repair-checklist-9-small-issues-to-fix-before-they-turn-into-big-leaks/ | desktop | rendered | 1440×5107 | 1440×5107 | 0.000 | PASS |
 | /blog/winter-roof-repair-checklist-9-small-issues-to-fix-before-they-turn-into-big-leaks/ | mobile | rendered | 390×9833 | 390×9833 | 0.000 | PASS |
-| /blog/winter-roof-replacement/ | desktop | rendered | 1440×3115 | 1440×3115 | 0.000 | PASS |
+| /blog/winter-roof-replacement/ | desktop | rendered | 1440×3115 | 1440×3115 | 0.561 | PASS |
 | /blog/winter-roof-replacement/ | mobile | rendered | 390×6040 | 390×6040 | 0.000 | PASS |
 | /blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/ | desktop | rendered | 1440×6329 | 1440×6329 | 0.000 | PASS |
 | /blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/ | mobile | rendered | 390×12616 | 390×12616 | 0.000 | PASS |
@@ -341,7 +355,7 @@ typically because carousels or other scripts initialise a second time on already
 | /referrals/ | mobile | rendered | 390×1149 | 390×1149 | 0.000 | PASS |
 | /reviews/ | desktop | rendered | 1440×3965 | 1440×3965 | 0.000 | PASS |
 | /reviews/ | mobile | rendered | 390×6009 | 390×6009 | 0.000 | PASS |
-| /roofing-costs/ | desktop | rendered | 1440×3817 | 1440×3817 | 0.535 | PASS |
+| /roofing-costs/ | desktop | rendered | 1440×3817 | 1440×3817 | 0.000 | PASS |
 | /roofing-costs/ | mobile | rendered | 390×6505 | 390×6505 | 0.000 | PASS |
 | /roofing/ | desktop | rendered | 1440×7189 | 1440×7189 | 0.000 | PASS |
 | /roofing/ | mobile | rendered | 390×11215 | 390×11215 | 0.000 | PASS |
@@ -355,14 +369,14 @@ typically because carousels or other scripts initialise a second time on already
 | /roofing/residential/ | mobile | rendered | 390×8966 | 390×8966 | 0.000 | PASS |
 | /roofing/types/ | desktop | rendered | 1440×4986 | 1440×4986 | 0.000 | PASS |
 | /roofing/types/ | mobile | rendered | 390×7691 | 390×7691 | 0.000 | PASS |
-| /service-areas/ | desktop | rendered | 1440×4579 | 1440×4579 | 0.000 | PASS |
-| /service-areas/ | mobile | rendered | 390×7608 | 390×7608 | 0.000 | PASS |
+| /service-areas/ | desktop | rendered | 1440×4579 | 1440×4466 | 19.758 | EDITED |
+| /service-areas/ | mobile | rendered | 390×7608 | 390×7495 | 12.842 | EDITED |
 | /services/ | desktop | rendered | 1440×3798 | 1440×3798 | 0.000 | PASS |
 | /services/ | mobile | rendered | 390×7418 | 390×7418 | 0.000 | PASS |
 | /siding/ | desktop | rendered | 1440×5245 | 1440×5245 | 0.000 | PASS |
-| /siding/ | mobile | rendered | 390×9229 | 390×9229 | 0.000 | PASS |
-| /site-map/ | desktop | rendered | 1440×2943 | 1440×2943 | 0.010 | PASS |
-| /site-map/ | mobile | rendered | 390×3727 | 390×3727 | 0.000 | PASS |
+| /siding/ | mobile | rendered | 390×9229 | 390×9229 | 3.470 | **FLAG** |
+| /site-map/ | desktop | rendered | 1440×2943 | 1440×2175 | 37.511 | EDITED |
+| /site-map/ | mobile | rendered | 390×3727 | 390×2735 | 51.612 | EDITED |
 | /solar/ | desktop | as-delivered | 1440×6810 | 1440×6810 | 0.000 | PASS |
 | /solar/ | mobile | as-delivered | 390×11188 | 390×11188 | 0.000 | PASS |
 | /solar/gaf-solar-roof/ | desktop | rendered | 1440×3074 | 1440×3074 | 0.000 | PASS |

@@ -24,6 +24,25 @@ const SRCSET_ATTR = /(^|-)srcset$/i;
 
 const ABS_RE = /^\s*(https?:)?\/\//i;
 
+// Removing links into excluded sub-sites: a link inside running text is
+// unwrapped (the words stay); any other link is removed together with every
+// container it leaves without visible content. Carousel navigation (arrows,
+// dots, live region) doesn't count as content of its own.
+const CAROUSEL_CHROME =
+  /(^|\s)(swiper-(button|pagination|notification|scrollbar)[\w-]*|swipper-buttons|slick-(arrow|dots)|owl-(nav|dots)|carousel__(nav|button|arrow|dots)[\w-]*)(\s|$)/i;
+const VISIBLE_ELEMENTS = new Set(['img', 'picture', 'video', 'audio', 'iframe', 'svg', 'canvas', 'input', 'select', 'textarea', 'button', 'object', 'embed']);
+const INLINE_PARENTS = new Set(['p', 'span', 'em', 'strong', 'b', 'i', 'u', 'small', 'label', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'figcaption', 'blockquote', 'dd', 'dt', 'caption', 'cite', 'q']);
+const STOP_AT = new Set(['body', 'html', 'main', 'header', 'footer']);
+
+function hasVisibleContent(node, skip) {
+  if (skip.has(node)) return false;
+  if (node.nodeName === '#text') return node.value.replace(/[\s\u200b\u00a0\ufeff]+/g, '') !== '';
+  if (!node.tagName || ['script', 'style', 'template', 'noscript'].includes(node.tagName)) return false;
+  if (CAROUSEL_CHROME.test(attrMap(node).class || '')) return false;
+  if (VISIBLE_ELEMENTS.has(node.tagName)) return true;
+  return (node.childNodes || []).some((c) => hasVisibleContent(c, skip));
+}
+
 const STUB =
   '<script>/* TRACKING DISABLED: no-op stand-ins so site code that calls these does not throw; nothing is sent anywhere. */' +
   'window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){};window.ga=window.ga||function(){};' +
@@ -76,12 +95,15 @@ function escapeComment(s) {
  *   pageUrl:  URL the document was served from
  *   mapUrl(absUrl, {relative}) -> replacement string | null
  *   disableTracking: boolean (default true)
+ *   isRemovedLink(absUrl) -> boolean      (optional) links to remove entirely
+ *   replaceRemovedUrl(absUrl) -> absUrl   (optional) for such URLs inside form values
  */
 export function transformHtml(html, ctx) {
   const doc = parseHtml(html);
   const edits = []; // { start, end, text }
   const disabled = []; // { start, end, names, ids, isScript }
-  const report = { trackers: [], rewrites: 0, external: [] };
+  const report = { trackers: [], rewrites: 0, external: [], removedLinks: 0, unwrappedLinks: 0, removedBlocks: [], valueRewrites: 0 };
+  const dropLinks = [];
   let base = ctx.pageUrl;
   walk(doc, (n) => {
     if (n.tagName === 'base' && base === ctx.pageUrl) {
@@ -151,6 +173,11 @@ export function transformHtml(html, ctx) {
     const a = attrMap(node);
     const loc = node.sourceCodeLocation;
 
+    if (ctx.isRemovedLink && (tag === 'a' || tag === 'area') && a.href) {
+      const abs = resolveUrl(a.href, base);
+      if (abs && ctx.isRemovedLink(abs)) dropLinks.push(node);
+    }
+
     // ---- tracking detection
     if (ctx.disableTracking !== false) {
       const attrText = Object.values(a).join(' ');
@@ -214,6 +241,18 @@ export function transformHtml(html, ctx) {
       const value = at.value;
       const aloc = loc.attrs?.[attrName(at)] || loc.attrs?.[name];
       if (!aloc || !value) continue;
+      if (tag === 'input' && name === 'value') {
+        // Form data goes to the form's handler as-is (e.g. a CRM redirect URL): never
+        // rewritten, except to point a removed sub-site URL at the main-site page.
+        if (ctx.isRemovedLink && /https?:\/\//i.test(value)) {
+          const next = value.replace(/https?:\/\/[^\s"'<>]+/gi, (m) => (ctx.isRemovedLink(m) ? ctx.replaceRemovedUrl(m) : m));
+          if (next !== value) {
+            addEdit(aloc.startOffset, aloc.endOffset, `${attrName(at)}="${escapeAttr(next)}"`);
+            report.valueRewrites++;
+          }
+        }
+        continue;
+      }
       let next = null;
       if (name === 'style') {
         next = rewriteCss(value);
@@ -239,12 +278,49 @@ export function transformHtml(html, ctx) {
     }
   });
 
-  // ---- apply: disabled ranges win over edits inside them
+  // ---- links into removed sub-sites
+  const dropSet = new Set(dropLinks);
+  const removals = new Set();
+  const unwraps = [];
+  for (const link of dropLinks) {
+    const parent = link.parentNode;
+    if (parent?.tagName && INLINE_PARENTS.has(parent.tagName) && hasVisibleContent(parent, dropSet)) {
+      unwraps.push(link);
+      continue;
+    }
+    let target = link;
+    while (target.parentNode?.tagName && !STOP_AT.has(target.parentNode.tagName) && !hasVisibleContent(target.parentNode, dropSet)) {
+      target = target.parentNode;
+    }
+    removals.add(target);
+  }
+  const insideAny = (n, set) => {
+    for (let x = n.parentNode; x; x = x.parentNode) if (set.has(x)) return true;
+    return false;
+  };
+  const removed = [...removals].filter((n) => n.sourceCodeLocation && !insideAny(n, removals));
+  const removedRanges = removed.map((n) => [n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset]);
+  const inRemoved = (start, end) => removedRanges.some(([a, b]) => start >= a && end <= b);
+  const unwrapRanges = [];
+  for (const link of unwraps) {
+    const l = link.sourceCodeLocation;
+    if (!l?.startTag || !l.endTag || inRemoved(l.startOffset, l.endOffset)) continue;
+    unwrapRanges.push([l.startTag.startOffset, l.startTag.endOffset], [l.endTag.startOffset, l.endTag.endOffset]);
+    report.unwrappedLinks++;
+  }
+  report.removedLinks = dropLinks.length;
+  report.removedBlocks = removed.map((n) => `<${n.tagName}${(attrMap(n).class || '').trim() ? '.' + attrMap(n).class.trim().split(/\s+/).slice(-1)[0] : ''}>`);
+
+  // ---- apply: removed blocks, disabled ranges and unwrapped tags win over edits inside them
   disabled.sort((x, y) => x.start - y.start);
   const top = [];
-  for (const d of disabled) if (!top.some((t) => d.start >= t.start && d.end <= t.end)) top.push(d);
-  const inDisabled = (e) => top.some((d) => e.start >= d.start && e.end <= d.end);
+  for (const d of disabled) if (!inRemoved(d.start, d.end) && !top.some((t) => d.start >= t.start && d.end <= t.end)) top.push(d);
+  const inDisabled = (e) =>
+    inRemoved(e.start, e.end) ||
+    top.some((d) => e.start >= d.start && e.end <= d.end) ||
+    unwrapRanges.some(([a, b]) => e.start >= a && e.end <= b);
   const all = edits.filter((e) => !inDisabled(e));
+  for (const [start, end] of [...removedRanges, ...unwrapRanges]) all.push({ start, end, text: '' });
   let stubPlaced = false;
   for (const d of top) {
     const original = html.slice(d.start, d.end);

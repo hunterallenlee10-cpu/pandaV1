@@ -28,6 +28,9 @@ const ONLY = opts.only ? String(opts.only).split(',') : null;
 const URLS = opts['urls-file'] ? new Set(readJson(path.resolve(opts['urls-file']))) : null;
 const FORCE = Boolean(opts.force);
 const SKIP_PAGES = Boolean(opts['assets-only']);
+// --screenshots-only: re-take the live screenshots (from the response cache) without
+// replacing the saved rendered HTML or re-running the asset download.
+const SCREENSHOTS_ONLY = Boolean(opts['screenshots-only']);
 
 const inv = readJson(path.join(PATHS.work, 'inventory.json'));
 const captureDir = path.join(PATHS.work, 'capture');
@@ -119,9 +122,8 @@ async function captureViewport(browser, pageInfo, vpName) {
     rec.finalUrl = page.url();
     rec.title = await page.title().catch(() => '');
     if (vpName === 'desktop') {
-      const html = await page.content();
       const rel = pageInfo.is404 ? '404.html' : pageLocalPath(pageInfo.url, 'text/html');
-      writeFile(path.join(renderedDir, rel), html);
+      if (!SCREENSHOTS_ONLY) writeFile(path.join(renderedDir, rel), await page.content());
       rec.renderedFile = rel;
     }
     rec.domUrls = await page.evaluate(collectDomUrls).catch(() => []);
@@ -290,7 +292,7 @@ async function downloadAssets() {
 
 async function main() {
   if (!SKIP_PAGES) await capturePages();
-  await downloadAssets();
+  if (!SCREENSHOTS_ONLY) await downloadAssets();
   console.log(
     `Fetcher: ${fetcher.stats.network} network requests, ${fetcher.stats.cacheHits} cache hits, ` +
       `${fetcher.stats.blockedRobots} robots-blocked, ${fetcher.stats.blockedForbidden} forbidden-blocked, ` +

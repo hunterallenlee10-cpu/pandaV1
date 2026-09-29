@@ -150,10 +150,19 @@ async function main() {
   const build = readJson(path.join(PATHS.work, 'build-report.json'), { pages: [] });
   const sourceOf = new Map(build.pages.map((p) => [p.url, p.source === 'raw' ? 'as-delivered' : 'rendered']));
   for (const r of results) r.source = sourceOf.get(r.url) || '';
+  // Pages edited on purpose (links to removed sub-sites taken out) are expected
+  // to differ from live: report them separately instead of as failures.
+  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks).map((c) => [c.url, c]));
+  for (const r of results) {
+    const c = editedPages.get(r.url);
+    r.intentional = c ? `edited on purpose: ${c.removedLinks} link(s) to city sub-sites removed` : '';
+  }
   writeJson(path.join(PATHS.work, `visual-diff-${LABEL}.json`), results);
-  const passed = results.filter((r) => r.pass).length;
-  const rate = results.length ? ((passed / results.length) * 100).toFixed(1) : '0';
-  const flagged = results.filter((r) => !r.pass);
+  const compared = results.filter((r) => !r.intentional);
+  const edited = results.filter((r) => r.intentional);
+  const passed = compared.filter((r) => r.pass).length;
+  const rate = compared.length ? ((passed / compared.length) * 100).toFixed(1) : '0';
+  const flagged = compared.filter((r) => !r.pass);
   const csvRows = results.map((r) => ({
     url: r.url,
     viewport: r.viewport,
@@ -162,7 +171,7 @@ async function main() {
     height_delta_px: r.heightDelta,
     diff_pixels: r.diffPixels,
     diff_pct: r.pct != null ? r.pct.toFixed(3) : '',
-    result: r.error ? 'ERROR' : r.pass ? 'PASS' : 'FLAG',
+    result: r.error ? 'ERROR' : r.intentional ? 'EDITED' : r.pass ? 'PASS' : 'FLAG',
     page_html: r.source,
     live_site_requests: r.leaks,
     js_errors_live: r.jsErrorsLive,
@@ -179,7 +188,8 @@ async function main() {
     `compared with pixelmatch (threshold 0.1, anti-aliasing ignored). Where page heights differ, the extra area counts as`,
     `different. Pages differing by more than ${FLAG_PCT}% are flagged.`,
     '',
-    `**Result: ${passed} of ${results.length} screenshots pass (${rate}%).** Flagged: ${flagged.length}.`,
+    `**Result: ${passed} of ${compared.length} screenshots pass (${rate}%).** Flagged: ${flagged.length}.` +
+      (edited.length ? ` Not counted: ${edited.length} screenshot(s) of pages edited on purpose (listed below).` : ''),
     '',
     `Diff images (\`<page>--<viewport>.jpg\`, changed pixels in red) are saved next to this file for every screenshot`,
     `that is not pixel-identical. Live screenshots are in \`docs/screenshots/live/\`.`,
@@ -192,17 +202,25 @@ async function main() {
       ['Page', 'Viewport', 'Diff %', 'Height Δ (px)', 'Live-site requests', 'New JS errors', 'Note'],
       flagged.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.heightDelta ?? '—', r.leaks, r.newJsErrors.join(' / ').slice(0, 120), r.error || '']),
     ) + '\n' : '',
+    edited.length
+      ? '## Pages edited on purpose\n\nThese pages differ from live by design: their links to the city sub-sites were removed from the copy.\n\n' +
+        mdTable(['Page', 'Viewport', 'Diff %', 'Change'], edited.map((r) => [new URL(r.url).pathname, r.viewport, r.pct != null ? r.pct.toFixed(2) : '—', r.intentional])) +
+        '\n'
+      : '',
     '## All pages',
     '',
     mdTable(
       ['Page', 'Viewport', 'Page HTML', 'Live size', 'Local size', 'Diff %', 'Result'],
-      results.map((r) => [new URL(r.url).pathname, r.viewport, r.source, r.liveSize || '—', r.localSize || '—', r.pct != null ? r.pct.toFixed(3) : '—', r.error ? 'ERROR' : r.pass ? 'PASS' : '**FLAG**']),
+      results.map((r) => [new URL(r.url).pathname, r.viewport, r.source, r.liveSize || '—', r.localSize || '—', r.pct != null ? r.pct.toFixed(3) : '—', r.error ? 'ERROR' : r.intentional ? 'EDITED' : r.pass ? 'PASS' : '**FLAG**']),
     ),
     '',
   ].join('\n');
   writeFile(path.join(OUT_DIR, 'summary.md'), md);
   const leakTotal = results.reduce((s, r) => s + (r.leaks || 0), 0);
-  console.log(`\nVisual diff (${LABEL}): ${passed}/${results.length} pass (${rate}%), ${flagged.length} flagged (> ${FLAG_PCT}%), ${leakTotal} live-site/tracking requests from the copy`);
+  console.log(
+    `\nVisual diff (${LABEL}): ${passed}/${compared.length} pass (${rate}%), ${flagged.length} flagged (> ${FLAG_PCT}%), ` +
+      `${edited.length} edited on purpose, ${leakTotal} live-site/tracking requests from the copy`,
+  );
 }
 
 main().catch((e) => {
