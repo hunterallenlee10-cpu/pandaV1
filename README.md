@@ -10,7 +10,7 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 ## What's in scope
 
-The copy contains what a visitor can reach by clicking through the site: **173 pages** (40 main pages,
+The copy contains what a visitor can reach by clicking through the site: **172 pages** (39 main pages,
 114 blog posts and listing pages, and the 19 project pages the site links to), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
@@ -21,19 +21,24 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   redirect points at the main site's `/thank-you/` page instead of a city site's. Controlled by
   `REMOVE_SUBSITE_LINKS` in `scripts/lib/config.mjs`; pages changed this way are listed as "edited on purpose"
   in `docs/visual-diff/summary.md`.
+- **Panda Interiors / Panda Bath**, removed on request. `/interiors/` was the only page about them (nothing linked
+  to it; it was listed in the sitemap). The page, its sitemap entry and the 25 files only it used (its bathroom
+  photos and styles) are left out, and the old address redirects to the home page. It was captured, so it is
+  counted in `docs/capture-summary.md` rather than in the exclusions list. Controlled by `REMOVE_PAGES` in
+  `scripts/lib/config.mjs`.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
 
 ## Deliberate changes
 
-Besides removing the city links (above), the copy differs from the live site in two places on purpose.
+Besides removing the city links (above), the copy differs from the live site on purpose in three ways.
 
-**The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by
-`scripts/lib/customize.mjs` during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast
-Exterior Remodelers" band on 10 pages (it showed a screenshot of a Google Map) and the Google Maps "Projects | Map" widget on `/past-projects/` (it needs the
-live WordPress API, so it could never work in a static copy); `/service-areas/` also gets the map where its city list
-used to be. The map shows which states Panda serves and its local offices, with no numbers for now — see
+**The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs`
+during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
+pages (it showed a screenshot of a Google Map) and the Google Maps "Projects | Map" widget on `/past-projects/` (it
+needs the live WordPress API, so it could never work in a static copy); `/service-areas/` also gets the map where its
+city list used to be. The map shows which states Panda serves and its local offices, with no numbers for now — see
 [`custom/us-map/README.md`](custom/us-map/README.md) to edit the areas or add job numbers. Pages changed this way are
 listed as "edited on purpose" in `docs/visual-diff/summary.md`.
 
@@ -46,6 +51,32 @@ wide screens. Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs` (or as an environm
 video ID to change it, or to `''` to keep the live site's video and sizing. It stays muted with no controls, and
 like on the live site it is hidden on phones (under 768 px wide).
 
+**Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
+the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.
+Most of these problems are on the live site too.
+
+- **Top bar** (every page): it asked each visitor for their location, then showed "Local Weather: N/A°F | Weather
+  Alerts: N/A". The same bar now reads "Free Estimates · Call (877) 213-8536".
+- **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
+  Reviews page.
+- **Testimonials** (18 pages): the two-review carousel never started (its script ran before the carousel library
+  loaded), so only the first review showed and the arrows did nothing. Both reviews are now shown side by side (one
+  per row on phones), without the arrows. On `/service-areas/` the section is removed: it isn't about service areas.
+- **Missing photos** (missing on the live site too): reviewers without a photo on the Home and Services pages get
+  their initials in the round photo spot.
+- **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
+  made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
+  picture.
+- **Blog share buttons** (93 posts) did nothing (their script is missing). They are now plain Facebook, Twitter,
+  LinkedIn and email share links.
+- **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
+  positions on `/careers/`.
+- **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`)
+  and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
+
+Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
+`docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual.
+
 ## What's in the repo
 
 ```
@@ -54,6 +85,7 @@ site/                    the website — deploy this folder
   wp-content/, wp-includes/, …        CSS, JS, fonts, images (every srcset size), video, icons
   _external/<host>/…                  third-party static files made local (e.g. Google Fonts)
   _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
+  _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
@@ -75,6 +107,7 @@ docs/
   asset-manifest.csv       every asset URL -> local file, status, type, size
 scripts/                   the capture / build / verification pipeline (Node.js + Playwright)
 custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
+custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 ```
 
 ## View it locally

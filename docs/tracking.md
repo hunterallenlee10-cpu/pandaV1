@@ -10,8 +10,8 @@ did not register visits either (and tools normally injected by Tag Manager were 
 
 | Service | IDs found | Pages | Disabled elements |
 | --- | --- | --- | --- |
-| Google Tag Manager | GTM-ND5VBQCV | 174 | <link> <script> <noscript> |
-| Google Analytics (gtag.js) | G-28J2ZDP9B0 | 172 | <script> |
+| Google Tag Manager | GTM-ND5VBQCV | 173 | <link> <script> <noscript> |
+| Google Analytics (gtag.js) | G-28J2ZDP9B0 | 171 | <script> |
 
 ## Requests blocked during capture
 

@@ -1252,65 +1252,11 @@ mark {
     }
 </style>
 <!--?php if (!is_admin()) : ?-->
-</head><body class="wp-theme-oxygen-zero pcv2-body breakdance pcv2-ready"><div class="xai-weather-ribbon" data-debug="weather-ribbon">
-    <span class="weather-data">Local Weather: <span>Loading...</span>°F | Weather Alerts: <span>Loading...</span></span>
+<link rel="stylesheet" href="/_custom/site-fixes/site-fixes.css"></head><body class="wp-theme-oxygen-zero pcv2-body breakdance pcv2-ready"><div class="xai-weather-ribbon" data-debug="weather-ribbon">
+    <span class="weather-data">Free Estimates · Call <a class="pfix-ribbon-link" href="tel:+18772138536">(877) 213-8536</a></span>
 </div>
 <!--?php endif; ?-->
-<script>
-    console.log('Weather Ribbon:', document.querySelector('.xai-weather-ribbon'));
-    console.log('Potential Navigation Elements:', document.querySelectorAll('nav.nav, .nav, [class*="nav"], header, [class*="header"], .oxy-nav-menu, .oxy-header-container'));
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=fbf2a82ffc724c006d1581a1f31166a2`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Client Geolocation Data:', data);
-                        const temp = Math.round(data.main.temp);
-                        const windSpeed = Math.round(data.wind.speed);
-                        const condition = data.weather[0].main;
-
-                        let alert = '';
-                        if (windSpeed > 15) {
-                            alert = `High Winds (${windSpeed} MPH)`;
-                        } else if (condition === 'Clear') {
-                            alert = 'Clear Skies';
-                        } else if (condition === 'Clouds') {
-                            alert = 'Cloudy';
-                        } else if (condition === 'Rain' || condition === 'Drizzle') {
-                            alert = 'Rain';
-                        } else if (condition === 'Thunderstorm') {
-                            alert = 'Hail';
-                        } else if (condition === 'Snow') {
-                            alert = 'Snow';
-                        } else if (condition === 'Mist' || condition === 'Fog') {
-                            alert = 'Fog';
-                        } else {
-                            alert = condition;
-                        }
-
-                        const weatherElement = document.querySelector('.weather-data');
-                        weatherElement.innerHTML = `Local Weather: <span>${temp}</span>°F | Weather Alerts: <span>${alert}</span>`;
-                    })
-                    .catch(error => {
-                        console.error('Client Weather API Error:', error);
-                        const weatherElement = document.querySelector('.weather-data');
-                        weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-                    });
-            },
-            function (error) {
-                console.error('Geolocation Error:', error);
-                const weatherElement = document.querySelector('.weather-data');
-                weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-            }
-        );
-    } else {
-        console.log('Geolocation not supported by this browser.');
-        const weatherElement = document.querySelector('.weather-data');
-        weatherElement.innerHTML = 'Local Weather: <span>N/A</span>°F | Weather Alerts: <span>N/A</span>';
-    }
-</script><noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>    <style>
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>    <style>
       :root {
         --pcv2-green: #9acd32;
         --pcv2-green-dark: #88b82b;
@@ -2744,7 +2690,7 @@ mark {
   <div class="oxy-container-974-101 oxy-container container">
     <div class="oxy-container-974-102 oxy-container row-flex">
       <div class="oxy-container-974-103 oxy-container Nav-Logo">
-        <a class="oxy-container-link-974-104 oxy-container-link Logo cursor-pointer" href="/index.html" target="_self">
+        <a class="oxy-container-link-974-104 oxy-container-link Logo cursor-pointer" href="/" target="_self">
           <img fetchpriority="high" width="2337" height="2560" class="oxy-image-974-105 oxy-image Logo-nav" src="/wp-content/uploads/2025/07/bighead-scaled.png" srcset="/wp-content/uploads/2025/07/bighead-scaled.png 2337w, /wp-content/uploads/2025/07/bighead-274x300.png 274w, /wp-content/uploads/2025/07/bighead-935x1024.png 935w, /wp-content/uploads/2025/07/bighead-768x841.png 768w, /wp-content/uploads/2025/07/bighead-1402x1536.png 1402w, /wp-content/uploads/2025/07/bighead-1870x2048.png 1870w" sizes="(max-width: 2337px) 100vw, 2337px" alt="Panda Exteriors">
         </a>
       </div>
@@ -2762,39 +2708,39 @@ mark {
             </a>
             <div class="oxy-container-974-112 oxy-container ul sub_menu">
               <div class="oxy-container-974-113 oxy-container li has_dropdown">
-                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/roofing/index.html" target="_self">
+                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/roofing/" target="_self">
                   <div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">Roofing</div>
                   <div class="oxy-html-code-854-102 oxy-html-code"><i class="fas fa-angle-right"></i></div>
                 </a>
                 <div class="oxy-container-974-115 oxy-container ul sub_menu">
-                  <div class="oxy-container-974-221 oxy-container li mobile-show"><a class="oxy-text-link-974-222 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/index.html" target="_self">Roofing</a></div>
+                  <div class="oxy-container-974-221 oxy-container li mobile-show"><a class="oxy-text-link-974-222 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/" target="_self">Roofing</a></div>
                   <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/residential/" target="_self">Residential Roofing</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/types/index.html" target="_self">Roofing Types</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/replacement/index.html" target="_self">Roof Replacement</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/types/" target="_self">Roofing Types</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/replacement/" target="_self">Roof Replacement</a></div>
                   <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/repairs/" target="_self">Roof Repairs</a></div>
                   <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing/attic-insulation/" target="_self">Attic Insulation</a></div>
                 </div>
               </div>
               <div class="oxy-container-974-121 oxy-container li has_dropdown">
-                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/commerical-roofing/index.html" target="_self">
+                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/commerical-roofing/" target="_self">
                   <div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">Commercial</div>
                   <div class="oxy-html-code-854-102 oxy-html-code"><i class="fas fa-angle-right"></i></div>
                 </a>
                 <div class="oxy-container-974-123 oxy-container ul sub_menu">
-                  <div class="oxy-container-974-223 oxy-container li mobile-show"><a class="oxy-text-link-974-224 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/index.html" target="_self">Commercial</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-types/index.html" target="_self">Roof Types</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-replacement/index.html" target="_self">Roof Replacement</a></div>
+                  <div class="oxy-container-974-223 oxy-container li mobile-show"><a class="oxy-text-link-974-224 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/" target="_self">Commercial</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-types/" target="_self">Roof Types</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/commerical-roofing/roof-replacement/" target="_self">Roof Replacement</a></div>
                 </div>
               </div>
               <div class="oxy-container-974-126 oxy-container li has_dropdown">
-                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/solar/index.html" target="_self">
+                <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/solar/" target="_self">
                   <div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">Solar</div>
                   <div class="oxy-html-code-854-102 oxy-html-code"><i class="fas fa-angle-right"></i></div>
                 </a>
                 <div class="oxy-container-974-128 oxy-container ul sub_menu">
-                  <div class="oxy-container-974-225 oxy-container li mobile-show"><a class="oxy-text-link-974-226 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/index.html" target="_self">Solar</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/solar-panel-installations/index.html" target="_self">Solar Panel Installation</a></div>
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/gaf-solar-roof/index.html" target="_self">GAF Solar Roof</a></div>
+                  <div class="oxy-container-974-225 oxy-container li mobile-show"><a class="oxy-text-link-974-226 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/" target="_self">Solar</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/solar-panel-installations/" target="_self">Solar Panel Installation</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/gaf-solar-roof/" target="_self">GAF Solar Roof</a></div>
                 </div>
               </div>
               <div class="oxy-container-974-178 oxy-container li has_dropdown">
@@ -2803,15 +2749,15 @@ mark {
                   <div class="oxy-html-code-854-102 oxy-html-code"><i class="fas fa-angle-right"></i></div>
                 </a>
                 <div class="oxy-container-974-180 oxy-container ul sub_menu">
-                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/index.html" target="_self">Siding</a></div>
+                  <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/" target="_self">Siding</a></div>
                   <div class="oxy-container-974-186 oxy-container li has_dropdown">
-                    <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/gutters/index.html" target="_self">
+                    <a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/gutters/" target="_self">
                       <div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">Gutters</div>
                       <div class="oxy-html-code-854-102 oxy-html-code"><i class="fas fa-angle-right"></i></div>
                     </a>
                     <div class="oxy-container-974-188 oxy-container ul sub_menu">
-                      <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/index.html" target="_self">Gutter Guards</a></div>
-                      <div class="oxy-container-974-227 oxy-container li mobile-show"><a class="oxy-text-link-974-228 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/index.html" target="_self">Gutters</a></div>
+                      <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/" target="_self">Gutter Guards</a></div>
+                      <div class="oxy-container-974-227 oxy-container li mobile-show"><a class="oxy-text-link-974-228 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/" target="_self">Gutters</a></div>
                     </div>
                   </div>
                 </div>
@@ -2828,7 +2774,7 @@ mark {
               <div class="oxy-container-974-209 oxy-container li mobile-show"><a class="oxy-text-link-974-214 oxy-text-link Nav-Link Nav-Link-Hover" href="/about/" target="_self">About Us</a></div>
               <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/roofing-costs/" target="_self">Roofing Costs</a></div>
               <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/customer-service/" target="_self">Customer Service</a></div>
-              <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/contact-us/index.html" target="_self">Contact Us</a></div>
+              <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/contact-us/" target="_self">Contact Us</a></div>
               <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/faqs/" target="_self">FAQs</a></div>
               <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/charity-and-community/" target="_self">Charity &amp; Community</a></div>
               <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/referral/" target="_self">Refer &amp; Earn</a></div>
@@ -2836,8 +2782,8 @@ mark {
             </div>
           </div>
           <div class="oxy-container-974-147 oxy-container Offers-menu li"><a class="oxy-text-link-974-230 oxy-text-link Nav-Link" href="/offers/" target="_self">Offers</a></div>
-          <div class="oxy-container-974-163 oxy-container service_Area_Link li"><a class="oxy-text-link-974-164 oxy-text-link Nav-Link" href="/service-areas/index.html" target="_self">Service Areas</a></div>
-          <div class="oxy-container-974-165 oxy-container Projects-Link li"><a class="oxy-text-link-974-166 oxy-text-link Nav-Link" href="/past-projects/index.html" target="_self">Projects</a></div>
+          <div class="oxy-container-974-163 oxy-container service_Area_Link li"><a class="oxy-text-link-974-164 oxy-text-link Nav-Link" href="/service-areas/" target="_self">Service Areas</a></div>
+          <div class="oxy-container-974-165 oxy-container Projects-Link li"><a class="oxy-text-link-974-166 oxy-text-link Nav-Link" href="/past-projects/" target="_self">Projects</a></div>
           <div class="oxy-container-974-232 oxy-container Blog-menu li has_dropdown">
             <a class="oxy-container-link-845-100 oxy-container-link Nav-Link Nav-Link-flex" href="#" target="_self">
               <div class="oxy-text-845-101 oxy-text Nav-Link Nav-link-Dropdown">Media</div>

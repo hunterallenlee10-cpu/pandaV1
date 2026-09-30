@@ -11,6 +11,8 @@
   --pmap-pulse: #9acd32;
   --pmap-ink: #111111;
   --pmap-ink-2: #4b5563;
+  --pmap-inset-bg: #ffffff;
+  --pmap-inset-frame: #d1d5db;
   position: relative;
   width: 100%;
   color: var(--pmap-ink);
@@ -24,6 +26,8 @@
   --pmap-served: #fff8f2;
   --pmap-served-stroke: #f26924;
   --pmap-ink: #ffffff;
+  --pmap-inset-bg: var(--seconday, #f26924);
+  --pmap-inset-frame: rgba(255, 255, 255, 0.6);
 }
 
 /* ---------------------------------------------------------------- the map */
@@ -102,6 +106,41 @@
 .pmap__area.is-active .pmap__dot {
   stroke: var(--pmap-pulse);
   stroke-width: 4;
+}
+
+/* A state far from the others (Florida) sits in a small framed box in the corner,
+   so the map doesn't have to zoom out for it. */
+.pmap__inset {
+  position: absolute;
+  z-index: 1;
+  right: 1.5%;
+  bottom: 2%;
+  width: min(25%, 200px);
+  aspect-ratio: var(--pmap-inset-aspect, 1);
+  border: 1.5px solid var(--pmap-inset-frame);
+  border-radius: 12px;
+  background: var(--pmap-inset-bg);
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+.pmap .pmap__inset-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: hidden;
+}
+.pmap__inset-name {
+  position: absolute;
+  left: 9px;
+  bottom: 6px;
+  color: var(--pmap-ink);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------- tooltip */
@@ -220,6 +259,15 @@
     transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 130ms),
     opacity 0.2s linear calc(var(--i, 0) * 130ms);
 }
+.pmap--armed .pmap__inset {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.pmap--pins .pmap__inset {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
 .pmap--idle .pmap__pulse {
   animation: pmap-pulse 3s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
   animation-delay: calc(var(--i, 0) * 500ms);
@@ -291,6 +339,12 @@
 }
 .pmap--explorer.pmap--has-selection .pmap__area:not(.is-selected) {
   opacity: 0.35;
+}
+/* While another state is zoomed in, the inset steps aside. */
+.pmap--explorer.pmap--has-selection .pmap__inset:not(.is-selected) {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 .pmap__info {
   padding: 22px;

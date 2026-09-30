@@ -1,5 +1,5 @@
 {
-  "_help": "Areas shown on the animated US map (see README.md in this folder). 'states' are lit up; 'areas' get a marker. Numbers are intentionally left out for now: add \"jobs\": <number> to an area (or a state) and rebuild to show counts. Areas with \"hidden\": true are not drawn.",
+  "_help": "Areas shown on the animated US map (see README.md in this folder). 'states' are lit up; 'areas' get a marker. Numbers are intentionally left out for now: add \"jobs\": <number> to an area (or a state) and rebuild to show counts. Areas with \"hidden\": true are not drawn. A state with \"inset\": true (far from the others) is drawn in a small box in the map's corner instead of widening the map.",
   "origin": "MD",
   "states": [
     { "code": "MD", "name": "Maryland" },
@@ -7,7 +7,9 @@
     { "code": "VA", "name": "Virginia" },
     { "code": "DE", "name": "Delaware" },
     { "code": "PA", "name": "Pennsylvania" },
-    { "code": "NJ", "name": "New Jersey" }
+    { "code": "NJ", "name": "New Jersey" },
+    { "code": "NC", "name": "North Carolina" },
+    { "code": "FL", "name": "Florida", "inset": true }
   ],
   "areas": [
     { "id": "laurel-md", "name": "Laurel", "state": "MD", "kind": "Local office", "lat": 39.0993, "lon": -76.8483 },
@@ -15,7 +17,7 @@
     { "id": "dover-de", "name": "Dover", "state": "DE", "kind": "Local office", "lat": 39.1582, "lon": -75.5244 },
     { "id": "marlton-nj", "name": "Marlton", "state": "NJ", "kind": "Local office", "lat": 39.8912, "lon": -74.9218 },
     { "id": "king-of-prussia-pa", "name": "King of Prussia", "state": "PA", "kind": "Local office", "lat": 40.0893, "lon": -75.3963 },
-    { "id": "charlotte-nc", "name": "Charlotte", "state": "NC", "kind": "Local office", "lat": 35.2271, "lon": -80.8431, "hidden": true },
-    { "id": "tampa-fl", "name": "Tampa", "state": "FL", "kind": "Local office", "lat": 27.9506, "lon": -82.4572, "hidden": true }
+    { "id": "charlotte-nc", "name": "Charlotte", "state": "NC", "kind": "Local office", "lat": 35.2271, "lon": -80.8431 },
+    { "id": "tampa-fl", "name": "Tampa", "state": "FL", "kind": "Local office", "lat": 27.9506, "lon": -82.4572 }
   ]
 }

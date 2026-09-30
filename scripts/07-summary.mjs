@@ -57,6 +57,8 @@ const rows = [
   ['Visual diff pass rate (≤ 1% different)', vdCompared.length ? `${vdPass}/${vdCompared.length} (${((vdPass / vdCompared.length) * 100).toFixed(1)}%)` : 'not run'],
   ['Links to city sub-sites removed', editedPages.length ? `${editedPages.reduce((n, c) => n + c.removedLinks, 0)} on ${editedPages.length} page(s): ${editedPages.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'],
   ['Form values redirected from a city site to the main site', (build.intentionalChanges || []).reduce((n, c) => n + (c.valueRewrites || 0), 0)],
+  ['Pages with site-audit fixes (scripts/lib/site-fixes.mjs)', ((m) => (m.length ? `${m.length} page(s)` : 'none'))((build.intentionalChanges || []).filter((c) => c.siteFixes?.length))],
+  ['Pages removed on request', build.removedPages?.length ? `${build.removedPages.map((u) => new URL(u).pathname).join(', ')} (redirects to /), plus ${build.removedPageFiles.length} file(s) only they used` : 'none'],
   ['Old map sections replaced with the animated US map', ((m) => (m.length ? `${m.length} page(s): ${m.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'))((build.intentionalChanges || []).filter((c) => c.customSections?.length))],
   ['Hero background video swapped', ((m) => (m.length ? m.map((c) => `${new URL(c.url).pathname} (${c.heroVideo.join('; ')})`).join(', ') : 'none'))((build.intentionalChanges || []).filter((c) => c.heroVideo?.length))],
   ['Requests from the copy to the live site', vd.reduce((s, r) => s + (r.leaks || 0), 0)],

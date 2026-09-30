@@ -22,11 +22,11 @@ Third-party embeds and widgets referenced in the HTML (iframes, widget scripts, 
 
 | Host | Kind | Pages | Example |
 | --- | --- | --- | --- |
-| js.stripe.com | script | 174 | https://js.stripe.com/v3/ |
-| maps.googleapis.com | script | 174 | https://maps.googleapis.com/maps/api/js?key=AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk&libraries=places |
-| js.stripe.com | iframe | 174 | https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fpandaexteriors.com%2F&title=Pan |
-| www.googletagmanager.com | script | 172 | https://www.googletagmanager.com/gtm.js?id=GTM-ND5VBQCV |
-| www.googletagmanager.com | noscript:iframe | 172 | https://www.googletagmanager.com/ns.html?id=GTM-ND5VBQCV |
+| js.stripe.com | script | 173 | https://js.stripe.com/v3/ |
+| maps.googleapis.com | script | 173 | https://maps.googleapis.com/maps/api/js?key=AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk&libraries=places |
+| js.stripe.com | iframe | 173 | https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fpandaexteriors.com%2F&title=Pan |
+| www.googletagmanager.com | script | 171 | https://www.googletagmanager.com/gtm.js?id=GTM-ND5VBQCV |
+| www.googletagmanager.com | noscript:iframe | 171 | https://www.googletagmanager.com/ns.html?id=GTM-ND5VBQCV |
 | www.youtube.com | iframe | 8 | https://www.youtube.com/embed/O9AcA7VefGY?si=Fvo-aiSnQLQtZ5XQ&controls=0&autoplay=1&mute=1&loop=1&playlist=O9AcA7VefGY&r |
 | www.youtube.com | noscript:iframe | 8 | https://www.youtube.com/embed/O9AcA7VefGY?si=Fvo-aiSnQLQtZ5XQ&controls=0&autoplay=1&mute=1&loop=1&playlist=O9AcA7VefGY&r |
 | www.iheart.com | iframe | 1 | https://www.iheart.com/podcast/800-community-dc-28487500/episode/community-dc-glenda-fu-smith-so-276425697/?embed=true |

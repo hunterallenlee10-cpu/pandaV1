@@ -9,11 +9,12 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, HERO_VIDEO_ID } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
+import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -63,10 +64,19 @@ function mapUrl(abs, { relative = false } = {}) {
     return null;
   }
   const asset = assetIndex.get(stripHash(u.href));
-  if (relative) return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
+  // Links to pages keep clean URLs (/service-areas/, not /service-areas/index.html),
+  // even when the browser also fetched the page as a resource (prefetch) during the
+  // capture; a page reached through a redirect is linked at its final address.
+  const page = asset && /html/.test(asset.contentType || '') && isSiteUrl(asset.finalUrl) ? new URL(asset.finalUrl) : null;
+  const pageHref = page && !inSubsite(page.pathname) ? page.pathname + page.search + u.hash : null;
+  if (relative) {
+    if (page) return pageHref && stripHash(asset.finalUrl) !== stripHash(u.href) ? pageHref : null;
+    return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
+  }
   if (isSiteUrl(u)) {
     if (inSubsite(u.pathname)) return null; // separate site: keep live link (unless links to it are removed)
-    if (asset && asset.renamed) return relToUrlPath(asset.rel) + u.hash;
+    if (pageHref) return pageHref;
+    if (asset && asset.renamed && !page) return relToUrlPath(asset.rel) + u.hash;
     return u.pathname + u.search + u.hash || '/';
   }
   if (asset) return relToUrlPath(asset.rel) + u.hash;
@@ -115,24 +125,29 @@ const pages = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status)
 
 // Links into excluded sub-sites (the city sections) are removed from the copy
 // when REMOVE_SUBSITE_LINKS is on; a sub-site URL inside a form value (e.g. the
-// lead form's post-submit redirect) becomes the matching main-site page.
-const pagePaths = new Set(pages.map((r) => new URL(r.url).pathname));
-const isRemovedLink = REMOVE_SUBSITE_LINKS
-  ? (abs) => {
-      try {
-        const u = new URL(abs);
-        return isSiteUrl(u) && inSubsite(u.pathname);
-      } catch {
-        return false;
+// lead form's post-submit redirect) becomes the matching main-site page. Links to
+// pages removed on request (REMOVED_PAGES) go the same way; their form values
+// become the home page.
+const pagePaths = new Set(pages.map((r) => new URL(r.url).pathname).filter((p) => !isRemovedPage(p)));
+const isRemovedLink =
+  REMOVE_SUBSITE_LINKS || REMOVED_PAGES.length
+    ? (abs) => {
+        try {
+          const u = new URL(abs);
+          return isSiteUrl(u) && ((REMOVE_SUBSITE_LINKS && inSubsite(u.pathname)) || isRemovedPage(u.pathname));
+        } catch {
+          return false;
+        }
       }
-    }
-  : null;
+    : null;
 function replaceRemovedUrl(abs) {
   const u = new URL(abs);
+  if (isRemovedPage(u.pathname)) return SITE_ORIGIN + '/';
   const prefix = subsitePrefixes.find((p) => u.pathname.startsWith(p) || u.pathname === p.replace(/\/$/, '')) || '';
   const rest = '/' + u.pathname.slice(prefix.length).replace(/^\/+/, '');
   return SITE_ORIGIN + (pagePaths.has(rest) ? rest : '/');
 }
+const removedPages = []; // { url, html } of the pages removed on request
 const intentionalChanges = [];
 const pageReports = [];
 const formsSeen = new Map();
@@ -147,29 +162,44 @@ for (const row of pages) {
     pageReports.push({ url: row.url, rel, error: 'raw HTML missing from cache' });
     continue;
   }
-  put(path.posix.join('_raw', rel), raw.body, row.url);
+  const removed = !is404 && isRemovedPage(new URL(row.url).pathname);
+  if (!removed) put(path.posix.join('_raw', rel), raw.body, row.url);
   const renderedPath = path.join(PATHS.work, 'rendered', rel);
   const wanted = overrides[row.url] || SOURCE;
   const useRendered = wanted === 'rendered' && fs.existsSync(renderedPath);
   const srcHtml = useRendered ? fs.readFileSync(renderedPath, 'utf8') : raw.body.toString('utf8');
-  if (useRendered) pagesFromRendered++;
   const charset = /<meta[^>]+charset=["']?([\w-]+)/i.exec(srcHtml)?.[1];
   const transformed = transformHtml(srcHtml, { pageUrl: row.url, mapUrl, siteOrigin: SITE_ORIGIN, isRemovedLink, replaceRemovedUrl });
+  if (removed) {
+    // Taken off the copy on request: nothing is written. Its HTML (with local paths)
+    // is kept to find the files only it used (step 3b).
+    removedPages.push({ url: row.url, html: transformed.html });
+    continue;
+  }
+  if (useRendered) pagesFromRendered++;
   const { report } = transformed;
-  // Deliberate changes on top of the copy: the old map sections -> the animated US map,
-  // and the homepage hero's background video -> HERO_VIDEO_ID.
-  const custom = CUSTOM_US_MAP ? applyCustomizations(transformed.html, { pageUrl: row.url }) : { html: transformed.html, changes: [] };
+  // Deliberate changes on top of the copy: the old map sections -> the animated US map
+  // (CUSTOM_US_MAP), the fixes from the site audit (SITE_FIXES), and the homepage hero's
+  // background video -> HERO_VIDEO_ID.
+  const custom =
+    CUSTOM_US_MAP || SITE_FIXES
+      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, siteDir: OUT, siteOrigin: SITE_ORIGIN })
+      : { html: transformed.html, changes: { map: [], fixes: [] } };
   const hero = applyHeroVideo(custom.html, { videoId: HERO_VIDEO_ID });
   put(rel, hero.html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
-  if (report.removedLinks || report.valueRewrites || custom.changes.length || hero.changes.length) {
+  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length || hero.changes.length) {
     intentionalChanges.push({
       url: row.url,
       removedLinks: report.removedLinks,
       unwrappedLinks: report.unwrappedLinks,
       removedBlocks: report.removedBlocks,
       valueRewrites: report.valueRewrites,
-      customSections: custom.changes,
+      customSections: custom.changes.map,
+      siteFixes: custom.changes.fixes,
+      // Fixes that change a whole section or message (the visual diff lists these pages
+      // as edited on purpose; pages with only the small fixes must still match live).
+      siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
       heroVideo: hero.changes,
     });
   }
@@ -205,9 +235,14 @@ const mapPages = intentionalChanges.filter((c) => c.customSections?.length);
 if (mapPages.length) {
   for (const [name, url] of Object.entries(US_MAP_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(US_MAP_DIR, name)), `custom/us-map/${name}`);
 }
+const fixPages = intentionalChanges.filter((c) => c.siteFixes?.length);
+if (fixPages.length) {
+  for (const [name, url] of Object.entries(SITE_FIXES_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SITE_FIXES_DIR, name)), `custom/site-fixes/${name}`);
+}
 
 // 3. Special files kept verbatim: robots.txt, sitemaps (+ XSL), feeds
 const rewrites = [];
+const sitemapsEdited = [];
 for (const row of inv.rows) {
   if (!['robots', 'sitemap', 'sitemap-stylesheet', 'feed', 'xml', 'file'].includes(row.type)) continue;
   if (Number(row.http_status) !== 200) continue;
@@ -215,9 +250,64 @@ for (const row of inv.rows) {
   if (!res) continue;
   const u = new URL(row.url);
   const rel = row.type === 'robots' ? 'robots.txt' : pageLocalPath(row.url, res.contentType);
-  if (!written.has(rel)) put(rel, res.body, row.url);
+  let body = res.body;
+  if (row.type === 'sitemap' && removedPages.length) {
+    // Sitemap entries of the pages removed on request go too.
+    const xml = body.toString('utf8');
+    const kept = xml.replace(/[ \t]*<url>([\s\S]*?)<\/url>[ \t]*\r?\n?/g, (m, inner) => {
+      try {
+        const loc = new URL(/<loc>\s*([^<\s]+)\s*<\/loc>/.exec(inner)?.[1]);
+        return isSiteUrl(loc) && isRemovedPage(loc.pathname) ? '' : m;
+      } catch {
+        return m;
+      }
+    });
+    if (kept !== xml) {
+      body = Buffer.from(kept, 'utf8');
+      sitemapsEdited.push(u.pathname);
+    }
+  }
+  if (!written.has(rel)) put(rel, body, row.url);
   const servedAt = '/' + rel;
   if (u.pathname !== servedAt && u.pathname.endsWith('/')) rewrites.push({ from: u.pathname, to: relToUrlPath(rel) });
+}
+
+// 3b. Files only the pages removed on request used (their photos, page-only styles …)
+// are left out too. A file stays if its name appears in any other file of the copy.
+const leftOut = new Set();
+if (removedPages.length) {
+  const textFile = /\.(html?|css|js|mjs|json|xml|xsl|txt|svg|webmanifest)$/i;
+  const texts = new Map();
+  for (const rel of written.keys()) if (!rel.startsWith('_raw/') && textFile.test(rel)) texts.set(rel, fs.readFileSync(path.join(OUT, rel), 'utf8'));
+  const names = (rel) => {
+    const b = path.posix.basename(rel);
+    return [...new Set([b, encodeURI(b), encodeURIComponent(b)])];
+  };
+  const usedElsewhere = (rel) => {
+    const n = names(rel);
+    for (const [other, t] of texts) if (other !== rel && !leftOut.has(other) && n.some((x) => t.includes(x))) return true;
+    return false;
+  };
+  let queue = [...seenRel].filter((rel) => removedPages.some((p) => p.html.includes('/' + rel) || p.html.includes('/' + encodeURI(rel))));
+  while (queue.length) {
+    const next = [];
+    for (const rel of queue) {
+      if (leftOut.has(rel) || usedElsewhere(rel)) continue;
+      leftOut.add(rel);
+      // A style sheet or script only they used: what it references may be theirs alone too.
+      const t = texts.get(rel);
+      if (t) for (const other of seenRel) if (!leftOut.has(other) && names(other).some((x) => t.includes(x))) next.push(other);
+    }
+    queue = next;
+  }
+  for (const rel of leftOut) {
+    const file = path.join(OUT, rel);
+    assetCount--;
+    assetBytes -= fs.statSync(file).size;
+    fs.rmSync(file);
+    written.delete(rel);
+    for (let dir = path.dirname(file); dir !== OUT && fs.readdirSync(dir).length === 0; dir = path.dirname(dir)) fs.rmdirSync(dir);
+  }
 }
 
 // 4. Redirects
@@ -230,6 +320,8 @@ for (const a of assets) {
     if (hop.location && !redirectRows.has(hop.url)) redirectRows.set(hop.url, { from: hop.url, status: hop.status, to: hop.location, kind: 'asset' });
   }
 }
+// The address of a page removed on request leads to the home page.
+for (const p of removedPages) redirectRows.set(p.url, { from: p.url, status: 301, to: SITE_ORIGIN + '/', kind: 'page removed on request' });
 for (const c of captures.values()) {
   for (const vp of Object.values(c.viewports || {})) {
     for (const r of vp.siteRequests || []) {
@@ -349,7 +441,7 @@ const manifestRows = assets.map((a) => {
   const idx = assetIndex.get(stripHash(a.url));
   return {
     url: a.url,
-    local_path: idx ? `site/${idx.rel}` : '',
+    local_path: idx ? (leftOut.has(idx.rel) ? '(left out: only used by a page removed on request)' : `site/${idx.rel}`) : '',
     http_status: a.status || a.blocked || a.error,
     content_type: a.contentType,
     bytes: a.bytes,
@@ -525,6 +617,9 @@ writeJson(path.join(PATHS.work, 'build-report.json'), {
   forms: formsList.length,
   jsErrorsLive: jsErrors.length,
   intentionalChanges,
+  removedPages: removedPages.map((p) => p.url),
+  removedPageFiles: [...leftOut].sort(),
+  sitemapsEdited,
 });
 writeJson(path.join(PATHS.work, 'live-js-errors.json'), jsErrors);
 
@@ -544,6 +639,15 @@ if (REMOVE_SUBSITE_LINKS) {
 }
 if (CUSTOM_US_MAP) {
   console.log(`  animated US map: ${mapPages.length} page(s) — ${mapPages.map((c) => new URL(c.url).pathname).join(', ') || 'no map sections found'}`);
+}
+if (SITE_FIXES) {
+  const counts = {};
+  for (const c of fixPages) for (const f of c.siteFixes) { const k = f.replace(/\s*\(.*$/, '').replace(/:.*$/, ''); counts[k] = (counts[k] || 0) + 1; }
+  console.log(`  site fixes: ${fixPages.length} page(s)`);
+  for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`    ${String(n).padStart(3)} × ${k}`);
+}
+if (removedPages.length) {
+  console.log(`  pages removed on request: ${removedPages.map((p) => new URL(p.url).pathname).join(', ')} — plus ${leftOut.size} file(s) only they used; sitemap entries dropped from ${sitemapsEdited.join(', ') || 'none'}`);
 }
 if (HERO_VIDEO_ID) {
   const heroPages = intentionalChanges.filter((c) => c.heroVideo?.length);

@@ -31,6 +31,11 @@
       "source": "/favicon.ico",
       "destination": "/wp-content/uploads/2025/04/favicon-16x16-1.png",
       "statusCode": 302
+    },
+    {
+      "source": "/interiors/",
+      "destination": "/",
+      "statusCode": 301
     }
   ]
 }
