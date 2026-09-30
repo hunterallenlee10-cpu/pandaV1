@@ -96,7 +96,7 @@ function renderProjects(cards) {
 const explorerBlock = (uid) =>
   `<div class="pmap-block pmap-block--areas">` +
   `<h2 class="heading-2 text-center">Areas We Serve</h2>` +
-  `<p class="pmap-block__intro">Select a state to zoom in and see our local offices.</p>` +
+  `<p class="pmap-block__intro">Select a state to zoom in and see how many jobs we've completed there.</p>` +
   `<div class="pmap-card">${renderExplorerMap({ uid })}</div>` +
   `</div>`;
 

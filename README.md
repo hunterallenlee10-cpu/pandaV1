@@ -38,8 +38,9 @@ Besides removing the city links (above), the copy differs from the live site on 
 during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
 pages (it showed a screenshot of a Google Map) and the Google Maps "Projects | Map" widget on `/past-projects/` (it
 needs the live WordPress API, so it could never work in a static copy); `/service-areas/` also gets the map where its
-city list used to be. The map shows which states Panda serves and its local offices, with no numbers for now — see
-[`custom/us-map/README.md`](custom/us-map/README.md) to edit the areas or add job numbers. Pages changed this way are
+city list used to be. The map shows the 20 states (counting Washington, D.C.) where Panda has completed jobs, each
+shaded by its number of jobs (9,900 in all), and its local offices — see
+[`custom/us-map/README.md`](custom/us-map/README.md) to edit the areas or update the numbers. Pages changed this way are
 listed as "edited on purpose" in `docs/visual-diff/summary.md`.
 
 **The homepage hero plays a different background video.** The hero's muted, looping YouTube background shows

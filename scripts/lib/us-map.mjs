@@ -16,6 +16,9 @@ const r1 = (n) => Math.round(n * 10) / 10;
 const fmt = (b) => b.map(r1).join(' ');
 const listJoin = (a) => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`);
 const fmtJobs = (n) => Number(n).toLocaleString('en-US');
+const jobsText = (n) => `${fmtJobs(n)} ${Number(n) === 1 ? 'job' : 'jobs'}`;
+// us-map.css has fill colours for this many job bands.
+const MAX_TIERS = 5;
 
 // Pad a box [x0, y0, x1, y1] and enforce a minimum size; returns [x, y, w, h].
 function padBox([x0, y0, x1, y1], pad, min) {
@@ -43,6 +46,18 @@ export function loadUsMap() {
     return { ...s, name: s.name || g.name, d: g.d, bbox: g.bbox, centroid: g.centroid, inset: !!s.inset };
   });
   const stateByCode = new Map(states.map((s) => [s.code, s]));
+
+  // Job bands: each number in jobTiers is where a band starts. A state with jobs is
+  // shaded by its band (1 = fewest); a state without keeps the plain "served" colour.
+  const starts = data.jobTiers || [];
+  if (starts.length > MAX_TIERS || starts.some((n, i) => !(Number.isFinite(n) && n > (i ? starts[i - 1] : 0)))) {
+    throw new Error(`custom/us-map/areas.json: "jobTiers" must be up to ${MAX_TIERS} increasing positive numbers`);
+  }
+  const tiers = starts.map((min, i) => ({ tier: i + 1, min, max: i + 1 < starts.length ? starts[i + 1] - 1 : null }));
+  for (const s of states) {
+    const jobs = Number(s.jobs) || 0;
+    s.tier = tiers.filter((t) => jobs >= t.min).length || 0;
+  }
   const areas = data.areas
     .filter((a) => !a.hidden)
     .map((a) => {
@@ -65,7 +80,11 @@ export function loadUsMap() {
   const main = states.filter((s) => !s.inset);
   if (!main.length) throw new Error('custom/us-map/areas.json: every state is an inset');
   const regionBounds = union([...main.map((s) => s.bbox), ...areas.filter((a) => !a.inset).map(point)]);
-  const region = padBox(regionBounds, 26, 60);
+  // When the served states stretch across most of the country, show the whole map (as
+  // framed by the geometry tool) instead of a box that cuts through the states around them.
+  const lower48 = union(Object.entries(geo.states).filter(([code]) => code !== 'AK' && code !== 'HI').map(([, g]) => g.bbox));
+  const whole = regionBounds[2] - regionBounds[0] >= 0.75 * (lower48[2] - lower48[0]);
+  const region = whole ? [...geo.viewBox] : padBox(regionBounds, 26, 60);
   for (const s of main) {
     const own = areas.filter((a) => a.state === s.code).map(point);
     s.box = padBox(union([s.bbox, ...own]), 18, 80);
@@ -78,7 +97,7 @@ export function loadUsMap() {
   // square, so it lands on open water. Every map box is at least as wide as it is tall,
   // so this doesn't zoom the map out.
   if (inset && region[2] < region[3]) region[2] = region[3];
-  cached = { geo, states, stateByCode, areas, region, inset, full: geo.viewBox };
+  cached = { geo, states, stateByCode, areas, region, whole, inset, tiers, shaded: states.some((s) => s.tier), full: geo.viewBox };
   return cached;
 }
 
@@ -86,7 +105,13 @@ export function loadUsMap() {
 function describe(map) {
   const stateNames = map.states.map((s) => s.name);
   const offices = map.areas.map((a) => `${a.name}, ${a.state}`);
-  return { stateNames, offices, statesText: listJoin(stateNames), officesText: offices.join(' · ') };
+  const statesText = listJoin(stateNames);
+  // With job numbers the panel sums up instead of listing every state (the buttons do that).
+  const dc = map.states.find((s) => s.code === 'DC');
+  const n = map.states.length - (dc ? 1 : 0);
+  const where = [n ? `${n} ${n === 1 ? 'state' : 'states'}` : '', dc ? dc.name : ''].filter(Boolean).join(' and ');
+  const overviewText = map.shaded ? `We've completed jobs in ${where}${where.endsWith('.') ? '' : '.'}` : statesText;
+  return { stateNames, offices, statesText, overviewText, officesText: offices.join(' · ') };
 }
 
 // One office marker. k0 is the marker scale for the static (no-JS) render; the script
@@ -95,7 +120,7 @@ function renderPin(map, a, k0) {
   const maxJobs = Math.max(0, ...map.areas.map((x) => Number(x.jobs) || 0));
   const jobs = Number(a.jobs) || 0;
   const stateName = map.stateByCode.get(a.state).name;
-  const label = `${a.name}, ${stateName}: ${a.kind}${jobs ? `, ${fmtJobs(jobs)} jobs` : ''}`;
+  const label = `${a.name}, ${stateName}: ${a.kind}${jobs ? `, ${jobsText(jobs)}` : ''}`;
   // With job numbers the marker becomes a bubble whose area is proportional to the count.
   const r = jobs ? r1(10 + 18 * Math.sqrt(jobs / maxJobs)) : 6;
   const count = jobs ? `<text class="pmap__count" dy="0.35em">${esc(fmtJobs(jobs))}</text>` : '';
@@ -109,7 +134,7 @@ function renderPin(map, a, k0) {
   );
 }
 const statePath = (s) =>
-  `<path class="pmap__state" data-state="${s.code}" data-name="${esc(s.name)}"` +
+  `<path class="pmap__state${s.tier ? ` pmap__state--t${s.tier}` : ''}" data-state="${s.code}" data-name="${esc(s.name)}"` +
   `${Number(s.jobs) ? ` data-jobs="${Number(s.jobs)}"` : ''} style="--i:${s.order}" d="${s.d}"/>`;
 // Biggest bubbles first, so smaller ones are drawn on top of them.
 const bySize = (areas) => [...areas].sort((a, b) => (Number(b.jobs) || 0) - (Number(a.jobs) || 0));
@@ -117,12 +142,16 @@ const bySize = (areas) => [...areas].sort((a, b) => (Number(b.jobs) || 0) - (Num
 function renderSvg(map, { uid, variant }) {
   const { statesText } = describe(map);
   const officesSpoken = listJoin(map.areas.map((a) => `${a.name}, ${map.stateByCode.get(a.state).name}`));
+  const desc = map.shaded
+    ? `A map of the United States, each state shaded by the number of jobs completed there: ` +
+      `${map.states.map((s) => (Number(s.jobs) ? `${s.name}, ${jobsText(s.jobs)}` : s.name)).join('; ')}. Local offices in ${officesSpoken}.`
+    : `A map of the United States with ${statesText} highlighted, and local offices in ${officesSpoken}.`;
   const k0 = r1((map.region[2] / (variant === 'explorer' ? 720 : 560)) * 1000) / 1000;
   return (
     `<svg class="pmap__svg" viewBox="${fmt(map.region)}" preserveAspectRatio="xMidYMid meet" ` +
     `role="group" aria-labelledby="${uid}-t" aria-describedby="${uid}-d" focusable="false">` +
     `<title id="${uid}-t">Map of the areas Panda Exteriors serves</title>` +
-    `<desc id="${uid}-d">A map of the United States with ${esc(statesText)} highlighted, and local offices in ${esc(officesSpoken)}.</desc>` +
+    `<desc id="${uid}-d">${esc(desc)}</desc>` +
     `<path class="pmap__land" id="${uid}-land" d="${map.geo.nation}"/>` +
     `<path class="pmap__borders" id="${uid}-borders" d="${map.geo.borders}"/>` +
     `<g class="pmap__states">${map.states.filter((s) => !s.inset).map(statePath).join('')}</g>` +
@@ -151,23 +180,34 @@ function renderInset(map, { uid }) {
   );
 }
 
-const legend = () =>
+// With job numbers the "Areas we serve" key becomes a stepped scale, one swatch per band.
+const tierLabel = (t) => (t.max === null ? `${fmtJobs(t.min)}+` : t.max === t.min ? fmtJobs(t.min) : `${fmtJobs(t.min)}–${fmtJobs(t.max)}`);
+const stateKey = (map) =>
+  map.shaded
+    ? `<div class="pmap__legend-item pmap__legend-item--scale" role="listitem"><span class="pmap__legend-title">Jobs completed</span>` +
+      `<span class="pmap__scale">${map.tiers
+        .map((t) => `<span class="pmap__scale-step"><span class="pmap__key pmap__key--t${t.tier}" aria-hidden="true"></span>${esc(tierLabel(t))}</span>`)
+        .join('')}</span></div>`
+    : `<div class="pmap__legend-item" role="listitem"><span class="pmap__key pmap__key--state" aria-hidden="true"></span>Areas we serve</div>`;
+const legend = (map) =>
   // divs with list roles: the site's stylesheet forces bullets and colours on every ul/li.
-  `<div class="pmap__legend" role="list">` +
-  `<div class="pmap__legend-item" role="listitem"><span class="pmap__key pmap__key--state" aria-hidden="true"></span>Areas we serve</div>` +
+  `<div class="pmap__legend${map.shaded ? ' pmap__legend--scale' : ''}" role="list">` +
+  stateKey(map) +
   `<div class="pmap__legend-item" role="listitem"><span class="pmap__key pmap__key--office" aria-hidden="true"></span>Local office</div>` +
   `</div>`;
 
 const dataAttrs = (map, extra = '') =>
-  `data-pmap data-full="${fmt(map.full)}" data-region="${fmt(map.region)}"${extra}`;
+  `data-pmap data-full="${fmt(map.full)}" data-region="${fmt(map.region)}"${extra}` +
+  (map.whole ? ` style="--pmap-aspect:${r1(map.region[2])} / ${r1(map.region[3])}"` : '');
+const rootClass = (map, cls) => `pmap ${cls}${map.whole ? ' pmap--whole' : ''}`;
 
 /** Small map for the "Local East Coast Exterior Remodelers" band. theme: 'orange' | 'light'. */
 export function renderCompactMap({ theme = 'orange', uid = 'pmap' } = {}) {
   const map = loadUsMap();
   return (
-    `<div class="pmap pmap--compact pmap--on-${theme}" ${dataAttrs(map)}>` +
+    `<div class="${rootClass(map, `pmap--compact pmap--on-${theme}`)}" ${dataAttrs(map)}>` +
     `<div class="pmap__stage">${renderSvg(map, { uid, variant: 'compact' })}<div class="pmap__tip" hidden></div></div>` +
-    legend() +
+    legend(map) +
     `</div>`
   );
 }
@@ -175,30 +215,30 @@ export function renderCompactMap({ theme = 'orange', uid = 'pmap' } = {}) {
 /** Large interactive map: state buttons zoom the map and update the panel next to it. */
 export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/', ctaText = 'Get a free estimate' } = {}) {
   const map = loadUsMap();
-  const { statesText, officesText } = describe(map);
+  const { overviewText, officesText } = describe(map);
   // Zoom boxes for the state buttons; an inset state is shown in its box instead.
   const boxes = Object.fromEntries(map.states.filter((s) => !s.inset).map((s) => [s.code, s.box.map(r1)]));
   const chips = [
     `<button type="button" class="pmap__chip" data-state="" aria-pressed="true">All areas</button>`,
     ...map.states.map((s) => `<button type="button" class="pmap__chip" data-state="${s.code}" aria-pressed="false">${esc(s.name)}</button>`),
   ].join('');
-  // Job numbers are optional (left out for now): per state if given, else summed from the areas.
+  // Job numbers are optional: per state if given, else summed from the areas.
   const stateJobs = map.states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
   const jobsTotal = stateJobs || map.areas.reduce((n, a) => n + (Number(a.jobs) || 0), 0);
   return (
-    `<div class="pmap pmap--explorer pmap--on-light" ${dataAttrs(map, ` data-boxes="${esc(JSON.stringify(boxes))}"`)}>` +
+    `<div class="${rootClass(map, 'pmap--explorer pmap--on-light')}" ${dataAttrs(map, ` data-boxes="${esc(JSON.stringify(boxes))}"`)}>` +
     `<div class="pmap__chips" role="group" aria-label="Choose an area to zoom in">${chips}</div>` +
     `<div class="pmap__body">` +
     `<div class="pmap__stage">${renderSvg(map, { uid, variant: 'explorer' })}<div class="pmap__tip" hidden></div></div>` +
     `<div class="pmap__info" aria-live="polite">` +
     `<p class="pmap__info-title" data-default="All areas">All areas</p>` +
-    `<p class="pmap__info-text" data-default="${esc(statesText)}">${esc(statesText)}</p>` +
+    `<p class="pmap__info-text" data-default="${esc(overviewText)}">${esc(overviewText)}</p>` +
     `<p class="pmap__info-offices" data-default="${esc(officesText)}"><span class="pmap__info-label">Local offices</span>` +
     `<span class="pmap__info-list">${esc(officesText)}</span></p>` +
-    (jobsTotal ? `<p class="pmap__info-jobs" data-default="${jobsTotal}">${esc(fmtJobs(jobsTotal))} jobs completed</p>` : '') +
+    (jobsTotal ? `<p class="pmap__info-jobs" data-default="${jobsTotal}">${esc(jobsText(jobsTotal))} completed</p>` : '') +
     `<a class="pmap__cta" href="${esc(ctaHref)}">${esc(ctaText)}</a>` +
     `</div></div>` +
-    legend() +
+    legend(map) +
     `</div>`
   );
 }
