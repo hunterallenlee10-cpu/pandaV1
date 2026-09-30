@@ -160,7 +160,7 @@ async function main() {
       ? [
           c.removedLinks ? `${c.removedLinks} link(s) to city sub-sites removed` : '',
           c.customSections?.length ? 'old map section replaced with the animated US map' : '',
-          c.heroVideo?.length ? 'hero background video swapped' : '',
+          c.heroVideo?.length ? 'hero background video swapped and resized' : '',
         ]
       : [];
     r.intentional = c ? `edited on purpose: ${what.filter(Boolean).join('; ')}` : '';

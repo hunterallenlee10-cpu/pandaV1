@@ -22,8 +22,8 @@ These pages differ from live by design: links to the city sub-sites were removed
 
 | Page | Viewport | Diff % | Change |
 | --- | --- | --- | --- |
-| / | desktop | 17.50 | edited on purpose: old map section replaced with the animated US map; hero background video swapped |
-| / | mobile | 16.60 | edited on purpose: old map section replaced with the animated US map; hero background video swapped |
+| / | desktop | 17.50 | edited on purpose: old map section replaced with the animated US map; hero background video swapped and resized |
+| / | mobile | 16.60 | edited on purpose: old map section replaced with the animated US map; hero background video swapped and resized |
 | /about/ | desktop | 21.07 | edited on purpose: old map section replaced with the animated US map |
 | /about/ | mobile | 24.28 | edited on purpose: old map section replaced with the animated US map |
 | /blog/how-long-does-a-roof-really-last/ | desktop | 0.01 | edited on purpose: 2 link(s) to city sub-sites removed |
