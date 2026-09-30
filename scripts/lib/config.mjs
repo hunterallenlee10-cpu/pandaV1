@@ -209,6 +209,11 @@ export const CUSTOM_US_MAP = (process.env.CUSTOM_US_MAP ?? (process.env.SITE_ORI
 // SITE_FIXES=0 keeps the pages exactly as captured.
 export const SITE_FIXES = (process.env.SITE_FIXES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// Smooth, gliding mouse-wheel and trackpad scrolling on every page, with Lenis (see
+// custom/smooth-scroll/ and scripts/lib/customize.mjs). SMOOTH_SCROLL=0 keeps the
+// browser's own scrolling.
+export const SMOOTH_SCROLL = (process.env.SMOOTH_SCROLL ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 // Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
 // page about them. Removed pages are not built, links to them are removed like the

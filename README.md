@@ -32,7 +32,7 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 
 ## Deliberate changes
 
-Besides removing the city links (above), the copy differs from the live site on purpose in three ways.
+Besides removing the city links (above), the copy differs from the live site on purpose in four ways.
 
 **The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs`
 during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
@@ -52,6 +52,13 @@ wide screens. Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs` (or as an environm
 video ID to change it, or to `''` to keep the live site's video and sizing. It stays muted with no controls, and
 like on the live site it is hidden on phones (under 768 px wide).
 
+**Every page scrolls smoothly.** Mouse-wheel and trackpad scrolling glide instead of moving in steps, with
+[Lenis](https://github.com/darkroomengineering/lenis) (`custom/smooth-scroll/`, linked from every page by
+`scripts/lib/customize.mjs` during the build, `SMOOTH_SCROLL=0` to turn off). The page still scrolls the normal way
+underneath, so sticky bars, lazy-loaded images and the site's other scripts work as before. Touch scrolling stays the
+device's own, links to a spot on the same page glide there and stop below the fixed header, and people who prefer
+reduced motion get instant scrolling — see [`custom/smooth-scroll/README.md`](custom/smooth-scroll/README.md).
+
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
 the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.
 Most of these problems are on the live site too.
@@ -60,11 +67,23 @@ Most of these problems are on the live site too.
   Alerts: N/A". The same bar now reads "Free Estimates · Call (877) 213-8536".
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page.
-- **Testimonials** (18 pages): the two-review carousel never started (its script ran before the carousel library
-  loaded), so only the first review showed and the arrows did nothing. Both reviews are now shown side by side (one
-  per row on phones), without the arrows. On `/service-areas/` the section is removed: it isn't about service areas.
-- **Missing photos** (missing on the live site too): reviewers without a photo on the Home and Services pages get
-  their initials in the round photo spot.
+- **Review carousels** (20 pages): the "Testimonials" carousel (17 pages) never started (its script ran before the
+  carousel library loaded), so only the first of its two reviews showed and the arrows did nothing. Beside the video
+  on `/`, `/services/` and `/thank-you/`, every review was pushed down to the height of the longest one, leaving a
+  large empty band above the shorter ones. All of them are now the same looping carousel of the site's reviews: it
+  glides, plays by itself (holding still under the mouse, with keyboard focus and off screen, with a pause button),
+  can be dragged or swiped, and keeps every card the same size with "Read more" on long reviews. The reviews are in
+  `custom/reviews/reviews.json` — see [`custom/reviews/README.md`](custom/reviews/README.md). On `/service-areas/` the
+  section is removed: it isn't about service areas.
+- **"Experts You Can Trust"** (home page): the certification logos jumped a step every 2.5 seconds, and the copies
+  the carousel made to loop never loaded their logos. They now glide past in one continuous row, easing to a stop
+  under the mouse (and stay still for people who prefer reduced motion).
+- **Award badges** ("About Our Team" and "Request an Appointment", 123 pages): the picture of the GAF President's Club
+  and Inc. 5000 badges sat in a lot of empty space. The site's other GAF certifications, Diamond Pledge and Metal
+  Certified, are added beside President's Club, with the two Inc. 5000 badges nested below.
+- **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
+- **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
+  spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
   made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
   picture.
@@ -76,7 +95,9 @@ Most of these problems are on the live site too.
   and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
 
 Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
-`docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual.
+`docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual. (`docs/visual-diff/`
+was last regenerated before the review carousels, logo row, award badges and smooth scrolling were added; the next
+capture and build regenerates it.)
 
 ## What's in the repo
 
@@ -87,6 +108,8 @@ site/                    the website — deploy this folder
   _external/<host>/…                  third-party static files made local (e.g. Google Fonts)
   _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
+  _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
+  _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
@@ -109,6 +132,8 @@ docs/
 scripts/                   the capture / build / verification pipeline (Node.js + Playwright)
 custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
+custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
+custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 ```
 
 ## View it locally
@@ -159,6 +184,14 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
   real website:
   `SITE_ORIGIN=http://localhost:8099 SITE_DIR=/tmp/t/site DOCS_DIR=/tmp/t/docs WORK_DIR=/tmp/t/.work CACHE_DIR=/tmp/t/.cache bash scripts/capture-all.sh`.
 - After a re-capture, run `node scripts/06-lfs-attributes.mjs` before `git add`, so new large images go to LFS.
+
+### Update `site/` without the capture cache
+
+`.cache/` and `.work/` are not in the repository, so a fresh clone cannot run `03-build.mjs`. After changing
+`custom/` or the site fixes, `npm run update:site` (`node scripts/tools/update-built-site.mjs`, add `--dry-run` to
+preview) applies the site fixes and smooth scrolling to the pages already in `site/` and copies the custom files.
+Each fix gives the same result on a built page as on the page as captured, so the pages come out as a full rebuild
+would make them. The map sections are the exception: only `03-build.mjs` renders them.
 
 ## What doesn't work in a static copy
 

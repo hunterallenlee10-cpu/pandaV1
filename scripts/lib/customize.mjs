@@ -12,11 +12,24 @@
 //    map, and the page's hidden project list becomes a visible grid;
 //  - /service-areas/: the large map goes where the city list used to be.
 //
+// Every page also gets smooth scrolling (custom/smooth-scroll/, SMOOTH_SCROLL).
+//
 // Separately, applyHeroVideo swaps the homepage hero's background video.
+import path from 'node:path';
 import { parse } from 'parse5';
+import { ROOT } from './config.mjs';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
+import { REVIEWS_FILES } from './reviews.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
+
+// Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
+export const SMOOTH_SCROLL_DIR = path.join(ROOT, 'custom', 'smooth-scroll');
+export const SMOOTH_SCROLL_FILES = {
+  'smooth-scroll.css': '/_custom/smooth-scroll/smooth-scroll.css',
+  'lenis.min.js': '/_custom/smooth-scroll/lenis.min.js',
+  'smooth-scroll.js': '/_custom/smooth-scroll/smooth-scroll.js',
+};
 
 // ------------------------------------------------------------- the band
 const PARAGRAPH_FIXES = [
@@ -151,8 +164,11 @@ export function applyHeroVideo(html, { videoId } = {}) {
 
 // ----------------------------------------------------------------- main
 // map: replace the old map sections (CUSTOM_US_MAP). fixes: the audit fixes in
-// site-fixes.mjs (SITE_FIXES). Returns the new HTML and what changed, per group.
-export function applyCustomizations(html, { pageUrl, map = true, fixes = false, siteDir, siteOrigin } = {}) {
+// site-fixes.mjs (SITE_FIXES). smoothScroll: Lenis on the page (SMOOTH_SCROLL).
+// Returns the new HTML and what changed, per group. Stylesheets and scripts the page
+// already links are not added again, so the fixes (not the map) can also be run over an
+// already built page (scripts/tools/update-built-site.mjs).
+export function applyCustomizations(html, { pageUrl, map = true, fixes = false, smoothScroll = false, siteDir, siteOrigin } = {}) {
   const doc = parse(html, { sourceCodeLocationInfo: true });
   const ed = makeEditor(html);
   const changes = { map: [], fixes: [] };
@@ -192,20 +208,26 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   }
 
   const fixAssets = fixes ? collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes.fixes) : {};
-  if (!changes.map.length && !changes.fixes.length) return { html, changes };
 
   // Stylesheets and scripts go just before the page's own </head>. If a page has none,
   // they go right before the first edit instead (still valid HTML), never above the
   // doctype: anything before <!doctype html> switches the browser to quirks mode.
+  const linked = new Set(findAll(doc, (c) => (c.tagName === 'link' && attr(c, 'rel') === 'stylesheet') || c.tagName === 'script').map((c) => attr(c, 'href') || attr(c, 'src')));
+  const css = (href) => (linked.has(href) ? '' : `<link rel="stylesheet" href="${href}">`);
+  const js = (src) => (linked.has(src) ? '' : `<script src="${src}" defer></script>`);
   let assets = '';
-  if (changes.map.length) assets += `<link rel="stylesheet" href="${US_MAP_FILES['us-map.css']}"><script src="${US_MAP_FILES['us-map.js']}" defer></script>`;
-  if (fixAssets.css) assets += `<link rel="stylesheet" href="${SITE_FIXES_FILES['site-fixes.css']}">`;
-  if (fixAssets.js) assets += `<script src="${SITE_FIXES_FILES['site-fixes.js']}" defer></script>`;
+  if (changes.map.length) assets += css(US_MAP_FILES['us-map.css']) + js(US_MAP_FILES['us-map.js']);
+  if (fixAssets.css) assets += css(SITE_FIXES_FILES['site-fixes.css']);
+  if (fixAssets.js) assets += js(SITE_FIXES_FILES['site-fixes.js']);
+  if (fixAssets.reviews) assets += css(REVIEWS_FILES['reviews.css']) + js(REVIEWS_FILES['reviews.js']);
+  if (smoothScroll) assets += css(SMOOTH_SCROLL_FILES['smooth-scroll.css']) + js(SMOOTH_SCROLL_FILES['lenis.min.js']) + js(SMOOTH_SCROLL_FILES['smooth-scroll.js']);
   if (assets) {
     const headEnd = headEndOffset(html);
-    const at = headEnd >= 0 ? headEnd : ed.firstStart;
-    ed.replace(at, at, assets);
+    const at = headEnd >= 0 ? headEnd : ed.count ? ed.firstStart : -1;
+    if (at >= 0) ed.replace(at, at, assets);
+    else console.warn(`customize: ${pageUrl} has no </head>, stylesheets and scripts not added`);
   }
+  if (!ed.count) return { html, changes };
   const out = ed.apply();
   if (/^\s*<!doctype/i.test(html) && !/^\s*<!doctype/i.test(out)) {
     throw new Error(`customize: ${pageUrl} would no longer start with its doctype`);

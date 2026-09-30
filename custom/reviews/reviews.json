@@ -1,0 +1,65 @@
+{
+  "_help": "Customer reviews shown in the review carousels (see README.md in this folder). Every carousel on the site shows this list, in this order. Each review needs a name and its text; rating is the number of stars (1-5, default 5); photo is an optional picture path on the site (without one, the reviewer's initials are shown). Rebuild after editing.",
+  "label": "Customer reviews",
+  "reviews": [
+    {
+      "name": "Tracey Duval",
+      "rating": 5,
+      "text": "Chris Atkinson was my initial contact with the company! Very down to earth, honest and understanding. He showed a deep understanding of the process with the insurance company. I opted not to wait for the insurance review and from that point Panda/Chris moved speed with purpose to obtain supplies once I let them know what I wanted! He graciously handed me off to Jonathan and his team and the job was completed yesterday and I am beaming from the results. They went above and beyond to ensure colors from existing structures matched the roofing! My raised beds and plants were protected and the clean up impeccable. Overjoyed with the results! I was listened to and understood! We often don’t need roofing but when you do Panda is who I would recommend."
+    },
+    {
+      "name": "Cosette Burns",
+      "rating": 5,
+      "text": "Panda Exteriors provided professional and efficient service when repairing my roof. The job was completed quickly, and I was kept informed every step of the way about any additional services or materials needed to properly seal and protect my home. The roofing crew was polite, thorough, and did an excellent job cleaning up—removing all damaged shingles, plywood, and even stray nails from my lawn. I especially appreciated receiving photos of the finished roof, which gave me peace of mind about the quality of the work. Even my neighbors commented on how great the new roof looks. I highly recommend Panda Exteriors for their professionalism and attention to detail."
+    },
+    {
+      "name": "Sam Stubbs",
+      "rating": 5,
+      "text": "From the initial meetings with Cael and Mike to the actual replacement with Jim and his crew; my experience with Panda Exteriors was positive.... A+. I am very happy with the job. I will recommend this company."
+    },
+    {
+      "name": "Jennifer Raymond",
+      "rating": 5,
+      "text": "I contacted Panda Exteriors at the recommendation of friends who had recently had their roof replaced. My experience far surpassed my expectations. From the first visit to inspect damage I was seeing, the team at Panda was very helpful and walked me through every step explaining everything and helping me navigate the process. Installation day was amazing. The team arrived before 8 and the project manager was onsite and communicating with me throughout the day."
+    },
+    {
+      "name": "Omari Sefu",
+      "rating": 5,
+      "text": "As a repeat customer of Panda Exteriors, I can confidently say they continue to impress. Our recent project to upgrade the flat roof on our historic home was an outstanding experience, largely due to our project manager, Eric Kibler. What truly set him apart was his unwavering commitment to communication and follow-through."
+    },
+    {
+      "name": "Terence Johnson",
+      "rating": 5,
+      "text": "I had an outstanding experience with Panda Exterior! From start to finish, the team was professional, courteous, and highly skilled. The installation was completed on time and with great attention to detail. The quality of their work truly exceeded my expectations—the finished product looks amazing and has already made a noticeable difference in both appearance and efficiency. The crew kept the area clean and were respectful throughout the entire process. I highly recommend Panda Exterior for anyone looking for reliable, top-notch exterior work. I will definitely be using them again in the future!"
+    },
+    {
+      "name": "Glenda S.",
+      "rating": 5,
+      "text": "Panda Exteriors does excellent work on roofing jobs! They are loyal, dependable, and stand by their high-quality workmanship. They are committed to ensuring your complete satisfaction during and after the project. If you're looking for a company that delivers great results, you should definitely call Panda Exteriors!"
+    },
+    {
+      "name": "Tonya P.",
+      "rating": 5,
+      "photo": "/wp-content/uploads/2025/03/Tonya-perry.png",
+      "text": "Panda Exteriors did an awesome job on my roof. Great quality of work and my representative was very knowledgeable and kept me informed and answered all my questions. I would definitely recommend to anyone."
+    },
+    {
+      "name": "Kathy T.",
+      "rating": 5,
+      "photo": "/wp-content/uploads/2025/03/Kathy-Thayer.png",
+      "text": "Did an excellent job. When finished you would never know they were here, the cleanup was excellent. Would recommend them to anyone I know in need of a new roof. From start to finish Cael was very helpful and handled all the paperwork!"
+    },
+    {
+      "name": "Mercy A.",
+      "rating": 5,
+      "photo": "/wp-content/uploads/2025/03/Mercy-Anane.png",
+      "text": "This company was very efficient. They delivered the materials a few days before the project and finished the same day. And they also cleaned up very well. I was very satisfied. Thank you so much!"
+    },
+    {
+      "name": "Ernie D.",
+      "rating": 5,
+      "photo": "/wp-content/uploads/2025/03/Ernie-DIll.png",
+      "text": "Panda Exteriors did an exceptional job from start to finish. Great scheduling, hard working folks, excellent materials, rapid completion and clean up, and follow up was superb! Highly recommended!"
+    }
+  ]
+}
