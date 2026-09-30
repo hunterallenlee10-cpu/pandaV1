@@ -128,3 +128,87 @@ a.bde-social-share-button,
 a.bde-social-share-button:hover {
   text-decoration: none;
 }
+
+/* "Experts You Can Trust" (home page): the logos glide past in one continuous row instead
+   of jumping a step every 2.5 seconds (site-fixes.js repeats them so the loop has no
+   seam). Without JavaScript, or with reduced motion, they sit still in a centred row. */
+.pfix-marquee {
+  position: relative;
+  overflow: hidden;
+}
+.pfix-marquee .pfix-marquee__track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  transform: none;
+}
+.pfix-marquee .pfix-marquee__item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  height: 150px;
+  margin: 0 !important;
+  padding: 0 clamp(28px, 3.4vw, 48px);
+}
+.pfix-marquee .pfix-marquee__item img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+  max-height: 130px;
+}
+.pfix-marquee.is-running {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.pfix-marquee.is-running .pfix-marquee__track {
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: max-content;
+  will-change: transform;
+}
+
+/* "About Our Team" / "Request an Appointment" sections: the award badges, with the other
+   GAF certifications added in the space around them. Three GAF badges on top, the two
+   Inc. 5000 badges nested between and below them. */
+.pfix-badges {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  justify-items: center;
+  width: min(100%, 620px);
+  margin: 8px auto 0;
+  padding: 0;
+  list-style: none;
+}
+.pfix-badges .pfix-badges__item {
+  grid-column: span 2;
+  /* the badge files are 120px wide: never larger, so they stay sharp */
+  width: min(120px, 88%);
+  margin: 0;
+  padding: 0;
+}
+.pfix-badges .pfix-badges__item--inc {
+  /* up into the notch between two GAF badges */
+  margin-top: calc(min(120px, 88%) * -0.2);
+}
+@media (max-width: 575.98px) {
+  /* less nesting where the badges sit closer together */
+  .pfix-badges .pfix-badges__item--inc {
+    margin-top: calc(min(120px, 88%) * -0.06);
+  }
+}
+.pfix-badges .pfix-badges__item--inc:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+.pfix-badges .pfix-badges__item--inc:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+.pfix-badges .pfix-badges__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

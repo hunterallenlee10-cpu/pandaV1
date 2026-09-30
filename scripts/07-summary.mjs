@@ -2,7 +2,7 @@
 // Final numbers for the capture -> docs/capture-summary.md (and stdout).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, ROOT, SITE_ORIGIN } from './lib/config.mjs';
+import { PATHS, ROOT, SITE_ORIGIN, SMOOTH_SCROLL } from './lib/config.mjs';
 import { readJson, writeFile, mdTable, fmtBytes, listFiles } from './lib/util.mjs';
 
 const inv = readJson(path.join(PATHS.work, 'inventory.json'));
@@ -61,6 +61,8 @@ const rows = [
   ['Pages removed on request', build.removedPages?.length ? `${build.removedPages.map((u) => new URL(u).pathname).join(', ')} (redirects to /), plus ${build.removedPageFiles.length} file(s) only they used` : 'none'],
   ['Old map sections replaced with the animated US map', ((m) => (m.length ? `${m.length} page(s): ${m.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'))((build.intentionalChanges || []).filter((c) => c.customSections?.length))],
   ['Hero background video swapped', ((m) => (m.length ? m.map((c) => `${new URL(c.url).pathname} (${c.heroVideo.join('; ')})`).join(', ') : 'none'))((build.intentionalChanges || []).filter((c) => c.heroVideo?.length))],
+  ['Review carousels (custom/reviews/)', ((m) => (m.length ? `${m.length} page(s): ${m.map((c) => new URL(c.url).pathname).join(', ')}` : 'none'))((build.intentionalChanges || []).filter((c) => c.siteFixes?.some((f) => /^testimonials: looping review carousel/.test(f))))],
+  ['Smooth scrolling (Lenis, custom/smooth-scroll/)', SMOOTH_SCROLL ? 'every page' : 'off'],
   ['Requests from the copy to the live site', vd.reduce((s, r) => s + (r.leaks || 0), 0)],
   ['Unresolved internal references (fixable)', lc ? `${lc.missing.length} (${lc.fixable})` : 'not run'],
   ['Broken links, HTTP crawl (fixable)', lc ? `${lc.linkinator.uniqueBroken} (${lc.linkinator.brokenFixable})` : 'not run'],
