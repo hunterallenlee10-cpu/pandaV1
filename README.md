@@ -44,9 +44,12 @@ listed as "edited on purpose" in `docs/visual-diff/summary.md`.
 
 **The homepage hero plays a different background video.** The hero's muted, looping YouTube background shows
 [`EJPeFkhznTY`](https://www.youtube.com/watch?v=EJPeFkhznTY) instead of the live site's video (applied by
-`applyHeroVideo` in `scripts/lib/customize.mjs` during the build). Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs`
-(or as an environment variable) to another YouTube video ID to change it, or to `''` to keep the live site's video.
-It stays muted with no controls, and like on the live site it is hidden on phones (under 768 px wide).
+`applyHeroVideo` in `scripts/lib/customize.mjs` during the build). The video also fills the whole hero at every
+screen size, centred and cropped like a background image, with YouTube's title bar cropped off; on the live site
+it only fits the hero's width, leaving most of the tablet hero black and showing just the top half of the video on
+wide screens. Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs` (or as an environment variable) to another YouTube
+video ID to change it, or to `''` to keep the live site's video and sizing. It stays muted with no controls, and
+like on the live site it is hidden on phones (under 768 px wide).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
 the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.

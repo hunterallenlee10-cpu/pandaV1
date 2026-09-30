@@ -221,8 +221,9 @@ export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIG
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 
 // The homepage hero plays a muted, looping YouTube video behind its text; the copy
-// plays this video there instead of the live site's (see applyHeroVideo in
-// scripts/lib/customize.mjs). HERO_VIDEO_ID='' keeps the live site's video.
+// plays this video there instead of the live site's, sized to cover the whole hero (see
+// applyHeroVideo in scripts/lib/customize.mjs). HERO_VIDEO_ID='' keeps the live
+// site's video and sizing.
 export const HERO_VIDEO_ID = process.env.HERO_VIDEO_ID ?? (process.env.SITE_ORIGIN ? '' : 'EJPeFkhznTY');
 
 export function isSitemapOnlyExcluded(u) {

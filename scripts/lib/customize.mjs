@@ -105,7 +105,20 @@ const explorerBlock = (uid) =>
 // .hero .video-background (lazy-loaded by WP Rocket from data-lazy-src) plus a
 // <noscript> copy. This points both at another video and keeps every player setting
 // (mute, autoplay, loop, no controls); the old video's share-tracking "si" is dropped.
+//
+// It also sizes the player to cover the hero like a background image. The live site
+// sizes it to the hero's width only (a 16:9 box pulled up 15%), which leaves most of the
+// tall tablet hero black and shows only the top half of the video on wide screens.
+// Instead the player is centred and scaled to fill the hero at any size, running
+// HERO_VIDEO_BLEED px past its top and bottom so YouTube's title bar (shown for a few
+// seconds when the video starts) is cropped off. Browsers without container query
+// units (before 2023) get the player at the hero's own size, letterboxed.
 const YT_EMBED = /(https:\/\/www\.youtube(?:-nocookie)?\.com\/embed\/)([\w-]{11})([^"'\s<>]*)/g;
+const HERO_VIDEO_BLEED = 90;
+const HERO_VIDEO_BOX = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; container-type: size;';
+const HERO_VIDEO_PLAYER =
+  'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; ' +
+  `width: max(100cqw, (100cqh + ${2 * HERO_VIDEO_BLEED}px) * 16 / 9); height: max(100cqw * 9 / 16, 100cqh + ${2 * HERO_VIDEO_BLEED}px);`;
 export function applyHeroVideo(html, { videoId } = {}) {
   if (!videoId) return { html, changes: [] };
   if (!/^[\w-]{11}$/.test(videoId)) throw new Error(`customize: "${videoId}" is not a YouTube video ID`);
@@ -115,8 +128,9 @@ export function applyHeroVideo(html, { videoId } = {}) {
   if (!bg) return { html, changes: [] };
   const { startOffset, endOffset } = bg.sourceCodeLocation;
   const before = html.slice(startOffset, endOffset);
+  const changes = [];
   const was = new Set();
-  const after = before.replace(YT_EMBED, (url, base, id, query) => {
+  const swapped = before.replace(YT_EMBED, (url, base, id, query) => {
     if (id === videoId) return url;
     was.add(id);
     const q = query
@@ -124,11 +138,15 @@ export function applyHeroVideo(html, { videoId } = {}) {
       .replace(new RegExp(`(playlist=)${id}(?![\\w-])`, 'g'), `$1${videoId}`);
     return base + videoId + q;
   });
-  if (after === before) return { html, changes: [] };
-  return {
-    html: html.slice(0, startOffset) + after + html.slice(endOffset),
-    changes: [`hero background video ${[...was].join(', ')} -> ${videoId}`],
-  };
+  if (was.size) changes.push(`hero background video ${[...was].join(', ')} -> ${videoId}`);
+  // The 16:9 box around the player (and the player itself, in the iframe and its
+  // <noscript> copy, whose markup parse5 keeps as text) get the cover sizing.
+  const fitted = swapped
+    .replace(/(<div\b[^>]*?\sstyle=")[^"]*padding-bottom:\s*56\.25%[^"]*(")/, `$1${HERO_VIDEO_BOX}$2`)
+    .replace(/(<iframe\b[^>]*?\sstyle=")[^"]*(")/g, `$1${HERO_VIDEO_PLAYER}$2`);
+  if (fitted !== swapped) changes.push('hero video sized to cover the hero');
+  if (!changes.length) return { html, changes };
+  return { html: html.slice(0, startOffset) + fitted + html.slice(endOffset), changes };
 }
 
 // ----------------------------------------------------------------- main
