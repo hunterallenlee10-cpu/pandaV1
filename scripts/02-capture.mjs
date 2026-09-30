@@ -15,7 +15,7 @@
 // recursively, fonts, OG images, …) are downloaded.
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, isOriginAlias, trackerFor, isForbidden } from './lib/config.mjs';
+import { PATHS, VIEWPORTS, isSiteUrl, isLocalizableHost, isOriginAlias, trackerFor, isForbidden, isRemovedPage } from './lib/config.mjs';
 import { fetcher, ACCEPT } from './lib/fetcher.mjs';
 import { launchBrowser, newContext, visit, prepareForScreenshot, screenshot, collectDomUrls } from './lib/browser.mjs';
 import { extractFromHtml, cssRefs, siteUrlsInText, resolveUrl, looksLikeAsset, isPlausibleAssetUrl } from './lib/extract.mjs';
@@ -47,6 +47,7 @@ const FULFILL_HEADERS = new Set([
 
 function pagesToCapture({ all = false } = {}) {
   let rows = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status) === 200) || r.type === '404-page');
+  rows = rows.filter((r) => r.type === '404-page' || !isRemovedPage(new URL(r.url).pathname)); // removed on request
   if (all) return rows.map((r) => ({ url: r.url, slug: r.type === '404-page' ? '404' : slugForUrl(r.url), is404: r.type === '404-page' }));
   if (ONLY) rows = rows.filter((r) => ONLY.some((o) => r.url.includes(o)));
   if (URLS) rows = rows.filter((r) => URLS.has(r.url));

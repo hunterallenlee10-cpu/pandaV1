@@ -31,6 +31,7 @@
     var areas = toArray(root.querySelectorAll('.pmap__area'));
     var states = toArray(root.querySelectorAll('.pmap__state'));
     var chips = toArray(root.querySelectorAll('.pmap__chip'));
+    var insets = toArray(root.querySelectorAll('.pmap__inset'));
     var info = root.querySelector('.pmap__info');
     var full = parseBox(root.getAttribute('data-full'));
     var region = parseBox(root.getAttribute('data-region'));
@@ -45,12 +46,16 @@
     var explorer = root.classList.contains('pmap--explorer');
 
     // ------------------------------------------------------------ camera
-    // Markers are drawn in pixels: scale them by the current map units per pixel.
+    // Markers are drawn in pixels: scale them by the map units per pixel of the map they
+    // are on (the main map, or the inset box of a far-away state).
+    function unitsPerPixel(own) {
+      if (own === svg) return Math.max(view[2] / (svg.clientWidth || stage.clientWidth || 1), view[3] / (svg.clientHeight || stage.clientHeight || 1));
+      var box = parseBox(own.getAttribute('viewBox'));
+      return Math.max(box[2] / (own.clientWidth || 1), box[3] / (own.clientHeight || 1));
+    }
     function layout() {
-      var w = svg.clientWidth || stage.clientWidth || 1;
-      var h = svg.clientHeight || stage.clientHeight || 1;
-      var k = Math.max(view[2] / w, view[3] / h);
       areas.forEach(function (a) {
+        var k = unitsPerPixel(a.ownerSVGElement || svg);
         a.setAttribute('transform', 'translate(' + a.getAttribute('data-x') + ' ' + a.getAttribute('data-y') + ') scale(' + k.toFixed(4) + ')');
       });
     }
@@ -126,7 +131,7 @@
       });
     }
     function pinPoint(a) {
-      var ctm = svg.getScreenCTM();
+      var ctm = (a.ownerSVGElement || svg).getScreenCTM();
       if (!ctm) return [0, 0];
       var pt = svg.createSVGPoint();
       pt.x = Number(a.getAttribute('data-x'));
@@ -242,6 +247,9 @@
       });
       areas.forEach(function (a) {
         a.classList.toggle('is-selected', !!code && a.getAttribute('data-state') === code);
+      });
+      insets.forEach(function (i) {
+        i.classList.toggle('is-selected', !!code && (i.getAttribute('data-states') || '').split(' ').indexOf(code) >= 0);
       });
       setInfo(code);
       fly(code && boxes[code] ? boxes[code] : region, 900);

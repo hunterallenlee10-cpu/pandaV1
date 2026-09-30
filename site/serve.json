@@ -4,6 +4,11 @@
       "source": "/favicon.ico",
       "destination": "/wp-content/uploads/2025/04/favicon-16x16-1.png",
       "type": 302
+    },
+    {
+      "source": "/interiors",
+      "destination": "/",
+      "type": 301
     }
   ],
   "rewrites": [

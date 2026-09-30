@@ -14,84 +14,9 @@
 //
 // Separately, applyHeroVideo swaps the homepage hero's background video.
 import { parse } from 'parse5';
-import { Parser as TagScanner } from 'htmlparser2';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
-
-const attr = (n, k) => n.attrs?.find((a) => a.name === k)?.value;
-const classes = (n) => (attr(n, 'class') || '').split(/\s+/).filter(Boolean);
-const hasClass = (n, c) => classes(n).includes(c);
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-function textOf(n) {
-  if (n.nodeName === '#text') return n.value;
-  if (n.tagName === 'noscript' || n.tagName === 'script' || n.tagName === 'style') return '';
-  return (n.childNodes || []).map(textOf).join('');
-}
-const clean = (s) => s.replace(/\s+/g, ' ').trim();
-function findAll(root, pred, out = []) {
-  for (const c of root.childNodes || []) {
-    if (c.tagName && pred(c)) out.push(c);
-    findAll(c, pred, out);
-    if (c.content) findAll(c.content, pred, out);
-  }
-  return out;
-}
-const find = (root, pred) => findAll(root, pred)[0];
-
-// A start tag rebuilt from (possibly modified) attributes.
-function startTag(node, attrs) {
-  return `<${node.tagName}${attrs.map((a) => (a.value === '' ? ` ${a.name}` : ` ${a.name}="${esc(a.value)}"`)).join('')}>`;
-}
-
-function makeEditor(html) {
-  const edits = [];
-  return {
-    replace(start, end, text) {
-      edits.push({ start, end, text });
-    },
-    outer(node, text) {
-      const l = node.sourceCodeLocation;
-      edits.push({ start: l.startOffset, end: l.endOffset, text });
-    },
-    inner(node, text) {
-      const l = node.sourceCodeLocation;
-      edits.push({ start: l.startTag.endOffset, end: l.endTag.startOffset, text });
-    },
-    append(node, text) {
-      const l = node.sourceCodeLocation;
-      edits.push({ start: l.endTag.startOffset, end: l.endTag.startOffset, text });
-    },
-    apply() {
-      edits.sort((a, b) => b.start - a.start || b.end - a.end);
-      let out = html;
-      let floor = Infinity;
-      for (const e of edits) {
-        if (e.end > floor) throw new Error('customize: overlapping edits');
-        out = out.slice(0, e.start) + e.text + out.slice(e.end);
-        floor = e.start;
-      }
-      return out;
-    },
-    get count() {
-      return edits.length;
-    },
-    // Where the first edit starts (all map edits are inside <body>).
-    get firstStart() {
-      return Math.min(...edits.map((e) => e.start));
-    },
-  };
-}
-
-// Replace text inside a text node's source, keeping the rest of the page untouched.
-function editText(ed, html, textNode, fn) {
-  const l = textNode.sourceCodeLocation;
-  if (!l) return false;
-  const before = html.slice(l.startOffset, l.endOffset);
-  const after = fn(before);
-  if (after === before) return false;
-  ed.replace(l.startOffset, l.endOffset, after);
-  return true;
-}
-const textNodes = (n) => (n.nodeName === '#text' ? [n] : (n.childNodes || []).flatMap(textNodes));
+import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
+import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // ------------------------------------------------------------- the band
 const PARAGRAPH_FIXES = [
@@ -129,7 +54,7 @@ function customizeBand(ed, html, band, uid, changes) {
     const label = clean(textOf(a));
     const href = a.sourceCodeLocation.attrs?.href;
     if (/^Free Estimate$/i.test(label) && href && !/contact-us/.test(attr(a, 'href'))) {
-      ed.replace(href.startOffset, href.endOffset, 'href="/contact-us/index.html"');
+      ed.replace(href.startOffset, href.endOffset, 'href="/contact-us/"');
       changes.push('"Free Estimate" -> /contact-us/');
     }
     if (/^View All Cities$/i.test(label)) {
@@ -207,79 +132,65 @@ export function applyHeroVideo(html, { videoId } = {}) {
 }
 
 // ----------------------------------------------------------------- main
-export function applyCustomizations(html, { pageUrl } = {}) {
+// map: replace the old map sections (CUSTOM_US_MAP). fixes: the audit fixes in
+// site-fixes.mjs (SITE_FIXES). Returns the new HTML and what changed, per group.
+export function applyCustomizations(html, { pageUrl, map = true, fixes = false, siteDir, siteOrigin } = {}) {
   const doc = parse(html, { sourceCodeLocationInfo: true });
   const ed = makeEditor(html);
-  const changes = [];
+  const changes = { map: [], fixes: [] };
   let n = 0;
   const uid = () => `pmap-${++n}`;
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
 
-  for (const band of findAll(doc, isMapBand)) customizeBand(ed, html, band, uid(), changes);
+  if (map) {
+    for (const band of findAll(doc, isMapBand)) customizeBand(ed, html, band, uid(), changes.map);
 
-  // The Google Maps widget (Past Projects): it lives in one HTML-code block.
-  const widget = find(doc, (c) => hasClass(c, 'custom-project') && find(c, (x) => attr(x, 'id') === 'map-container' || attr(x, 'id') === 'mapclusterer'));
-  if (widget) {
-    ed.outer(widget, explorerBlock(uid()));
-    changes.push('Google Maps projects widget -> interactive US map');
-    const list = find(doc, (c) => attr(c, 'id') === 'projectsListData');
-    const cards = list ? projectCards(list) : [];
-    if (list && cards.length) {
-      ed.outer(list, renderProjects(cards));
-      changes.push(`hidden project list -> featured projects grid (${cards.length})`);
+    // The Google Maps widget (Past Projects): it lives in one HTML-code block.
+    const widget = find(doc, (c) => hasClass(c, 'custom-project') && find(c, (x) => attr(x, 'id') === 'map-container' || attr(x, 'id') === 'mapclusterer'));
+    if (widget) {
+      ed.outer(widget, explorerBlock(uid()));
+      changes.map.push('Google Maps projects widget -> interactive US map');
+      const list = find(doc, (c) => attr(c, 'id') === 'projectsListData');
+      const cards = list ? projectCards(list) : [];
+      if (list && cards.length) {
+        ed.outer(list, renderProjects(cards));
+        changes.map.push(`hidden project list -> featured projects grid (${cards.length})`);
+      }
+      // Map scripts left outside the widget, if any.
+      for (const s of findAll(doc, (c) => c.tagName === 'script' && /maps\/api\/js\?[^"]*callback=initMap|markerclusterer/.test(attr(c, 'src') || ''))) {
+        if (!isInside(s, widget)) ed.outer(s, '');
+      }
     }
-    // Map scripts left outside the widget, if any.
-    for (const s of findAll(doc, (c) => c.tagName === 'script' && /maps\/api\/js\?[^"]*callback=initMap|markerclusterer/.test(attr(c, 'src') || ''))) {
-      if (!isInside(s, widget)) ed.outer(s, '');
+
+    // Service Areas: the large map goes where the list of cities used to be.
+    if (/^\/service-areas\/$/.test(pathname)) {
+      const section = find(doc, (c) => hasClass(c, 'Area_Section'));
+      const box = section && find(section, (c) => hasClass(c, 'container'));
+      if (box) {
+        ed.append(box, `<div class="pmap-card">${renderExplorerMap({ uid: uid() })}</div>`);
+        changes.map.push('interactive US map added under "…work on properties throughout:"');
+      }
     }
   }
 
-  // Service Areas: the large map goes where the list of cities used to be.
-  if (/^\/service-areas\/$/.test(pathname)) {
-    const section = find(doc, (c) => hasClass(c, 'Area_Section'));
-    const box = section && find(section, (c) => hasClass(c, 'container'));
-    if (box) {
-      ed.append(box, `<div class="pmap-card">${renderExplorerMap({ uid: uid() })}</div>`);
-      changes.push('interactive US map added under "…work on properties throughout:"');
-    }
-  }
+  const fixAssets = fixes ? collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes.fixes) : {};
+  if (!changes.map.length && !changes.fixes.length) return { html, changes };
 
-  if (!changes.length) return { html, changes };
-  // The map's stylesheet and script go just before the page's own </head>. If a page has
-  // none, they go right before the first map instead (still valid HTML), never above
-  // the doctype: anything before <!doctype html> switches the browser to quirks mode.
-  const assets = `<link rel="stylesheet" href="${US_MAP_FILES['us-map.css']}">` + `<script src="${US_MAP_FILES['us-map.js']}" defer></script>`;
-  const headEnd = headEndOffset(html);
-  const at = headEnd >= 0 ? headEnd : ed.firstStart;
-  ed.replace(at, at, assets);
+  // Stylesheets and scripts go just before the page's own </head>. If a page has none,
+  // they go right before the first edit instead (still valid HTML), never above the
+  // doctype: anything before <!doctype html> switches the browser to quirks mode.
+  let assets = '';
+  if (changes.map.length) assets += `<link rel="stylesheet" href="${US_MAP_FILES['us-map.css']}"><script src="${US_MAP_FILES['us-map.js']}" defer></script>`;
+  if (fixAssets.css) assets += `<link rel="stylesheet" href="${SITE_FIXES_FILES['site-fixes.css']}">`;
+  if (fixAssets.js) assets += `<script src="${SITE_FIXES_FILES['site-fixes.js']}" defer></script>`;
+  if (assets) {
+    const headEnd = headEndOffset(html);
+    const at = headEnd >= 0 ? headEnd : ed.firstStart;
+    ed.replace(at, at, assets);
+  }
   const out = ed.apply();
   if (/^\s*<!doctype/i.test(html) && !/^\s*<!doctype/i.test(out)) {
     throw new Error(`customize: ${pageUrl} would no longer start with its doctype`);
   }
   return { html: out, changes };
-}
-
-// Offset of the page's literal </head> end tag. parse5 builds the tree the way a
-// browser does, which can close <head> early (it does on the raw WP Rocket HTML of
-// / and /solar/) and then records no end tag; htmlparser2 reports the tag where it
-// actually is in the source (script and style contents are skipped correctly).
-function headEndOffset(html) {
-  let pos = -1;
-  const p = new TagScanner(
-    {
-      onclosetag(name, implied) {
-        if (pos < 0 && name === 'head' && !implied) pos = p.startIndex;
-      },
-    },
-    { decodeEntities: false, lowerCaseTags: true }
-  );
-  p.write(html);
-  p.end();
-  return pos;
-}
-
-function isInside(node, ancestor) {
-  const a = ancestor.sourceCodeLocation;
-  const l = node.sourceCodeLocation;
-  return l.startOffset >= a.startOffset && l.endOffset <= a.endOffset;
 }
