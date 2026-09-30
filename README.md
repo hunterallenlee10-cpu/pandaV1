@@ -32,7 +32,7 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 
 ## Deliberate changes
 
-Besides removing the city links (above), the copy differs from the live site on purpose in two ways.
+Besides removing the city links (above), the copy differs from the live site on purpose in three ways.
 
 **The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs`
 during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
@@ -41,6 +41,12 @@ needs the live WordPress API, so it could never work in a static copy); `/servic
 city list used to be. The map shows which states Panda serves and its local offices, with no numbers for now — see
 [`custom/us-map/README.md`](custom/us-map/README.md) to edit the areas or add job numbers. Pages changed this way are
 listed as "edited on purpose" in `docs/visual-diff/summary.md`.
+
+**The homepage hero plays a different background video.** The hero's muted, looping YouTube background shows
+[`EJPeFkhznTY`](https://www.youtube.com/watch?v=EJPeFkhznTY) instead of the live site's video (applied by
+`applyHeroVideo` in `scripts/lib/customize.mjs` during the build). Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs`
+(or as an environment variable) to another YouTube video ID to change it, or to `''` to keep the live site's video.
+It stays muted with no controls, and like on the live site it is hidden on phones (under 768 px wide).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
 the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.

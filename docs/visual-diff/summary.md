@@ -18,12 +18,12 @@ typically because carousels or other scripts initialise a second time on already
 
 ## Pages edited on purpose
 
-These pages differ from live by design: links to the city sub-sites were removed from the copy, the old map sections were replaced with the animated US map (`custom/us-map/`), and some site-audit fixes change a whole section or message (`scripts/lib/site-fixes.mjs`). Pages with only small fixes (top bar text, review link, typos) are compared with live as usual.
+These pages differ from live by design: links to the city sub-sites were removed from the copy, the old map sections were replaced with the animated US map (`custom/us-map/`), some site-audit fixes change a whole section or message (`scripts/lib/site-fixes.mjs`), and the homepage hero plays a different background video (`HERO_VIDEO_ID`). Pages with only small fixes (top bar text, review link, typos) are compared with live as usual.
 
 | Page | Viewport | Diff % | Change |
 | --- | --- | --- | --- |
-| / | desktop | 17.49 | edited on purpose: old map section replaced with the animated US map |
-| / | mobile | 16.66 | edited on purpose: old map section replaced with the animated US map |
+| / | desktop | 17.49 | edited on purpose: old map section replaced with the animated US map; hero background video swapped |
+| / | mobile | 16.66 | edited on purpose: old map section replaced with the animated US map; hero background video swapped |
 | /about/ | desktop | 20.50 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /about/ | mobile | 40.99 | edited on purpose: old map section replaced with the animated US map; testimonials: all 2 reviews shown side by side |
 | /blog/how-long-does-a-roof-really-last/ | desktop | 0.04 | edited on purpose: 2 link(s) to city sub-sites removed |

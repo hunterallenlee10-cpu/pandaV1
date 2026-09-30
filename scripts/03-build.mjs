@@ -9,10 +9,10 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, REMOVED_PAGES, isRemovedPage } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
-import { applyCustomizations } from './lib/customize.mjs';
+import { applyCustomizations, applyHeroVideo } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
@@ -179,14 +179,16 @@ for (const row of pages) {
   if (useRendered) pagesFromRendered++;
   const { report } = transformed;
   // Deliberate changes on top of the copy: the old map sections -> the animated US map
-  // (CUSTOM_US_MAP), and the fixes from the site audit (SITE_FIXES).
+  // (CUSTOM_US_MAP), the fixes from the site audit (SITE_FIXES), and the homepage hero's
+  // background video -> HERO_VIDEO_ID.
   const custom =
     CUSTOM_US_MAP || SITE_FIXES
       ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, siteDir: OUT, siteOrigin: SITE_ORIGIN })
       : { html: transformed.html, changes: { map: [], fixes: [] } };
-  put(rel, custom.html, row.url);
+  const hero = applyHeroVideo(custom.html, { videoId: HERO_VIDEO_ID });
+  put(rel, hero.html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
-  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length) {
+  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length || hero.changes.length) {
     intentionalChanges.push({
       url: row.url,
       removedLinks: report.removedLinks,
@@ -198,6 +200,7 @@ for (const row of pages) {
       // Fixes that change a whole section or message (the visual diff lists these pages
       // as edited on purpose; pages with only the small fixes must still match live).
       siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
+      heroVideo: hero.changes,
     });
   }
 
@@ -645,5 +648,9 @@ if (SITE_FIXES) {
 }
 if (removedPages.length) {
   console.log(`  pages removed on request: ${removedPages.map((p) => new URL(p.url).pathname).join(', ')} — plus ${leftOut.size} file(s) only they used; sitemap entries dropped from ${sitemapsEdited.join(', ') || 'none'}`);
+}
+if (HERO_VIDEO_ID) {
+  const heroPages = intentionalChanges.filter((c) => c.heroVideo?.length);
+  console.log(`  hero background video ${HERO_VIDEO_ID}: ${heroPages.map((c) => new URL(c.url).pathname).join(', ') || 'no hero video found'}`);
 }
 if (collisions.length) console.log(`  WARNING: ${collisions.length} local path collisions (see .work/build-report.json)`);
