@@ -9,8 +9,17 @@
 //    link to the Reviews page.
 //  - Testimonials: the 2-review carousel never started (its script runs before the
 //    Swiper library loads), so only the first review was visible and the arrows did
-//    nothing. Both reviews are now shown side by side; the section is removed from
-//    Service Areas.
+//    nothing; the reviews beside the video on / and /services/ sat below a large empty
+//    band. Every one of them is now the same looping review carousel (reviews.mjs,
+//    custom/reviews/); the section is removed from Service Areas.
+//  - "Experts You Can Trust" (home page): the logo carousel jumped one step every 2.5 s
+//    (and its looped copies never loaded their logos); it is now a continuously gliding
+//    row of logos.
+//  - "About Our Team" / "Request an Appointment" sections: the award badges picture
+//    (GAF President's Club + two Inc. 5000 badges) becomes the same badges with the
+//    site's other GAF certifications (Diamond Pledge, Metal Certified) in the empty
+//    space around them.
+//  - /reviews/: the "Read More Reviews!" button is removed (on request).
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
 //    other tiles keep their size).
@@ -29,11 +38,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes } from './html-edit.mjs';
+import { collectReviewCarousels } from './reviews.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|case-study picture|gallery tile|job details page)/;
+export const SECTION_FIXES = /^(testimonials|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request)/;
+
+// The badges shown where the award badges picture was (files already on the site): the
+// three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
+// Club badge and both Inc. 5000 badges are the ones in the old picture.
+const AWARDS_PICTURE = /\/wp-content\/uploads\/2025\/04\/awards\.png$/;
+const BADGES = [
+  { src: '/wp-content/uploads/2025/04/brand-gaf-pledge.png', width: 120, height: 120, kind: 'gaf', alt: 'GAF Diamond Pledge: NDL roof guarantee' },
+  { src: '/wp-content/uploads/2025/04/brand-gaf.png', width: 120, height: 120, kind: 'gaf', alt: 'GAF President’s Club: residential award winner' },
+  { src: '/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png', width: 120, height: 120, kind: 'gaf', alt: 'GAF Metal Certified: Timbersteel roofing contractor' },
+  { src: '/wp-content/uploads/2025/04/inc-2004.png', width: 150, height: 130, kind: 'inc', alt: 'Inc. 5000 2024: No. 50 of America’s fastest-growing private companies' },
+  { src: '/wp-content/uploads/2025/04/inc-1.png', width: 150, height: 130, kind: 'inc', alt: 'Inc. 5000 2024: No. 1 in construction among America’s fastest-growing private companies' },
+];
 
 // The number in the site's header on every page.
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
@@ -65,7 +87,7 @@ const capabilitiesMap = () => (capabilities ??= JSON.parse(fs.readFileSync(path.
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false };
+  const used = { css: false, js: false, reviews: false };
   const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
@@ -96,28 +118,59 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
-  // Testimonials: small carousels that never start -> all reviews side by side.
-  for (const box of findAll(doc, (c) => hasClass(c, 'swiper-container') && hasClass(c, 'testi-cont'))) {
+  // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
+  // Before the missing-photo fix below, which then leaves the replaced reviews alone.
+  if (collectReviewCarousels(doc, ed, { pathname }, changes)) used.reviews = true;
+
+  // "Experts You Can Trust": the logo carousel (started by the site's own script for
+  // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that
+  // script leaves it alone; Swiper's leftovers in a rendered page (copies, sizes) go.
+  const swiperState = (c) => /^swiper-/.test(c) && c !== 'swiper-wrapper' && c !== 'swiper-slide';
+  const noSwiperAttrs = (n) =>
+    n.attrs.filter((a) => !['style', 'role', 'aria-label', 'aria-live', 'data-swiper-slide-index'].includes(a.name) && !(a.name === 'id' && /^swiper-wrapper-/.test(a.value)));
+  for (const box of findAll(doc, (c) => hasClass(c, 'swiper') && hasClass(c, 'swipper-Logo'))) {
     const wrapper = find(box, (c) => hasClass(c, 'swiper-wrapper'));
-    const slides = wrapper ? (wrapper.childNodes || []).filter((c) => c.tagName && hasClass(c, 'swiper-slide') && !hasClass(c, 'swiper-slide-duplicate')) : [];
-    if (!slides.length || slides.length > 3) continue;
-    const up = ancestors(box);
-    const section = up.find((a) => hasClass(a, 'Client-Logo-section')) || up.find((a) => a.tagName && find(a, (c) => hasClass(c, 'testi-prev-btn')));
-    if (pathname === '/service-areas/' && section && hasClass(section, 'Client-Logo-section')) {
-      ed.outer(section, '');
-      changes.push('testimonials section removed (it does not belong on Service Areas)');
-      continue;
+    const slides = wrapper ? (wrapper.childNodes || []).filter((c) => c.tagName && hasClass(c, 'swiper-slide')) : [];
+    const logos = slides.filter((s) => hasClass(s, 'client-logo') && !hasClass(s, 'swiper-slide-duplicate'));
+    if (!logos.length || logos.length !== slides.filter((s) => !hasClass(s, 'swiper-slide-duplicate')).length) continue;
+    ed.retag(box, withClass({ attrs: noSwiperAttrs(box) }, ['pfix-marquee'], ['swiper', ...classes(box).filter(swiperState)]));
+    ed.retag(wrapper, withClass({ attrs: noSwiperAttrs(wrapper) }, ['pfix-marquee__track'], ['swiper-wrapper']));
+    for (const s of slides) {
+      if (hasClass(s, 'swiper-slide-duplicate')) ed.outer(s, '');
+      else ed.retag(s, withClass({ attrs: noSwiperAttrs(s) }, ['pfix-marquee__item'], ['swiper-slide', ...classes(s).filter(swiperState)]));
     }
-    ed.retag(box, withClass(box, ['pfix-testimonials'], ['swiper-container']));
-    ed.retag(wrapper, [...withClass(wrapper, ['pfix-testimonials__grid'], ['swiper-wrapper']), { name: 'role', value: 'list' }]);
-    for (const s of slides) ed.retag(s, [...s.attrs.filter((a) => a.name !== 'role'), { name: 'role', value: 'listitem' }]);
-    const scope = section || box.parentNode;
-    const navs = findAll(scope, (c) => hasClass(c, 'testimonial-navigation'));
-    const arrows = navs.length ? navs : findAll(scope, (c) => hasClass(c, 'testi-prev-btn') || hasClass(c, 'testi-next-btn'));
-    for (const n of arrows) ed.outer(n, '');
-    for (const s of findAll(scope, (c) => c.tagName === 'script' && /new Swiper\(\s*["'][^"']*(swiper-container|testi-cont)/.test(rawText(c)))) ed.outer(s, '');
-    changes.push(`testimonials: all ${slides.length} reviews shown side by side (the carousel never started; only the first was visible)`);
+    changes.push(`logo carousel: ${logos.length} logos glide past continuously (it jumped a step every 2.5 s)`);
     used.css = true;
+    used.js = true;
+  }
+
+  // "About Our Team" / "Request an Appointment": the award badges picture -> the badges
+  // one by one, with the other GAF certifications added (see BADGES).
+  const haveBadges = !siteDir || BADGES.every((b) => fs.existsSync(path.join(siteDir, b.src)) && fs.existsSync(path.join(siteDir, `${b.src}.webp`)));
+  for (const img of findAll(doc, (c) => c.tagName === 'img' && AWARDS_PICTURE.test(attr(c, 'data-lazy-src') || attr(c, 'src') || ''))) {
+    if (!ancestors(img).some((a) => hasClass(a, 'Request-Container'))) continue;
+    if (!haveBadges) {
+      console.warn(`site-fixes: ${pathname}: a badge picture is missing from the site, award badges left as is`);
+      break;
+    }
+    const pic = img.parentNode?.tagName === 'picture' ? img.parentNode : img;
+    if (ed.overlaps(pic.sourceCodeLocation.startOffset, pic.sourceCodeLocation.endOffset)) continue;
+    const badge = (b) =>
+      `<div class="pfix-badges__item pfix-badges__item--${b.kind}" role="listitem"><picture>` +
+      `<source type="image/webp" srcset="${esc(b.src)}.webp">` +
+      `<img src="${esc(b.src)}" alt="${esc(b.alt)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">` +
+      `</picture></div>`;
+    ed.outer(pic, `<div class="pfix-badges" role="list" aria-label="Certifications and awards">${BADGES.map(badge).join('')}</div>`);
+    changes.push('award badges: the other GAF certifications (Diamond Pledge, Metal Certified) added beside President’s Club and the Inc. 5000 badges');
+    used.css = true;
+  }
+
+  // Removed on request.
+  if (pathname === '/reviews/') {
+    for (const b of findAll(doc, (c) => hasClass(c, 'bde-button') && /^Read More Reviews!?$/i.test(clean(textOf(c))))) {
+      ed.outer(b, '');
+      changes.push('removed on request: the "Read More Reviews!" button');
+    }
   }
 
   // Pictures that are missing (on the live site too).

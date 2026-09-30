@@ -9,12 +9,13 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
-import { applyCustomizations, applyHeroVideo } from './lib/customize.mjs';
+import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
+import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -179,11 +180,11 @@ for (const row of pages) {
   if (useRendered) pagesFromRendered++;
   const { report } = transformed;
   // Deliberate changes on top of the copy: the old map sections -> the animated US map
-  // (CUSTOM_US_MAP), the fixes from the site audit (SITE_FIXES), and the homepage hero's
-  // background video -> HERO_VIDEO_ID.
+  // (CUSTOM_US_MAP), the fixes from the site audit (SITE_FIXES), smooth scrolling
+  // (SMOOTH_SCROLL), and the homepage hero's background video -> HERO_VIDEO_ID.
   const custom =
-    CUSTOM_US_MAP || SITE_FIXES
-      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, siteDir: OUT, siteOrigin: SITE_ORIGIN })
+    CUSTOM_US_MAP || SITE_FIXES || SMOOTH_SCROLL
+      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, smoothScroll: SMOOTH_SCROLL, siteDir: OUT, siteOrigin: SITE_ORIGIN })
       : { html: transformed.html, changes: { map: [], fixes: [] } };
   const hero = applyHeroVideo(custom.html, { videoId: HERO_VIDEO_ID });
   put(rel, hero.html, row.url);
@@ -238,6 +239,14 @@ if (mapPages.length) {
 const fixPages = intentionalChanges.filter((c) => c.siteFixes?.length);
 if (fixPages.length) {
   for (const [name, url] of Object.entries(SITE_FIXES_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SITE_FIXES_DIR, name)), `custom/site-fixes/${name}`);
+}
+// The review carousel (custom/reviews/) and smooth scrolling (custom/smooth-scroll/).
+const reviewPages = fixPages.filter((c) => c.siteFixes.some((f) => /^testimonials: looping review carousel/.test(f)));
+if (reviewPages.length) {
+  for (const [name, url] of Object.entries(REVIEWS_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(REVIEWS_DIR, name)), `custom/reviews/${name}`);
+}
+if (SMOOTH_SCROLL) {
+  for (const [name, url] of Object.entries(SMOOTH_SCROLL_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SMOOTH_SCROLL_DIR, name)), `custom/smooth-scroll/${name}`);
 }
 
 // 3. Special files kept verbatim: robots.txt, sitemaps (+ XSL), feeds
@@ -646,6 +655,8 @@ if (SITE_FIXES) {
   console.log(`  site fixes: ${fixPages.length} page(s)`);
   for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`    ${String(n).padStart(3)} × ${k}`);
 }
+if (reviewPages.length) console.log(`  review carousel: ${reviewPages.length} page(s) — ${reviewPages.map((c) => new URL(c.url).pathname).join(', ')}`);
+if (SMOOTH_SCROLL) console.log('  smooth scrolling (Lenis): every page');
 if (removedPages.length) {
   console.log(`  pages removed on request: ${removedPages.map((p) => new URL(p.url).pathname).join(', ')} — plus ${leftOut.size} file(s) only they used; sitemap entries dropped from ${sitemapsEdited.join(', ') || 'none'}`);
 }
