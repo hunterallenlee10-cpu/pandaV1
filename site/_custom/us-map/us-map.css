@@ -13,21 +13,35 @@
   --pmap-ink-2: #4b5563;
   --pmap-inset-bg: #ffffff;
   --pmap-inset-frame: #d1d5db;
+  /* States shaded by jobs completed, fewest (t1) to most (t5); see "jobTiers" in areas.json. */
+  --pmap-t1: #f98e52;
+  --pmap-t2: #e97125;
+  --pmap-t3: #cf5d03;
+  --pmap-t4: #af4e05;
+  --pmap-t5: #8d400c;
+  --pmap-tier-stroke: #ffffff;
   position: relative;
   width: 100%;
   color: var(--pmap-ink);
   font-family: var(--robboto, Roboto), system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   text-align: left;
 }
-/* On the orange band: the country in a deeper orange, served states lit in white. */
+/* On the orange band: the country in a deeper orange, served states lit in white
+   (the more jobs, the whiter). */
 .pmap--on-orange {
-  --pmap-land: #de5818;
+  --pmap-land: #c14f02;
   --pmap-border: rgba(255, 255, 255, 0.4);
   --pmap-served: #fff8f2;
   --pmap-served-stroke: #f26924;
   --pmap-ink: #ffffff;
   --pmap-inset-bg: var(--seconday, #f26924);
   --pmap-inset-frame: rgba(255, 255, 255, 0.6);
+  --pmap-t1: #e69469;
+  --pmap-t2: #efad8c;
+  --pmap-t3: #f5c7af;
+  --pmap-t4: #fbe0d2;
+  --pmap-t5: #fef9f7;
+  --pmap-tier-stroke: var(--pmap-served-stroke);
 }
 
 /* ---------------------------------------------------------------- the map */
@@ -55,6 +69,19 @@
   mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
   mask-composite: intersect;
 }
+/* The whole country in view (served states from coast to coast): nothing is cut off at
+   the edges, so no fade (it comes back while the large map is zoomed into a state), and
+   the small map's frame takes the map's own shape instead of leaving bands of space. */
+.pmap--whole:not(.pmap--has-selection) .pmap__svg {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.pmap--whole.pmap--compact .pmap__stage {
+  aspect-ratio: var(--pmap-aspect, 8 / 5);
+}
+.pmap--whole.pmap--explorer .pmap__stage {
+  aspect-ratio: 3 / 2;
+}
 .pmap__borders {
   fill: none;
   stroke: var(--pmap-border);
@@ -68,6 +95,28 @@
   stroke-width: 1;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
+}
+.pmap__state--t1,
+.pmap__state--t2,
+.pmap__state--t3,
+.pmap__state--t4,
+.pmap__state--t5 {
+  stroke: var(--pmap-tier-stroke);
+}
+.pmap__state--t1 {
+  fill: var(--pmap-t1);
+}
+.pmap__state--t2 {
+  fill: var(--pmap-t2);
+}
+.pmap__state--t3 {
+  fill: var(--pmap-t3);
+}
+.pmap__state--t4 {
+  fill: var(--pmap-t4);
+}
+.pmap__state--t5 {
+  fill: var(--pmap-t5);
 }
 /* Markers are drawn in screen pixels (the script scales them to the zoom level). */
 .pmap__area {
@@ -205,6 +254,11 @@
   border-radius: 999px;
   background: rgba(17, 17, 17, 0.88);
 }
+.pmap--on-orange .pmap__legend--scale {
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 14px;
+}
 .pmap .pmap__legend-item {
   display: flex;
   align-items: center;
@@ -220,6 +274,55 @@
   border-radius: 3px;
   background: var(--pmap-served);
   box-shadow: inset 0 0 0 1px var(--pmap-served-stroke);
+}
+/* The jobs scale: a title over a row of swatches, each labelled with its band. */
+.pmap .pmap__legend-item--scale {
+  display: block;
+}
+.pmap__legend-title {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.pmap__scale {
+  display: grid;
+  grid-auto-columns: minmax(50px, 60px);
+  grid-auto-flow: column;
+  column-gap: 2px;
+}
+.pmap__scale-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.pmap__scale-step .pmap__key {
+  width: 100%;
+  height: 10px;
+}
+.pmap__scale-step:first-child .pmap__key {
+  border-radius: 3px 0 0 3px;
+}
+.pmap__scale-step:last-child .pmap__key {
+  border-radius: 0 3px 3px 0;
+}
+.pmap__key--t1 {
+  background: var(--pmap-t1);
+}
+.pmap__key--t2 {
+  background: var(--pmap-t2);
+}
+.pmap__key--t3 {
+  background: var(--pmap-t3);
+}
+.pmap__key--t4 {
+  background: var(--pmap-t4);
+}
+.pmap__key--t5 {
+  background: var(--pmap-t5);
 }
 .pmap__key--office {
   width: 11px;
@@ -423,9 +526,34 @@
   .pmap--explorer .pmap__stage {
     aspect-ratio: 1 / 1;
   }
+  .pmap--whole.pmap--explorer .pmap__stage {
+    aspect-ratio: 4 / 3;
+  }
   .pmap .pmap__chip {
+    flex: none;
     padding: 9px 14px;
     font-size: 14px;
+    white-space: nowrap;
+  }
+  /* One row of state buttons that scrolls sideways, instead of many rows. */
+  .pmap--explorer .pmap__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* room for the focus ring, and a fade at the edge hinting at more buttons */
+    margin-left: -4px;
+    margin-right: -4px;
+    padding: 4px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  }
+  .pmap--explorer .pmap__chips::-webkit-scrollbar {
+    display: none;
+  }
+  .pmap--explorer .pmap__chips.is-end {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 

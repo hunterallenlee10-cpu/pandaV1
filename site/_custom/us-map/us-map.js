@@ -20,7 +20,8 @@
     return Array.prototype.slice.call(list);
   }
   function fmtJobs(n) {
-    return Number(n).toLocaleString('en-US') + ' jobs';
+    n = Number(n);
+    return n.toLocaleString('en-US') + (n === 1 ? ' job' : ' jobs');
   }
 
   function initMap(root) {
@@ -30,6 +31,7 @@
     if (!svg || !stage) return;
     var areas = toArray(root.querySelectorAll('.pmap__area'));
     var states = toArray(root.querySelectorAll('.pmap__state'));
+    var chipRow = root.querySelector('.pmap__chips');
     var chips = toArray(root.querySelectorAll('.pmap__chip'));
     var insets = toArray(root.querySelectorAll('.pmap__inset'));
     var info = root.querySelector('.pmap__info');
@@ -235,11 +237,27 @@
         if (n) jobsEl.textContent = fmtJobs(n) + ' completed';
       }
     }
+    // On phones the buttons are one row that scrolls sideways: keep the chosen one in
+    // view (without scrolling the page), and drop the edge fade once the row is at its end.
+    function revealChip(chip) {
+      if (!chipRow || !chip || chipRow.scrollWidth <= chipRow.clientWidth) return;
+      var left = chip.offsetLeft - chipRow.offsetLeft;
+      var right = left + chip.offsetWidth;
+      if (left < chipRow.scrollLeft) chipRow.scrollLeft = left - 24;
+      else if (right > chipRow.scrollLeft + chipRow.clientWidth) chipRow.scrollLeft = right - chipRow.clientWidth + 36;
+    }
+    function chipRowEnd() {
+      if (chipRow) chipRow.classList.toggle('is-end', chipRow.scrollLeft + chipRow.clientWidth >= chipRow.scrollWidth - 2);
+    }
+    if (chipRow) chipRow.addEventListener('scroll', chipRowEnd, { passive: true });
+
     function select(code) {
       code = code || '';
       finishIntro(); // a click during (or before) the entrance skips straight to the end of it
       chips.forEach(function (c) {
-        c.setAttribute('aria-pressed', String(c.getAttribute('data-state') === code));
+        var on = c.getAttribute('data-state') === code;
+        c.setAttribute('aria-pressed', String(on));
+        if (on) revealChip(c);
       });
       root.classList.toggle('pmap--has-selection', !!code);
       states.forEach(function (s) {
@@ -268,8 +286,12 @@
     });
 
     // --------------------------------------------------------- entrance
-    if (window.ResizeObserver) new ResizeObserver(layout).observe(stage);
-    else window.addEventListener('resize', layout);
+    function resized() {
+      layout();
+      chipRowEnd();
+    }
+    if (window.ResizeObserver) new ResizeObserver(resized).observe(stage);
+    else window.addEventListener('resize', resized);
 
     var played = false;
     var timers = [];
