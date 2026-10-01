@@ -5,7 +5,8 @@
    - /service-areas/, /about/, /podcast/, /roofing/: the service cards glide past the same
      way (.pfix-marquee--cards).
    - /service-areas/ hero: the state chips zoom the map to their state.
-   - Service estimate forms: checked on submit, then a "not switched on yet" message. */
+   - Service estimate forms: checked on submit, then a "not switched on yet" message.
+   - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -278,5 +279,29 @@
   document.addEventListener('input', function (event) {
     var el = event.target;
     if (el && el.closest && el.closest('[data-pfix-lead-form]') && el.getAttribute('aria-invalid')) el.removeAttribute('aria-invalid');
+  });
+})();
+
+/* /offers/: a "Claim" button leads to the hero's estimate form (smooth-scroll.js glides
+   there) with its offer's project already chosen, unless the visitor chose one themselves. */
+(function () {
+  'use strict';
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[data-pfix-project]');
+    if (!link) return;
+    var id = (link.getAttribute('href') || '').replace(/^#/, '');
+    var form = id && document.getElementById(id);
+    var select = form && form.querySelector('select[name="project"]');
+    // a project the visitor chose stays; one a "Claim" button chose follows the next button
+    if (!select || (select.value && select.getAttribute('data-pfix-auto') !== select.value)) return;
+    var want = link.getAttribute('data-pfix-project');
+    for (var i = 0; i < select.options.length; i++) {
+      if (select.options[i].text === want && !select.options[i].disabled) {
+        select.selectedIndex = i;
+        select.setAttribute('data-pfix-auto', select.value);
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        return;
+      }
+    }
   });
 })();

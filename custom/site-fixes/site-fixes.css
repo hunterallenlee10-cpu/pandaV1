@@ -1749,3 +1749,775 @@ a.bde-social-share-button:hover {
   outline: 3px solid #111827;
   outline-offset: 3px;
 }
+
+/* /offers/ (offers-page.mjs): the hero and the sections that replace the five flyer bands.
+   Roboto like the rest of the page; orange for actions, lime and charcoal green from the
+   site's palette, the same look as the service page sections (.pfix-sp).
+
+   Hero: a Panda GAF solar roof (dark shingles, white dormers) in place of the drone photo
+   /service-areas/ uses, which was pinned to the screen (background-attachment: fixed) and
+   so blown up. It scrolls with the page and is darkened behind the text. */
+.hero-section.pfix-of-hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #1d2420;
+  background-image: url("/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg");
+  background-image: image-set(
+    url("/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg.webp") type("image/webp"),
+    url("/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg") type("image/jpeg")
+  );
+  background-size: cover;
+  background-position: 62% 40%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-blend-mode: normal;
+}
+.hero-section.pfix-of-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(10, 14, 11, 0.9) 0%, rgba(10, 14, 11, 0.72) 38%, rgba(10, 14, 11, 0.25) 70%, rgba(10, 14, 11, 0.12) 100%),
+    linear-gradient(0deg, rgba(10, 14, 11, 0.35) 0%, rgba(10, 14, 11, 0) 40%);
+  pointer-events: none;
+}
+.pfix-of-hero .text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+}
+.pfix-of-hero .text-section > * {
+  max-width: 100%;
+  margin: 0;
+}
+.pfix-of-hero .pfix-of-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c3ea79;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pfix-of-hero .pfix-of-hero__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.pfix-of-hero .pfix-of-hero__title {
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-align: left;
+  text-wrap: balance;
+}
+.pfix-of-hero .pfix-of-hero__sub {
+  padding: 0;
+  color: #eef0ea;
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* The two offers as tickets: amount on top, what it's for below, a notch on each side. */
+.pfix-of-hero .pfix-of-hero__deals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 470px;
+  margin-top: 4px;
+}
+.pfix-of-hero a.pfix-of-hero__deal,
+.pfix-of-hero a.pfix-of-hero__deal:hover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px 14px 20px;
+  border: 1px dashed rgba(195, 234, 121, 0.7);
+  border-radius: 14px;
+  background: rgba(13, 18, 14, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #e6ebdf;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.pfix-of-hero a.pfix-of-hero__deal:hover {
+  background: rgba(13, 18, 14, 0.72);
+  transform: translateY(-2px);
+}
+.pfix-of-hero .pfix-of-hero__deal b {
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.pfix-of-hero .pfix-of-hero__deal b span {
+  color: #c3ea79;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* "See the offers" and call buttons. */
+.pfix-of-hero .pfix-of-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-of-hero a.pfix-of-hero__btn,
+.pfix-of-hero a.pfix-of-hero__btn:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 24px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pfix-of-hero a.pfix-of-hero__btn svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.pfix-of-hero a.pfix-of-hero__btn--primary {
+  background: #f26924;
+}
+.pfix-of-hero a.pfix-of-hero__btn--primary:hover {
+  background: #e2531a;
+}
+.pfix-of-hero a.pfix-of-hero__btn--ghost {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+.pfix-of-hero a.pfix-of-hero__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.pfix-of-hero .pfix-of-hero__short {
+  display: none;
+}
+.pfix-of-hero a.pfix-of-hero__deal:focus-visible,
+.pfix-of-hero a.pfix-of-hero__btn:focus-visible {
+  outline: 3px solid #c3ea79;
+  outline-offset: 2px;
+}
+@media (min-width: 1200px) {
+  .pfix-of-hero .text-section {
+    width: 570px;
+  }
+}
+/* Side by side in the narrower container: leave a gap before the form. */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .pfix-of-hero .text-section {
+    width: 456px;
+  }
+  .pfix-of-hero .text-section .pfix-of-hero__title {
+    font-size: 40px;
+  }
+}
+/* Columns stacked: the text above the form, darkened evenly. */
+@media (max-width: 1023.98px) {
+  .hero-section.pfix-of-hero::before {
+    background: linear-gradient(180deg, rgba(10, 14, 11, 0.84) 0%, rgba(10, 14, 11, 0.66) 55%, rgba(10, 14, 11, 0.55) 100%);
+  }
+  .pfix-of-hero .hero-text-col {
+    align-self: stretch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .pfix-of-hero .text-section {
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .pfix-of-hero .pfix-of-hero__title {
+    font-size: 42px;
+  }
+}
+@media (max-width: 767.98px) {
+  .pfix-of-hero .text-section {
+    gap: 14px;
+    padding-top: 8px;
+  }
+  /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
+  .pfix-of-hero .pfix-of-hero__title {
+    font-size: 32px !important;
+  }
+  .pfix-of-hero .pfix-of-hero__sub {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .pfix-of-hero .pfix-of-hero__deal b {
+    font-size: 26px;
+  }
+  .pfix-of-hero .pfix-of-hero__deals {
+    max-width: none;
+  }
+  .pfix-of-hero .pfix-of-hero__ctas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .pfix-of-hero a.pfix-of-hero__btn,
+  .pfix-of-hero a.pfix-of-hero__btn:hover {
+    padding: 13px 10px;
+    font-size: 15px;
+  }
+}
+/* Narrow phones: "Call us" on the button (the number is still read out). */
+@media (max-width: 479.98px) {
+  .pfix-of-hero .pfix-of-hero__long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pfix-of-hero .pfix-of-hero__short {
+    display: inline;
+  }
+  .pfix-of-hero a.pfix-of-hero__deal,
+  .pfix-of-hero a.pfix-of-hero__deal:hover {
+    padding: 12px 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-of-hero a.pfix-of-hero__deal {
+    transition: none;
+  }
+  .pfix-of-hero a.pfix-of-hero__deal:hover {
+    transform: none;
+  }
+}
+
+/* The sections under the hero. */
+.pfix-of {
+  --of-ink: #14180f;
+  --of-text: #3f463a;
+  --of-muted: #5d6656;
+  --of-line: #e4e8dc;
+  --of-bg: #f5f7ef;
+  --of-orange: #f26924;
+  --of-orange-ink: #c2410c;
+  --of-lime: #9acd32;
+  --of-lime-ink: #4d7c0f;
+  --of-dark: #1a2418;
+  color: var(--of-text);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-of *,
+.pfix-of *::before,
+.pfix-of *::after {
+  box-sizing: border-box;
+}
+.pfix-of .pfix-of__sec {
+  padding: clamp(56px, 7vw, 96px) 0;
+  scroll-margin-top: 140px;
+}
+.pfix-of .pfix-of__inner {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-of .pfix-of__head {
+  max-width: 720px;
+  margin: 0 auto clamp(30px, 4vw, 48px);
+  text-align: center;
+}
+.pfix-of .pfix-of__eyebrow {
+  margin: 0 0 10px;
+  color: var(--of-orange-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-of .pfix-of__title {
+  margin: 0;
+  padding: 0;
+  color: var(--of-ink);
+  font-family: inherit;
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.pfix-of .pfix-of__intro {
+  margin: 14px 0 0;
+  color: var(--of-muted);
+  font-size: 17px;
+}
+.pfix-of h3 {
+  margin: 0;
+  padding: 0;
+  color: var(--of-ink);
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pfix-of p {
+  margin: 0;
+}
+.pfix-of svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pfix-of a:focus-visible {
+  outline: 3px solid var(--of-orange-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.pfix-of .pfix-of-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Buttons and text links. */
+.pfix-of .pfix-of-btn,
+.pfix-of .pfix-of-btn:hover {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 13px 26px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pfix-of .pfix-of-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-of .pfix-of-btn--primary,
+.pfix-of .pfix-of-btn--primary:hover {
+  background: var(--of-orange);
+  color: #ffffff;
+  box-shadow: 0 10px 22px -10px rgba(242, 105, 36, 0.8);
+}
+.pfix-of .pfix-of-btn--primary:hover {
+  background: #e2531a;
+}
+.pfix-of .pfix-of-link,
+.pfix-of .pfix-of-link:hover {
+  color: var(--of-orange-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-of .pfix-of-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Ticked list. */
+.pfix-of .pfix-of-list {
+  display: grid;
+  gap: 9px;
+}
+.pfix-of .pfix-of-list > div {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: var(--of-ink);
+  font-weight: 500;
+}
+.pfix-of .pfix-of-list svg {
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  background: #e6f4cc;
+  color: var(--of-lime-ink);
+}
+
+/* Current offers: two coupon cards, the photo above a perforated edge. */
+.pfix-of .pfix-of__sec--offers {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(154, 205, 50, 0.16), transparent 42%),
+    radial-gradient(circle at 92% 100%, rgba(242, 105, 36, 0.1), transparent 40%),
+    var(--of-bg);
+}
+.pfix-of .pfix-of-deals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 32px);
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.pfix-of .pfix-of-deal {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--of-line);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 48px -28px rgba(20, 24, 15, 0.38);
+  scroll-margin-top: 140px;
+}
+.pfix-of .pfix-of-deal__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #dfe5d6;
+}
+.pfix-of .pfix-of-deal__media picture,
+.pfix-of .pfix-of-deal__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pfix-of .pfix-of-deal__media img {
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.pfix-of .pfix-of-deal:hover .pfix-of-deal__media img {
+  transform: scale(1.04);
+}
+.pfix-of .pfix-of-deal__tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--of-lime);
+  color: #111827;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pfix-of .pfix-of-deal__body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px clamp(22px, 3vw, 34px) 28px;
+  border-top: 2px dashed #d9dfcf;
+}
+/* the notches at each end of the perforation, in the section's colour */
+.pfix-of .pfix-of-deal__body::before,
+.pfix-of .pfix-of-deal__body::after {
+  content: "";
+  position: absolute;
+  top: -15px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--of-line);
+  border-radius: 50%;
+  background: var(--of-bg);
+}
+.pfix-of .pfix-of-deal__body::before {
+  left: -15px;
+}
+.pfix-of .pfix-of-deal__body::after {
+  right: -15px;
+}
+.pfix-of .pfix-of-deal__amount {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--of-ink);
+  line-height: 1;
+}
+.pfix-of .pfix-of-deal__amount b {
+  color: var(--of-orange);
+  font-size: clamp(52px, 6vw, 68px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.pfix-of .pfix-of-deal__amount span {
+  color: var(--of-ink);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-of .pfix-of-deal__title {
+  margin-top: -6px;
+  font-size: 26px;
+}
+.pfix-of .pfix-of-deal__text {
+  color: var(--of-text);
+}
+.pfix-of .pfix-of-deal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.pfix-of .pfix-of-deal__fine {
+  color: var(--of-muted);
+  font-size: 13px;
+}
+
+/* What comes with every project: three cards. */
+.pfix-of .pfix-of__sec--promises {
+  background: #ffffff;
+}
+.pfix-of .pfix-of-promises {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.pfix-of .pfix-of-promise {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 30px 26px 28px;
+  border: 1px solid var(--of-line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fbfcf8 0%, #ffffff 100%);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.pfix-of .pfix-of-promise:hover {
+  border-color: #cfe3a6;
+  box-shadow: 0 20px 40px -28px rgba(20, 24, 15, 0.35);
+  transform: translateY(-3px);
+}
+.pfix-of .pfix-of-promise__icon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  padding: 13px;
+  border-radius: 16px;
+  background: #eef7dc;
+  color: var(--of-lime-ink);
+}
+.pfix-of .pfix-of-promise h3 {
+  font-size: 21px;
+}
+.pfix-of .pfix-of-promise p {
+  flex: 1;
+}
+.pfix-of .pfix-of__note {
+  max-width: 720px;
+  margin: 26px auto 0;
+  color: var(--of-muted);
+  font-size: 13.5px;
+  text-align: center;
+}
+
+/* How to claim an offer: numbered steps, then the estimate and call band. */
+.pfix-of .pfix-of__sec--steps {
+  background: var(--of-bg);
+}
+.pfix-of .pfix-of-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  counter-reset: none;
+}
+.pfix-of .pfix-of-step {
+  position: relative;
+  padding: 28px 24px 26px;
+  border: 1px solid var(--of-line);
+  border-radius: 20px;
+  background: #ffffff;
+}
+/* a line joining the numbers, on wide screens */
+.pfix-of .pfix-of-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50px;
+  left: calc(24px + 44px + 12px);
+  right: 24px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #c7dd98 0 8px, transparent 8px 14px);
+}
+.pfix-of .pfix-of-step__n {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: var(--of-lime);
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  place-items: center;
+}
+.pfix-of .pfix-of-step h3 {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+.pfix-of .pfix-of-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 960px;
+  margin: clamp(40px, 5vw, 56px) auto 0;
+  padding: clamp(26px, 3.4vw, 38px) clamp(24px, 4vw, 44px);
+  border-radius: 22px;
+  background: linear-gradient(120deg, #f26924 0%, #e2531a 100%);
+  box-shadow: 0 18px 40px rgba(242, 105, 36, 0.28);
+  color: #ffffff;
+}
+.pfix-of .pfix-of-cta__title {
+  color: #ffffff;
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.pfix-of .pfix-of-cta__text {
+  margin-top: 4px;
+  color: #fff3ea;
+  font-size: 17px;
+}
+.pfix-of .pfix-of-cta__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-of .pfix-of-cta .pfix-of-btn {
+  border-color: #ffffff;
+  box-shadow: none;
+}
+.pfix-of .pfix-of-cta .pfix-of-btn--primary,
+.pfix-of .pfix-of-cta .pfix-of-btn--primary:hover {
+  background: #ffffff;
+  color: var(--of-orange-ink);
+}
+.pfix-of .pfix-of-cta .pfix-of-btn--primary:hover {
+  background: #fff3ea;
+}
+.pfix-of .pfix-of-btn--ghost,
+.pfix-of .pfix-of-btn--ghost:hover {
+  background: transparent;
+  color: #ffffff;
+}
+.pfix-of .pfix-of-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.pfix-of .pfix-of-cta a:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (max-width: 991.98px) {
+  .pfix-of .pfix-of-promises {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .pfix-of .pfix-of-promise {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    column-gap: 18px;
+    row-gap: 8px;
+  }
+  .pfix-of .pfix-of-promise__icon {
+    grid-row: span 3;
+    margin: 0;
+  }
+  .pfix-of .pfix-of-steps {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .pfix-of .pfix-of-step {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: 18px;
+  }
+  .pfix-of .pfix-of-step__n {
+    grid-row: span 2;
+    margin: 0;
+  }
+  .pfix-of .pfix-of-step:not(:last-child)::after {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .pfix-of .pfix-of-deals {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+  }
+  .pfix-of .pfix-of-cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .pfix-of .pfix-of-cta__btns {
+    flex-direction: column;
+  }
+}
+@media (max-width: 575.98px) {
+  .pfix-of .pfix-of__inner {
+    padding: 0 16px;
+  }
+  .pfix-of .pfix-of-deal__actions {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .pfix-of .pfix-of-promise {
+    padding: 22px 20px;
+    column-gap: 14px;
+  }
+  .pfix-of .pfix-of-promise__icon {
+    width: 48px;
+    height: 48px;
+    padding: 11px;
+    border-radius: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-of .pfix-of-deal__media img,
+  .pfix-of .pfix-of-promise,
+  .pfix-of .pfix-of-btn {
+    transition: none;
+  }
+  .pfix-of .pfix-of-deal:hover .pfix-of-deal__media img,
+  .pfix-of .pfix-of-promise:hover {
+    transform: none;
+  }
+}
