@@ -35,7 +35,8 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   (also out of `custom/reviews/reviews.json`). Wording that offered repairs (the "About Our Team" paragraph, the home
   page, the commercial pages, Roofing Types, Roofing Costs, Gutter Guards, About and the company description in every
   page's structured data) now says what Panda does (`REPAIR_COPY`). The FAQ answer that recommends a full replacement
-  over repairs is kept. Blog posts are unchanged.
+  over repairs is kept. Blog posts keep their wording (on request); links in them to the removed page
+  became plain words.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
