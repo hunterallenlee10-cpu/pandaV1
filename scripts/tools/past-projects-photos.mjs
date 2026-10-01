@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Makes the photos for "Some of our favorite past projects" on /past-projects/
-// (scripts/lib/past-projects.mjs) from the originals on the site: for each project in
+// Makes the photos for /past-projects/ (scripts/lib/past-projects.mjs) from the originals
+// on the site, in custom/past-projects/photos/: for each project in
 // custom/past-projects/favorites.json, its "photo" resized to fit 720 and 1440 px (webp)
-// and a 1440 px jpg for browsers without webp, in custom/past-projects/photos/. The
-// originals are up to 2,560 px and 900 KB each.
+// and a 1440 px jpg for browsers without webp; for the hero, its photo at 960 and 1920 px
+// wide (webp) and a 1920 px jpg (never enlarged). The originals are up to 2,560 px and
+// 900 KB each.
 //
 // Run it after changing a project's photo, then `npm run update:site` (or the full build).
 //
@@ -12,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { PATHS, ROOT } from '../lib/config.mjs';
-import { favorites, photoSlug, PAST_PROJECTS_DIR, PHOTO_WIDTHS, PHOTO_FALLBACK } from '../lib/past-projects.mjs';
+import { photoJobs, PAST_PROJECTS_DIR } from '../lib/past-projects.mjs';
 import { args, ensureDir } from '../lib/util.mjs';
 
 const opts = args();
@@ -20,16 +21,16 @@ const OUT = path.join(PAST_PROJECTS_DIR, 'photos');
 ensureDir(OUT);
 
 const keep = new Set();
-for (const p of favorites().projects) {
-  const src = path.join(PATHS.site, decodeURIComponent(p.photo));
-  if (!fs.existsSync(src)) throw new Error(`${p.title}: ${p.photo} is not on the site`);
-  const jobs = [...PHOTO_WIDTHS.map((w) => [w, 'webp']), [PHOTO_FALLBACK, 'jpg']];
-  for (const [w, ext] of jobs) {
-    const file = path.join(OUT, `${photoSlug(p)}-${w}.${ext}`);
+for (const job of photoJobs()) {
+  const src = path.join(PATHS.site, decodeURIComponent(job.photo));
+  if (!fs.existsSync(src)) throw new Error(`${job.slug}: ${job.photo} is not on the site`);
+  const hero = job.slug === 'hero';
+  for (const [w, ext] of job.sizes) {
+    const file = path.join(OUT, `${job.slug}-${w}.${ext}`);
     keep.add(file);
     if (!opts.force && fs.existsSync(file) && fs.statSync(file).mtimeMs >= fs.statSync(src).mtimeMs) continue;
-    // Within a w x w box, so a tall photo is no larger than a wide one.
-    const img = sharp(src).rotate().resize({ width: w, height: w, fit: 'inside', withoutEnlargement: true });
+    // Cards: within a w x w box, so a tall photo is no larger than a wide one. Hero: w wide.
+    const img = sharp(src).rotate().resize(hero ? { width: w, withoutEnlargement: true } : { width: w, height: w, fit: 'inside', withoutEnlargement: true });
     await (ext === 'webp' ? img.webp({ quality: 78 }) : img.jpeg({ quality: 80, mozjpeg: true })).toFile(file);
     console.log(`wrote ${path.relative(ROOT, file)} (${Math.round(fs.statSync(file).size / 1024)} KB)`);
   }
