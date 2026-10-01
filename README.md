@@ -151,9 +151,23 @@ Most of these problems are on the live site too.
   Replacements" to `/window-replacement/` (neither exists on the main site; they are pages of the Huntersville city
   site, about pressure washing and windows), and "Siding Types" led to the commercial roof types page. Those cards
   sit on the pages that cover their service (`/gutters/` is "Gutter Replacements And Installations", `/siding/` is
-  "Siding Replacements And Installations"; there is no siding types page), so they now lead to the contact page
-  ("Get a free estimate", "Ask about siding options"; `GRID_CARD_FIXES`). On `/services/` the two empty headings around "Our Services" are
-  removed and the heading gets the site's section-heading style. The office cards on `/contact-us/` are unchanged.
+  "Siding Replacements And Installations"), so the first two now lead to the contact page ("Get a free estimate") and
+  "Siding Types" to the siding types section further down `/siding/` ("Compare siding types"; `GRID_CARD_FIXES`). On
+  `/services/` the two empty headings around "Our Services" are removed and the heading gets the site's
+  section-heading style. The office cards on `/contact-us/` are unchanged.
+- **`/siding/` and `/gutters/`: one strong page per service.** Under the service cards each page now explains the job
+  (`scripts/lib/service-pages.mjs`; the words are in `custom/site-fixes/service-pages.json`, written only from what
+  the site and its blog already say, so they can be edited there and applied with `npm run update:site`):
+  - `/siding/`: **siding types**, James Hardie fiber cement and CertainTeed vinyl side by side (what each is, its
+    strengths, what it's best for), which the "Siding Types" card scrolls to;
+  - **signs it's time** for new siding or gutters, with links to the blog posts they come from;
+  - `/gutters/`: **what we look at on every gutter job** (gutters, fascia, pitch, downspouts, drainage, guards);
+  - **how the project works** in three steps (free estimate, choices and financing, installation with a project
+    manager);
+  - **questions and answers** (an accordion, with FAQPage structured data for search engines), then a band with "Get
+    a free estimate" (it leads to the lead form at the top of the page) and the phone number.
+
+  `/gutters/` also opens its project gallery on the Gutters photos instead of Roofing.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
