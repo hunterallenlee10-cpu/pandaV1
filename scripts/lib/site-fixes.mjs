@@ -64,6 +64,18 @@
 //  - /service-areas/ "Our Reliable Exterior Remodeling Services": four green boxes of
 //    text become a gliding row of photo cards, one per service page, that eases to a
 //    stop under the mouse.
+//  - /about/, /podcast/, /roofing/ services carousel (under "Customer-Oriented Exterior
+//    Remodeling Services…" / "Comprehensive Roofing…"): the icon cards showed only roofing,
+//    twice over ("Roofing Replacement" and "Replacement" were the same page), with
+//    descriptions that belonged to other cards and the third card cut off at the edge. It
+//    becomes the same gliding row of photo cards (all services, or the roofing ones on
+//    /roofing/), in the section's orange.
+//  - Service card grids (/services/, /solar/, /siding/, /gutters/, /commerical-roofing/):
+//    the same orange icon cards, standing still, become the same photo cards in a grid,
+//    with each page's own titles and text. Three of their links led to pages that don't
+//    exist on the main site (/powerwash/, /window-replacement/: Huntersville city-site
+//    pages) or to the wrong one (siding "Siding Types" -> commercial roof types); they now
+//    lead to the contact page.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -79,7 +91,7 @@ import { loadUsMap } from './us-map.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|about section colors|awards section)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|about section colors|awards section)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -139,6 +151,37 @@ const SERVICE_CARDS = [
     text: 'Complete gutter systems that carry rainwater away from your roof and foundation.' },
   { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
     text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
+];
+// The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
+const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
+  text: 'Asphalt shingles, metal and flat roofs, in the colors and styles that suit your home.' };
+const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/repairs/', '/roofing/residential/', '/roofing/attic-insulation/', '/commerical-roofing/'].map(
+  (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)
+);
+// Service card grids: the photo for each card, by the page it links to (the same photos as
+// the rows above where there is one).
+const photoFor = (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)?.img;
+const GRID_PHOTOS = {
+  '/roofing/': photoFor('/roofing/residential/'),
+  '/commerical-roofing/': photoFor('/commerical-roofing/'),
+  '/solar/': photoFor('/solar/solar-panel-installations/'),
+  '/solar/solar-panel-installations/': photoFor('/solar/solar-panel-installations/'),
+  '/solar/gaf-solar-roof/': photoFor('/solar/gaf-solar-roof/'),
+  '/siding/': photoFor('/siding/'),
+  '/gutters/': photoFor('/gutters/'),
+  '/gutters/gutter-guards/': photoFor('/gutters/gutter-guards/'),
+  // a flat roof Panda replaced (Patient First), and a metal commercial roof
+  '/commerical-roofing/roof-replacement/': ['/wp-content/uploads/2025/04/Patient-First.jpg', 1200, 675],
+  '/commerical-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
+};
+// Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
+// page they are on and their title. Each sits on the page that covers its service (/gutters/
+// is gutter installations, /siding/ siding replacements; there is no siding types page), so
+// they lead to the contact page.
+const GRID_CARD_FIXES = [
+  { page: '/gutters/', title: 'Gutter Installations', from: '/powerwash/', href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
+  { page: '/siding/', title: 'Siding Replacements', from: '/window-replacement/', href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
+  { page: '/siding/', title: 'Siding Types', from: '/commerical-roofing/roof-types/', href: '/contact-us/', cta: 'Ask about siding options', img: ROOF_TYPES_CARD.img },
 ];
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
@@ -238,37 +281,50 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   return true;
 }
 
+// One photo card linking to a service page: { href, title, text, img: [src, w, h] }, with
+// an optional group label above the title and call to action (default "Learn more").
+function serviceCard(s, exists) {
+  const [src, w, h] = s.img;
+  const webp = exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '';
+  return (
+    `<a class="pfix-svc" href="${esc(s.href)}">` +
+    `<span class="pfix-svc__media"><picture>${webp}<img src="${esc(src)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></picture></span>` +
+    `<span class="pfix-svc__body">${s.group ? `<span class="pfix-svc__group">${esc(s.group)}</span>` : ''}` +
+    `<h3 class="pfix-svc__title">${esc(s.title)}</h3><span class="pfix-svc__text">${esc(s.text)}</span>` +
+    `<span class="pfix-svc__more">${esc(s.cta || 'Learn more')}<span aria-hidden="true"> →</span></span></span></a>`
+  );
+}
+const fileExists = (siteDir) => (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+
+// A row of photo cards (one per service page, each linking to it) that moves with the logo
+// row's script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
+// JavaScript or with reduced motion the cards sit still, wrapped in rows. Cards whose photo
+// is missing from the site are left out. Returns the HTML, or '' with too few photos.
+function serviceCardsRow(list, { pathname, siteDir }) {
+  const exists = fileExists(siteDir);
+  const cards = list.filter((s) => exists(s.img[0]));
+  if (cards.length < list.length) console.warn(`site-fixes: ${pathname}: ${list.length - cards.length} service photo(s) missing, those cards left out`);
+  if (cards.length < 4) return { html: '', count: 0 };
+  return {
+    html:
+      `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
+      `<div class="pfix-marquee__track" role="list">${cards.map((s) => `<div class="pfix-marquee__item" role="listitem">${serviceCard(s, exists)}</div>`).join('')}</div></div>` +
+      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`,
+    count: cards.length,
+  };
+}
+
 // /service-areas/ "Our Reliable Exterior Remodeling Services": four flat green boxes of
 // text (Roofing, Solar, Commercial, Gutters) -> a gliding row of photo cards for every
-// service page (SERVICE_CARDS), each linking to its page. It moves with the logo row's
-// script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
-// JavaScript or with reduced motion the cards sit still, wrapped in rows.
+// service page (SERVICE_CARDS).
 function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
   const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
   const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
   if (!grid) return false;
-  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
-  const cards = SERVICE_CARDS.filter((s) => exists(s.img[0]));
-  if (cards.length < SERVICE_CARDS.length) console.warn(`site-fixes: ${pathname}: ${SERVICE_CARDS.length - cards.length} service photo(s) missing, those cards left out`);
-  if (cards.length < 4) return false;
-  const card = (s) => {
-    const [src, w, h] = s.img;
-    const webp = exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '';
-    return (
-      `<div class="pfix-marquee__item" role="listitem"><a class="pfix-svc" href="${esc(s.href)}">` +
-      `<span class="pfix-svc__media"><picture>${webp}<img src="${esc(src)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></picture></span>` +
-      `<span class="pfix-svc__body"><span class="pfix-svc__group">${esc(s.group)}</span>` +
-      `<h3 class="pfix-svc__title">${esc(s.title)}</h3><span class="pfix-svc__text">${esc(s.text)}</span>` +
-      `<span class="pfix-svc__more">Learn more<span aria-hidden="true"> →</span></span></span></a></div>`
-    );
-  };
+  const row = serviceCardsRow(SERVICE_CARDS, { pathname, siteDir });
+  if (!row.count) return false;
   ed.retag(section, withClass(section, ['pfix-services']));
-  ed.outer(
-    grid,
-    `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
-      `<div class="pfix-marquee__track" role="list">${cards.map(card).join('')}</div></div>` +
-      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`
-  );
+  ed.outer(grid, row.html);
   // The intro ran its two sentences together ("renovations.Some of…") on wide screens.
   const intro = find(section, (c) => c.tagName === 'p' && /manufacturers’ warranties/.test(textOf(c)));
   if (intro)
@@ -276,8 +332,82 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
       intro,
       'We work with products backed by manufacturers’ warranties, so you get reliable results from every renovation. Here are the services we offer:'
     );
-  changes.push(`services carousel: ${cards.length} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
+  changes.push(`services carousel: ${row.count} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
   return true;
+}
+
+// /about/, /podcast/ ("Customer-Oriented Exterior Remodeling Services in the Mid-Atlantic")
+// and /roofing/ ("Comprehensive Roofing and Exterior Remodeling Services"): a Swiper of six
+// orange icon cards, three at a time with pale arrows, the third cut off at the edge. Only
+// roofing was in it, twice ("Roofing Replacement" and "Replacement" both led to
+// /roofing/replacement/), and half the descriptions belonged to other cards ("Attic
+// Insulation": "…experience repairing issues with existing roofs"). It becomes the same
+// gliding row of photo cards as on /service-areas/, in the section's orange: every service
+// under "…just about any exterior remodel, including:", the roofing ones on /roofing/.
+function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
+  let done = false;
+  for (const section of findAll(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'roof-swiper')))) {
+    const box = find(section, (c) => hasClass(c, 'Logo-container') && find(c, (x) => hasClass(x, 'roof-swiper')));
+    if (!box) continue;
+    const roofing = pathname.startsWith('/roofing/');
+    const row = serviceCardsRow(roofing ? ROOFING_CARDS : SERVICE_CARDS, { pathname, siteDir });
+    if (!row.count) continue;
+    ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm']));
+    ed.outer(box, row.html);
+    changes.push(
+      `services carousel: ${row.count} ${roofing ? 'roofing ' : ''}photo cards linking to each service page, gliding until hovered ` +
+        `(was a 3-up slider of icon cards repeating roof replacement, with mismatched descriptions)`
+    );
+    done = true;
+  }
+  return done;
+}
+
+// /services/, /solar/, /siding/, /gutters/, /commerical-roofing/: a grid of the same
+// orange icon cards as the slider above (icon, orange title and rule, grey text, "Read
+// More" button), standing still -> the same photo cards in a grid, with each page's own
+// titles and text, in the section's orange. Broken links are mended (GRID_CARD_FIXES).
+// The office cards on /contact-us/ (not links) are left alone.
+function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
+  const exists = fileExists(siteDir);
+  let done = false;
+  for (const grid of findAll(doc, (c) => hasClass(c, 'Service-cards'))) {
+    const kids = (grid.childNodes || []).filter((c) => c.tagName);
+    if (!kids.length || !kids.every((c) => c.tagName === 'a' && hasClass(c, 'service-link-card'))) continue;
+    const fixed = [];
+    const cards = kids.map((a) => {
+      const title = clean(textOf(find(a, (c) => hasClass(c, 'team-heading')) || { childNodes: [] }));
+      const text = clean(textOf(find(a, (c) => hasClass(c, 'team-para')) || { childNodes: [] }));
+      const href = attr(a, 'href') || '';
+      const fix = GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from === href);
+      if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
+      return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+    });
+    const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
+    if (missing.length) {
+      console.warn(`site-fixes: ${pathname}: no photo for ${missing.map((s) => s.title || s.href).join(', ')}, service cards left as is`);
+      continue;
+    }
+    const section = ancestors(grid).find((a) => hasClass(a, 'Team-section'));
+    if (section && !hasClass(section, 'pfix-services')) ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm']));
+    ed.outer(
+      grid,
+      `<div class="pfix-svc-grid${cards.length < 3 ? ' pfix-svc-grid--pair' : ''}" role="list">` +
+        cards.map((s) => `<div class="pfix-svc-grid__item" role="listitem">${serviceCard(s, exists)}</div>`).join('') +
+        `</div>`
+    );
+    // /services/: an empty heading above "Our Services" and an empty one below it, and
+    // "Our Services" itself without the site's heading style (small, in the corner).
+    for (const h of findAll(section || grid.parentNode, (c) => /^h[1-6]$/.test(c.tagName) && !find(c, (x) => x.tagName === 'img'))) {
+      if (!clean(textOf(h))) ed.outer(h, '');
+      else if (h.tagName === 'h2' && !classes(h).some((c) => c !== 'mb-0') && !ancestors(h).includes(grid)) ed.retag(h, withClass(h, ['heading-2', 'text-center', 'pb-3']));
+    }
+    changes.push(
+      `services grid: ${cards.length} photo cards (were icon cards)` + (fixed.length ? `; links mended: ${fixed.join(', ')}` : '')
+    );
+    done = true;
+  }
+  return done;
 }
 
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
@@ -664,6 +794,11 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
     used.js = true;
   }
+  if (teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
 
   // A share title copied from the About page ("Panda Exteriors | About Us") on another
   // page: the page's own title (what the browser tab and search results show).

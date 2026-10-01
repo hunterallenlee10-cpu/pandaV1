@@ -2,7 +2,8 @@
    - The phone-only "Share" button on blog posts opens the device's share sheet where the
      browser supports it; otherwise the link falls back to an email draft.
    - "Experts You Can Trust" (home page): the logos glide past in one continuous row.
-   - /service-areas/: the service cards glide past the same way (.pfix-marquee--cards).
+   - /service-areas/, /about/, /podcast/, /roofing/: the service cards glide past the same
+     way (.pfix-marquee--cards).
    - /service-areas/ hero: the state chips zoom the map to their state. */
 (function () {
   'use strict';
