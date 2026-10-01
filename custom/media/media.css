@@ -284,6 +284,12 @@ body.breakdance .pmedia .pmedia-hero__title {
   font-size: 14px;
   color: var(--pm-muted);
 }
+.pmedia-meta__when {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
 .pmedia-meta--dark {
   color: var(--pm-night-muted);
 }

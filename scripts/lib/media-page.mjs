@@ -205,8 +205,9 @@ function renderPost(post) {
   const meta =
     `<p class="pmedia-meta"><span class="pmedia-chip pmedia-chip--new">New</span>` +
     (post.category ? `<span class="pmedia-chip">${esc(post.category)}</span>` : '') +
-    `<time datetime="${isoDate(post.date)}">${longDate.format(post.date)}</time>` +
-    `<span class="pmedia-dot" aria-hidden="true"></span><span>${post.minutes} min read</span></p>`;
+    // Date and reading time wrap together, so the dot never starts a line.
+    `<span class="pmedia-meta__when"><time datetime="${isoDate(post.date)}">${longDate.format(post.date)}</time>` +
+    `<span class="pmedia-dot" aria-hidden="true"></span><span>${post.minutes} min read</span></span></p>`;
   const initials = post.author.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   return (
     `<article class="pmedia-post">` +
