@@ -236,6 +236,19 @@ Most of these problems are on the live site too.
   - **how to claim an offer** in three steps, and a free estimate and call band.
 
   Its "Request an Appointment" block printed the same paragraph twice; it now shows it once.
+- **The offer pages** (`/blog/offer/…/`, the five pages `/offers/` links to): each hero showed a flyer picture blown
+  up behind the heading, with its baked-in text ("Spring Savings", "877 213 1240") showing through, or a 550 px photo
+  stretched across the screen, under a 90% black overlay, and the picture stopped short of the right edge. Each now
+  has a sharp photo already on the site across the whole hero, under a lighter overlay. The line under the heading had
+  slipped out of its styled paragraph (dark grey on the dark hero); it is readable again, and on the two offers, where
+  it was an internal note ("… Panda Exteriors Internal Promotion"), it is the offer in a sentence. The photos and lines
+  are in the `details` of `custom/site-fixes/offers-page.json`.
+- **Header phone button** (the five offer pages and six blog posts): it said (877) 213-1240, with a link phones
+  can't dial (`tel:+(877) 213-1240`), where every other page's says (877) 213-8536. It now says (877) 213-8536 too.
+  Two blog posts still give (877) 213-1240 in their text (blog posts keep their wording).
+- **Lists in blog posts** (11 pages, the offer pages among them): the site's stylesheet sets `ul, ul li` to white
+  `!important`, which outranks its own black for `li`, so some lists showed bullets with nothing beside them (white
+  on white). Lists in the article now match its black text.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
