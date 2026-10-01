@@ -314,3 +314,119 @@
     transform: none;
   }
 }
+
+/* ------------------------------------------------------------------ hero */
+/* The photo (set on the hero in custom properties, from favorites.json) replaces a stock
+   photo of a house pinned to the screen (background-attachment: fixed), which blew it up
+   and made it soft. It scrolls with the page, with a dark fade behind the white text. */
+.hero-section.ppx-hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #1f262a;
+  background-image: var(--ppx-hero-jpg);
+  background-image: var(--ppx-hero-lg);
+  background-size: cover;
+  background-position: var(--ppx-hero-position, 50% 50%);
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  /* the site's hero rule burns the photo into the background colour (color-burn) */
+  background-blend-mode: normal;
+}
+@media (max-width: 960px) {
+  .hero-section.ppx-hero {
+    background-image: var(--ppx-hero-sm);
+  }
+}
+.hero-section.ppx-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(9, 13, 15, 0.84) 0%, rgba(9, 13, 15, 0.62) 38%, rgba(9, 13, 15, 0.22) 70%, rgba(9, 13, 15, 0.14) 100%),
+    linear-gradient(0deg, rgba(9, 13, 15, 0.35) 0%, rgba(9, 13, 15, 0) 40%);
+  pointer-events: none;
+}
+.ppx-hero .text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.ppx-hero .text-section > * {
+  margin: 0;
+  padding: 0;
+}
+.ppx-hero .ppx-hero__eyebrow {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+.ppx-hero .text-section h1 {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+.ppx-hero .text-section .para {
+  max-width: 34ch;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 19px;
+  line-height: 1.5;
+}
+.ppx-hero a.ppx-hero__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  margin-top: 6px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: var(--seconday, #f26924);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(242, 105, 36, 0.35);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.ppx-hero a.ppx-hero__btn:hover {
+  background: #d9561a;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.ppx-hero a.ppx-hero__btn:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+.ppx-hero .ppx-hero__btn svg {
+  width: 18px;
+  height: 18px;
+  transform: rotate(90deg);
+}
+/* Phones and tablets: the text runs across the photo above the form, so the fade goes
+   from the top down. */
+@media (max-width: 991.98px) {
+  .hero-section.ppx-hero::before {
+    background: linear-gradient(180deg, rgba(9, 13, 15, 0.82) 0%, rgba(9, 13, 15, 0.6) 45%, rgba(9, 13, 15, 0.35) 100%);
+  }
+  .ppx-hero .text-section {
+    padding-top: 20px;
+    padding-bottom: 8px;
+  }
+  .ppx-hero .text-section .para {
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ppx-hero a.ppx-hero__btn {
+    transition: none;
+  }
+}

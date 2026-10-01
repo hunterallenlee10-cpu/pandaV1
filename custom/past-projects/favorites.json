@@ -1,4 +1,10 @@
 {
+  "hero": {
+    "photo": "/wp-content/uploads/2025/05/item_888a096a-fda6-4f8b-888d-ce6121b0b245.jpg",
+    "position": "50% 45%",
+    "eyebrow": "Past projects",
+    "button": ["See our favorite projects", "#ppx"]
+  },
   "eyebrow": "Our work",
   "title": "Some of our favorite past projects",
   "intro": "From family homes to apartment communities and our own headquarters, here are a few jobs our crews are especially proud of.",

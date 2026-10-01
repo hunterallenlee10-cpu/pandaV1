@@ -267,8 +267,8 @@ const galleryPages = fixPages.filter((c) => c.siteFixes.some((f) => /^project ga
 if (galleryPages.length) {
   for (const [name, url] of Object.entries(PROJECT_GALLERY_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(PROJECT_GALLERY_DIR, name)), `custom/project-gallery/${name}`);
 }
-// The favorite projects on /past-projects/ (custom/past-projects/: stylesheet and photos).
-if (fixPages.some((c) => c.siteFixes.some((f) => /^favorite projects:/.test(f)))) {
+// The favorite projects and hero on /past-projects/ (custom/past-projects/: stylesheet and photos).
+if (fixPages.some((c) => c.siteFixes.some((f) => /^favorite projects( hero)?:/.test(f)))) {
   for (const [from, url] of pastProjectsFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/past-projects/${path.relative(PAST_PROJECTS_DIR, from).split(path.sep).join('/')}`);
 }
 if (SMOOTH_SCROLL) {

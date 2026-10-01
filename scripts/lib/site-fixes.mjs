@@ -100,8 +100,8 @@
 //    an offer (offers-page.mjs, custom/site-fixes/offers-page.json).
 //  - /past-projects/: the "Featured Projects" grid of every project (duplicate drone shots,
 //    cards titled "Panda Ext-14098", photos that didn't load) becomes "Some of our favorite
-//    past projects", six hand-picked jobs above the map (past-projects.mjs,
-//    custom/past-projects/).
+//    past projects", six hand-picked jobs above the map, and the hero's soft stock photo
+//    becomes a photo of Panda's crew at work (past-projects.mjs, custom/past-projects/).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
