@@ -9,7 +9,8 @@
 //    typos in its paragraph are fixed;
 //  - /past-projects/: the Google Maps "Projects | Map" widget (which needs a live
 //    WordPress API and cannot work in a static copy) becomes the large interactive
-//    map, and the page's hidden project list becomes a visible grid;
+//    map, and the page's hidden project list becomes a visible grid (with the site fixes
+//    on, six hand-picked projects above the map instead: past-projects.mjs);
 //  - /service-areas/: the large map goes where the city list used to be.
 //
 // Every page also gets smooth scrolling (custom/smooth-scroll/, SMOOTH_SCROLL), and the
@@ -24,6 +25,7 @@ import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs'
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
 import { PROJECT_GALLERY_FILES } from './project-gallery.mjs';
+import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-projects.mjs';
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
@@ -179,6 +181,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   const changes = { map: [], fixes: [], media: [] };
   let n = 0;
   const uid = () => `pmap-${++n}`;
+  let favorites = false;
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
 
   if (map) {
@@ -187,11 +190,16 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
     // The Google Maps widget (Past Projects): it lives in one HTML-code block.
     const widget = find(doc, (c) => hasClass(c, 'custom-project') && find(c, (x) => attr(x, 'id') === 'map-container' || attr(x, 'id') === 'mapclusterer'));
     if (widget) {
-      ed.outer(widget, explorerBlock(uid()));
-      changes.map.push('Google Maps projects widget -> interactive US map');
       const list = find(doc, (c) => attr(c, 'id') === 'projectsListData');
+      // With the site fixes: the favorite projects above the map, not the list of all of them.
+      ed.outer(widget, (fixes ? renderFavorites() : '') + explorerBlock(uid()));
+      changes.map.push('Google Maps projects widget -> interactive US map');
       const cards = list ? projectCards(list) : [];
-      if (list && cards.length) {
+      if (fixes) {
+        if (list) ed.outer(list, '');
+        favorites = true;
+        changes.fixes.push(favoritesNote());
+      } else if (list && cards.length) {
         ed.outer(list, renderProjects(cards));
         changes.map.push(`hidden project list -> featured projects grid (${cards.length})`);
       }
@@ -231,6 +239,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixAssets.js) assets += js(SITE_FIXES_FILES['site-fixes.js']);
   if (fixAssets.reviews) assets += css(REVIEWS_FILES['reviews.css']) + js(REVIEWS_FILES['reviews.js']);
   if (fixAssets.gallery) assets += css(PROJECT_GALLERY_FILES['project-gallery.css']) + js(PROJECT_GALLERY_FILES['project-gallery.js']);
+  if (favorites || fixAssets.pastProjects) assets += css(PAST_PROJECTS_FILES['past-projects.css']);
   if (mediaAssets) assets += css(MEDIA_FILES['media.css']) + js(MEDIA_FILES['media.js']);
   if (smoothScroll) assets += css(SMOOTH_SCROLL_FILES['smooth-scroll.css']) + js(SMOOTH_SCROLL_FILES['lenis.min.js']) + js(SMOOTH_SCROLL_FILES['smooth-scroll.js']);
   if (assets) {
