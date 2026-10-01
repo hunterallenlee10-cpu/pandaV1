@@ -88,6 +88,18 @@ Most of these problems are on the live site too.
 - **Award badges** ("About Our Team" and "Request an Appointment", 123 pages): the picture of the GAF President's Club
   and Inc. 5000 badges sat in a lot of empty space. The site's other GAF certifications, Diamond Pledge and Metal
   Certified, are added beside President's Club, with the two Inc. 5000 badges nested below.
+- **Pages wider than the screen** (checked on every page at widths from 320 to 1920 px; none is left):
+  - **Home page hero**: the award badges picture kept a fixed 562 px width in the 260 px column between its two white
+    lines, so it ran off the screen on tablets (768–1008 px, cutting off the "No. 1" badge) and slid under the form on
+    small laptops. Above phone size the lines and the picture now share one width, no wider than the column, as they
+    already did on phones.
+  - **Every page at 1120–1199 px** (an iPad held sideways, among others): the page builder switches to its desktop
+    widths at 1120 px, but the page's column stays 960 px wide until 1200 px. The header's phone button wrapped under
+    the logo, and the taller header covered the top of the page; on the 98 blog posts and offers the article ran off
+    the screen and its text was cut off; on 10 pages a row (the home page's "What Makes Panda the Best?" cards among
+    them) did the same. The header now uses the whole width there, and those blocks stop at the column's edge.
+  - **Smaller cases**: the badges picture on `/roofing/residential/` (480–529 px), and on the smallest phones a long
+    email address in a blog post and the topic tags at the top of blog posts.
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
