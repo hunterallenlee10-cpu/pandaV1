@@ -1704,3 +1704,48 @@ a.bde-social-share-button:hover {
 .form-card:has(.pfix-lead) .form-text-p {
   text-align: center;
 }
+
+/* /referrals/: the note that stands in for the referral sign-up (not connected yet). */
+.pfix-referral-off {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  max-width: 560px;
+  margin: 24px auto;
+  padding: 32px 24px;
+  border-radius: 16px;
+  background: #fff7f1;
+  color: #374151;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+}
+.pfix-referral-off p {
+  margin: 0;
+}
+.pfix-referral-off .pfix-referral-off__title {
+  color: #111827;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.pfix-referral-off a.pfix-referral-off__call {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  background: #ff6600;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-referral-off a.pfix-referral-off__call:hover {
+  background: #e65c00;
+  color: #ffffff;
+}
+.pfix-referral-off a.pfix-referral-off__call:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 3px;
+}

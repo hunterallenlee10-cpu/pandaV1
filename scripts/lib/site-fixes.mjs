@@ -84,6 +84,8 @@
 //    on load. Each form card now has a form for its page (the page's service, the roofing
 //    offer on roofing pages, or a general one), not connected to anything yet, and the old
 //    scripts are gone from every page (service-forms.mjs, custom/site-fixes/service-forms.json).
+//  - /referrals/: the referral sign-up (Panda's live GetTheReferral page, laid over the
+//    whole page) is not connected yet either: a note with the phone number takes its place.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -104,7 +106,7 @@ import { collectServiceForms } from './service-forms.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|about section colors|awards section)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -943,6 +945,25 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (collectServiceForms(doc, html, ed, { pathname }, changes)) {
     used.css = true;
     used.js = true;
+  }
+  // /referrals/: the referral sign-up was Panda's live GetTheReferral page laid over the
+  // whole page, so a referral sent from this copy reached Panda. Like the estimate forms it
+  // is not connected yet: a note with the phone number takes its place.
+  if (pathname === '/referrals/') {
+    const gtr = (x) => x.tagName === 'iframe' && /getthereferral\.com/.test(`${attr(x, 'src') || ''} ${attr(x, 'data-lazy-src') || ''}`);
+    const block = find(doc, (c) => hasClass(c, 'oxy-html-code') && find(c, gtr));
+    if (block) {
+      ed.inner(
+        block,
+        `<div class="pfix-referral-off" role="status">` +
+          `<p class="pfix-referral-off__title">Refer a friend</p>` +
+          `<p>Online referrals aren’t switched on yet, so a referral can’t be sent from this page. Please give us a call and we’ll take it from there.</p>` +
+          `<a class="pfix-referral-off__call" href="${PHONE.href}">Call ${PHONE.text}</a>` +
+          `</div>`
+      );
+      changes.push('referral sign-up: the live GetTheReferral form -> a note with the phone number (not connected yet)');
+    }
+    if (block || find(doc, (c) => hasClass(c, 'pfix-referral-off'))) used.css = true;
   }
 
   // A share title copied from the About page ("Panda Exteriors | About Us") on another
