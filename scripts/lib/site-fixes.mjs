@@ -94,6 +94,10 @@
 //  - Roof repairs (Panda does not do them): /roofing/repairs/ is removed (config.mjs), and
 //    so are the cards and sections about repairs and every link to the page; wording that
 //    offered repairs now says what Panda does (REPAIR_COPY).
+//  - "Request an Appointment" (/offers/): its paragraph was printed twice; it is shown once.
+//  - /offers/: a new hero photo (a Panda GAF solar roof) and text, and the five flyer bands
+//    become the two offers as coupon cards, what comes with every project and how to claim
+//    an offer (offers-page.mjs, custom/site-fixes/offers-page.json).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -104,11 +108,12 @@ import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
+import { collectOffersPage } from './offers-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -587,6 +592,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
+  // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
+  // Before the fixes below that edit inside those bands (column fit), which then leave them be.
+  if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.
   if (collectReviewCarousels(doc, ed, { pathname }, changes)) used.reviews = true;
@@ -738,6 +750,20 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push(`about section colors: charcoal green background, lime button (white on lime was hard to read) (${about.length})`);
     used.css = true;
   }
+
+  // "Request an Appointment" (the "About Our Team" block's version on /offers/): its paragraph
+  // was printed twice, one copy under the other -> once.
+  let repeats = 0;
+  for (const col of findAll(doc, (c) => hasClass(c, 'Local-text-col') && ancestors(c).some((a) => hasClass(a, 'Request-Container')))) {
+    const paras = (col.childNodes || []).filter((k) => k.tagName === 'p' && hasClass(k, 'local-text'));
+    for (let i = 1; i < paras.length; i++) {
+      const p = paras[i];
+      if (clean(textOf(p)) !== clean(textOf(paras[i - 1])) || ed.overlaps(p.sourceCodeLocation.startOffset, p.sourceCodeLocation.endOffset)) continue;
+      ed.outer(p, '');
+      repeats++;
+    }
+  }
+  if (repeats) changes.push(`repeated paragraph: "Request an Appointment" said "To request an appointment…" twice (${repeats})`);
 
   // Removed on request.
   if (pathname === '/reviews/') {

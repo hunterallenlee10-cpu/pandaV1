@@ -1,0 +1,93 @@
+{
+  "hero": {
+    "photo": ["/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg", 2000, 1125],
+    "eyebrow": "Special offers",
+    "title": "Limited-Time Offers on Roofing and Solar",
+    "text": "Save on a new roof or a solar installation, and ask about no-interest financing. Every project is backed by our 100% satisfaction guarantee."
+  },
+  "offers": {
+    "id": "current-offers",
+    "eyebrow": "Current offers",
+    "title": "Two Ways to Save on Your Next Project",
+    "intro": "Ask for an offer when you book your free estimate, on the form or over the phone.",
+    "items": [
+      {
+        "key": "roof",
+        "tag": "Roofing",
+        "amount": "10%",
+        "unit": "off",
+        "title": "Roof Replacement",
+        "text": "Get 10% off your roof replacement when you work with Panda Exteriors, for a durable, weather-resistant roof that keeps your home protected.",
+        "points": [
+          "Quality materials built to last",
+          "Installed by our experienced, certified team",
+          "Quick, professional service"
+        ],
+        "project": "Roof replacement",
+        "cta": "Claim 10% off",
+        "href": "/blog/offer/10-off-roof-replacement/",
+        "fine": "Some restrictions apply.",
+        "img": ["/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg", 768, 432, "Panda Exteriors crew replacing the roof of a two-story home"]
+      },
+      {
+        "key": "solar",
+        "tag": "Solar",
+        "amount": "$1,500",
+        "unit": "off",
+        "title": "Solar Project",
+        "text": "Get $1,500 off your solar installation and start making your own clean energy.",
+        "points": [
+          "Lower your electricity bills",
+          "Reduce your carbon footprint",
+          "Rely less on the grid"
+        ],
+        "project": "Solar",
+        "cta": "Claim $1,500 off",
+        "href": "/blog/offer/1500-off-solar-project/",
+        "fine": "Terms and conditions apply.",
+        "img": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg", 768, 512, "Solar panels on the roof of a brick home"]
+      }
+    ]
+  },
+  "promises": {
+    "eyebrow": "With every project",
+    "title": "More Than a Discount",
+    "intro": "Whichever offer you choose, your project comes with the same support.",
+    "items": [
+      {
+        "icon": "card",
+        "title": "No-interest financing",
+        "text": "Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
+        "href": "/blog/offer/find-out-about-our-no-interest-financial-options/",
+        "link": "About financing"
+      },
+      {
+        "icon": "shield",
+        "title": "100% satisfaction guarantee",
+        "text": "Every project, from roofing to gutters, is backed by our satisfaction guarantee, on top of the manufacturers’ warranties on the products we install.",
+        "href": "/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/",
+        "link": "About the guarantee"
+      },
+      {
+        "icon": "badge",
+        "title": "Certified installation",
+        "text": "Our certified professionals install every product correctly. If our workmanship proves faulty within two years of installation, we’ll correct it at no cost to you.*",
+        "href": "/blog/offer/our-installation-work-is-completed-by-certified-professionals/",
+        "link": "About the installation warranty"
+      }
+    ],
+    "note": "*The installation warranty on some products is longer than two years. Your contract has the exact terms."
+  },
+  "steps": {
+    "title": "How to Claim an Offer",
+    "items": [
+      ["Request your free estimate", "Fill in the form at the top of this page or give us a call, and tell us which offer you’re interested in."],
+      ["Meet with our team", "We look over your home, talk through what you want and give you a clear estimate, at no cost. Ask us about financing too."],
+      ["Enjoy the savings", "Our certified crew completes your project, with a project manager keeping you updated along the way."]
+    ]
+  },
+  "cta": {
+    "title": "Ready to save on your project?",
+    "text": "These offers are for a limited time. Book your free estimate today."
+  }
+}

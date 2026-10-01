@@ -206,6 +206,25 @@ Most of these problems are on the live site too.
 - **Employee referral form** (`/referral/`): on submit it opened an email to Panda's careers address with the
   referral in it. It is not connected yet either: the form still checks its fields, then says online referrals
   aren't switched on yet, and nothing is sent.
+- **`/offers/`, redesigned.** The hero sat over the same drone photo as `/service-areas/`, pinned to the screen
+  (`background-attachment: fixed`) and so blown up, with "We make sure our team is the best available…" as its only
+  line. Below it were five identical alternating lime and cream bands, each a flyer picture beside a heading and a
+  "Learn More" button; only two were offers (10% off a roof replacement, $1,500 off solar), the flyers had "Spring"
+  wording and a phone number that isn't the site's (877 213 1240) baked in, and the descriptions were light grey on
+  cream. The page now has (`scripts/lib/offers-page.mjs`; the words are in `custom/site-fixes/offers-page.json`,
+  written only from what the offer pages already say, so they can be edited there and applied with
+  `npm run update:site`):
+  - a **hero** over a photo of a Panda GAF solar roof (dark shingles, white dormers; preloaded, scrolling with the
+    page), with a headline about both offers, the two offers as tickets, and "See the offers" and call buttons. The
+    lead form beside it is unchanged;
+  - the **two offers as coupon cards**: a photo, the amount, what you get, the fine print, a link to the offer's
+    own page and a "Claim" button that leads to the hero's form with the offer's project (Roof replacement or
+    Solar) already chosen, unless the visitor has chosen one;
+  - **what comes with every project**: no-interest financing, the 100% satisfaction guarantee and the installation
+    warranty as three cards, each linking to its page;
+  - **how to claim an offer** in three steps, and a free estimate and call band.
+
+  Its "Request an Appointment" block printed the same paragraph twice; it now shows it once.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
