@@ -518,3 +518,67 @@ a.bde-social-share-button:hover {
     display: inline;
   }
 }
+
+/* Home hero: the award badges picture between two white lines. Above phone size it kept a
+   fixed 562 px width in the 260 px column the lines mark (off the right of the screen on
+   tablets, under the form on small laptops). The lines and the picture now share one
+   width, no wider than the column, as they already do on phones. */
+@media (min-width: 768px) {
+  .logo-container.pfix-hero-awards {
+    width: 100%;
+    max-width: 562px;
+  }
+}
+/* beside the form: a little space before it */
+@media (min-width: 1024px) {
+  .logo-container.pfix-hero-awards {
+    width: calc(100% - 32px);
+  }
+}
+.logo-container.pfix-hero-awards > .Flex-image {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Blocks with a fixed desktop width (1143 px rows, the 1198 px blog article) in a column
+   that is only 960 px wide at 1120–1199 px: no wider than the column. (!important: the
+   rows also have their own max-width.) */
+.pfix-fit {
+  max-width: 100% !important;
+}
+/* "What Makes Panda the Best?" (home page): with less room the three cards stay the same
+   width (the middle one's text made it wider). */
+@media (min-width: 1120px) {
+  .team-cards.pfix-fit {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* A long word (an email address) wraps instead of running off a small phone's screen. */
+.Blog-detail.pfix-fit {
+  overflow-wrap: break-word;
+}
+/* Blog post heroes: the topic and date tags keep their 10 px right margin without it
+   running off the smallest phones' screens when a tag fills its line. */
+.text-section.pfix-fit {
+  overflow-x: clip;
+}
+/* /roofing/residential/: the award badges picture is set 100 px in from the left, which
+   ran it off the screen at 480–529 px; below 768 px it lines up with the text above it
+   instead, as it already does below 480 px. */
+@media (max-width: 767.98px) {
+  .img-flex-logos.pfix-fit {
+    margin-left: 0;
+  }
+}
+
+/* The header at 1120–1199 px: its 960 px column was too narrow for the logo, menu and
+   phone button in one row, so the button wrapped under the logo. The row uses the whole
+   width there (it fits, as it does from 1200 px). */
+@media (min-width: 1120px) and (max-width: 1199.98px) {
+  .container.pfix-header-row {
+    width: 100%;
+    max-width: none;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}

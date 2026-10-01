@@ -12,6 +12,10 @@
 //    nothing; the reviews beside the video on / and /services/ sat below a large empty
 //    band. Every one of them is now the same looping review carousel (reviews.mjs,
 //    custom/reviews/); the section is removed from Service Areas.
+//  - "Our Project Gallery" (8 pages): three sliders were started on the same photos, so
+//    they came out at different widths, the first one cut off, off centre under the
+//    tabs. It is now one gallery of same-size photos with category tabs, arrows, dots and
+//    a photo viewer (project-gallery.mjs, custom/project-gallery/).
 //  - "Experts You Can Trust" (home page): the logo carousel jumped one step every 2.5 s
 //    (and its looped copies never loaded their logos); it is now a continuously gliding
 //    row of logos.
@@ -19,6 +23,18 @@
 //    (GAF President's Club + two Inc. 5000 badges) becomes the same badges with the
 //    site's other GAF certifications (Diamond Pledge, Metal Certified) in the empty
 //    space around them.
+//  - Home hero: the award badges picture kept a fixed 562 px width in its 260 px column
+//    between two white lines (off the right of the screen on tablets, under the form on
+//    small laptops); above phone size the lines and the picture now share one width, as
+//    they already did on phones.
+//  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
+//    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
+//    (1140 px above), so they ran off the right of the screen (the blog text was cut
+//    off) at 1120–1199 px, an iPad held sideways among others; they now stop at the
+//    column's edge (so does a picture on /roofing/residential/ at 480–529 px, and long
+//    words in blog posts on the smallest phones). In the same range the header's phone
+//    button wrapped under the logo and the taller header covered the top of the page;
+//    the header now uses the whole width there, as it fits in one row.
 //  - /reviews/: the "Read More Reviews!" button is removed (on request).
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
@@ -44,12 +60,13 @@ import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
+import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -174,7 +191,7 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false };
+  const used = { css: false, js: false, reviews: false, gallery: false };
   const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
@@ -208,6 +225,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.
   if (collectReviewCarousels(doc, ed, { pathname }, changes)) used.reviews = true;
+
+  // "Our Project Gallery": the slider started three times over -> one tidy gallery
+  // (project-gallery.mjs, custom/project-gallery/).
+  if (collectProjectGalleries(doc, ed, changes)) used.gallery = true;
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
   // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that
@@ -249,6 +270,45 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       `</picture></div>`;
     ed.outer(pic, `<div class="pfix-badges" role="list" aria-label="Certifications and awards">${BADGES.map(badge).join('')}</div>`);
     changes.push('award badges: the other GAF certifications (Diamond Pledge, Metal Certified) added beside President’s Club and the Inc. 5000 badges');
+    used.css = true;
+  }
+
+  // Home hero: the award badges picture between two white lines (.logo-container, 260 px
+  // wide) kept its fixed 562 px width above phone size -> lines and picture share one
+  // width, no wider than the column (.pfix-hero-awards).
+  const retagOnce = (n, cls) => {
+    const st = n.sourceCodeLocation.startTag;
+    if (hasClass(n, cls) || ed.overlaps(st.startOffset, st.endOffset)) return false;
+    ed.retag(n, withClass(n, [cls]));
+    return true;
+  };
+  for (const box of findAll(doc, (c) => hasClass(c, 'logo-container') && (c.childNodes || []).some((k) => k.tagName && hasClass(k, 'Flex-image')))) {
+    if (!retagOnce(box, 'pfix-hero-awards')) continue;
+    changes.push('hero awards picture: kept between its two lines, no wider than its column (it ran off the screen on tablets and under the form on small laptops)');
+    used.css = true;
+  }
+
+  // Blocks with a fixed desktop width wider than their column at 1120–1199 px (1143 px
+  // rows, the 1198 px blog article and its picture) -> no wider than the column (.pfix-fit);
+  // long words (an email address) wrap inside the article. The award badges picture on
+  // /roofing/residential/ is set 100 px in from the left, which ran it off the screen at
+  // 480–529 px -> in line with the text above it below 768 px, as below 480 px already.
+  const fixedWidth = findAll(doc, (c) => ['container-custom', 'Blog-detail', 'Blog-detail-img', 'img-flex-logos'].some((k) => hasClass(c, k))).filter((c) => retagOnce(c, 'pfix-fit'));
+  // Blog post heroes: the topic and date tags have a 10 px right margin, which ran a few px
+  // off the smallest phones' screens when a tag filled its line (.pfix-fit too).
+  for (const box of findAll(doc, (c) => hasClass(c, 'text-section') && (c.childNodes || []).some((k) => k.tagName && hasClass(k, 'tag-text')))) {
+    if (retagOnce(box, 'pfix-fit')) fixedWidth.push(box);
+  }
+  if (fixedWidth.length) {
+    changes.push(`column fit: ${fixedWidth.length} fixed-width block(s) kept inside their column (they ran off the screen at some widths)`);
+    used.css = true;
+  }
+
+  // The header's row (logo, menu, phone button) in its 960 px column at 1120–1199 px: the
+  // button wrapped under the logo -> the row uses the whole width there (.pfix-header-row).
+  for (const box of findAll(doc, (c) => hasClass(c, 'container') && c.parentNode && hasClass(c.parentNode, 'nav') && (c.childNodes || []).some((k) => k.tagName && hasClass(k, 'row-flex')))) {
+    if (!retagOnce(box, 'pfix-header-row')) continue;
+    changes.push('header: logo, menu and phone button kept in one row at 1120–1199 px (the button wrapped under the logo)');
     used.css = true;
   }
 

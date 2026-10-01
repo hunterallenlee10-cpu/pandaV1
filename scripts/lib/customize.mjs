@@ -21,6 +21,7 @@ import { ROOT } from './config.mjs';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
+import { PROJECT_GALLERY_FILES } from './project-gallery.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -220,6 +221,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixAssets.css) assets += css(SITE_FIXES_FILES['site-fixes.css']);
   if (fixAssets.js) assets += js(SITE_FIXES_FILES['site-fixes.js']);
   if (fixAssets.reviews) assets += css(REVIEWS_FILES['reviews.css']) + js(REVIEWS_FILES['reviews.js']);
+  if (fixAssets.gallery) assets += css(PROJECT_GALLERY_FILES['project-gallery.css']) + js(PROJECT_GALLERY_FILES['project-gallery.js']);
   if (smoothScroll) assets += css(SMOOTH_SCROLL_FILES['smooth-scroll.css']) + js(SMOOTH_SCROLL_FILES['lenis.min.js']) + js(SMOOTH_SCROLL_FILES['smooth-scroll.js']);
   if (assets) {
     const headEnd = headEndOffset(html);
