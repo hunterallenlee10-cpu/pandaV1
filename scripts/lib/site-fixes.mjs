@@ -35,6 +35,9 @@
 //    words in blog posts on the smallest phones). In the same range the header's phone
 //    button wrapped under the logo and the taller header covered the top of the page;
 //    the header now uses the whole width there, as it fits in one row.
+//  - Inc. 5000 awards section (/roofing/, /about/, /podcast/): one light band with the
+//    heading, the two rankings and the badges on a white card (it was lime with white
+//    swooshes running through hard-to-read white text, or plain black on white).
 //  - Header "Services" menu: the "Other" entry (Siding, and Gutters with Gutter Guards one
 //    level further in) is replaced by Gutters, Gutter Guards and Siding as their own entries.
 //  - "About Our Team" (the lead-form block above the footer on most pages): white text on
@@ -88,7 +91,7 @@ import { loadUsMap } from './us-map.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|about section colors)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|about section colors|awards section)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -105,6 +108,13 @@ const BADGES = [
 // The number in the site's header on every page.
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The header's "Services" menu: the entries that replace "Other", in this order, under Solar.
+// The Inc. 5000 awards section (/roofing/, /about/, /podcast/): the sharper picture of the
+// three badges (on a white ground, so it sits on a white card) and what the badges say.
+const INC_TRIO = { src: '/wp-content/uploads/2025/04/Inc-trio-768x255.png', large: '/wp-content/uploads/2025/04/Inc-trio.png', width: 768, height: 255 };
+const INC_STATS = [
+  ['No. 50', 'of America’s fastest-growing private companies in 2024'],
+  ['No. 1', 'in construction in 2024'],
+];
 const SERVICE_MENU_ITEMS = [
   ['Gutters', '/gutters/'],
   ['Gutter Guards', '/gutters/gutter-guards/'],
@@ -541,6 +551,42 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       SERVICE_MENU_ITEMS.map(([label, href]) => `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${esc(href)}" target="_self"> ${esc(label)} </a></div>`).join(' ')
     );
     changes.push('services menu: "Other" -> Gutters, Gutter Guards and Siding as their own entries');
+  }
+
+  // Inc. 5000 awards section: on /about/ and /podcast/ it sat on lime with white swooshes
+  // (white text about 1.7:1, a swoosh running through the paragraph, the badges' white
+  // circles showing on the lime); on /roofing/ it was plain black on white with a centred
+  // heading over left-aligned text. Everywhere it is now one light band: the heading and
+  // paragraph (unchanged) on the left with the two rankings the badges show, and the badges
+  // on a white card on the right (.pfix-awards).
+  for (const box of findAll(doc, (c) => hasClass(c, 'awards-section'))) {
+    if (hasClass(box, 'pfix-awards')) continue;
+    const heading = find(box, (c) => hasClass(c, 'awards-heading'));
+    const para = find(box, (c) => hasClass(c, 'awards-para'));
+    if (!heading || !para) continue;
+    const st = box.sourceCodeLocation.startTag;
+    if (ed.overlaps(st.startOffset, box.sourceCodeLocation.endOffset)) continue;
+    const plain = (n) => clean(textOf(n)).replace(/[\u200b\u00a0]/g, ' ').replace(/\s+/g, ' ').trim();
+    const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
+    const picture =
+      `<picture>${webp(INC_TRIO.src) && webp(INC_TRIO.large) ? `<source type="image/webp" srcset="${INC_TRIO.src}.webp 768w, ${INC_TRIO.large}.webp 800w" sizes="(max-width: 575px) 90vw, 480px">` : ''}` +
+      `<img src="${INC_TRIO.src}" srcset="${INC_TRIO.src} 768w, ${INC_TRIO.large} 800w" sizes="(max-width: 575px) 90vw, 480px" width="${INC_TRIO.width}" height="${INC_TRIO.height}" loading="lazy" decoding="async" ` +
+      `alt="Inc. 5000 2024 badges: No. 1 in construction, the Inc. 5000 seal, and No. 50 of America’s fastest-growing private companies"></picture>`;
+    ed.retag(box, withClass(box, ['pfix-awards']));
+    ed.inner(
+      box,
+      `<div class="container pfix-awards__inner"><div class="pfix-awards__text">` +
+        `<p class="pfix-awards__eyebrow">National recognition</p>` +
+        `<h2 class="pfix-awards__title">${esc(plain(heading))}</h2>` +
+        `<p class="pfix-awards__para">${esc(plain(para))}</p>` +
+        `<div class="pfix-awards__stats" role="list">${INC_STATS.map(([n, t]) => `<div class="pfix-awards__stat" role="listitem"><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join('')}</div>` +
+        `</div><figure class="pfix-awards__badges">${picture}</figure></div>`
+    );
+    // /about/ and /podcast/: the wrapper that painted the lime and the swooshes.
+    const wrap = box.parentNode;
+    if (wrap && hasClass(wrap, 'awards-bg')) retagOnce(wrap, 'pfix-awards-wrap');
+    changes.push('awards section: one light band with the heading, the two rankings and the badges on a white card (was lime with swooshes, or plain)');
+    used.css = true;
   }
 
   // "About Our Team" (and the same block on the offer pages): white text on Panda lime was
