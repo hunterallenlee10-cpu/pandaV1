@@ -70,7 +70,7 @@
 //    descriptions that belonged to other cards and the third card cut off at the edge. It
 //    becomes the same gliding row of photo cards (all services, or the roofing ones on
 //    /roofing/), in the section's orange.
-//  - Service card grids (/services/, /solar/, /siding/, /gutters/, /commerical-roofing/):
+//  - Service card grids (/services/, /solar/, /siding/, /gutters/, /commercial-roofing/):
 //    the same orange icon cards, standing still, become the same photo cards in a grid,
 //    with each page's own titles and text. Three of their links led to pages that don't
 //    exist on the main site (/powerwash/, /window-replacement/: Huntersville city-site
@@ -93,7 +93,7 @@
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './config.mjs';
+import { ROOT, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
@@ -154,7 +154,7 @@ const SERVICE_CARDS = [
     text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
   { group: 'Solar', title: 'GAF Solar Roof', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
-  { group: 'Commercial', title: 'Commercial Roofing', href: '/commerical-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
+  { group: 'Commercial', title: 'Commercial Roofing', href: '/commercial-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
     text: 'Flat roof replacements for businesses, from inspection to final walkthrough.' },
   { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
     text: 'New siding that refreshes how your home looks and protects it from the weather.' },
@@ -166,7 +166,7 @@ const SERVICE_CARDS = [
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
   text: 'Asphalt shingles, metal and flat roofs, in the colors and styles that suit your home.' };
-const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/residential/', '/roofing/attic-insulation/', '/commerical-roofing/'].map(
+const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/residential/', '/roofing/attic-insulation/', '/commercial-roofing/'].map(
   (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)
 );
 // Service card grids: the photo for each card, by the page it links to (the same photos as
@@ -174,7 +174,7 @@ const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/res
 const photoFor = (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)?.img;
 const GRID_PHOTOS = {
   '/roofing/': photoFor('/roofing/residential/'),
-  '/commerical-roofing/': photoFor('/commerical-roofing/'),
+  '/commercial-roofing/': photoFor('/commercial-roofing/'),
   '/solar/': photoFor('/solar/solar-panel-installations/'),
   '/solar/solar-panel-installations/': photoFor('/solar/solar-panel-installations/'),
   '/solar/gaf-solar-roof/': photoFor('/solar/gaf-solar-roof/'),
@@ -182,8 +182,8 @@ const GRID_PHOTOS = {
   '/gutters/': photoFor('/gutters/'),
   '/gutters/gutter-guards/': photoFor('/gutters/gutter-guards/'),
   // a flat roof Panda replaced (Patient First), and a metal commercial roof
-  '/commerical-roofing/roof-replacement/': ['/wp-content/uploads/2025/04/Patient-First.jpg', 1200, 675],
-  '/commerical-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
+  '/commercial-roofing/roof-replacement/': ['/wp-content/uploads/2025/04/Patient-First.jpg', 1200, 675],
+  '/commercial-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
 };
 // Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
 // page they are on, their title and the addresses they had (live, or in an earlier build).
@@ -193,7 +193,7 @@ const GRID_PHOTOS = {
 const GRID_CARD_FIXES = [
   { page: '/gutters/', title: 'Gutter Installations', from: ['/powerwash/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
   { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
-  { page: '/siding/', title: 'Siding Types', from: ['/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
+  { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
 const TYPOS = [
@@ -201,6 +201,11 @@ const TYPOS = [
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
   [/\bCommerical\b/g, 'Commercial'],
   [/\bOur Services Areas\b/g, 'Our Service Areas'],
+  // footer, every page
+  [/\bis a East Coast exterior remodeling company\b/g, 'is an East Coast exterior remodeling company'],
+  // "Our Process" (/roofing/, /commercial-roofing/): a dropped first letter, and a missing "and"
+  [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
+  [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],
 ];
 
 // Panda does not do roof repairs (small repair jobs), so the site no longer offers them:
@@ -214,9 +219,9 @@ const REPAIR_COPY = [
   // home page, and the company description in every page's structured data
   [/Whether you need expert roof repairs, a full commercial roof replacement/g, 'Whether you need a new roof for your home, a full commercial roof replacement'],
   [/From repairs to complete roof replacements, Panda Exteriors/g, 'From free roof inspections to complete roof replacements, Panda Exteriors'],
-  // /commerical-roofing/, /commercial-capabilities/
+  // /commercial-roofing/, /commercial-capabilities/
   [/delivers expert roof repairs, replacements, and solar shingle installations/g, 'delivers expert roof replacements and solar shingle installations'],
-  // /roofing/, /commerical-roofing/
+  // /roofing/, /commercial-roofing/
   [/comprehensive repair and replacement services/g, 'comprehensive replacement and installation services'],
   // /roofing/types/
   [/Whether you need a complete replacement or a(?:\s|&nbsp;)+roof repair for your East Coast home, you(['’]|&#8217;)ll benefit/g, 'When you replace the roof on your East Coast home, you$1ll benefit'],
@@ -482,7 +487,7 @@ function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
   return done;
 }
 
-// /services/, /solar/, /siding/, /gutters/, /commerical-roofing/: a grid of the same
+// /services/, /solar/, /siding/, /gutters/, /commercial-roofing/: a grid of the same
 // orange icon cards as the slider above (icon, orange title and rule, grey text, "Read
 // More" button), standing still -> the same photo cards in a grid, with each page's own
 // titles and text, in the section's orange. Broken links are mended (GRID_CARD_FIXES).
@@ -509,7 +514,8 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
     const cards = kids.map((a) => {
       const title = clean(textOf(find(a, (c) => hasClass(c, 'team-heading')) || { childNodes: [] }));
       const text = clean(textOf(find(a, (c) => hasClass(c, 'team-para')) || { childNodes: [] }));
-      const href = attr(a, 'href') || '';
+      // (by its corrected address, where it has one: RENAMED_PATHS in config.mjs)
+      const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
       return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };

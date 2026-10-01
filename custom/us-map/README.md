@@ -4,7 +4,7 @@ This folder holds the US map that replaces the live site's old map sections ever
 
 | Where | What it replaced | Version |
 | --- | --- | --- |
-| The "Local East Coast Exterior Remodelers" band on `/`, `/about/`, `/faqs/`, `/roofing/`, `/commerical-roofing/`, `/gutters/`, `/solar/`, `/reviews/`, `/podcast/` | a screenshot of a Google Map with numbered bubbles (the bottom was cropped off on wide screens, and it was hidden on phones) | compact, on orange |
+| The "Local East Coast Exterior Remodelers" band on `/`, `/about/`, `/faqs/`, `/roofing/`, `/commercial-roofing/`, `/gutters/`, `/solar/`, `/reviews/`, `/podcast/` | a screenshot of a Google Map with numbered bubbles (the bottom was cropped off on wide screens, and it was hidden on phones) | compact, on orange |
 | The same band on `/siding/` (white version) | a second screenshot of the same map | compact, on white |
 | `/past-projects/` | the "Projects \| Map" Google Maps widget, which loads every project from the site's WordPress API and cannot work in a static copy | large, interactive |
 | `/service-areas/` (under "…work on properties throughout:") | the list of city sub-sites, removed earlier | large, interactive |

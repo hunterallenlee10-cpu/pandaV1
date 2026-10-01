@@ -103,9 +103,9 @@
   },
   "commercial": {
     "pages": [
-      "/commerical-roofing/",
-      "/commerical-roofing/roof-replacement/",
-      "/commerical-roofing/roof-types/"
+      "/commercial-roofing/",
+      "/commercial-roofing/roof-replacement/",
+      "/commercial-roofing/roof-types/"
     ],
     "title": "Free Commercial Roofing Estimate",
     "text": "Flat roof replacements for businesses, from inspection to final walkthrough.",
@@ -121,7 +121,7 @@
           "Not sure yet"
         ],
         "selected": {
-          "/commerical-roofing/roof-replacement/": "Roof replacement"
+          "/commercial-roofing/roof-replacement/": "Roof replacement"
         }
       }
     ]

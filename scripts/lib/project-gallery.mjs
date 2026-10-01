@@ -1,5 +1,5 @@
 // "Our Project Gallery" (/, /solar/, /roofing/, /roofing/types/, /gutters/, /siding/,
-// /commercial-capabilities/, /commerical-roofing/). As delivered it is a Breakdance
+// /commercial-capabilities/, /commercial-roofing/). As delivered it is a Breakdance
 // gallery (category tabs over a Swiper slider, filtered with Isotope) that three scripts
 // start at once: Breakdance's own Swiper, the theme's `new Swiper('.Project-swipper')` on
 // its wrapper and the theme's `new Swiper('.swiper')` (a 2.5 s autoplay meant for the logo

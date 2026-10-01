@@ -807,7 +807,7 @@ a.bde-social-share-button:hover {
 .pfix-services--warm .pfix-services__all a:hover {
   background: #d9541a;
 }
-/* /services/, /solar/, /siding/, /gutters/, /commerical-roofing/: the same photo cards,
+/* /services/, /solar/, /siding/, /gutters/, /commercial-roofing/: the same photo cards,
    standing still in a grid (three across, or a centred pair), each as tall as its row. */
 .pfix-svc-grid {
   display: grid;

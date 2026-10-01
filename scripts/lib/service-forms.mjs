@@ -19,7 +19,7 @@
 // Applied by site-fixes.mjs; the forms are rendered again on every run.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './config.mjs';
+import { ROOT, renamedPath } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, rawText } from './html-edit.mjs';
 
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
@@ -29,10 +29,12 @@ const PROMPT_OFF = /getCurrentPosition\s*=\s*function/;
 
 let data;
 const forms = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'service-forms.json'), 'utf8')));
-/** The form for a page: its service's, or the general one. */
+/** The form for a page: its service's, or the general one. Pages are listed by their
+ *  corrected address (RENAMED_PATHS in config.mjs), like the rest of the site fixes. */
 export function serviceForm(pathname) {
   const all = Object.entries(forms());
-  const [key, f] = all.find(([, x]) => x.pages.includes(pathname)) || all.find(([, x]) => x.default) || [];
+  const page = renamedPath(pathname);
+  const [key, f] = all.find(([, x]) => x.pages.includes(page)) || all.find(([, x]) => x.default) || [];
   return key ? { key, ...f } : null;
 }
 
@@ -43,7 +45,7 @@ export function renderServiceForm(f, pathname, n) {
     `<label class="pfix-lead__field"><span class="pfix-lead__sr">${esc(label)}</span>` +
     `<input type="${type}" name="${name}" id="${id(name)}" class="input-field" placeholder="${esc(label)}${required ? '' : ' (optional)'}" autocomplete="${autocomplete}"${required ? ' required' : ''}></label>`;
   const question = (q) => {
-    const selected = q.selected?.[pathname] || '';
+    const selected = q.selected?.[renamedPath(pathname)] || '';
     return (
       `<label class="field-label pfix-lead__question" for="${id(q.name)}">${esc(q.label)}` +
       `<select name="${esc(q.name)}" id="${id(q.name)}" class="input-field" required>` +
@@ -57,7 +59,7 @@ export function renderServiceForm(f, pathname, n) {
   return (
     `<div class="pfix-lead" data-pfix-lead="${esc(f.key)}">` +
     `<form class="pfix-lead__form cf7-container" id="pfix-lead-${n}" method="post" data-pfix-lead-form novalidate>` +
-    `<input type="hidden" name="service" value="${esc(f.key)}"><input type="hidden" name="page" value="${esc(pathname)}">` +
+    `<input type="hidden" name="service" value="${esc(f.key)}"><input type="hidden" name="page" value="${esc(renamedPath(pathname))}">` +
     `<div class="name-row">${field('first_name', 'text', 'First name', 'given-name')}${field('last_name', 'text', 'Last name', 'family-name')}</div>` +
     `<div class="name-row">${field('email', 'email', 'Email', 'email')}${field('phone', 'tel', 'Phone', 'tel')}</div>` +
     (f.business ? field('business', 'text', 'Business name', 'organization', false) : '') +
