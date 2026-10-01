@@ -3,7 +3,6 @@
     "pages": [
       "/roofing/",
       "/roofing/replacement/",
-      "/roofing/repairs/",
       "/roofing/residential/",
       "/roofing/types/"
     ],
@@ -16,13 +15,11 @@
         "label": "What do you need?",
         "options": [
           "Roof replacement",
-          "Roof repair",
           "Roof inspection",
           "Not sure yet"
         ],
         "selected": {
-          "/roofing/replacement/": "Roof replacement",
-          "/roofing/repairs/": "Roof repair"
+          "/roofing/replacement/": "Roof replacement"
         }
       }
     ]
@@ -41,7 +38,6 @@
         "options": [
           "Replace my siding",
           "New siding installation",
-          "Repair damaged siding",
           "Not sure yet"
         ]
       },
@@ -72,7 +68,6 @@
           "New gutters",
           "Gutter guards",
           "New gutters and guards",
-          "Gutter repair",
           "Not sure yet"
         ],
         "selected": {
@@ -113,7 +108,7 @@
       "/commerical-roofing/roof-types/"
     ],
     "title": "Free Commercial Roofing Estimate",
-    "text": "Flat roof repairs and full replacements for businesses.",
+    "text": "Flat roof replacements for businesses, from inspection to final walkthrough.",
     "button": "Get My Free Commercial Estimate",
     "business": true,
     "questions": [
@@ -122,8 +117,7 @@
         "label": "What do you need?",
         "options": [
           "Roof replacement",
-          "Roof repair",
-          "Inspection",
+          "Roof inspection",
           "Not sure yet"
         ],
         "selected": {
@@ -163,7 +157,7 @@
         "label": "What do you need?",
         "options": [
           "Roof replacement",
-          "Roof repair",
+          "Roof inspection",
           "Siding",
           "Gutters or gutter guards",
           "Solar",

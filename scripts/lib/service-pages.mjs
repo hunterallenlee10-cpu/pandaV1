@@ -24,7 +24,8 @@ import { ROOT } from './config.mjs';
 import { hasClass, esc, find, headEndOffset } from './html-edit.mjs';
 
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
-const FORM_ID = 'lead-form';
+// The hero's estimate form (service-forms.mjs).
+const FORM_ID = 'pfix-lead-1';
 
 let data;
 export const servicePages = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'service-pages.json'), 'utf8')));
