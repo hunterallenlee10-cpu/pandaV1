@@ -9,9 +9,10 @@
   text-underline-offset: 2px;
 }
 
-/* Lead forms: link to the Reviews page where the review count used to fail. */
-#total-reviews a.pfix-reviews-link,
-#total-reviews a.pfix-reviews-link:hover {
+/* Lead forms: link to the Reviews page where the review count used to fail (the second
+   form on a page uses total-reviews-1 or -2). */
+[id^="total-reviews"] a.pfix-reviews-link,
+[id^="total-reviews"] a.pfix-reviews-link:hover {
   color: #111111;
   font-weight: 600;
   text-decoration: underline;
@@ -741,4 +742,44 @@ a.bde-social-share-button:hover {
   .pfix-services a.pfix-svc:hover .pfix-svc__media img {
     transform: none;
   }
+}
+
+/* "About Our Team" (the lead-form block above the footer): white text on Panda lime was
+   hard to read (about 1.7:1, the paragraphs also at 80% opacity). It sits on a charcoal
+   green (Panda lime darkened) instead, about 11:1 for the paragraphs, with the lime kept
+   for its button, and it stays distinct from the black footer below. */
+.Request-Container.primary-bg.pfix-about {
+  /* !important: an inline style on every page sets .primary-bg { background: … !important } */
+  background-color: #1a2418 !important;
+}
+.pfix-about .local-text,
+.pfix-about .local-text p {
+  color: #d5dccb;
+  opacity: 1;
+}
+.pfix-about .local-text a {
+  color: #c3ea79;
+}
+.pfix-about .bde-button {
+  --bde-button-custom-background-color: #9acd32;
+  --bde-button-custom-background-color-hover: #b0dc5a;
+  --bde-button-custom-text-color: #111827;
+  --bde-button-custom-text-color-hover: #111827;
+  --bde-button-custom-border-color: #9acd32;
+  --bde-button-custom-border-color-hover: #b0dc5a;
+}
+.pfix-about .bde-button .button-atom--custom,
+.pfix-about .bde-button .button-atom--custom .button-atom__text {
+  color: var(--bde-button-custom-text-color);
+}
+.pfix-about .bde-button .button-atom--custom {
+  background: var(--bde-button-custom-background-color);
+}
+.pfix-about .bde-button .button-atom--custom:hover {
+  background: var(--bde-button-custom-background-color-hover);
+  color: var(--bde-button-custom-text-color-hover);
+}
+.pfix-about .bde-button .button-atom--custom:focus-visible {
+  outline: 3px solid #c3ea79;
+  outline-offset: 3px;
 }
