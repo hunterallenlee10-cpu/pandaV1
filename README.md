@@ -85,12 +85,31 @@ Most of these problems are on the live site too.
   can be dragged or swiped, and keeps every card the same size with "Read more" on long reviews. The reviews are in
   `custom/reviews/reviews.json` — see [`custom/reviews/README.md`](custom/reviews/README.md). On `/service-areas/` the
   section is removed: it isn't about service areas.
+- **"Our Project Gallery"** (8 pages: `/`, `/solar/`, `/roofing/`, `/roofing/types/`, `/gutters/`, `/siding/`,
+  `/commercial-capabilities/`, `/commerical-roofing/`): three sliders were started on the same photos at once, so they
+  came out at different widths with the first one cut off, the row sat off centre under the heading and tabs, and there
+  was a dot for every photo of every category. It is now one tidy gallery: centred category tabs with photo counts, a
+  row of same-size photos with arrows and dots centred below it, and a full-size photo viewer — see
+  [`custom/project-gallery/README.md`](custom/project-gallery/README.md). `/gallery/` (a full grid, which works) is
+  unchanged.
 - **"Experts You Can Trust"** (home page): the certification logos jumped a step every 2.5 seconds, and the copies
   the carousel made to loop never loaded their logos. They now glide past in one continuous row, easing to a stop
   under the mouse (and stay still for people who prefer reduced motion).
 - **Award badges** ("About Our Team" and "Request an Appointment", 123 pages): the picture of the GAF President's Club
   and Inc. 5000 badges sat in a lot of empty space. The site's other GAF certifications, Diamond Pledge and Metal
   Certified, are added beside President's Club, with the two Inc. 5000 badges nested below.
+- **Pages wider than the screen** (checked on every page at widths from 320 to 1920 px; none is left):
+  - **Home page hero**: the award badges picture kept a fixed 562 px width in the 260 px column between its two white
+    lines, so it ran off the screen on tablets (768–1008 px, cutting off the "No. 1" badge) and slid under the form on
+    small laptops. Above phone size the lines and the picture now share one width, no wider than the column, as they
+    already did on phones.
+  - **Every page at 1120–1199 px** (an iPad held sideways, among others): the page builder switches to its desktop
+    widths at 1120 px, but the page's column stays 960 px wide until 1200 px. The header's phone button wrapped under
+    the logo, and the taller header covered the top of the page; on the 98 blog posts and offers the article ran off
+    the screen and its text was cut off; on 10 pages a row (the home page's "What Makes Panda the Best?" cards among
+    them) did the same. The header now uses the whole width there, and those blocks stop at the column's edge.
+  - **Smaller cases**: the badges picture on `/roofing/residential/` (480–529 px), and on the smallest phones a long
+    email address in a blog post and the topic tags at the top of blog posts.
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
@@ -106,8 +125,8 @@ Most of these problems are on the live site too.
 
 Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
 `docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual. (`docs/visual-diff/`
-was last regenerated before the review carousels, logo row, award badges and smooth scrolling were added; the next
-capture and build regenerates it.)
+was last regenerated before the review carousels, project gallery, logo row, award badges and smooth scrolling were
+added; the next capture and build regenerates it.)
 
 ## What's in the repo
 
@@ -119,6 +138,7 @@ site/                    the website — deploy this folder
   _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
   _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
+  _custom/project-gallery/            the project gallery's stylesheet and script (copied from custom/project-gallery/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
   media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
@@ -145,6 +165,7 @@ scripts/                   the capture / build / verification pipeline (Node.js 
 custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
+custom/project-gallery/    the "Our Project Gallery" section: styles, script
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 ```
@@ -202,8 +223,8 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 
 `.cache/` and `.work/` are not in the repository, so a fresh clone cannot run `03-build.mjs`. After changing
 `custom/` or the site fixes, `npm run update:site` (`node scripts/tools/update-built-site.mjs`, add `--dry-run` to
-preview) applies the site fixes, smooth scrolling and the Media menu link to the pages already in `site/`, rebuilds
-the Media page and copies the custom files.
+preview) applies the site fixes (review carousels and project gallery included), smooth scrolling and the Media menu
+link to the pages already in `site/`, rebuilds the Media page and copies the custom files.
 Each fix gives the same result on a built page as on the page as captured, so the pages come out as a full rebuild
 would make them. The map sections are the exception: only `03-build.mjs` renders them.
 

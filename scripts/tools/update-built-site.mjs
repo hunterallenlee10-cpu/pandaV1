@@ -17,6 +17,7 @@ import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE } from 
 import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../lib/customize.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
+import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH } from '../lib/media-page.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
@@ -73,6 +74,7 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
 const files = [
   ...Object.entries(SITE_FIXES_FILES).map(([name, url]) => [path.join(SITE_FIXES_DIR, name), url]),
   ...Object.entries(REVIEWS_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
+  ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
 // Everything the Media page uses (its pictures are in src/srcset/poster attributes).
