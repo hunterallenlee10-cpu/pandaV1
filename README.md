@@ -163,6 +163,13 @@ Most of these problems are on the live site too.
   the top of the page up to 1024 px (the button closed it), the menu starts closed and opens as the same full-width
   list as everywhere else. CSS only (`custom/site-fixes/site-fixes.css`).
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
+- **`/reviews/` review wall**: the section under the hero showed a picture of an old Google rating (4.9), a "Write a
+  Review" button and one review. It is now the Google rating as Google shows it (4.8 from 1,067 reviews), a **Write a
+  review** button that opens Google's review form for Panda (`g.page/r/CdRhCa0OrTvjEAE/review`), every five-star
+  Google review as cards that can be filtered by topic (roofing, siding, gutters, solar, insurance claims, clean-up),
+  searched and shown 24 at a time, and a closing "Had a great experience with Panda?" band that asks for a review
+  again. The reviews are in `custom/reviews/google-reviews.json`; `npm run reviews:google` fills it from a Google
+  Takeout export or from Google Maps — see [`custom/reviews/README.md`](custom/reviews/README.md).
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text
@@ -293,7 +300,8 @@ site/                    the website — deploy this folder
   _external/<host>/…                  third-party static files made local (e.g. Google Fonts)
   _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
-  _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
+  _custom/reviews/                    the review carousel's and the review wall's stylesheets and scripts (copied from
+                                      custom/reviews/), and review-wall.json, the reviews the wall loads
   _custom/project-gallery/            the project gallery's stylesheet and script (copied from custom/project-gallery/)
   _custom/past-projects/              the favorite projects' stylesheet and photos (copied from custom/past-projects/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
@@ -321,7 +329,8 @@ docs/
 scripts/                   the capture / build / verification pipeline (Node.js + Playwright)
 custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
-custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
+custom/reviews/            the review carousel (reviews.json: the reviews it shows) and the review wall on /reviews/
+                           (google-reviews.json: the Google reviews and rating), styles, scripts
 custom/project-gallery/    the "Our Project Gallery" section: styles, script
 custom/past-projects/      "Some of our favorite past projects" and the hero: favorites.json (projects, hero photo), photos, styles
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup

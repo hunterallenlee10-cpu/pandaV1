@@ -1,0 +1,23 @@
+{
+  "_help": "The Google reviews on /reviews/ (see README.md in this folder). The page shows every review here rated 5 stars, newest first, then the reviews in reviews.json that are not already in this list. Fill or refresh it with scripts/tools/google-reviews.mjs (from a Google Takeout export, or by reading the reviews off Google Maps), which also updates \"place\" (the rating and review count shown at the top). Reviews that mention a word starting with one of \"hideIfMentions\" (any case) are left off the page. \"date\" is \"YYYY-MM\" or \"YYYY\". Rebuild after editing.",
+  "place": {
+    "name": "Panda Exteriors",
+    "rating": 4.8,
+    "count": 1067,
+    "asOf": "2026-10-01",
+    "writeReviewUrl": "https://g.page/r/CdRhCa0OrTvjEAE/review",
+    "mapsUrl": "https://www.google.com/maps/place/data=!4m7!3m6!1s0x89b7dd53feae5549:0xe33bad0ead0961d4!8m2!3d39.0879!4d-76.8433!9m1!1b1"
+  },
+  "hideIfMentions": [
+    "repair"
+  ],
+  "reviews": [
+    {
+      "name": "Tracey Duval",
+      "rating": 5,
+      "date": "2025",
+      "avatar": "https://lh3.googleusercontent.com/a-/ALV-UjWYZBGXkPJ2vEUvD48ti0MCvFNNvStkA5Y3Xv_5ivmH4fKYfBUJtg=s128-c0x00000000-cc-rp-mo",
+      "text": "Chris Atkinson was my initial contact with the company! Very down to earth, honest and understanding. He showed a deep understanding of the process with the insurance company. I opted not to wait for the insurance review and from that point Panda/Chris moved speed with purpose to obtain supplies once I let them know what I wanted! He graciously handed me off to Jonathan and his team and the job was completed yesterday and I am beaming from the results. They went above and beyond to ensure colors from existing structures matched the roofing! My raised beds and plants were protected and the clean up impeccable. Overjoyed with the results! I was listened to and understood! We often don’t need roofing but when you do Panda is who I would recommend."
+    }
+  ]
+}

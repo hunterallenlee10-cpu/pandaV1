@@ -17,6 +17,7 @@ import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE } from 
 import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../lib/customize.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
+import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from '../lib/review-wall.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
@@ -75,6 +76,7 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
 const files = [
   ...Object.entries(SITE_FIXES_FILES).map(([name, url]) => [path.join(SITE_FIXES_DIR, name), url]),
   ...Object.entries(REVIEWS_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
+  ...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
@@ -85,10 +87,16 @@ if (linked.has(PAST_PROJECTS_FILES['past-projects.css'])) files.push(...pastProj
 // src/srcset/poster attributes).
 const mediaUsed = media || linked.has(MEDIA_FILES['media.js']);
 if (mediaUsed) files.push(...mediaFiles());
+// The list the review wall on /reviews/ loads (made from custom/reviews/google-reviews.json).
+const generated = new Map();
+if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) {
+  files.push([path.join(REVIEWS_DIR, 'google-reviews.json'), REVIEW_WALL_DATA]);
+  generated.set(REVIEW_WALL_DATA, Buffer.from(reviewWallJson()));
+}
 let copied = 0;
 for (const [from, url] of files) {
   const to = path.join(SITE, url);
-  const data = fs.readFileSync(from);
+  const data = generated.get(url) || fs.readFileSync(from);
   if (fs.existsSync(to) && fs.readFileSync(to).equals(data)) continue;
   copied++;
   if (!dryRun) writeFile(to, data);
