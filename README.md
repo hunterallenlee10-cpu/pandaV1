@@ -123,6 +123,14 @@ Most of these problems are on the live site too.
   row glides past like the home page's logo row and eases to a stop under the mouse or while a card has keyboard
   focus; with reduced motion, or without JavaScript, the cards sit still in rows. The cards are listed in
   `SERVICE_CARDS` in `scripts/lib/site-fixes.mjs`, using photos already on the site.
+- **Services carousel on `/about/`, `/podcast/` and `/roofing/`** (under "Customer-Oriented Exterior Remodeling
+  Services in the Mid-Atlantic" and "Comprehensive Roofing and Exterior Remodeling Services") was a slider of orange
+  icon cards, three at a time with pale arrows, with the third card cut off at the edge. It showed only roofing,
+  twice over ("Roofing Replacement" and "Replacement" were the same page), and half the descriptions belonged to
+  other cards. It is now the same gliding row of photo cards as on `/service-areas/`, in the section's orange: all ten
+  services on `/about/` and `/podcast/`, and the six roofing ones (Roof Types included) on `/roofing/`
+  (`ROOFING_CARDS`), with a "See all our services" button. On phones, with reduced motion or without JavaScript,
+  the still cards are one row to swipe through rather than a long column (on `/service-areas/` too).
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers

@@ -719,9 +719,31 @@ a.bde-social-share-button:hover {
   outline: 3px solid #5c8a12;
   outline-offset: 3px;
 }
-/* Still cards (no script, or reduced motion): centred rows with room between them. */
+/* Still cards (no script, or reduced motion): centred rows with room between them; on
+   phones one row to swipe through, instead of a column of cards several screens long. */
 .pfix-marquee--cards:not(.is-running) .pfix-marquee__track {
   row-gap: 22px;
+}
+@media (max-width: 767.98px) {
+  .pfix-marquee--cards:not(.is-running) {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px;
+    scrollbar-width: none;
+  }
+  .pfix-marquee--cards:not(.is-running)::-webkit-scrollbar {
+    display: none;
+  }
+  .pfix-marquee--cards:not(.is-running) .pfix-marquee__track {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: max-content;
+    padding: 0 8px;
+  }
+  .pfix-marquee--cards:not(.is-running) .pfix-marquee__item {
+    scroll-snap-align: start;
+  }
 }
 @media (max-width: 575.98px) {
   .pfix-services a.pfix-svc,
@@ -732,13 +754,67 @@ a.bde-social-share-button:hover {
     padding: 0 8px;
   }
 }
+/* /about/, /podcast/, /roofing/: the same row of photo cards in place of the icon-card
+   slider, in that section's orange (the site's buttons and headings) instead of green. */
+/* The intro's padding (Bootstrap's pb-3, !important) left a wide gap above the cards. */
+.pfix-services--warm .Team-text-container,
+.pfix-services--warm .Team-text-container p:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0 !important;
+}
+.pfix-services--warm .pfix-marquee.pfix-marquee--cards {
+  margin-top: 18px;
+}
+.pfix-services--warm a.pfix-svc,
+.pfix-services--warm a.pfix-svc:hover {
+  border-color: #f1e4da;
+  box-shadow: 0 1px 2px rgba(40, 20, 8, 0.05), 0 8px 24px rgba(40, 20, 8, 0.07);
+}
+.pfix-services--warm a.pfix-svc:hover,
+.pfix-services--warm a.pfix-svc:focus-visible {
+  border-color: #f26924;
+  box-shadow: 0 2px 4px rgba(40, 20, 8, 0.06), 0 16px 34px rgba(242, 105, 36, 0.18);
+}
+.pfix-services--warm a.pfix-svc:focus-visible,
+.pfix-services--warm .pfix-services__all a:focus-visible {
+  outline-color: #c2410c;
+}
+.pfix-services--warm .pfix-svc .pfix-svc__media {
+  background: #f6ece4;
+}
+.pfix-services--warm .pfix-svc .pfix-svc__group {
+  background: #fff0e6;
+  color: #b23c0a;
+}
+.pfix-services--warm .pfix-svc .pfix-svc__more {
+  color: #c2410c;
+}
+.pfix-services--warm a.pfix-svc .pfix-svc__more > span {
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.25s ease;
+}
+.pfix-services--warm a.pfix-svc:hover .pfix-svc__more > span,
+.pfix-services--warm a.pfix-svc:focus-visible .pfix-svc__more > span {
+  transform: translateX(4px);
+}
+.pfix-services--warm .pfix-services__all a,
+.pfix-services--warm .pfix-services__all a:hover {
+  background: #f26924;
+  box-shadow: 0 6px 16px rgba(242, 105, 36, 0.28);
+}
+.pfix-services--warm .pfix-services__all a:hover {
+  background: #d9541a;
+}
 @media (prefers-reduced-motion: reduce) {
   .pfix-services a.pfix-svc,
   .pfix-marquee .pfix-marquee__item .pfix-svc__media img {
     transition: none;
   }
   .pfix-services a.pfix-svc:hover,
-  .pfix-services a.pfix-svc:hover .pfix-svc__media img {
+  .pfix-services a.pfix-svc:hover .pfix-svc__media img,
+  .pfix-services--warm a.pfix-svc:hover .pfix-svc__more > span,
+  .pfix-services--warm a.pfix-svc:focus-visible .pfix-svc__more > span {
     transform: none;
   }
 }

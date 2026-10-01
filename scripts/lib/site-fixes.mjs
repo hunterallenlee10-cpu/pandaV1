@@ -57,6 +57,12 @@
 //  - /service-areas/ "Our Reliable Exterior Remodeling Services": four green boxes of
 //    text become a gliding row of photo cards, one per service page, that eases to a
 //    stop under the mouse.
+//  - /about/, /podcast/, /roofing/ services carousel (under "Customer-Oriented Exterior
+//    Remodeling Services…" / "Comprehensive Roofing…"): the icon cards showed only roofing,
+//    twice over ("Roofing Replacement" and "Replacement" were the same page), with
+//    descriptions that belonged to other cards and the third card cut off at the edge. It
+//    becomes the same gliding row of photo cards (all services, or the roofing ones on
+//    /roofing/), in the section's orange.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -120,6 +126,12 @@ const SERVICE_CARDS = [
   { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
     text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
 ];
+// The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
+const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
+  text: 'Asphalt shingles, metal and flat roofs, in the colors and styles that suit your home.' };
+const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/repairs/', '/roofing/residential/', '/roofing/attic-insulation/', '/commerical-roofing/'].map(
+  (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)
+);
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -218,19 +230,15 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   return true;
 }
 
-// /service-areas/ "Our Reliable Exterior Remodeling Services": four flat green boxes of
-// text (Roofing, Solar, Commercial, Gutters) -> a gliding row of photo cards for every
-// service page (SERVICE_CARDS), each linking to its page. It moves with the logo row's
-// script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
-// JavaScript or with reduced motion the cards sit still, wrapped in rows.
-function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
-  const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
-  const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
-  if (!grid) return false;
+// A row of photo cards (one per service page, each linking to it) that moves with the logo
+// row's script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
+// JavaScript or with reduced motion the cards sit still, wrapped in rows. Cards whose photo
+// is missing from the site are left out. Returns the HTML, or '' with too few photos.
+function serviceCardsRow(list, { pathname, siteDir }) {
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
-  const cards = SERVICE_CARDS.filter((s) => exists(s.img[0]));
-  if (cards.length < SERVICE_CARDS.length) console.warn(`site-fixes: ${pathname}: ${SERVICE_CARDS.length - cards.length} service photo(s) missing, those cards left out`);
-  if (cards.length < 4) return false;
+  const cards = list.filter((s) => exists(s.img[0]));
+  if (cards.length < list.length) console.warn(`site-fixes: ${pathname}: ${list.length - cards.length} service photo(s) missing, those cards left out`);
+  if (cards.length < 4) return { html: '', count: 0 };
   const card = (s) => {
     const [src, w, h] = s.img;
     const webp = exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '';
@@ -242,13 +250,26 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
       `<span class="pfix-svc__more">Learn more<span aria-hidden="true"> →</span></span></span></a></div>`
     );
   };
-  ed.retag(section, withClass(section, ['pfix-services']));
-  ed.outer(
-    grid,
-    `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
+  return {
+    html:
+      `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
       `<div class="pfix-marquee__track" role="list">${cards.map(card).join('')}</div></div>` +
-      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`
-  );
+      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`,
+    count: cards.length,
+  };
+}
+
+// /service-areas/ "Our Reliable Exterior Remodeling Services": four flat green boxes of
+// text (Roofing, Solar, Commercial, Gutters) -> a gliding row of photo cards for every
+// service page (SERVICE_CARDS).
+function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
+  const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
+  const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
+  if (!grid) return false;
+  const row = serviceCardsRow(SERVICE_CARDS, { pathname, siteDir });
+  if (!row.count) return false;
+  ed.retag(section, withClass(section, ['pfix-services']));
+  ed.outer(grid, row.html);
   // The intro ran its two sentences together ("renovations.Some of…") on wide screens.
   const intro = find(section, (c) => c.tagName === 'p' && /manufacturers’ warranties/.test(textOf(c)));
   if (intro)
@@ -256,8 +277,35 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
       intro,
       'We work with products backed by manufacturers’ warranties, so you get reliable results from every renovation. Here are the services we offer:'
     );
-  changes.push(`services carousel: ${cards.length} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
+  changes.push(`services carousel: ${row.count} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
   return true;
+}
+
+// /about/, /podcast/ ("Customer-Oriented Exterior Remodeling Services in the Mid-Atlantic")
+// and /roofing/ ("Comprehensive Roofing and Exterior Remodeling Services"): a Swiper of six
+// orange icon cards, three at a time with pale arrows, the third cut off at the edge. Only
+// roofing was in it, twice ("Roofing Replacement" and "Replacement" both led to
+// /roofing/replacement/), and half the descriptions belonged to other cards ("Attic
+// Insulation": "…experience repairing issues with existing roofs"). It becomes the same
+// gliding row of photo cards as on /service-areas/, in the section's orange: every service
+// under "…just about any exterior remodel, including:", the roofing ones on /roofing/.
+function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
+  let done = false;
+  for (const section of findAll(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'roof-swiper')))) {
+    const box = find(section, (c) => hasClass(c, 'Logo-container') && find(c, (x) => hasClass(x, 'roof-swiper')));
+    if (!box) continue;
+    const roofing = pathname.startsWith('/roofing/');
+    const row = serviceCardsRow(roofing ? ROOFING_CARDS : SERVICE_CARDS, { pathname, siteDir });
+    if (!row.count) continue;
+    ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm']));
+    ed.outer(box, row.html);
+    changes.push(
+      `services carousel: ${row.count} ${roofing ? 'roofing ' : ''}photo cards linking to each service page, gliding until hovered ` +
+        `(was a 3-up slider of icon cards repeating roof replacement, with mismatched descriptions)`
+    );
+    done = true;
+  }
+  return done;
 }
 
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
@@ -577,6 +625,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (pathname === '/service-areas/' && servicesCarousel(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  if (teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
   }
