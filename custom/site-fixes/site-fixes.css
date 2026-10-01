@@ -591,6 +591,65 @@ a.bde-social-share-button:hover {
     padding-left: 24px;
   }
 }
+/* The header on phones (up to 768 px): a rule in every page stacked the header's row
+   (.oxy-container-974-102 { display: block !important }), so the menu button sat under the
+   logo, and the header was placed 46 px down, below a top bar of two lines (it is one). The
+   header ended at 186 px while the page starts at 150 px, so it covered the top 36 px of every
+   page: the top of the heading, on blog posts and the offer pages. The logo and the menu
+   button are one row again (the opened menu still drops below them), the header sits right
+   under the top bar, as on larger screens, and ends at 148 px. The menu button gets a
+   44 px tap area. */
+@media (max-width: 768px) {
+  .oxy-container-974-100.nav {
+    top: 32px !important;
+  }
+  .oxy-container-974-100.nav .oxy-container-974-102.row-flex {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  .oxy-container-974-100.nav .row-flex > .Nav-Logo,
+  .oxy-container-974-100.nav .row-flex > .mobile_btn {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .oxy-container-974-100.nav .mobile_btn .Mobile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .oxy-container-974-100.nav .row-flex > .main_menu {
+    flex: 0 0 100%;
+  }
+}
+/* /careers/: its own header styles show the menu at every width (body.pcv2-body .nav
+   .main_menu { display: block }), so up to 1024 px, where the menu button shows, the whole
+   menu sat open over the top of the page and the button closed it. It starts closed there,
+   as on every other page; the button opens it (an inline style, which wins over this), as a
+   full-width list under the logo like everywhere else (its styles laid it out beside the logo). */
+@media (max-width: 1024.98px) {
+  body.pcv2-body .oxy-container-974-100.nav .main_menu {
+    display: none;
+  }
+  body.pcv2-body .oxy-container-974-100.nav .oxy-container-974-102.row-flex {
+    flex-wrap: wrap !important;
+  }
+  body.pcv2-body .oxy-container-974-100.nav .row-flex > .main_menu {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  body.pcv2-body .oxy-container-974-100.nav .main_menu .Menus-ul.ul {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+}
 
 /* /service-areas/ "Our Reliable Exterior Remodeling Services": a gliding row of photo
    cards, one per service page (the row moves with the logo row's script and eases to a
