@@ -54,6 +54,9 @@
 //    Panda works, with the numbers from the US map's areas.json (jobs, states, offices),
 //    has state chips that glide to the map and zoom to that state, call and map buttons,
 //    and a sharp drone photo that loads first.
+//  - /service-areas/ "Our Reliable Exterior Remodeling Services": four green boxes of
+//    text become a gliding row of photo cards, one per service page, that eases to a
+//    stop under the mouse.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -69,7 +72,7 @@ import { loadUsMap } from './us-map.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -93,6 +96,30 @@ const GOOGLE_RATING = '4.9';
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
 const SA_MAP_ID = 'service-map';
+// /service-areas/ "Our Reliable Exterior Remodeling Services": one card per service page,
+// with a photo the site already has for it (a .webp copy is used where there is one).
+const SERVICE_CARDS = [
+  { group: 'Roofing', title: 'Roof Replacement', href: '/roofing/replacement/', img: ['/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg', 768, 432],
+    text: 'GAF Master Elite certified crews replace worn-out roofs quickly and stand behind the work.' },
+  { group: 'Roofing', title: 'Roof Repairs', href: '/roofing/repairs/', img: ['/wp-content/uploads/2025/04/Roofing-Repairs.jpg', 1200, 798],
+    text: 'Leaks, storm damage and missing shingles fixed at fair prices, with help on insurance claims.' },
+  { group: 'Roofing', title: 'Residential Roofing', href: '/roofing/residential/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+    text: 'A new roof for your home in the style you want, from an A-rated, GAF Master Elite roofer.' },
+  { group: 'Roofing', title: 'Attic Insulation', href: '/roofing/attic-insulation/', img: ['/wp-content/uploads/2025/04/Attic-Insulation.jpg', 1200, 799],
+    text: 'Environmentally friendly insulation that keeps your home comfortable all year.' },
+  { group: 'Solar', title: 'Solar Panels', href: '/solar/solar-panel-installations/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+    text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
+  { group: 'Solar', title: 'GAF Solar Roof', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
+    text: 'Solar shingles that work as your roof and your power source, in one install.' },
+  { group: 'Commercial', title: 'Commercial Roofing', href: '/commerical-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
+    text: 'Flat roof repairs and full replacements for businesses, from inspection to final walkthrough.' },
+  { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
+    text: 'New siding that refreshes how your home looks and protects it from the weather.' },
+  { group: 'Exterior', title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
+    text: 'Complete gutter systems that carry rainwater away from your roof and foundation.' },
+  { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
+    text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
+];
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -188,6 +215,48 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
     `service areas hero: says where Panda works (${fmt(jobs)} jobs, ${states.length} states, ${offices} offices), ` +
       `with state chips that zoom the map, call and map buttons and a sharp drone photo (was a stretched roof strip)`
   );
+  return true;
+}
+
+// /service-areas/ "Our Reliable Exterior Remodeling Services": four flat green boxes of
+// text (Roofing, Solar, Commercial, Gutters) -> a gliding row of photo cards for every
+// service page (SERVICE_CARDS), each linking to its page. It moves with the logo row's
+// script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
+// JavaScript or with reduced motion the cards sit still, wrapped in rows.
+function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
+  const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
+  const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
+  if (!grid) return false;
+  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+  const cards = SERVICE_CARDS.filter((s) => exists(s.img[0]));
+  if (cards.length < SERVICE_CARDS.length) console.warn(`site-fixes: ${pathname}: ${SERVICE_CARDS.length - cards.length} service photo(s) missing, those cards left out`);
+  if (cards.length < 4) return false;
+  const card = (s) => {
+    const [src, w, h] = s.img;
+    const webp = exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '';
+    return (
+      `<div class="pfix-marquee__item" role="listitem"><a class="pfix-svc" href="${esc(s.href)}">` +
+      `<span class="pfix-svc__media"><picture>${webp}<img src="${esc(src)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></picture></span>` +
+      `<span class="pfix-svc__body"><span class="pfix-svc__group">${esc(s.group)}</span>` +
+      `<h3 class="pfix-svc__title">${esc(s.title)}</h3><span class="pfix-svc__text">${esc(s.text)}</span>` +
+      `<span class="pfix-svc__more">Learn more<span aria-hidden="true"> →</span></span></span></a></div>`
+    );
+  };
+  ed.retag(section, withClass(section, ['pfix-services']));
+  ed.outer(
+    grid,
+    `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
+      `<div class="pfix-marquee__track" role="list">${cards.map(card).join('')}</div></div>` +
+      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`
+  );
+  // The intro ran its two sentences together ("renovations.Some of…") on wide screens.
+  const intro = find(section, (c) => c.tagName === 'p' && /manufacturers’ warranties/.test(textOf(c)));
+  if (intro)
+    ed.inner(
+      intro,
+      'We work with products backed by manufacturers’ warranties, so you get reliable results from every renovation. Here are the services we offer:'
+    );
+  changes.push(`services carousel: ${cards.length} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
   return true;
 }
 
@@ -320,6 +389,25 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     for (const b of findAll(doc, (c) => hasClass(c, 'bde-button') && /^Read More Reviews!?$/i.test(clean(textOf(c))))) {
       ed.outer(b, '');
       changes.push('removed on request: the "Read More Reviews!" button');
+    }
+  }
+  if (pathname === '/service-areas/') {
+    // "Expert Roofers on the East Coast" (text and truck photo, under the hero) and the
+    // green "Learn More About Our Exterior Remodeling Services" band (text and photo).
+    const SECTIONS = [
+      ['Service-container', 'Expert Roofers on the East Coast'],
+      ['Client-section', 'Learn More About Our Exterior Remodeling Services'],
+    ];
+    for (const [cls, title] of SECTIONS) {
+      const heading = (c) => /^h[1-6]$/.test(c.tagName) && clean(textOf(c)) === title;
+      for (const box of findAll(doc, (c) => hasClass(c, cls) && find(c, heading))) {
+        ed.outer(box, '');
+        changes.push(`removed on request: the "${title}" section`);
+      }
+    }
+    // The truck photo went with its section: no more fetching it first.
+    for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && /Panda-Exteriors-Truck/.test(attr(c, 'imagesrcset') || attr(c, 'href') || ''))) {
+      ed.outer(l, '');
     }
   }
 
@@ -485,6 +573,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // /service-areas/: the hero says where Panda works and links to the map.
   if (pathname === '/service-areas/' && serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  if (pathname === '/service-areas/' && servicesCarousel(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
   }

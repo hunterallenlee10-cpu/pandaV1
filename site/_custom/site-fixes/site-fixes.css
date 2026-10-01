@@ -582,3 +582,163 @@ a.bde-social-share-button:hover {
     padding-left: 24px;
   }
 }
+
+/* /service-areas/ "Our Reliable Exterior Remodeling Services": a gliding row of photo
+   cards, one per service page (the row moves with the logo row's script and eases to a
+   stop under the mouse). Without JavaScript, or with reduced motion, the cards sit still
+   in centred rows. */
+.roofers-section.pfix-services {
+  background: linear-gradient(180deg, #ffffff 0%, #f2f7e6 100%);
+}
+.pfix-services .roof-para p {
+  max-width: 760px;
+  margin-right: auto;
+  margin-left: auto;
+  color: #3b4238;
+  text-align: center;
+}
+.pfix-marquee.pfix-marquee--cards {
+  margin-top: 28px;
+  padding: 10px 0 18px;
+}
+.pfix-marquee--cards .pfix-marquee__track {
+  gap: 0;
+  align-items: stretch;
+}
+.pfix-marquee--cards .pfix-marquee__item {
+  display: flex;
+  align-items: stretch;
+  height: auto;
+  padding: 0 11px;
+}
+.pfix-services a.pfix-svc,
+.pfix-services a.pfix-svc:hover {
+  display: flex;
+  flex-direction: column;
+  width: 296px;
+  overflow: hidden;
+  border: 1px solid #e3e9d6;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(17, 24, 14, 0.06), 0 8px 24px rgba(17, 24, 14, 0.07);
+  color: #111111;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.pfix-services a.pfix-svc:hover,
+.pfix-services a.pfix-svc:focus-visible {
+  transform: translateY(-4px);
+  border-color: #9acd32;
+  box-shadow: 0 2px 4px rgba(17, 24, 14, 0.06), 0 16px 34px rgba(17, 24, 14, 0.14);
+}
+.pfix-services a.pfix-svc:focus-visible {
+  outline: 3px solid #5c8a12;
+  outline-offset: 3px;
+}
+.pfix-svc .pfix-svc__media {
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #e8eedc;
+}
+.pfix-marquee .pfix-marquee__item .pfix-svc__media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.pfix-services a.pfix-svc:hover .pfix-svc__media img {
+  transform: scale(1.05);
+}
+.pfix-svc .pfix-svc__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px 20px;
+}
+.pfix-svc .pfix-svc__group {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef6dc;
+  color: #4a7310;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pfix-svc .pfix-svc__title {
+  margin: 2px 0 0;
+  padding: 0;
+  color: #111111;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.pfix-svc .pfix-svc__text {
+  flex: 1;
+  color: #4b5348;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.pfix-svc .pfix-svc__more {
+  margin-top: 4px;
+  color: #4a7310;
+  font-size: 15px;
+  font-weight: 700;
+}
+.pfix-services .pfix-services__all {
+  margin: 18px 0 0;
+  text-align: center;
+}
+.pfix-services .pfix-services__all a,
+.pfix-services .pfix-services__all a:hover {
+  display: inline-block;
+  padding: 13px 26px;
+  border-radius: 30px;
+  background: #ff6600;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+}
+.pfix-services .pfix-services__all a:hover {
+  background: #e65c00;
+}
+.pfix-services .pfix-services__all a:focus-visible {
+  outline: 3px solid #5c8a12;
+  outline-offset: 3px;
+}
+/* Still cards (no script, or reduced motion): centred rows with room between them. */
+.pfix-marquee--cards:not(.is-running) .pfix-marquee__track {
+  row-gap: 22px;
+}
+@media (max-width: 575.98px) {
+  .pfix-services a.pfix-svc,
+  .pfix-services a.pfix-svc:hover {
+    width: 260px;
+  }
+  .pfix-marquee--cards .pfix-marquee__item {
+    padding: 0 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-services a.pfix-svc,
+  .pfix-marquee .pfix-marquee__item .pfix-svc__media img {
+    transition: none;
+  }
+  .pfix-services a.pfix-svc:hover,
+  .pfix-services a.pfix-svc:hover .pfix-svc__media img {
+    transform: none;
+  }
+}
