@@ -1,7 +1,8 @@
 /* Script for the fixes in scripts/lib/site-fixes.mjs (no dependencies).
    - The phone-only "Share" button on blog posts opens the device's share sheet where the
      browser supports it; otherwise the link falls back to an email draft.
-   - "Experts You Can Trust" (home page): the logos glide past in one continuous row. */
+   - "Experts You Can Trust" (home page): the logos glide past in one continuous row.
+   - /service-areas/ hero: the state chips zoom the map to their state. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -168,4 +169,42 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+
+/* /service-areas/ hero: a state chip glides down to the map (smooth-scroll.js handles the
+   #service-map link, and without JavaScript the link still jumps there), then zooms the map
+   to that state by pressing the map's own button for it once the map is in view. "+N more"
+   presses the map's "all states" button. */
+(function () {
+  'use strict';
+  document.addEventListener('click', function (event) {
+    var chip = event.target.closest && event.target.closest('.pfix-sa-hero [data-pfix-state]');
+    if (!chip) return;
+    var section = document.getElementById('service-map');
+    var code = chip.getAttribute('data-pfix-state') || '';
+    if (!section || !/^[A-Z]{0,2}$/.test(code)) return;
+    var target = section.querySelector('.pmap__chip[data-state="' + code + '"]');
+    if (!target) return;
+    var io = null;
+    var timer = 0;
+    var done = false;
+    function press() {
+      if (done) return;
+      done = true;
+      if (io) io.disconnect();
+      clearTimeout(timer);
+      target.click();
+    }
+    // The same share of the map in view that starts the map's own entrance.
+    if (window.IntersectionObserver) {
+      io = new IntersectionObserver(
+        function (entries) {
+          if (entries.some(function (e) { return e.isIntersecting; })) press();
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(target.closest('.pmap-card') || section);
+    }
+    timer = setTimeout(press, 1500);
+  });
 })();
