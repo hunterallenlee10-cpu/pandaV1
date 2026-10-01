@@ -7,8 +7,13 @@
 // each with a short line from its project page, then a call to action; the map ("Areas We
 // Serve") follows.
 //
-// The projects, their wording and their photos are in custom/past-projects/favorites.json.
-// The photos are resized copies (custom/past-projects/photos/, made by
+// The hero loses its generic photo of a house (shared with other pages, and pinned to the
+// screen with background-attachment: fixed, so it was blown up and soft) for a photo of
+// Panda's own crew at work that scrolls with the page, with a dark fade behind the white
+// headline, a small label above it and a button down to the favorites.
+//
+// The projects, their wording and their photos, and the hero's photo, are in
+// custom/past-projects/favorites.json. The photos are resized copies (custom/past-projects/photos/, made by
 // scripts/tools/past-projects-photos.mjs), about a tenth of the originals' weight.
 //
 // Applied in two places, so a full build and an update of a built page agree:
@@ -21,7 +26,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
-import { hasClass, esc, find } from './html-edit.mjs';
+import { hasClass, esc, find, findAll, attr, classes, startTag, headEndOffset } from './html-edit.mjs';
 
 export const PAST_PROJECTS_DIR = path.join(ROOT, 'custom', 'past-projects');
 export const PAST_PROJECTS_FILES = { 'past-projects.css': '/_custom/past-projects/past-projects.css' };
@@ -29,19 +34,29 @@ export const PAST_PROJECTS_PATH = '/past-projects/';
 // Photo widths made by the tool (webp), and the width of the jpg fallback.
 export const PHOTO_WIDTHS = [720, 1440];
 export const PHOTO_FALLBACK = 1440;
+// The hero photo: webp for phones and for larger screens (the larger one also as a jpg).
+export const HERO_WIDTHS = [960, 1920];
+const HERO_SLUG = 'hero';
+const SECTION_ID = 'ppx';
 
 let data;
 export const favorites = () => (data ??= JSON.parse(fs.readFileSync(path.join(PAST_PROJECTS_DIR, 'favorites.json'), 'utf8')));
 /** The name the photos of a project are saved under (the last part of its address). */
 export const photoSlug = (p) => p.href.split('/').filter(Boolean).pop();
 const photoUrl = (p, w, ext) => `/_custom/past-projects/photos/${photoSlug(p)}-${w}.${ext}`;
+const heroUrl = (w, ext) => `/_custom/past-projects/photos/${HERO_SLUG}-${w}.${ext}`;
+/** The photos the tool makes: { slug, photo, sizes: [[width, ext], …] }. */
+export function photoJobs() {
+  const f = favorites();
+  return [
+    ...(f.hero?.photo ? [{ slug: HERO_SLUG, photo: f.hero.photo, sizes: [...HERO_WIDTHS.map((w) => [w, 'webp']), [HERO_WIDTHS.at(-1), 'jpg']] }] : []),
+    ...f.projects.map((p) => ({ slug: photoSlug(p), photo: p.photo, sizes: [...PHOTO_WIDTHS.map((w) => [w, 'webp']), [PHOTO_FALLBACK, 'jpg']] })),
+  ];
+}
 
 /** Everything the showcase uses: [file on disk, address on the site]. */
 export function pastProjectsFiles() {
-  const photos = favorites().projects.flatMap((p) => [
-    ...PHOTO_WIDTHS.map((w) => `photos/${photoSlug(p)}-${w}.webp`),
-    `photos/${photoSlug(p)}-${PHOTO_FALLBACK}.jpg`,
-  ]);
+  const photos = photoJobs().flatMap((j) => j.sizes.map(([w, ext]) => `photos/${j.slug}-${w}.${ext}`));
   return [...Object.entries(PAST_PROJECTS_FILES), ...photos.map((rel) => [rel, `/_custom/past-projects/${rel}`])]
     .map(([rel, url]) => [path.join(PAST_PROJECTS_DIR, rel), url])
     .filter(([file]) => fs.existsSync(file));
@@ -74,7 +89,7 @@ export function renderFavorites() {
   const f = favorites();
   const cta = f.cta;
   return (
-    `<section class="ppx" aria-labelledby="ppx-title">` +
+    `<section class="ppx" id="${SECTION_ID}" aria-labelledby="ppx-title">` +
     `<div class="ppx__head">${f.eyebrow ? `<p class="ppx__eyebrow">${esc(f.eyebrow)}</p>` : ''}` +
     `<h2 class="ppx__title" id="ppx-title">${esc(f.title)}</h2>` +
     `${f.intro ? `<p class="ppx__intro">${esc(f.intro)}</p>` : ''}</div>` +
@@ -91,12 +106,64 @@ export function renderFavorites() {
 }
 export const favoritesNote = () => `favorite projects: ${favorites().projects.length} hand-picked projects above the map (was a grid of every project)`;
 
+// ----------------------------------------------------------------- hero
+// The photo goes in custom properties on the hero (read by past-projects.css), so it is
+// chosen in favorites.json alone.
+function heroStyle(h) {
+  const jpg = heroUrl(HERO_WIDTHS.at(-1), 'jpg');
+  const set = (w) => `image-set(url("${heroUrl(w, 'webp')}") type("image/webp"), url("${jpg}") type("image/jpeg"))`;
+  return `--ppx-hero-jpg: url("${jpg}"); --ppx-hero-sm: ${set(HERO_WIDTHS[0])}; --ppx-hero-lg: ${set(HERO_WIDTHS.at(-1))};` + (h.position ? ` --ppx-hero-position: ${h.position};` : '');
+}
+/** The hero: the photo, a label and a button (rendered again on every run). */
+function renderHero(doc, html, ed, changes) {
+  const h = favorites().hero;
+  const hero = h && find(doc, (c) => hasClass(c, 'past-projects-hero'));
+  const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
+  const h1 = text && find(text, (c) => c.tagName === 'h1');
+  if (!h1) return false;
+  const src = (n) => html.slice(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  const para = find(text, (c) => c.tagName === 'p' && hasClass(c, 'para'));
+  const inner =
+    (h.eyebrow ? `<p class="ppx-hero__eyebrow">${esc(h.eyebrow)}</p>` : '') +
+    src(h1) +
+    (para ? src(para) : '') +
+    (h.button ? `<a class="ppx-hero__btn" href="${esc(h.button[1])}">${esc(h.button[0])} ${ARROW}</a>` : '');
+  const cls = hasClass(hero, 'ppx-hero') ? classes(hero) : [...classes(hero), 'ppx-hero'];
+  const attrs = [...hero.attrs.filter((a) => a.name !== 'style').map((a) => (a.name === 'class' ? { name: 'class', value: cls.join(' ') } : a)), { name: 'style', value: heroStyle(h) }];
+  const st = hero.sourceCodeLocation.startTag;
+  const ts = text.sourceCodeLocation;
+  const sameTag = html.slice(st.startOffset, st.endOffset) === startTag(hero, attrs);
+  const sameText = html.slice(ts.startTag.endOffset, ts.endTag.startOffset) === inner;
+  if (!sameTag) ed.retag(hero, attrs);
+  if (!sameText) ed.inner(text, inner);
+  // Fetch the photo with the page, not when WP Rocket's lazy loader gets to it.
+  const preloads =
+    `<link rel="preload" as="image" type="image/webp" href="${heroUrl(HERO_WIDTHS[0], 'webp')}" media="(max-width: 960px)" fetchpriority="high">` +
+    `<link rel="preload" as="image" type="image/webp" href="${heroUrl(HERO_WIDTHS.at(-1), 'webp')}" media="(min-width: 961px)" fetchpriority="high">`;
+  const old = findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && (attr(c, 'href') || '').startsWith(`/_custom/past-projects/photos/${HERO_SLUG}-`));
+  const sameLinks = old.map(src).join('') === preloads;
+  if (!sameLinks) {
+    old.forEach((l, i) => ed.outer(l, i ? '' : preloads));
+    const headEnd = headEndOffset(html);
+    if (!old.length && headEnd >= 0) ed.replace(headEnd, headEnd, preloads);
+  }
+  if (!sameTag || !sameText || !sameLinks) {
+    changes.push('favorite projects hero: a photo of our crew at work (was a soft stock photo pinned to the screen), a label and a button to the favorites');
+  }
+  return true;
+}
+
 /**
- * On a built /past-projects/: the "Featured Projects" grid -> the showcase, above the map
- * (or a showcase already there rendered again). Returns true when the page has one.
+ * /past-projects/: the hero (renderHero), and on a built page the "Featured Projects" grid
+ * -> the showcase, above the map (or a showcase already there rendered again). Returns
+ * true when the page has either.
  */
 export function renderPastProjects(doc, html, ed, { pathname }, changes) {
   if (pathname !== PAST_PROJECTS_PATH) return false;
+  const hero = renderHero(doc, html, ed, changes);
+  return renderShowcase(doc, html, ed, changes) || hero;
+}
+function renderShowcase(doc, html, ed, changes) {
   const html2 = renderFavorites();
   const current = find(doc, (c) => c.tagName === 'section' && hasClass(c, 'ppx'));
   if (current) {

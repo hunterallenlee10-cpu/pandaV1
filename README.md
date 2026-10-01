@@ -121,7 +121,10 @@ Most of these problems are on the live site too.
   The page now opens, right under the hero, with six hand-picked projects (residential, solar, commercial and
   multi-family) in a photo grid, each with its type, a better name where it had only a job number, a line from its
   project page and a link to it, then a "Get a free estimate" band with a link to `/gallery/`; the map follows. The
-  projects and their wording are in `custom/past-projects/favorites.json` — see
+  hero's background was a generic photo of a house (shared with other pages) pinned to the screen, so it was blown up
+  and soft; it is now a photo of Panda's crew installing a GAF solar roof that scrolls with the page, with a dark fade
+  behind the headline, a "Past projects" label and a "See our favorite projects" button. The projects, their wording
+  and the hero photo are in `custom/past-projects/favorites.json` — see
   [`custom/past-projects/README.md`](custom/past-projects/README.md) to change them.
 - **"Experts You Can Trust"** (home page): the certification logos jumped a step every 2.5 seconds, and the copies
   the carousel made to loop never loaded their logos. They now glide past in one continuous row, easing to a stop
@@ -312,7 +315,7 @@ custom/us-map/             the animated "areas we serve" map: areas.json (what i
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
 custom/project-gallery/    the "Our Project Gallery" section: styles, script
-custom/past-projects/      "Some of our favorite past projects": favorites.json (the projects), photos, styles
+custom/past-projects/      "Some of our favorite past projects" and the hero: favorites.json (projects, hero photo), photos, styles
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 ```
