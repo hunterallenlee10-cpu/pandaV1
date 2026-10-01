@@ -35,6 +35,8 @@
 //    words in blog posts on the smallest phones). In the same range the header's phone
 //    button wrapped under the logo and the taller header covered the top of the page;
 //    the header now uses the whole width there, as it fits in one row.
+//  - Header "Services" menu: the "Other" entry (Siding, and Gutters with Gutter Guards one
+//    level further in) is replaced by Gutters, Gutter Guards and Siding as their own entries.
 //  - "About Our Team" (the lead-form block above the footer on most pages): white text on
 //    Panda lime was hard to read; it now sits on a charcoal green with a lime button.
 //  - /reviews/: the "Read More Reviews!" button is removed (on request).
@@ -90,6 +92,12 @@ const BADGES = [
 
 // The number in the site's header on every page.
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
+// The header's "Services" menu: the entries that replace "Other", in this order, under Solar.
+const SERVICE_MENU_ITEMS = [
+  ['Gutters', '/gutters/'],
+  ['Gutter Guards', '/gutters/gutter-guards/'],
+  ['Siding', '/siding/'],
+];
 // The Google rating in the lead form's rating picture (admin-ajax-2.png).
 const GOOGLE_RATING = '4.9';
 
@@ -386,6 +394,23 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     if (!retagOnce(box, 'pfix-header-row')) continue;
     changes.push('header: logo, menu and phone button kept in one row at 1120–1199 px (the button wrapped under the logo)');
     used.css = true;
+  }
+
+  // Header "Services" menu: its last entry, "Other", held Siding and Gutters (with Gutter
+  // Guards one level further in) -> Gutters, Gutter Guards and Siding as their own entries
+  // under Solar, built like the menu's other plain entries (no arrow, no further level).
+  for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
+    const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
+    const other = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && (k.childNodes || []).some((a) => a.tagName === 'a' && clean(textOf(a)) === 'Other'));
+    if (!other || ed.overlaps(other.sourceCodeLocation.startOffset, other.sourceCodeLocation.endOffset)) continue;
+    const sample = find(list, (c) => c.tagName === 'a' && hasClass(c, 'Nav-Link-Hover') && hasClass(c.parentNode, 'li') && !hasClass(c.parentNode, 'mobile-show'));
+    const liClass = sample ? attr(sample.parentNode, 'class') : 'oxy-container li';
+    const aClass = sample ? attr(sample, 'class') : 'oxy-text-link Nav-Link Nav-Link-Hover';
+    ed.outer(
+      other,
+      SERVICE_MENU_ITEMS.map(([label, href]) => `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${esc(href)}" target="_self"> ${esc(label)} </a></div>`).join(' ')
+    );
+    changes.push('services menu: "Other" -> Gutters, Gutter Guards and Siding as their own entries');
   }
 
   // "About Our Team" (and the same block on the offer pages): white text on Panda lime was

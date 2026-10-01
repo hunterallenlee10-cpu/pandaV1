@@ -78,6 +78,8 @@ Most of these problems are on the live site too.
 
 - **Top bar** (every page): it asked each visitor for their location, then showed "Local Weather: N/A°F | Weather
   Alerts: N/A". The same bar now reads "Free Estimates · Call (877) 213-8536".
+- **Services menu** (every page): the header's Services dropdown ended with "Other", which held Siding and Gutters
+  (with Gutter Guards one level further in). Gutters, Gutter Guards and Siding are now their own entries under Solar.
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
   count" or "Based on 0 reviews!".
