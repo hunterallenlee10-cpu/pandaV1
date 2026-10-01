@@ -78,8 +78,11 @@ Most of these problems are on the live site too.
 
 - **Top bar** (every page): it asked each visitor for their location, then showed "Local Weather: N/A°F | Weather
   Alerts: N/A". The same bar now reads "Free Estimates · Call (877) 213-8536".
+- **Services menu** (every page): the header's Services dropdown ended with "Other", which held Siding and Gutters
+  (with Gutter Guards one level further in). Gutters, Gutter Guards and Siding are now their own entries under Solar.
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
-  Reviews page.
+  Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
+  count" or "Based on 0 reviews!".
 - **Review carousels** (20 pages): the "Testimonials" carousel (17 pages) never started (its script ran before the
   carousel library loaded), so only the first of its two reviews showed and the arrows did nothing. Beside the video
   on `/`, `/services/` and `/thank-you/`, every review was pushed down to the height of the longest one, leaving a
@@ -101,6 +104,10 @@ Most of these problems are on the live site too.
 - **Award badges** ("About Our Team" and "Request an Appointment", 123 pages): the picture of the GAF President's Club
   and Inc. 5000 badges sat in a lot of empty space. The site's other GAF certifications, Diamond Pledge and Metal
   Certified, are added beside President's Club, with the two Inc. 5000 badges nested below.
+- **"About Our Team" colors** (134 pages, the lead-form block above the footer): white text on Panda lime was hard to
+  read (about 1.7:1, with the paragraphs also at 80% opacity). The block now sits on a charcoal green (Panda lime
+  darkened, `#1a2418`): paragraphs about 11:1, a lime "Learn More" button with dark text, and it stays distinct from the
+  black footer below. The white version of the block (5 pages) is unchanged.
 - **Pages wider than the screen** (checked on every page at widths from 320 to 1920 px; none is left):
   - **Home page hero**: the award badges picture kept a fixed 562 px width in the 260 px column between its two white
     lines, so it ran off the screen on tablets (768–1008 px, cutting off the "No. 1" badge) and slid under the form on

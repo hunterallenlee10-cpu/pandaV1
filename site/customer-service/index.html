@@ -1443,29 +1443,7 @@ Solar Panel Installation
 <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/solar/gaf-solar-roof/" target="_self">
 GAF Solar Roof
 </a></div>
-</div></div><div class="oxy-container-974-178 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="#" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
-Other
-</div><div class="oxy-html-code-854-102 oxy-html-code">
-<i class="fas fa-angle-right"></i>
-</div></a>
-<div class="oxy-container-974-180 oxy-container ul sub_menu">
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/" target="_self">
-Siding
-</a></div>
-<div class="oxy-container-974-186 oxy-container li has_dropdown">
-<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="/gutters/" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">
-Gutters
-</div><div class="oxy-html-code-854-102 oxy-html-code">
-<i class="fas fa-angle-right"></i>
-</div></a>
-<div class="oxy-container-974-188 oxy-container ul sub_menu">
-<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/" target="_self">
-Gutter Guards
-</a></div>
-<div class="oxy-container-974-227 oxy-container li mobile-show"><a class="oxy-text-link-974-228 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/" target="_self">
-Gutters
-</a></div></div></div></div></div><div class="oxy-container-974-211 oxy-container li mobile-show"><a class="oxy-text-link-974-212 oxy-text-link Nav-Link Nav-Link-Hover" href="/services/" target="_self">
+</div></div><div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/" target="_self"> Gutters </a></div> <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/gutters/gutter-guards/" target="_self"> Gutter Guards </a></div> <div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="/siding/" target="_self"> Siding </a></div><div class="oxy-container-974-211 oxy-container li mobile-show"><a class="oxy-text-link-974-212 oxy-text-link Nav-Link Nav-Link-Hover" href="/services/" target="_self">
 Services
 </a></div></div></div><div class="oxy-container-974-131 oxy-container About-menu li has_dropdown">
 <a class="oxy-container-link-845-100 oxy-container-link Nav-Link Nav-Link-flex" href="/about/" target="_self"><div class="oxy-text-845-101 oxy-text Nav-Link Nav-link-Dropdown">
@@ -1654,66 +1632,9 @@ Limited Time Savings - Act Now!
 </style>
 
 <!-- Target container -->
-<div id="total-reviews-1" style="text-align: center; font-family: Roboto, sans-serif; color:black">
-  Based on <span id="review-count-1">0</span> reviews!
-</div>
+<div id="total-reviews-1" style="text-align: center; font-family: Roboto, sans-serif; color:black"><a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a></div>
 
-<script>
-(function () {
-  async function fetchReviewCountScoped() {
-    try {
-      const response = await fetch('/wp-json/custom/v1/review-total');
-      const data = await response.json();
 
-      if (!data.total || isNaN(data.total)) {
-        console.error('Invalid review count received:', data);
-        return 0;
-      }
-
-      return data.total;
-    } catch (error) {
-      console.error('Error fetching review count from WordPress API:', error);
-      return 0;
-    }
-  }
-
-  async function updateTotalReviews2() {
-    try {
-      const total = await fetchReviewCountScoped();
-      if (total === 0) {
-        document.getElementById('total-reviews-2').textContent = 'Unable to load review count';
-        return;
-      }
-      animateCountUpScoped('review-count-2', total);
-    } catch (error) {
-      console.error('Failed to update reviews:', error);
-      document.getElementById('total-reviews-2').textContent = 'Error loading reviews';
-    }
-  }
-
-  function animateCountUpScoped(elementId, finalValue) {
-    const el = document.getElementById(elementId);
-    if (!el) {
-      console.error(`Element with ID ${elementId} not found`);
-      return;
-    }
-    let current = 0;
-    const duration = 1000;
-    const step = Math.ceil(finalValue / (duration / 30));
-
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= finalValue) {
-        current = finalValue;
-        clearInterval(interval);
-      }
-      el.textContent = current.toLocaleString();
-    }, 30);
-  }
-
-  document.addEventListener('DOMContentLoaded', updateTotalReviews2);
-})();
-</script>
 
 </div><div class="oxy-html-code-415-118 oxy-html-code">
 <form id="lead-form-2" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST">

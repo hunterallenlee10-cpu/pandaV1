@@ -35,6 +35,10 @@
 //    words in blog posts on the smallest phones). In the same range the header's phone
 //    button wrapped under the logo and the taller header covered the top of the page;
 //    the header now uses the whole width there, as it fits in one row.
+//  - Header "Services" menu: the "Other" entry (Siding, and Gutters with Gutter Guards one
+//    level further in) is replaced by Gutters, Gutter Guards and Siding as their own entries.
+//  - "About Our Team" (the lead-form block above the footer on most pages): white text on
+//    Panda lime was hard to read; it now sits on a charcoal green with a lime button.
 //  - /reviews/: the "Read More Reviews!" button is removed (on request).
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
@@ -83,7 +87,7 @@ import { loadUsMap } from './us-map.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|about section colors)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -99,6 +103,12 @@ const BADGES = [
 
 // The number in the site's header on every page.
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
+// The header's "Services" menu: the entries that replace "Other", in this order, under Solar.
+const SERVICE_MENU_ITEMS = [
+  ['Gutters', '/gutters/'],
+  ['Gutter Guards', '/gutters/gutter-guards/'],
+  ['Siding', '/siding/'],
+];
 // The Google rating in the lead form's rating picture (admin-ajax-2.png).
 const GOOGLE_RATING = '4.9';
 
@@ -413,8 +423,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
-  // Lead forms: the review count needs the WordPress API.
-  const counts = findAll(doc, (c) => attr(c, 'id') === 'total-reviews');
+  // Lead forms: the review count needs the WordPress API. The second form on a page (the
+  // one in "About Our Team") uses total-reviews-1 or -2; the snapshot caught it showing
+  // "Unable to load review count" or "Based on 0 reviews!".
+  const counts = findAll(doc, (c) => /^total-reviews(-\d+)?$/.test(attr(c, 'id') || ''));
   if (counts.length) {
     for (const el of counts) ed.inner(el, '<a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a>');
     for (const s of inlineScripts(/fetchReviewCount/)) ed.outer(s, '');
@@ -509,6 +521,32 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   for (const box of findAll(doc, (c) => hasClass(c, 'container') && c.parentNode && hasClass(c.parentNode, 'nav') && (c.childNodes || []).some((k) => k.tagName && hasClass(k, 'row-flex')))) {
     if (!retagOnce(box, 'pfix-header-row')) continue;
     changes.push('header: logo, menu and phone button kept in one row at 1120–1199 px (the button wrapped under the logo)');
+    used.css = true;
+  }
+
+  // Header "Services" menu: its last entry, "Other", held Siding and Gutters (with Gutter
+  // Guards one level further in) -> Gutters, Gutter Guards and Siding as their own entries
+  // under Solar, built like the menu's other plain entries (no arrow, no further level).
+  for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
+    const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
+    const other = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && (k.childNodes || []).some((a) => a.tagName === 'a' && clean(textOf(a)) === 'Other'));
+    if (!other || ed.overlaps(other.sourceCodeLocation.startOffset, other.sourceCodeLocation.endOffset)) continue;
+    const sample = find(list, (c) => c.tagName === 'a' && hasClass(c, 'Nav-Link-Hover') && hasClass(c.parentNode, 'li') && !hasClass(c.parentNode, 'mobile-show'));
+    const liClass = sample ? attr(sample.parentNode, 'class') : 'oxy-container li';
+    const aClass = sample ? attr(sample, 'class') : 'oxy-text-link Nav-Link Nav-Link-Hover';
+    ed.outer(
+      other,
+      SERVICE_MENU_ITEMS.map(([label, href]) => `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${esc(href)}" target="_self"> ${esc(label)} </a></div>`).join(' ')
+    );
+    changes.push('services menu: "Other" -> Gutters, Gutter Guards and Siding as their own entries');
+  }
+
+  // "About Our Team" (and the same block on the offer pages): white text on Panda lime was
+  // hard to read (about 1.7:1 with the paragraphs at 80% opacity) -> a charcoal green, with
+  // the lime kept for its button (.pfix-about). The white version of the block is left as is.
+  const about = findAll(doc, (c) => hasClass(c, 'Request-Container') && hasClass(c, 'primary-bg')).filter((c) => retagOnce(c, 'pfix-about'));
+  if (about.length) {
+    changes.push(`about section colors: charcoal green background, lime button (white on lime was hard to read) (${about.length})`);
     used.css = true;
   }
 
