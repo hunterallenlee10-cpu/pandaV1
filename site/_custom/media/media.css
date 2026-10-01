@@ -22,16 +22,14 @@
   --pm-pad: clamp(32px, 4.5vw, 72px);
   --pm-ease: cubic-bezier(0.22, 1, 0.36, 1);
   display: block;
-  margin: 0 !important;
-  padding: 0 !important;
   font-family: Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--pm-ink);
   -webkit-font-smoothing: antialiased;
 }
 main.pmedia {
   position: static !important;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 .pmedia *,
 .pmedia *::before,
@@ -746,9 +744,11 @@ body.breakdance .pmedia .pmedia-hero__title {
   color: var(--pm-night-muted);
 }
 .pmedia-way .pmedia-btn {
+  max-width: 100%;
   margin-top: 14px;
   padding: 11px 18px;
   font-size: 14px;
+  white-space: normal;
 }
 .pmedia-copy {
   display: flex;
@@ -835,25 +835,38 @@ body.breakdance .pmedia .pmedia-hero__title {
   font-size: 15px;
   color: var(--pm-night-muted);
 }
+/* Episodes: a compact list (picture beside the words) on phones and on the Podcast page;
+   cards in a row on the Media page from tablet width up. */
 .pmedia-eps {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 28px 22px;
+  grid-template-columns: 1fr;
+  gap: 6px;
 }
 .pmedia-ep {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  align-items: center;
   gap: 14px;
   min-width: 0;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.pmedia-ep:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.pmedia-ep.is-current {
+  border-color: rgba(154, 205, 50, 0.38);
+  background: rgba(154, 205, 50, 0.09);
 }
 .pmedia-ep__thumb {
   position: relative;
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 10px;
   background: #222;
-  box-shadow: 0 0 0 1px var(--pm-night-line), 0 18px 34px -22px rgba(0, 0, 0, 0.9);
   transition: box-shadow 0.25s;
 }
 .pmedia-ep__thumb picture {
@@ -866,9 +879,6 @@ body.breakdance .pmedia .pmedia-hero__title {
 .pmedia-ep:hover .pmedia-ep__thumb img {
   transform: scale(1.05);
 }
-.pmedia-ep.is-current .pmedia-ep__thumb {
-  box-shadow: 0 0 0 3px var(--pm-lime), 0 18px 34px -22px rgba(0, 0, 0, 0.9);
-}
 .pmedia-ep__play {
   position: absolute;
   inset: 0;
@@ -879,9 +889,9 @@ body.breakdance .pmedia .pmedia-hero__title {
   transition: opacity 0.2s;
 }
 .pmedia-ep__play .pmedia-icon {
-  width: 46px;
-  height: 46px;
-  padding: 13px 11px 13px 15px;
+  width: 34px;
+  height: 34px;
+  padding: 9px 8px 9px 10px;
   border-radius: 50%;
   color: var(--pm-ink);
   background: var(--pm-lime);
@@ -897,26 +907,23 @@ body.breakdance .pmedia .pmedia-hero__title {
 .pmedia-ep__now,
 .pmedia-ep__len {
   position: absolute;
-  bottom: 8px;
-  padding: 4px 8px;
+  bottom: 6px;
+  padding: 3px 7px;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 800;
   line-height: 1.2;
 }
 .pmedia-ep__now {
-  left: 8px;
+  left: 6px;
   display: none;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--pm-ink);
   background: var(--pm-lime);
 }
-.pmedia-ep.is-current .pmedia-ep__now {
-  display: block;
-}
 .pmedia-ep__len {
-  right: 8px;
+  right: 6px;
   color: #fff;
   background: rgba(0, 0, 0, 0.72);
 }
@@ -936,8 +943,8 @@ body.breakdance .pmedia .pmedia-hero__title {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  margin: 5px 0 5px;
-  font-size: 16px;
+  margin: 3px 0;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.32;
   color: #fff;
@@ -951,42 +958,125 @@ body.breakdance .pmedia .pmedia-hero__title {
   font-size: 13px;
   color: var(--pm-night-muted);
 }
-/* Phones: a compact list, picture beside the words. */
-@media (max-width: 639px) {
-  .pmedia-eps {
-    grid-template-columns: 1fr;
-    gap: 6px;
+@media (min-width: 640px) {
+  .pmedia-eps:not(.pmedia-eps--list) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 28px 22px;
   }
-  .pmedia-ep {
-    display: grid;
-    grid-template-columns: 128px 1fr;
-    align-items: center;
-    gap: 14px;
-    padding: 8px;
-    border: 1px solid transparent;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__thumb {
     border-radius: 14px;
+    box-shadow: 0 0 0 1px var(--pm-night-line), 0 18px 34px -22px rgba(0, 0, 0, 0.9);
   }
-  .pmedia-ep.is-current {
-    border-color: rgba(154, 205, 50, 0.38);
-    background: rgba(154, 205, 50, 0.09);
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep.is-current .pmedia-ep__thumb {
+    box-shadow: 0 0 0 3px var(--pm-lime), 0 18px 34px -22px rgba(0, 0, 0, 0.9);
   }
-  .pmedia-ep.is-current .pmedia-ep__thumb {
-    box-shadow: none;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__play .pmedia-icon {
+    width: 46px;
+    height: 46px;
+    padding: 13px 11px 13px 15px;
   }
-  .pmedia-ep__thumb {
-    border-radius: 10px;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep.is-current .pmedia-ep__now {
+    display: block;
   }
-  .pmedia-ep__play .pmedia-icon {
-    width: 34px;
-    height: 34px;
-    padding: 9px 8px 9px 10px;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__now,
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__len {
+    bottom: 8px;
+    padding: 4px 8px;
   }
-  .pmedia-ep__now {
-    display: none !important;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__now {
+    left: 8px;
   }
-  .pmedia-ep__title {
-    margin: 3px 0;
-    font-size: 15px;
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__len {
+    right: 8px;
+  }
+  .pmedia-eps:not(.pmedia-eps--list) .pmedia-ep__title {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+}
+
+/* ------------------------------------------------------- the Podcast page */
+/* /podcast/: the player in a dark card, every episode beside it, the ways to watch below. */
+.pmedia-podcast {
+  margin: 8px 0 0;
+  padding: clamp(20px, 3vw, 36px);
+  border-radius: 28px;
+  color: var(--pm-night-text);
+  background:
+    radial-gradient(760px 420px at 95% -10%, rgba(154, 205, 50, 0.2), transparent 65%),
+    radial-gradient(520px 360px at -5% 110%, rgba(255, 111, 97, 0.12), transparent 70%),
+    var(--pm-night);
+  box-shadow: 0 40px 80px -50px rgba(14, 17, 15, 0.9);
+  text-align: left;
+}
+.pmedia-podcast__grid {
+  display: grid;
+  gap: 32px;
+}
+.pmedia-podcast .pmedia-block {
+  margin-top: 36px;
+}
+@media (min-width: 1024px) {
+  .pmedia-podcast__grid {
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    gap: 36px;
+  }
+  /* The list takes the player's height and scrolls past it, however many episodes there are. */
+  .pmedia-podcast__side {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .pmedia-podcast__list {
+    position: relative;
+    flex: 1;
+    min-height: 240px;
+  }
+  .pmedia-podcast__list .pmedia-eps {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    align-content: start;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(154, 205, 50, 0.4) transparent;
+  }
+  .pmedia-podcast .pmedia-ways {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .pmedia-podcast .pmedia-copy {
+    flex-direction: column;
+  }
+  .pmedia-podcast .pmedia-copy__btn {
+    justify-content: center;
+  }
+}
+.pmedia-podcast .pmedia-block__title {
+  color: var(--pm-night-muted);
+}
+.pmedia-podcast__side .pmedia-block__title {
+  margin-bottom: 12px;
+}
+/* The smallest phones: a little more room inside the card. */
+@media (max-width: 400px) {
+  .pmedia-podcast {
+    padding: 14px;
+    border-radius: 22px;
+  }
+  .pmedia-podcast .pmedia-way {
+    gap: 12px;
+    padding: 14px;
   }
 }
 

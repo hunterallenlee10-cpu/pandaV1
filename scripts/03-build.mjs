@@ -206,6 +206,8 @@ for (const row of pages) {
       siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
       heroVideo: hero.changes,
       mediaMenu: custom.changes.media,
+      // The Podcast page's player, replaced (listed as edited on purpose by the visual diff).
+      mediaSections: custom.changes.media.filter((f) => /^podcast page: player/.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
     });
   }
 
@@ -296,8 +298,9 @@ for (const row of inv.rows) {
 let mediaPage = null;
 if (MEDIA_PAGE) {
   mediaPage = buildMediaPage({ siteDir: OUT, siteOrigin: SITE_ORIGIN });
-  if (mediaPage) {
-    put(path.posix.join(MEDIA_PATH.replace(/^\/|\/$/g, ''), 'index.html'), mediaPage.html, 'custom/media');
+  if (mediaPage) put(path.posix.join(MEDIA_PATH.replace(/^\/|\/$/g, ''), 'index.html'), mediaPage.html, 'custom/media');
+  // Its stylesheet, script and pictures, used by it and by the Podcast page's player.
+  if (mediaPage || intentionalChanges.some((c) => c.mediaSections?.length)) {
     for (const [from, url] of mediaFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/media/${path.relative(MEDIA_DIR, from).split(path.sep).join('/')}`);
   }
 }
@@ -684,7 +687,8 @@ if (MEDIA_PAGE) {
   const menuPages = intentionalChanges.filter((c) => c.mediaMenu?.length).length;
   console.log(
     mediaPage
-      ? `  media page: ${MEDIA_PATH} (latest post ${mediaPage.post?.href || 'none'}; ${mediaPage.episodes} podcast episode(s)); "Media" menu item linked to it on ${menuPages} page(s)`
+      ? `  media page: ${MEDIA_PATH} (latest post ${mediaPage.post?.href || 'none'}; ${mediaPage.episodes} podcast episode(s)); "Media" menu item linked to it on ${menuPages} page(s); ` +
+        `podcast player on ${intentionalChanges.filter((c) => c.mediaSections?.length).map((c) => new URL(c.url).pathname).join(', ') || 'no page (no old player found)'}`
       : '  media page: not built (see the warning above)',
   );
 }

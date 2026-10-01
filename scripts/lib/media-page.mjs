@@ -14,11 +14,15 @@
 //
 // collectMediaNav (run by customize.mjs on every page) points the menu item at the page;
 // buildMediaPage writes it (03-build.mjs, scripts/tools/update-built-site.mjs).
+//
+// The Podcast page (/podcast/) gets the same podcast player (collectPodcastPage): its own
+// player came from PodOps' old player address, which now leads nowhere, and its "Listen on
+// Apple Podcasts" badge pointed at a listing Apple no longer has.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse, parseFragment } from 'parse5';
 import { ROOT } from './config.mjs';
-import { attr, hasClass, esc, textOf, clean, findAll, find, makeEditor, editText, textNodes, headEndOffset } from './html-edit.mjs';
+import { attr, hasClass, esc, textOf, clean, findAll, find, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 export const MEDIA_DIR = path.join(ROOT, 'custom', 'media');
 export const MEDIA_PATH = '/media/';
@@ -259,14 +263,35 @@ function renderEpisode(e, show, current) {
   );
 }
 
-function renderPodcast({ show, episodes }) {
+// The player with the newest episode, and what is playing.
+function renderPlayer({ show, episodes }) {
   const e = episodes[0];
   const poster = posterUrl(e, show);
+  return (
+    `<div class="pmedia-player" data-pmedia-player>` +
+    `<video class="pmedia-player__video" controls preload="none" playsinline${poster ? ` poster="${esc(poster)}"` : ''} aria-label="${esc(`${show.title}, ${episodeLabel(e)}: ${e.title}`)}">` +
+    `<source src="${esc(e.video)}" type="${esc(e.videoType || 'video/mp4')}">` +
+    `<a href="${esc(e.apple || show.apple)}">Watch “${esc(e.title)}” on Apple Podcasts</a></video>` +
+    `<button class="pmedia-player__start" type="button" hidden><span class="pmedia-player__ring">${ICONS.play}</span>` +
+    `<span class="pmedia-player__cta">Play <span data-pmedia-field="label">${esc(episodeLabel(e))}</span></span></button>` +
+    `<p class="pmedia-player__error" hidden>This episode can’t play here right now. <a data-pmedia-field="apple" href="${esc(e.apple || show.apple)}" target="_blank" rel="noopener">Watch it on Apple Podcasts</a>.</p>` +
+    `</div>` +
+    `<div class="pmedia-now" aria-live="polite">` +
+    `<p class="pmedia-meta pmedia-meta--dark"><span class="pmedia-chip pmedia-chip--green" data-pmedia-field="label">${esc(episodeLabel(e))}</span>` +
+    `<span data-pmedia-field="meta">${esc(episodeMeta(e))}</span></p>` +
+    `<h3 class="pmedia-now__title" data-pmedia-field="title">${esc(e.title)}</h3>` +
+    `<p class="pmedia-now__summary" data-pmedia-field="summary">${esc(e.summary || '')}</p>` +
+    `</div>`
+  );
+}
+
+// The ways to watch: on the page, on Apple Podcasts, in any podcast app.
+function renderWays({ show }) {
   const ways = [
     {
       icon: ICONS.screen,
       title: 'Right here',
-      text: 'Press play above, or pick any episode below, and it streams right on this page at full quality (up to 4K), so Wi-Fi works best.',
+      text: 'Press play above or pick any episode, and it streams right on this page at full quality (up to 4K), so Wi-Fi works best.',
     },
     {
       icon: ICONS.podcast,
@@ -286,21 +311,6 @@ function renderPodcast({ show, episodes }) {
     },
   ];
   return (
-    `<div class="pmedia-player" data-pmedia-player>` +
-    `<video class="pmedia-player__video" controls preload="none" playsinline${poster ? ` poster="${esc(poster)}"` : ''} aria-label="${esc(`${show.title}, ${episodeLabel(e)}: ${e.title}`)}">` +
-    `<source src="${esc(e.video)}" type="${esc(e.videoType || 'video/mp4')}">` +
-    `<a href="${esc(e.apple || show.apple)}">Watch “${esc(e.title)}” on Apple Podcasts</a></video>` +
-    `<button class="pmedia-player__start" type="button" hidden><span class="pmedia-player__ring">${ICONS.play}</span>` +
-    `<span class="pmedia-player__cta">Play <span data-pmedia-field="label">${esc(episodeLabel(e))}</span></span></button>` +
-    `<p class="pmedia-player__error" hidden>This episode can’t play here right now. <a data-pmedia-field="apple" href="${esc(e.apple || show.apple)}" target="_blank" rel="noopener">Watch it on Apple Podcasts</a>.</p>` +
-    `</div>` +
-    `<div class="pmedia-now" aria-live="polite">` +
-    `<p class="pmedia-meta pmedia-meta--dark"><span class="pmedia-chip pmedia-chip--green" data-pmedia-field="label">${esc(episodeLabel(e))}</span>` +
-    `<span data-pmedia-field="meta">${esc(episodeMeta(e))}</span></p>` +
-    `<h3 class="pmedia-now__title" data-pmedia-field="title">${esc(e.title)}</h3>` +
-    `<p class="pmedia-now__summary" data-pmedia-field="summary">${esc(e.summary || '')}</p>` +
-    `</div>` +
-    `<div class="pmedia-block"><h3 class="pmedia-block__title">How to watch</h3>` +
     `<div class="pmedia-ways" role="list">` +
     ways
       .map(
@@ -309,17 +319,25 @@ function renderPodcast({ show, episodes }) {
           `<div class="pmedia-way__body"><h4 class="pmedia-way__title">${w.title}</h4><p class="pmedia-way__text">${w.text}</p>${w.action || ''}</div></div>`
       )
       .join('') +
-    `</div></div>`
+    `</div>`
   );
 }
 
+// Every episode, newest first (the newest is the one in the player). `list`: always the
+// compact list (picture beside the words); otherwise cards in a row from tablet width up.
+const renderEpisodeList = ({ show, episodes }, { list = false } = {}) =>
+  `<div class="pmedia-eps${list ? ' pmedia-eps--list' : ''}" role="list">${episodes.map((ep, i) => renderEpisode(ep, show, i === 0)).join('')}</div>`;
+
+const renderPodcast = (podcast) =>
+  renderPlayer(podcast) + `<div class="pmedia-block"><h3 class="pmedia-block__title">How to watch</h3>${renderWays(podcast)}</div>`;
+
 // Every episode, in a row across the page under the two halves.
-const renderEpisodes = ({ show, episodes }) =>
+const renderEpisodes = (podcast) =>
   `<section class="pmedia-shelf" id="episodes" aria-labelledby="pmedia-episodes-title"><div class="pmedia-shelf__inner">` +
-  `<div class="pmedia-shelf__head"><div><p class="pmedia-kicker">${ICONS.mic}${esc(show.title)} podcast</p>` +
-  `<h2 class="pmedia-panel__title" id="pmedia-episodes-title">Every episode <span class="pmedia-count">${episodes.length}</span></h2></div>` +
+  `<div class="pmedia-shelf__head"><div><p class="pmedia-kicker">${ICONS.mic}${esc(podcast.show.title)} podcast</p>` +
+  `<h2 class="pmedia-panel__title" id="pmedia-episodes-title">Every episode <span class="pmedia-count">${podcast.episodes.length}</span></h2></div>` +
   `<p class="pmedia-shelf__note">Pick an episode to watch it.</p></div>` +
-  `<div class="pmedia-eps" role="list">${episodes.map((ep, i) => renderEpisode(ep, show, i === 0)).join('')}</div>` +
+  renderEpisodeList(podcast) +
   `</div></section>`;
 
 export function renderMedia({ posts, podcast }) {
@@ -356,6 +374,62 @@ export function renderMedia({ posts, podcast }) {
     renderEpisodes(podcast) +
     `</main>`
   );
+}
+
+// ------------------------------------------------------------ the Podcast page
+// The player on /podcast/: the newest episode with every episode beside it, then the ways
+// to watch. A dark card, like the podcast half of the Media page.
+const renderPodcastCard = (podcast) =>
+  `<div class="pmedia pmedia-podcast" data-pmedia-podcast>` +
+  `<div class="pmedia-podcast__grid">` +
+  `<div class="pmedia-podcast__main">${renderPlayer(podcast)}</div>` +
+  `<div class="pmedia-podcast__side"><h3 class="pmedia-block__title">Every episode <span class="pmedia-count">${podcast.episodes.length}</span></h3>` +
+  `<div class="pmedia-podcast__list">${renderEpisodeList(podcast, { list: true })}</div></div>` +
+  `</div>` +
+  `<div class="pmedia-block"><h3 class="pmedia-block__title">How to watch</h3>${renderWays(podcast)}</div>` +
+  `</div>`;
+
+const DEAD_PLAYER = /^https?:\/\/(?:www\.)?(?:podopshost|mypodops)\.com\//;
+// A link to the show on Apple Podcasts (not to one episode, which has ?i=).
+const APPLE_SHOW = /^https:\/\/podcasts\.apple\.com\/[a-z]{2}\/podcast\/[^/?#]+\/id\d+\/?(?:[?#](?![^#]*\bi=).*)?$/;
+
+/**
+ * The Podcast page's dead player -> the podcast player, and its Apple Podcasts links -> the
+ * show's listing (both from custom/media/podcast.json). A player from an earlier build is
+ * rendered again, so new episodes show up. Returns true when the page has the player (and
+ * so needs media.css and media.js).
+ */
+export function collectPodcastPage(doc, html, ed, changes) {
+  if (!/podopshost|mypodops|data-pmedia-podcast|podcasts\.apple\.com/.test(html)) return false;
+  const podcast = loadPodcast();
+  const { show } = podcast;
+  let player = false;
+  const ours = find(doc, (c) => c.attrs?.some((a) => a.name === 'data-pmedia-podcast'));
+  const dead =
+    !ours &&
+    // (WP Rocket's lazy loading can leave src="about:blank" and the address in data-lazy-src.)
+    find(doc, (c) => hasClass(c, 'bde-code-block') && find(c, (x) => x.tagName === 'iframe' && ['src', 'data-lazy-src'].some((k) => DEAD_PLAYER.test(attr(x, k) || ''))));
+  const box = ours || dead;
+  if (box) {
+    const card = renderPodcastCard(podcast);
+    const { startOffset, endOffset } = box.sourceCodeLocation;
+    if (html.slice(startOffset, endOffset) !== card) {
+      ed.outer(box, card);
+      changes.push(dead ? `podcast page: player -> the ${show.title} player (${podcast.episodes.length} episodes; the old PodOps player address leads nowhere)` : 'podcast page: player re-rendered (episodes refreshed)');
+    }
+    player = true;
+  }
+  // Links to this show (its name in the address) at an old listing; other podcasts are left alone.
+  const slug = new URL(show.apple).pathname.split('/')[3];
+  const oldListing = (href) => APPLE_SHOW.test(href) && href !== show.apple && new URL(href).pathname.split('/')[3] === slug;
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && oldListing(attr(c, 'href') || ''))) {
+    if (box && isInside(a, box)) continue;
+    ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: show.apple } : x)));
+    changes.push(`podcast page: Apple Podcasts link -> ${show.apple} (${attr(a, 'href')} no longer exists)`);
+  }
+  // The old player's host: no need to open a connection to it.
+  for (const l of findAll(doc, (c) => c.tagName === 'link' && /\b(?:preconnect|dns-prefetch)\b/.test(attr(c, 'rel') || '') && /podopshost|mypodops/.test(attr(c, 'href') || ''))) ed.outer(l, '');
+  return player;
 }
 
 // ------------------------------------------------------------------ the page
@@ -450,7 +524,14 @@ export function buildMediaPage({ siteDir, siteOrigin }) {
   }
   const headEnd = headEndOffset(html);
   if (headEnd < 0) throw new Error(`media page: ${TEMPLATE} has no </head>`);
-  ed.replace(headEnd, headEnd, (ldDone ? '' : ld) + `<link rel="stylesheet" href="${MEDIA_FILES['media.css']}"><script src="${MEDIA_FILES['media.js']}" defer></script>`);
+  const has = (url) => findAll(head, (c) => attr(c, 'href') === url || attr(c, 'src') === url).length > 0;
+  ed.replace(
+    headEnd,
+    headEnd,
+    (ldDone ? '' : ld) +
+      (has(MEDIA_FILES['media.css']) ? '' : `<link rel="stylesheet" href="${MEDIA_FILES['media.css']}">`) +
+      (has(MEDIA_FILES['media.js']) ? '' : `<script src="${MEDIA_FILES['media.js']}" defer></script>`)
+  );
   // Connection hints for hosts only the template's own sections used (its video player).
   const out = ed.apply();
   const hint = /<link\b(?=[^>]*\brel="(?:preconnect|dns-prefetch)")[^>]*\bhref="https?:\/\/([^/"]+)[^"]*"[^>]*>/g;

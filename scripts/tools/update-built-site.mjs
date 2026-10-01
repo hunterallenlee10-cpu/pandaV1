@@ -18,7 +18,7 @@ import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
-import { buildMediaPage, mediaFiles, MEDIA_PATH } from '../lib/media-page.mjs';
+import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
 const opts = args();
@@ -77,8 +77,10 @@ const files = [
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
-// Everything the Media page uses (its pictures are in src/srcset/poster attributes).
-if (media) files.push(...mediaFiles());
+// Everything the Media page and the Podcast page's player use (their pictures are in
+// src/srcset/poster attributes).
+const mediaUsed = media || linked.has(MEDIA_FILES['media.js']);
+if (mediaUsed) files.push(...mediaFiles());
 let copied = 0;
 for (const [from, url] of files) {
   const to = path.join(SITE, url);
@@ -90,7 +92,7 @@ for (const [from, url] of files) {
 }
 
 // Pictures of podcast episodes no longer in custom/media/podcast.json.
-if (media) {
+if (mediaUsed) {
   const keep = new Set(mediaFiles().map(([, url]) => path.join(SITE, url)));
   for (const f of listFiles(path.join(SITE, '_custom', 'media'))) {
     if (keep.has(f)) continue;

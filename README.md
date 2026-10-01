@@ -66,7 +66,9 @@ by side: the newest blog post (read from the site's own feed when the page is bu
 Panda Vision, the company's video podcast, with its newest episode in a player and the ways to watch it (on the page,
 on Apple Podcasts, or in any podcast app). Every episode follows in a row across the page. The page keeps the site's
 header and footer. On phones, the first entry under Media, which said "Blog" like the entry below it, is now "Media
-Hub". The episodes are refreshed with `npm run media:podcast` — see
+Hub". The Podcast page (`/podcast/`) gets the same player in place of its own, which pointed at an address that
+no longer works and showed an empty space, and its "Listen on Apple Podcasts" badge now leads to the show's current
+listing (the old one is gone). The episodes are refreshed with `npm run media:podcast` — see
 [`custom/media/README.md`](custom/media/README.md).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
