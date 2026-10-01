@@ -89,6 +89,12 @@ Most of these problems are on the live site too.
 
 - **Top bar** (every page): it asked each visitor for their location, then showed "Local Weather: N/A°F | Weather
   Alerts: N/A". The same bar now reads "Free Estimates · Call (877) 213-8536".
+- **Commercial roofing address**: the live site spells it `/commerical-roofing/`. The three commercial pages are now at
+  `/commercial-roofing/`, `/commercial-roofing/roof-types/` and `/commercial-roofing/roof-replacement/`, every
+  reference follows (links, canonical and share tags, structured data, the sitemap), and the old addresses redirect
+  (301) to the new ones. Controlled by `RENAMED_PATHS` in `scripts/lib/config.mjs` (`RENAME_PAGES=0` keeps the live
+  addresses); applied by `scripts/lib/customize.mjs` to every page and by `scripts/03-build.mjs` to the page files,
+  sitemaps and redirects.
 - **Services menu** (every page): the header's Services dropdown ended with "Other", which held Siding and Gutters
   (with Gutter Guards one level further in). Gutters, Gutter Guards and Siding are now their own entries under Solar.
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
@@ -103,7 +109,7 @@ Most of these problems are on the live site too.
   `custom/reviews/reviews.json` — see [`custom/reviews/README.md`](custom/reviews/README.md). On `/service-areas/` the
   section is removed: it isn't about service areas.
 - **"Our Project Gallery"** (8 pages: `/`, `/solar/`, `/roofing/`, `/roofing/types/`, `/gutters/`, `/siding/`,
-  `/commercial-capabilities/`, `/commerical-roofing/`): three sliders were started on the same photos at once, so they
+  `/commercial-capabilities/`, `/commercial-roofing/`): three sliders were started on the same photos at once, so they
   came out at different widths with the first one cut off, the row sat off centre under the heading and tabs, and there
   was a dot for every photo of every category. It is now one tidy gallery: centred category tabs with photo counts, a
   row of same-size photos with arrows and dots centred below it, and a full-size photo viewer — see
@@ -155,7 +161,7 @@ Most of these problems are on the live site too.
   services on `/about/` and `/podcast/`, and the six roofing ones (Roof Types included) on `/roofing/`
   (`ROOFING_CARDS`), with a "See all our services" button. On phones, with reduced motion or without JavaScript,
   the still cards are one row to swipe through rather than a long column (on `/service-areas/` too).
-- **Service card grids** (`/services/`, `/solar/`, `/siding/`, `/gutters/`, `/commerical-roofing/`) used the same orange
+- **Service card grids** (`/services/`, `/solar/`, `/siding/`, `/gutters/`, `/commercial-roofing/`) used the same orange
   icon cards, standing still. They are now the same photo cards, in a grid (three across on `/services/`, a centred
   pair elsewhere, one column on phones), with each page's own titles and text (photos in `GRID_PHOTOS`). Three of
   their links were broken on the live site too: "Gutter Installations" led to `/powerwash/` and "Siding

@@ -1,7 +1,7 @@
 # Project gallery
 
 This folder holds the "Our Project Gallery" section on `/`, `/solar/`, `/roofing/`, `/roofing/types/`, `/gutters/`,
-`/siding/`, `/commercial-capabilities/` and `/commerical-roofing/`.
+`/siding/`, `/commercial-capabilities/` and `/commercial-roofing/`.
 
 As delivered it was a Breakdance gallery (category tabs over a slider) that three scripts started at once: Breakdance's
 own slider, the theme's `new Swiper('.Project-swipper')` on its wrapper and the theme's `new Swiper('.swiper')` (a 2.5 s

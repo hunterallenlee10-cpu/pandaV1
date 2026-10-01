@@ -4,7 +4,7 @@ This folder holds the review carousel that every customer-review carousel on the
 
 | Where | What it replaced | Version |
 | --- | --- | --- |
-| The "Testimonials" section on `/about/`, `/commercial-capabilities/`, `/commerical-roofing/` (and its two sub-pages), `/gutters/gutter-guards/`, `/podcast/`, `/roofing/` (and its five sub-pages), `/roofing-costs/`, `/solar/` (and its two sub-pages) | a Google-reviews carousel of two reviews that never started (its script ran before the carousel library loaded), so only the first review showed and the arrows did nothing; an earlier fix showed the two side by side | up to three reviews in view |
+| The "Testimonials" section on `/about/`, `/commercial-capabilities/`, `/commercial-roofing/` (and its two sub-pages), `/gutters/gutter-guards/`, `/podcast/`, `/roofing/` (and its five sub-pages), `/roofing-costs/`, `/solar/` (and its two sub-pages) | a Google-reviews carousel of two reviews that never started (its script ran before the carousel library loaded), so only the first review showed and the arrows did nothing; an earlier fix showed the two side by side | up to three reviews in view |
 | Beside the video in "Panda Exteriors Is Your Top Roofing Choice" on `/` and `/services/` | a one-review carousel whose reviews were all pushed to the height of the longest one, leaving a large empty band between the arrows and every shorter review | one review in view, on green |
 | The same place on `/thank-you/` | the two-review Google carousel again, shown as two tall stacked cards | one review in view, on green |
 

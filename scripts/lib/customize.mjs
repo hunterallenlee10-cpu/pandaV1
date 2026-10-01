@@ -19,7 +19,7 @@
 // Separately, applyHeroVideo swaps the homepage hero's background video.
 import path from 'node:path';
 import { parse } from 'parse5';
-import { ROOT } from './config.mjs';
+import { ROOT, RENAMED_PATHS, renamePaths } from './config.mjs';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
@@ -239,10 +239,19 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
     if (at >= 0) ed.replace(at, at, assets);
     else console.warn(`customize: ${pageUrl} has no </head>, stylesheets and scripts not added`);
   }
-  if (!ed.count) return { html, changes };
-  const out = ed.apply();
+  let out = ed.count ? ed.apply() : html;
   if (/^\s*<!doctype/i.test(html) && !/^\s*<!doctype/i.test(out)) {
     throw new Error(`customize: ${pageUrl} would no longer start with its doctype`);
+  }
+  // Pages at a corrected address (RENAMED_PATHS): every reference to the old address in
+  // the finished page (links, the cards the fixes add, canonical and share tags, structured
+  // data) points at the new one. Last, so it also covers what the steps above wrote.
+  if (Object.keys(RENAMED_PATHS).length) {
+    const moved = renamePaths(out);
+    if (moved !== out) {
+      changes.fixes.push(`page addresses: ${Object.entries(RENAMED_PATHS).map(([a, b]) => `${a} -> ${b}`).join(', ')}`);
+      out = moved;
+    }
   }
   return { html: out, changes };
 }

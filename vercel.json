@@ -28,6 +28,21 @@
   ],
   "redirects": [
     {
+      "source": "/commerical-roofing/",
+      "destination": "/commercial-roofing/",
+      "statusCode": 301
+    },
+    {
+      "source": "/commerical-roofing/roof-replacement/",
+      "destination": "/commercial-roofing/roof-replacement/",
+      "statusCode": 301
+    },
+    {
+      "source": "/commerical-roofing/roof-types/",
+      "destination": "/commercial-roofing/roof-types/",
+      "statusCode": 301
+    },
+    {
       "source": "/favicon.ico",
       "destination": "/wp-content/uploads/2025/04/favicon-16x16-1.png",
       "statusCode": 302
