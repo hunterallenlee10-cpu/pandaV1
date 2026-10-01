@@ -203,6 +203,9 @@ Most of these problems are on the live site too.
 - **Referral sign-up** (`/referrals/`): the page was Panda's live GetTheReferral sign-up laid over the whole page, so
   a referral sent from the copy reached Panda. Like the estimate forms it is not connected yet: a "Refer a friend"
   note with the phone number takes its place.
+- **Employee referral form** (`/referral/`): on submit it opened an email to Panda's careers address with the
+  referral in it. It is not connected yet either: the form still checks its fields, then says online referrals
+  aren't switched on yet, and nothing is sent.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
@@ -337,9 +340,9 @@ would make them. The map sections are the exception: only `03-build.mjs` renders
   The captured free-estimate lead forms posted straight to Salesforce (web-to-lead) and Zapier, and `/referrals/`
   showed the live GetTheReferral sign-up; with the site fixes on (the default) none of them is left: the estimate
   forms and the referral page say online requests aren't switched on yet and give the phone number, so **no lead
-  form on the copy sends anything to Panda or any lead service**. (The employee referral form on `/referral/` only
-  opens a draft email to Panda's careers address in the visitor's own mail app.) [`docs/forms.md`](docs/forms.md)
-  lists the forms as captured, before the site fixes.
+  form on the copy sends anything to Panda or any lead service**; the employee referral form on `/referral/` no
+  longer opens an email to Panda's careers address either. [`docs/forms.md`](docs/forms.md) lists the forms as
+  captured, before the site fixes.
 - **Site search** (`/?s=…`) and anything else that needs WordPress to run: **comments**, AJAX "load more",
   `admin-ajax.php` / REST API calls, logins, previews.
 - **Query-string URLs** show the same page as the path without the query, because a static host ignores the query.

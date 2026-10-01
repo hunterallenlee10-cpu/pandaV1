@@ -2831,8 +2831,8 @@ mark {
             <div class="pcv2-referral-success" id="pcv2-referral-success" hidden="">
               <div class="pcv2-referral-badge">
                 <span class="pcv2-icon "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m9 12 2 2 4-4"></path></svg></span>              </div>
-              <h2 class="pcv2-heading">Almost Done!</h2>
-              <p>Your email client should have opened with the referral details ready to send. Just hit <strong>send</strong> to complete the referral. Our recruiting team will reach out to your candidate shortly.</p>
+              <h2 class="pcv2-heading">Thanks!</h2>
+              <p>Online referrals aren’t switched on yet, so this referral wasn’t sent. Please pass it to our recruiting team directly.</p>
               <div class="pcv2-referral-success-actions">
                 <button class="pcv2-btn pcv2-btn-green" type="button" id="pcv2-another-referral">Submit Another Referral</button>
                 <a class="pcv2-btn-ghost" href="/careers/">Back to Careers</a>
@@ -3012,7 +3012,6 @@ mark {
         var successPanel = document.getElementById('pcv2-referral-success');
         var errorPanel = document.getElementById('pcv2-referral-error');
         var anotherReferralButton = document.getElementById('pcv2-another-referral');
-        var recipient = 'career@pandaexteriors.com';
 
         function hideError() {
           if (errorPanel) {
@@ -3025,32 +3024,6 @@ mark {
             errorPanel.textContent = message;
             errorPanel.classList.add('is-visible');
           }
-        }
-
-        function openMailClient(formData) {
-          var subject = 'New Employee Referral - ' + formData.candidateName;
-          var lines = [
-            'EMPLOYEE REFERRAL - PANDA EXTERIORS',
-            '',
-            '--- REFERRING EMPLOYEE ---',
-            'Name: ' + formData.employeeName,
-            'Phone: ' + formData.employeePhone,
-            'Email: ' + formData.employeeEmail,
-            'Office: ' + formData.employeeOffice,
-            '',
-            '--- CANDIDATE ---',
-            'Name: ' + formData.candidateName,
-            'Phone: ' + formData.candidatePhone,
-            'Email: ' + formData.candidateEmail,
-            ''
-          ];
-
-          if (formData.notes) {
-            lines.push('--- NOTES ---');
-            lines.push(formData.notes);
-          }
-
-          window.location.href = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
         }
 
         referralForm.addEventListener('submit', function (event) {
@@ -3067,18 +3040,6 @@ mark {
             return;
           }
 
-          var formData = {
-            employeeName: referralForm.employeeName.value.trim(),
-            employeePhone: referralForm.employeePhone.value.trim(),
-            employeeEmail: referralForm.employeeEmail.value.trim(),
-            employeeOffice: referralForm.employeeOffice.value.trim(),
-            candidateName: referralForm.candidateName.value.trim(),
-            candidatePhone: referralForm.candidatePhone.value.trim(),
-            candidateEmail: referralForm.candidateEmail.value.trim(),
-            notes: referralForm.notes.value.trim()
-          };
-
-          openMailClient(formData);
           referralForm.hidden = true;
           if (successPanel) {
             successPanel.hidden = false;
