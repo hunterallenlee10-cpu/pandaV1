@@ -16,6 +16,7 @@ import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_F
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
+import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-gallery.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -240,10 +241,15 @@ const fixPages = intentionalChanges.filter((c) => c.siteFixes?.length);
 if (fixPages.length) {
   for (const [name, url] of Object.entries(SITE_FIXES_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SITE_FIXES_DIR, name)), `custom/site-fixes/${name}`);
 }
-// The review carousel (custom/reviews/) and smooth scrolling (custom/smooth-scroll/).
+// The review carousel (custom/reviews/), the project gallery (custom/project-gallery/)
+// and smooth scrolling (custom/smooth-scroll/).
 const reviewPages = fixPages.filter((c) => c.siteFixes.some((f) => /^testimonials: looping review carousel/.test(f)));
 if (reviewPages.length) {
   for (const [name, url] of Object.entries(REVIEWS_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(REVIEWS_DIR, name)), `custom/reviews/${name}`);
+}
+const galleryPages = fixPages.filter((c) => c.siteFixes.some((f) => /^project gallery:/.test(f)));
+if (galleryPages.length) {
+  for (const [name, url] of Object.entries(PROJECT_GALLERY_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(PROJECT_GALLERY_DIR, name)), `custom/project-gallery/${name}`);
 }
 if (SMOOTH_SCROLL) {
   for (const [name, url] of Object.entries(SMOOTH_SCROLL_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SMOOTH_SCROLL_DIR, name)), `custom/smooth-scroll/${name}`);
@@ -656,6 +662,7 @@ if (SITE_FIXES) {
   for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`    ${String(n).padStart(3)} × ${k}`);
 }
 if (reviewPages.length) console.log(`  review carousel: ${reviewPages.length} page(s) — ${reviewPages.map((c) => new URL(c.url).pathname).join(', ')}`);
+if (galleryPages.length) console.log(`  project gallery: ${galleryPages.length} page(s) — ${galleryPages.map((c) => new URL(c.url).pathname).join(', ')}`);
 if (SMOOTH_SCROLL) console.log('  smooth scrolling (Lenis): every page');
 if (removedPages.length) {
   console.log(`  pages removed on request: ${removedPages.map((p) => new URL(p.url).pathname).join(', ')} — plus ${leftOut.size} file(s) only they used; sitemap entries dropped from ${sitemapsEdited.join(', ') || 'none'}`);

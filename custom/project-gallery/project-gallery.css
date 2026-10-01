@@ -1,0 +1,515 @@
+/* Panda Exteriors — "Our Project Gallery" ("ppg", see README.md in this folder). Every rule
+   is scoped to .ppg / .ppg-lightbox, so nothing else on the site is affected.
+
+   Category tabs, then a row of same-size photos that scrolls sideways (snapping to whole
+   photos) with the arrows and dots centred below it. project-gallery.js adds .is-ready and
+   runs the tabs, arrows, dots, mouse dragging and the photo viewer; without it, every
+   photo is in the row. */
+
+.ppg {
+  --ppg-per-view: 1;
+  --ppg-gap: 12px;
+  --ppg-radius: 14px;
+  --ppg-orange: var(--seconday, #f26924);
+  --ppg-ink: #111111;
+  --ppg-tile: rgba(17, 24, 39, 0.14);
+  --ppg-dot: rgba(17, 24, 39, 0.28);
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 8px auto 0;
+  font-family: var(--robboto, 'Roboto'), system-ui, sans-serif;
+  color: var(--ppg-ink);
+  text-align: left;
+}
+.ppg *,
+.ppg *::before,
+.ppg *::after {
+  box-sizing: border-box;
+}
+@media (min-width: 640px) {
+  .ppg {
+    --ppg-per-view: 2;
+    --ppg-gap: 16px;
+  }
+}
+@media (min-width: 1024px) {
+  .ppg {
+    --ppg-per-view: 3;
+    --ppg-gap: 20px;
+    --ppg-radius: 16px;
+  }
+}
+.ppg-sr {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ---------------------------------------------------------------------- tabs */
+.ppg__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 28px;
+  padding: 0;
+}
+.ppg .ppg__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 10px 8px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ppg-ink);
+  box-shadow: 0 6px 16px -10px rgba(17, 24, 39, 0.45);
+  font: 600 16px/1.2 var(--robboto, 'Roboto'), system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.ppg .ppg__tab:hover {
+  background: #f1f1f1;
+}
+.ppg .ppg__tab:active {
+  transform: scale(0.97);
+}
+.ppg .ppg__tab[aria-selected='true'] {
+  background: var(--ppg-orange);
+  color: #ffffff;
+}
+.ppg__tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.08);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.ppg .ppg__tab[aria-selected='true'] .ppg__tab-count {
+  background: rgba(255, 255, 255, 0.24);
+}
+@media (max-width: 575.98px) {
+  .ppg__tabs {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ppg .ppg__tab {
+    min-height: 40px;
+    padding: 6px 8px 6px 14px;
+    font-size: 15px;
+  }
+  .ppg__tab-count {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    font-size: 12px;
+  }
+}
+
+/* ------------------------------------------------------------------ carousel */
+.ppg__viewport {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.ppg__viewport::-webkit-scrollbar {
+  display: none;
+}
+.ppg__track {
+  display: flex;
+  gap: var(--ppg-gap);
+  margin: 0;
+  padding: 0;
+}
+.ppg__slide {
+  flex: 0 0 calc((100% - (var(--ppg-per-view) - 1) * var(--ppg-gap)) / var(--ppg-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.ppg__slide[hidden] {
+  display: none;
+}
+/* A category with fewer photos than fit: centred, no controls. */
+.ppg.is-static .ppg__track {
+  justify-content: center;
+}
+.ppg.is-static .ppg__controls {
+  visibility: hidden;
+}
+/* Dragging with the mouse. */
+.ppg.is-ready .ppg__viewport {
+  cursor: grab;
+}
+.ppg.is-dragging .ppg__viewport {
+  scroll-snap-type: none;
+  cursor: grabbing;
+}
+.ppg.is-dragging .ppg__track {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ppg.is-dragging .ppg__tile {
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------- photo */
+.ppg .ppg__tile {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--ppg-radius);
+  background: var(--ppg-tile);
+  color: #ffffff;
+  text-decoration: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ppg .ppg__tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-user-drag: none;
+}
+.ppg .ppg__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 45%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.ppg__zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ppg-ink);
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.ppg__zoom svg {
+  width: 18px;
+  height: 18px;
+}
+.ppg .ppg__tile:hover img,
+.ppg .ppg__tile:focus-visible img {
+  transform: scale(1.04);
+}
+.ppg .ppg__tile:hover::after,
+.ppg .ppg__tile:focus-visible::after,
+.ppg .ppg__tile:hover .ppg__zoom,
+.ppg .ppg__tile:focus-visible .ppg__zoom {
+  opacity: 1;
+  transform: none;
+}
+/* Touch screens: no hover, so the "view larger" mark always shows. */
+@media (hover: none) {
+  .ppg__zoom {
+    width: 34px;
+    height: 34px;
+    opacity: 1;
+    transform: none;
+  }
+  .ppg__zoom svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+.ppg .ppg__tile:focus-visible {
+  outline: 3px solid var(--ppg-orange);
+  outline-offset: -3px;
+}
+
+/* ------------------------------------------------------------------ controls */
+.ppg__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+.ppg .ppg__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--ppg-ink);
+  box-shadow: 0 6px 16px -10px rgba(17, 24, 39, 0.45);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+.ppg .ppg__btn svg {
+  width: 22px;
+  height: 22px;
+}
+.ppg .ppg__btn:hover:not([aria-disabled='true']) {
+  background: var(--ppg-ink);
+  color: #ffffff;
+}
+.ppg .ppg__btn:active:not([aria-disabled='true']) {
+  transform: scale(0.94);
+}
+.ppg .ppg__btn[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: none;
+}
+.ppg .ppg__tab:focus-visible,
+.ppg .ppg__btn:focus-visible,
+.ppg .ppg__dot:focus-visible {
+  outline: 3px solid var(--ppg-ink);
+  outline-offset: 3px;
+}
+.ppg__pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 46px;
+}
+.ppg .ppg__dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ppg-dot);
+  cursor: pointer;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+}
+.ppg .ppg__dot:hover {
+  background: rgba(17, 24, 39, 0.5);
+}
+.ppg .ppg__dot.is-active {
+  width: 28px;
+  background: var(--ppg-ink);
+}
+/* More pages than dots fit: "4 / 22" instead. */
+.ppg__count {
+  min-width: 64px;
+  color: var(--ppg-ink);
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------- photo viewer */
+html.ppg-locked {
+  overflow: hidden !important;
+}
+.ppg-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: rgba(8, 10, 12, 0.96);
+  color: #ffffff;
+  font-family: var(--robboto, 'Roboto'), system-ui, sans-serif;
+  overscroll-behavior: contain;
+}
+.ppg-lightbox[open] {
+  display: block;
+  animation: ppg-fade 0.2s ease both;
+}
+.ppg-lightbox::backdrop {
+  background: transparent;
+}
+.ppg-lightbox *,
+.ppg-lightbox *::before,
+.ppg-lightbox *::after {
+  box-sizing: border-box;
+}
+.ppg-lightbox__stage {
+  position: absolute;
+  inset: 64px 80px 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pinch-zoom;
+}
+/* (!important: the site sets `.breakdance img { height: 100% !important }`.) */
+.ppg-lightbox .ppg-lightbox__img {
+  display: block;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 100% !important;
+  margin: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.ppg-lightbox .ppg-lightbox__img.is-loaded {
+  opacity: 1;
+}
+.ppg-lightbox__caption {
+  position: absolute;
+  right: 80px;
+  bottom: 0;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+.ppg-lightbox .ppg-lightbox__btn {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.ppg-lightbox .ppg-lightbox__btn svg {
+  width: 24px;
+  height: 24px;
+}
+.ppg-lightbox .ppg-lightbox__btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.ppg-lightbox .ppg-lightbox__btn:active {
+  transform: scale(0.94);
+}
+.ppg-lightbox .ppg-lightbox__btn:focus-visible {
+  outline: 3px solid var(--seconday, #f26924);
+  outline-offset: 3px;
+}
+.ppg-lightbox__btn--close {
+  top: 12px;
+  right: 16px;
+}
+.ppg-lightbox__btn--prev,
+.ppg-lightbox__btn--next {
+  top: 50%;
+  margin-top: -24px !important;
+}
+.ppg-lightbox__btn--prev {
+  left: 16px;
+}
+.ppg-lightbox__btn--next {
+  right: 16px;
+}
+.ppg-lightbox.is-single .ppg-lightbox__btn--prev,
+.ppg-lightbox.is-single .ppg-lightbox__btn--next {
+  display: none;
+}
+/* Phones: the photo uses the whole width; the arrows sit beside the caption. */
+@media (max-width: 639.98px) {
+  .ppg-lightbox__stage {
+    inset: 64px 12px 84px;
+  }
+  .ppg-lightbox__caption {
+    right: 76px;
+    left: 76px;
+    height: 84px;
+    font-size: 14px;
+  }
+  .ppg-lightbox__btn--prev,
+  .ppg-lightbox__btn--next {
+    top: auto;
+    bottom: 18px;
+    margin-top: 0 !important;
+  }
+}
+@keyframes ppg-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ppg .ppg__tile img,
+  .ppg__zoom,
+  .ppg .ppg__dot,
+  .ppg-lightbox .ppg-lightbox__img {
+    transition: none;
+  }
+  .ppg .ppg__tile:hover img,
+  .ppg .ppg__tile:focus-visible img {
+    transform: none;
+  }
+  .ppg-lightbox[open] {
+    animation: none;
+  }
+}
