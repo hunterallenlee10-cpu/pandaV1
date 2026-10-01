@@ -12,6 +12,10 @@
 //    nothing; the reviews beside the video on / and /services/ sat below a large empty
 //    band. Every one of them is now the same looping review carousel (reviews.mjs,
 //    custom/reviews/); the section is removed from Service Areas.
+//  - "Our Project Gallery" (8 pages): three sliders were started on the same photos, so
+//    they came out at different widths, the first one cut off, off centre under the
+//    tabs. It is now one gallery of same-size photos with category tabs, arrows, dots and
+//    a photo viewer (project-gallery.mjs, custom/project-gallery/).
 //  - "Experts You Can Trust" (home page): the logo carousel jumped one step every 2.5 s
 //    (and its looped copies never loaded their logos); it is now a continuously gliding
 //    row of logos.
@@ -39,11 +43,12 @@ import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
+import { collectProjectGalleries } from './project-gallery.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -87,7 +92,7 @@ const capabilitiesMap = () => (capabilities ??= JSON.parse(fs.readFileSync(path.
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false };
+  const used = { css: false, js: false, reviews: false, gallery: false };
   const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
@@ -121,6 +126,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.
   if (collectReviewCarousels(doc, ed, { pathname }, changes)) used.reviews = true;
+
+  // "Our Project Gallery": the slider started three times over -> one tidy gallery
+  // (project-gallery.mjs, custom/project-gallery/).
+  if (collectProjectGalleries(doc, ed, changes)) used.gallery = true;
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
   // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that

@@ -75,6 +75,13 @@ Most of these problems are on the live site too.
   can be dragged or swiped, and keeps every card the same size with "Read more" on long reviews. The reviews are in
   `custom/reviews/reviews.json` — see [`custom/reviews/README.md`](custom/reviews/README.md). On `/service-areas/` the
   section is removed: it isn't about service areas.
+- **"Our Project Gallery"** (8 pages: `/`, `/solar/`, `/roofing/`, `/roofing/types/`, `/gutters/`, `/siding/`,
+  `/commercial-capabilities/`, `/commerical-roofing/`): three sliders were started on the same photos at once, so they
+  came out at different widths with the first one cut off, the row sat off centre under the heading and tabs, and there
+  was a dot for every photo of every category. It is now one tidy gallery: centred category tabs with photo counts, a
+  row of same-size photos with arrows and dots centred below it, and a full-size photo viewer — see
+  [`custom/project-gallery/README.md`](custom/project-gallery/README.md). `/gallery/` (a full grid, which works) is
+  unchanged.
 - **"Experts You Can Trust"** (home page): the certification logos jumped a step every 2.5 seconds, and the copies
   the carousel made to loop never loaded their logos. They now glide past in one continuous row, easing to a stop
   under the mouse (and stay still for people who prefer reduced motion).
@@ -96,8 +103,8 @@ Most of these problems are on the live site too.
 
 Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
 `docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual. (`docs/visual-diff/`
-was last regenerated before the review carousels, logo row, award badges and smooth scrolling were added; the next
-capture and build regenerates it.)
+was last regenerated before the review carousels, project gallery, logo row, award badges and smooth scrolling were
+added; the next capture and build regenerates it.)
 
 ## What's in the repo
 
@@ -109,6 +116,7 @@ site/                    the website — deploy this folder
   _custom/us-map/                     the animated map's stylesheet and script (copied from custom/us-map/)
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
   _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
+  _custom/project-gallery/            the project gallery's stylesheet and script (copied from custom/project-gallery/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
@@ -133,6 +141,7 @@ scripts/                   the capture / build / verification pipeline (Node.js 
 custom/us-map/             the animated "areas we serve" map: areas.json (what it shows), styles, script, outlines
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
+custom/project-gallery/    the "Our Project Gallery" section: styles, script
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 ```
 
@@ -189,7 +198,8 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 
 `.cache/` and `.work/` are not in the repository, so a fresh clone cannot run `03-build.mjs`. After changing
 `custom/` or the site fixes, `npm run update:site` (`node scripts/tools/update-built-site.mjs`, add `--dry-run` to
-preview) applies the site fixes and smooth scrolling to the pages already in `site/` and copies the custom files.
+preview) applies the site fixes (review carousels and project gallery included) and smooth scrolling to the pages
+already in `site/` and copies the custom files.
 Each fix gives the same result on a built page as on the page as captured, so the pages come out as a full rebuild
 would make them. The map sections are the exception: only `03-build.mjs` renders them.
 
