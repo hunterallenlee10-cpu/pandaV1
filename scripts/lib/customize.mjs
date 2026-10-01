@@ -24,6 +24,7 @@ import { ROOT, RENAMED_PATHS, renamePaths } from './config.mjs';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
+import { REVIEW_WALL_FILES } from './review-wall.mjs';
 import { PROJECT_GALLERY_FILES } from './project-gallery.mjs';
 import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-projects.mjs';
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
@@ -238,6 +239,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixAssets.css) assets += css(SITE_FIXES_FILES['site-fixes.css']);
   if (fixAssets.js) assets += js(SITE_FIXES_FILES['site-fixes.js']);
   if (fixAssets.reviews) assets += css(REVIEWS_FILES['reviews.css']) + js(REVIEWS_FILES['reviews.js']);
+  if (fixAssets.reviewWall) assets += css(REVIEW_WALL_FILES['review-wall.css']) + js(REVIEW_WALL_FILES['review-wall.js']);
   if (fixAssets.gallery) assets += css(PROJECT_GALLERY_FILES['project-gallery.css']) + js(PROJECT_GALLERY_FILES['project-gallery.js']);
   if (favorites || fixAssets.pastProjects) assets += css(PAST_PROJECTS_FILES['past-projects.css']);
   if (mediaAssets) assets += css(MEDIA_FILES['media.css']) + js(MEDIA_FILES['media.js']);

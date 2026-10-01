@@ -43,6 +43,9 @@
 //  - "About Our Team" (the lead-form block above the footer on most pages): white text on
 //    Panda lime was hard to read; it now sits on a charcoal green with a lime button.
 //  - /reviews/: the "Read More Reviews!" button is removed (on request).
+//  - /reviews/: the one review under an old picture of the Google rating becomes the review
+//    wall: the Google rating, "Write a review" links and every five-star Google review
+//    (review-wall.mjs, custom/reviews/google-reviews.json).
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
 //    other tiles keep their size).
@@ -112,6 +115,7 @@ import path from 'node:path';
 import { ROOT, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
+import { collectReviewWall } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
@@ -122,7 +126,7 @@ import { renderPastProjects } from './past-projects.mjs';
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects|reviews page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -568,7 +572,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false, gallery: false, pastProjects: false };
+  const used = { css: false, js: false, reviews: false, reviewWall: false, gallery: false, pastProjects: false };
   const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
@@ -618,6 +622,11 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     for (const t of textNodes(a)) editText(ed, html, t, (s) => s.replace(/\(\d{3}\) \d{3}-\d{4}/, PHONE.text));
     changes.push(`header phone button: ${clean(textOf(a))} -> ${PHONE.text}`);
   }
+
+  // /reviews/: the one review under an old picture of the Google rating -> the review wall
+  // (review-wall.mjs, custom/reviews/google-reviews.json). Before the fixes below that edit
+  // inside that section (the "Read More Reviews!" button, the review about a roof repair).
+  if (collectReviewWall(doc, ed, { pathname }, changes)) used.reviewWall = true;
 
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.
@@ -792,6 +801,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // Removed on request.
   if (pathname === '/reviews/') {
     for (const b of findAll(doc, (c) => hasClass(c, 'bde-button') && /^Read More Reviews!?$/i.test(clean(textOf(c))))) {
+      if (ed.overlaps(b.sourceCodeLocation.startOffset, b.sourceCodeLocation.endOffset)) continue;
       ed.outer(b, '');
       changes.push('removed on request: the "Read More Reviews!" button');
     }

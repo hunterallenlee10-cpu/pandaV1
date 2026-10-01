@@ -10,6 +10,7 @@
     "build": "node scripts/03-build.mjs",
     "update:site": "node scripts/tools/update-built-site.mjs",
     "media:podcast": "node scripts/tools/media-podcast.mjs",
+    "reviews:google": "node scripts/tools/google-reviews.mjs",
     "past-projects:photos": "node scripts/tools/past-projects-photos.mjs",
     "us-map:geometry": "node scripts/tools/us-map-geometry.mjs",
     "verify:visual": "node scripts/04-visual-diff.mjs",

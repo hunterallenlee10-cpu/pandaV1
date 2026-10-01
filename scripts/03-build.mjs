@@ -16,6 +16,7 @@ import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_F
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
+import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from './lib/review-wall.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
@@ -262,6 +263,11 @@ if (fixPages.length) {
 const reviewPages = fixPages.filter((c) => c.siteFixes.some((f) => /^testimonials: looping review carousel/.test(f)));
 if (reviewPages.length) {
   for (const [name, url] of Object.entries(REVIEWS_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(REVIEWS_DIR, name)), `custom/reviews/${name}`);
+}
+// The review wall on /reviews/ (custom/reviews/review-wall.*) and the list it loads.
+if (fixPages.some((c) => c.siteFixes.some((f) => /^reviews page:/.test(f)))) {
+  for (const [name, url] of Object.entries(REVIEW_WALL_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(REVIEWS_DIR, name)), `custom/reviews/${name}`);
+  put(REVIEW_WALL_DATA.replace(/^\//, ''), reviewWallJson(), 'custom/reviews/google-reviews.json');
 }
 const galleryPages = fixPages.filter((c) => c.siteFixes.some((f) => /^project gallery:/.test(f)));
 if (galleryPages.length) {

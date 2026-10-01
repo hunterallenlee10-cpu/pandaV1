@@ -1,6 +1,8 @@
-# Review carousel
+# Review carousel and review wall
 
-This folder holds the review carousel that every customer-review carousel on the site now uses:
+This folder holds the review carousel (below) and the review wall on `/reviews/` ([further down](#the-review-wall-on-reviews)).
+
+The review carousel that every customer-review carousel on the site now uses:
 
 | Where | What it replaced | Version |
 | --- | --- | --- |
@@ -47,3 +49,53 @@ them, Tracey Duval's, is in both).
 After editing, rebuild: `node scripts/03-build.mjs` (or the whole pipeline with `bash scripts/capture-all.sh`). Without
 the capture cache (a fresh clone), run `node scripts/tools/update-built-site.mjs` instead: it renders the carousels in
 `site/` again from `reviews.json` and copies the stylesheet and script.
+
+## The review wall on `/reviews/`
+
+The section under the hero on `/reviews/` (it showed a picture of an old Google rating, a "Write a Review" button and
+one review) is the review wall:
+
+- **The Google rating** (stars, score and number of reviews) with a **Write a review** button that opens Google's
+  review form for Panda Exteriors, and a link to all the reviews on Google Maps.
+- **Every five-star Google review** as cards (photo or initials, name, Local Guide, month posted, the Google mark),
+  newest first, then the site's other reviews from `reviews.json` that aren't already among them. 24 show at first;
+  **Show more reviews** adds 24 more. Long reviews are cut short with **Read more**.
+- **Topic filters and a search box**: Roofing, Siding, Gutters, Solar, Insurance claims and Clean-up, each with its
+  number of reviews (a topic no review mentions is left out). Matching words are highlighted.
+- **"Had a great experience with Panda?"**: a closing band with the three steps and a big **Write a Google review**
+  button.
+- Accessible (real buttons and labels, the count announced as it changes, and focus moves to the first new review when
+  "Show more" adds the last ones); no autoplay or motion for people who prefer reduced motion. **Without JavaScript** the first 24 reviews
+  show in full, with a link to the rest on Google.
+
+The section is rendered by `scripts/lib/review-wall.mjs` (from `scripts/lib/site-fixes.mjs`); `review-wall.css` and
+`review-wall.js` style it and make it work, and the build publishes the whole list as
+`/_custom/reviews/review-wall.json`, which the script loads when it needs more than the first 24.
+
+### `google-reviews.json`
+
+| Field | |
+| --- | --- |
+| `place` | `rating` and `count` (shown at the top), `asOf` (when they were read), `writeReviewUrl` (Google's "write a review" link for the listing), `mapsUrl` (the listing's reviews on Google Maps) |
+| `hideIfMentions` | reviews that mention a word starting with one of these are left off the page. It holds `repair`, as Panda doesn't do roof repairs (the one review about a repair is out of the carousels too) |
+| `reviews` | `name`, `rating` (only 5 is shown), `date` (`YYYY-MM`, or `YYYY` when only the year is known), `text`, and optionally `avatar` (the reviewer's Google photo) and `localGuide` |
+
+### Loading every Google review
+
+`npm run reviews:google -- <how>` replaces the list with every five-star Google review that has words in it, and
+updates the rating and count:
+
+- **`--takeout=<folder>`** (recommended, complete): at [takeout.google.com](https://takeout.google.com), signed in
+  with a Google account that owns or manages the Panda Exteriors Business Profile, choose only **Google Business
+  Profile**, export, download and unzip it, then point `--takeout` at the folder. The rating and count are worked out
+  from the export.
+- **`--scrape`**: reads the reviews off the Google Maps listing in a browser, scrolling until it has them all (add
+  `--headed` to watch). Run it on an ordinary home or office connection: Google shows cloud servers a "limited view"
+  of Maps with only the first few reviews.
+
+Add `--dry-run` to see the numbers without writing anything. Then rebuild the page:
+`node scripts/tools/update-built-site.mjs --only=/reviews/`.
+
+The list was started on 2026-10-01 with the rating and count Google showed that day (4.8 from 1,067 reviews) and the
+one five-star review that could be read from Google Maps at the time (Tracey Duval's); the other cards are the site's
+reviews from `reviews.json` until the list is filled.
