@@ -168,9 +168,38 @@ Most of these problems are on the live site too.
   Replacements" to `/window-replacement/` (neither exists on the main site; they are pages of the Huntersville city
   site, about pressure washing and windows), and "Siding Types" led to the commercial roof types page. Those cards
   sit on the pages that cover their service (`/gutters/` is "Gutter Replacements And Installations", `/siding/` is
-  "Siding Replacements And Installations"; there is no siding types page), so they now lead to the contact page
-  ("Get a free estimate", "Ask about siding options"; `GRID_CARD_FIXES`). On `/services/` the two empty headings around "Our Services" are
-  removed and the heading gets the site's section-heading style. The office cards on `/contact-us/` are unchanged.
+  "Siding Replacements And Installations"), so the first two now lead to the contact page ("Get a free estimate") and
+  "Siding Types" to the siding types section further down `/siding/` ("Compare siding types"; `GRID_CARD_FIXES`). On
+  `/services/` the two empty headings around "Our Services" are removed and the heading gets the site's
+  section-heading style. The office cards on `/contact-us/` are unchanged.
+- **`/siding/` and `/gutters/`: one strong page per service.** Under the service cards each page now explains the job
+  (`scripts/lib/service-pages.mjs`; the words are in `custom/site-fixes/service-pages.json`, written only from what
+  the site and its blog already say, so they can be edited there and applied with `npm run update:site`):
+  - `/siding/`: **siding types**, James Hardie fiber cement and CertainTeed vinyl side by side (what each is, its
+    strengths, what it's best for), which the "Siding Types" card scrolls to;
+  - **signs it's time** for new siding or gutters, with links to the blog posts they come from;
+  - `/gutters/`: **what we look at on every gutter job** (gutters, fascia, pitch, downspouts, drainage, guards);
+  - **how the project works** in three steps (free estimate, choices and financing, installation with a project
+    manager);
+  - **questions and answers** (an accordion, with FAQPage structured data for search engines), then a band with "Get
+    a free estimate" (it leads to the lead form at the top of the page) and the phone number.
+
+  `/gutters/` also opens its project gallery on the Gutters photos instead of Roofing.
+- **Lead forms** (every page with one: 131 pages, from the home page to every blog post): the form cards (in the
+  hero, beside "About Our Team", on blog posts) all held the same form, "10% OFF Roof Replacement" with a "Get a Free
+  Roof Inspection" button, even on the siding, gutter and solar pages, and a project type with no siding option.
+  Each card now has a form for its page (`custom/site-fixes/service-forms.json`, `scripts/lib/service-forms.mjs`):
+  `/siding/`, `/gutters/` and `/gutters/gutter-guards/`, the three solar pages, the three commercial pages and
+  `/roofing/attic-insulation/` get one for their service; the other roofing pages keep the roof replacement offer
+  with a roofing form; every other page gets a general "Free Estimate" form that asks what the visitor needs. Each
+  has its own heading, line and button, the contact fields and questions about the job, with the page's own service
+  already chosen where it has one. The Google rating and reviews link stay. **The forms are not connected to anything
+  yet**: on submit the fields are checked, then the card says online requests aren't switched on and offers the
+  phone number, so nobody thinks a request went through. The old form's scripts are removed from every page (163,
+  including the project pages and the 404 page, which loaded them without a form): they sent leads to Salesforce
+  (no longer used), Zapier, AccuLynx and Five9, looked up addresses with Google Maps, and **asked every visitor for
+  their location as the page loaded**. That also clears two console errors on most pages. (The careers pages' own
+  placeholders, which switch the location prompt off, are left alone.)
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers

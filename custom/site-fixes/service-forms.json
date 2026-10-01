@@ -1,0 +1,171 @@
+{
+  "roofing": {
+    "pages": [
+      "/roofing/",
+      "/roofing/replacement/",
+      "/roofing/residential/",
+      "/roofing/types/"
+    ],
+    "title": "10% OFF Roof Replacement",
+    "text": "Limited Time Savings - Act Now!",
+    "button": "Get My Free Roof Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "Roof replacement",
+          "Roof inspection",
+          "Not sure yet"
+        ],
+        "selected": {
+          "/roofing/replacement/": "Roof replacement"
+        }
+      }
+    ]
+  },
+  "siding": {
+    "pages": [
+      "/siding/"
+    ],
+    "title": "Free Siding Estimate",
+    "text": "Fiber cement or vinyl, from James Hardie and CertainTeed.",
+    "button": "Get My Free Siding Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "Replace my siding",
+          "New siding installation",
+          "Not sure yet"
+        ]
+      },
+      {
+        "name": "material",
+        "label": "Siding type",
+        "options": [
+          "Fiber cement (James Hardie)",
+          "Vinyl (CertainTeed)",
+          "Help me choose"
+        ]
+      }
+    ]
+  },
+  "gutters": {
+    "pages": [
+      "/gutters/",
+      "/gutters/gutter-guards/"
+    ],
+    "title": "Free Gutter Estimate",
+    "text": "New gutters, gutter guards or both.",
+    "button": "Get My Free Gutter Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "New gutters",
+          "Gutter guards",
+          "New gutters and guards",
+          "Not sure yet"
+        ],
+        "selected": {
+          "/gutters/gutter-guards/": "Gutter guards"
+        }
+      }
+    ]
+  },
+  "solar": {
+    "pages": [
+      "/solar/",
+      "/solar/solar-panel-installations/",
+      "/solar/gaf-solar-roof/"
+    ],
+    "title": "Free Solar Estimate",
+    "text": "Solar panels or GAF solar shingles for your home.",
+    "button": "Get My Free Solar Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What are you interested in?",
+        "options": [
+          "Solar panels",
+          "GAF solar roof (solar shingles)",
+          "Not sure yet"
+        ],
+        "selected": {
+          "/solar/solar-panel-installations/": "Solar panels",
+          "/solar/gaf-solar-roof/": "GAF solar roof (solar shingles)"
+        }
+      }
+    ]
+  },
+  "commercial": {
+    "pages": [
+      "/commercial-roofing/",
+      "/commercial-roofing/roof-replacement/",
+      "/commercial-roofing/roof-types/"
+    ],
+    "title": "Free Commercial Roofing Estimate",
+    "text": "Flat roof replacements for businesses, from inspection to final walkthrough.",
+    "button": "Get My Free Commercial Estimate",
+    "business": true,
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "Roof replacement",
+          "Roof inspection",
+          "Not sure yet"
+        ],
+        "selected": {
+          "/commercial-roofing/roof-replacement/": "Roof replacement"
+        }
+      }
+    ]
+  },
+  "attic": {
+    "pages": [
+      "/roofing/attic-insulation/"
+    ],
+    "title": "Free Attic Insulation Estimate",
+    "text": "Keep your home comfortable all year.",
+    "button": "Get My Free Insulation Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "New attic insulation",
+          "Add to existing insulation",
+          "Not sure yet"
+        ]
+      }
+    ]
+  },
+  "general": {
+    "pages": [],
+    "default": true,
+    "title": "Free Estimate",
+    "text": "Roofing, siding, gutters, solar and more. Ask about 10% off roof replacement.",
+    "button": "Get My Free Estimate",
+    "questions": [
+      {
+        "name": "project",
+        "label": "What do you need?",
+        "options": [
+          "Roof replacement",
+          "Roof inspection",
+          "Siding",
+          "Gutters or gutter guards",
+          "Solar",
+          "Attic insulation",
+          "Commercial roofing",
+          "Something else"
+        ]
+      }
+    ]
+  }
+}

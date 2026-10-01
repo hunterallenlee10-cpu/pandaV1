@@ -1055,3 +1055,652 @@ a.bde-social-share-button:hover {
     padding: 20px 16px;
   }
 }
+
+/* /siding/, /gutters/: the sections under the service cards (service-pages.mjs): siding
+   types, signs it's time, what we check, how it works, questions and a call/estimate band.
+   Roboto like the rest of the page; orange for actions, lime and charcoal green from the
+   site's palette. */
+.pfix-sp {
+  --sp-ink: #14180f;
+  --sp-text: #3f463a;
+  --sp-muted: #5d6656;
+  --sp-line: #e7e2d9;
+  --sp-orange: #f26924;
+  --sp-orange-ink: #c2410c;
+  --sp-lime: #9acd32;
+  --sp-dark: #1a2418;
+  color: var(--sp-text);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-sp *,
+.pfix-sp *::before,
+.pfix-sp *::after {
+  box-sizing: border-box;
+}
+.pfix-sp .pfix-sp__sec {
+  padding: clamp(48px, 7vw, 88px) 0;
+}
+.pfix-sp .pfix-sp__inner {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-sp .pfix-sp__head {
+  max-width: 760px;
+  margin: 0 auto clamp(28px, 4vw, 44px);
+  text-align: center;
+}
+.pfix-sp .pfix-sp__eyebrow {
+  margin: 0 0 10px;
+  color: var(--sp-orange-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-sp .pfix-sp__title {
+  margin: 0;
+  padding: 0;
+  color: var(--sp-ink);
+  font-family: inherit;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.pfix-sp .pfix-sp__intro {
+  margin: 14px 0 0;
+  color: var(--sp-muted);
+  font-size: 17px;
+}
+.pfix-sp h3 {
+  margin: 0;
+  padding: 0;
+  color: var(--sp-ink);
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pfix-sp p {
+  margin: 0;
+}
+.pfix-sp a:focus-visible,
+.pfix-sp summary:focus-visible {
+  outline: 3px solid var(--sp-orange-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.pfix-sp svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Ticked list (siding types, what we check). */
+.pfix-sp .pfix-sp-list {
+  display: grid;
+  gap: 10px;
+}
+.pfix-sp .pfix-sp-list > div {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  color: var(--sp-text);
+}
+.pfix-sp .pfix-sp-list svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  padding: 3px;
+  border-radius: 50%;
+  background: #eef7dc;
+  color: #4a7310;
+}
+.pfix-sp .pfix-sp-list--big > div {
+  font-size: 17px;
+}
+.pfix-sp .pfix-sp-link,
+.pfix-sp .pfix-sp__note a,
+.pfix-sp .pfix-sp-reads a {
+  color: var(--sp-orange-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-sp .pfix-sp-link:hover,
+.pfix-sp .pfix-sp__note a:hover,
+.pfix-sp .pfix-sp-reads a:hover {
+  color: #9a3412;
+  text-decoration: underline;
+}
+
+/* Siding types: two option cards side by side. */
+.pfix-sp .pfix-sp__sec--types {
+  background: linear-gradient(180deg, #fbf7f2 0%, #ffffff 100%);
+}
+.pfix-sp .pfix-sp-types {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.pfix-sp .pfix-sp-type {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(24px, 3vw, 34px);
+  border: 1px solid var(--sp-line);
+  border-top: 4px solid var(--sp-orange);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(40, 20, 8, 0.05), 0 12px 32px rgba(40, 20, 8, 0.07);
+}
+.pfix-sp .pfix-sp-type + .pfix-sp-type {
+  border-top-color: var(--sp-lime);
+}
+.pfix-sp .pfix-sp-type__top {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pfix-sp .pfix-sp-type__logo img {
+  display: block;
+  width: auto;
+  max-width: 180px;
+  height: 34px;
+  object-fit: contain;
+  object-position: left center;
+}
+.pfix-sp .pfix-sp-type__name {
+  font-size: 26px;
+}
+.pfix-sp .pfix-sp-type__name span {
+  display: block;
+  margin-top: 2px;
+  color: var(--sp-muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+.pfix-sp .pfix-sp-type__text {
+  font-size: 17px;
+}
+.pfix-sp .pfix-sp-type .pfix-sp-list {
+  flex: 1;
+}
+.pfix-sp .pfix-sp-type__best {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #fff3ea;
+  color: var(--sp-ink);
+}
+.pfix-sp .pfix-sp-type + .pfix-sp-type .pfix-sp-type__best {
+  background: #f1f8e3;
+}
+.pfix-sp .pfix-sp-type__best b {
+  display: block;
+  color: var(--sp-orange-ink);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-sp .pfix-sp-type + .pfix-sp-type .pfix-sp-type__best b {
+  color: #4a7310;
+}
+.pfix-sp .pfix-sp__note a {
+  white-space: nowrap;
+}
+.pfix-sp .pfix-sp__note {
+  margin-top: 28px;
+  color: var(--sp-muted);
+  text-align: center;
+}
+
+/* Signs it's time: icon tiles. */
+.pfix-sp .pfix-sp__sec--signs {
+  background: #ffffff;
+}
+.pfix-sp .pfix-sp-signs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.pfix-sp .pfix-sp-sign {
+  padding: 24px;
+  border: 1px solid var(--sp-line);
+  border-radius: 16px;
+  background: #fffdfa;
+}
+.pfix-sp .pfix-sp-sign__icon {
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 16px;
+  padding: 11px;
+  border-radius: 12px;
+  background: #fff0e6;
+  color: var(--sp-orange-ink);
+}
+.pfix-sp .pfix-sp-sign h3 {
+  margin-bottom: 6px;
+  font-size: 19px;
+}
+.pfix-sp .pfix-sp-sign p {
+  color: var(--sp-muted);
+  font-size: 15.5px;
+}
+.pfix-sp .pfix-sp-signs__foot {
+  max-width: 820px;
+  margin: 32px auto 0;
+  text-align: center;
+}
+.pfix-sp .pfix-sp-signs__foot > p:first-child {
+  color: var(--sp-ink);
+  font-size: 17px;
+}
+.pfix-sp .pfix-sp-reads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  justify-content: center;
+  margin-top: 12px;
+  font-size: 15px;
+}
+.pfix-sp .pfix-sp-reads span {
+  color: var(--sp-muted);
+}
+
+/* What we check (gutters): photo beside a ticked list. */
+.pfix-sp .pfix-sp__sec--check {
+  background: #f6f8f1;
+}
+.pfix-sp .pfix-sp-check {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+.pfix-sp .pfix-sp-check__media {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(17, 24, 14, 0.16);
+  aspect-ratio: 4 / 3;
+}
+.pfix-sp .pfix-sp-check__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pfix-sp .pfix-sp-check .pfix-sp__head {
+  margin: 0 0 22px;
+  text-align: left;
+}
+.pfix-sp .pfix-sp-check .pfix-sp-link {
+  display: inline-block;
+  margin-top: 22px;
+}
+
+/* How it works: numbered steps on charcoal green. */
+.pfix-sp .pfix-sp__sec--steps {
+  background: var(--sp-dark);
+}
+.pfix-sp .pfix-sp__sec--steps .pfix-sp__title {
+  color: #ffffff;
+}
+.pfix-sp .pfix-sp-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.pfix-sp .pfix-sp-step {
+  position: relative;
+  margin: 0;
+  padding: 28px 24px 26px;
+  border: 1px solid rgba(195, 234, 121, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pfix-sp .pfix-sp-steps__n {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: var(--sp-lime);
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  place-items: center;
+}
+.pfix-sp .pfix-sp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.pfix-sp .pfix-sp-steps h3 {
+  margin-bottom: 8px;
+  color: #ffffff;
+  font-size: 20px;
+}
+.pfix-sp .pfix-sp-steps p {
+  color: #d5dccb;
+}
+
+/* Questions: an accordion (details/summary, no script needed). */
+.pfix-sp .pfix-sp__sec--faq {
+  background: #ffffff;
+}
+.pfix-sp .pfix-sp-faq {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.pfix-sp .pfix-sp-faq__item {
+  border: 1px solid var(--sp-line);
+  border-radius: 14px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pfix-sp .pfix-sp-faq__item[open] {
+  border-color: #f3c3a6;
+  box-shadow: 0 8px 24px rgba(40, 20, 8, 0.07);
+}
+.pfix-sp .pfix-sp-faq summary {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  color: var(--sp-ink);
+  font-size: 17.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
+  cursor: pointer;
+}
+.pfix-sp .pfix-sp-faq summary::-webkit-details-marker {
+  display: none;
+}
+.pfix-sp .pfix-sp-faq summary::after {
+  content: '';
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  border-right: 2.5px solid var(--sp-orange-ink);
+  border-bottom: 2.5px solid var(--sp-orange-ink);
+  transform: translateY(-3px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.pfix-sp .pfix-sp-faq__item[open] summary::after {
+  transform: translateY(3px) rotate(-135deg);
+}
+.pfix-sp .pfix-sp-faq__item p {
+  padding: 0 22px 20px;
+  color: var(--sp-text);
+}
+.pfix-sp .pfix-sp-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 960px;
+  margin: clamp(40px, 5vw, 56px) auto 0;
+  padding: clamp(26px, 3.4vw, 38px) clamp(24px, 4vw, 44px);
+  border-radius: 22px;
+  background: linear-gradient(120deg, #f26924 0%, #e2531a 100%);
+  box-shadow: 0 18px 40px rgba(242, 105, 36, 0.28);
+  color: #ffffff;
+}
+.pfix-sp .pfix-sp-cta__title {
+  color: #ffffff;
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.pfix-sp .pfix-sp-cta__text {
+  margin-top: 4px;
+  color: #fff3ea;
+  font-size: 17px;
+}
+.pfix-sp .pfix-sp-cta__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-sp .pfix-sp-btn,
+.pfix-sp .pfix-sp-btn:hover {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pfix-sp .pfix-sp-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-sp .pfix-sp-btn--primary,
+.pfix-sp .pfix-sp-btn--primary:hover {
+  background: #ffffff;
+  color: var(--sp-orange-ink);
+}
+.pfix-sp .pfix-sp-btn--primary:hover {
+  background: #fff3ea;
+}
+.pfix-sp .pfix-sp-btn--ghost,
+.pfix-sp .pfix-sp-btn--ghost:hover {
+  background: transparent;
+  color: #ffffff;
+}
+.pfix-sp .pfix-sp-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.pfix-sp .pfix-sp-cta a:focus-visible {
+  outline-color: #ffffff;
+}
+
+@media (max-width: 991.98px) {
+  .pfix-sp .pfix-sp-signs,
+  .pfix-sp .pfix-sp-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-sp .pfix-sp-check {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-sp .pfix-sp-check__media {
+    max-width: 640px;
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (max-width: 767.98px) {
+  .pfix-sp .pfix-sp-types,
+  .pfix-sp .pfix-sp-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-sp .pfix-sp-cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .pfix-sp .pfix-sp-cta__btns {
+    flex-direction: column;
+  }
+}
+@media (max-width: 575.98px) {
+  .pfix-sp .pfix-sp-signs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-sp .pfix-sp__inner {
+    padding: 0 16px;
+  }
+  .pfix-sp .pfix-sp-sign {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 18px;
+  }
+  .pfix-sp .pfix-sp-sign__icon {
+    grid-row: span 2;
+    margin: 0;
+  }
+  .pfix-sp .pfix-sp-faq summary {
+    padding: 16px 18px;
+    font-size: 16.5px;
+  }
+  .pfix-sp .pfix-sp-faq__item p {
+    padding: 0 18px 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-sp .pfix-sp-faq__item,
+  .pfix-sp .pfix-sp-faq summary::after {
+    transition: none;
+  }
+}
+
+/* Service estimate forms (service-forms.mjs): the site's own field and button styles
+   (.input-field, .submit-btn, .name-row) with labels for screen readers, the questions
+   about the job, and the "not switched on yet" message shown on submit. */
+.pfix-lead {
+  width: 100%;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.pfix-lead .pfix-lead__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+.pfix-lead .name-row {
+  margin: 0;
+}
+.pfix-lead .pfix-lead__field {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.pfix-lead .pfix-lead__field .input-field,
+.pfix-lead .pfix-lead__question .input-field {
+  width: 100%;
+  margin: 0;
+}
+.pfix-lead .pfix-lead__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.pfix-lead .pfix-lead__question {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+}
+.pfix-lead .input-field[aria-invalid='true'] {
+  outline: 2px solid #dc2626;
+  outline-offset: 0;
+}
+.pfix-lead .pfix-lead__consent {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 2px 0 0;
+  color: #4b5563;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.pfix-lead .pfix-lead__consent input {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+  accent-color: #f26924;
+}
+.pfix-lead .pfix-lead__consent a {
+  color: inherit;
+  text-decoration: underline;
+}
+.pfix-lead .pfix-lead__error {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+.pfix-lead .submit-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+.pfix-lead .pfix-lead__call {
+  margin: 0;
+  color: #374151;
+  font-size: 14px;
+  text-align: center;
+}
+.pfix-lead .pfix-lead__done {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fff7f1;
+  color: #374151;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
+.pfix-lead .pfix-lead__done[hidden],
+.pfix-lead .pfix-lead__form[hidden],
+.pfix-lead .pfix-lead__error[hidden] {
+  display: none;
+}
+.pfix-lead .pfix-lead__done:focus {
+  outline: none;
+}
+.pfix-lead .pfix-lead__done p {
+  margin: 0;
+}
+.pfix-lead .pfix-lead__done-title {
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+}
+.pfix-lead a.pfix-lead__done-call,
+.pfix-lead a.pfix-lead__done-call:hover {
+  display: block;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+}
+.form-card:has(.pfix-lead) .form-text-p {
+  text-align: center;
+}

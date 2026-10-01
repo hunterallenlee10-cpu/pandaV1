@@ -1,0 +1,196 @@
+// The Siding and Gutters pages (/siding/, /gutters/), made into one strong page per service.
+// Each had a hero with the lead form, two cards and then sections shared with every other
+// page: nothing on what the job involves, how to tell it's time, or common questions, and
+// /siding/ said nothing about the two siding types it offers (only their logos in the hero).
+//
+// Under the cards, each page now gets (content in custom/site-fixes/service-pages.json,
+// written only from what the site and its blog already say):
+//  - /siding/: the two siding types side by side (James Hardie fiber cement, CertainTeed
+//    vinyl), with an id the "Siding Types" card links to;
+//  - signs it's time to replace, with links to the blog posts they come from;
+//  - /gutters/: what is checked on every gutter job;
+//  - how the project works, in three steps;
+// (Lists are divs with list roles: the site's stylesheet forces white text and bullets on
+// every ul and li.)
+//  - common questions (and FAQPage structured data), then a call and estimate band whose
+//    estimate button leads to the hero's lead form.
+// /gutters/ also opens its project gallery on the Gutters photos (project-gallery.mjs).
+//
+// Applied by site-fixes.mjs. The block is rendered again on every run, so editing the
+// JSON and running `npm run update:site` updates the pages.
+import fs from 'node:fs';
+import path from 'node:path';
+import { ROOT } from './config.mjs';
+import { hasClass, esc, find, headEndOffset } from './html-edit.mjs';
+
+const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
+// The hero's estimate form (service-forms.mjs).
+const FORM_ID = 'pfix-lead-1';
+
+let data;
+export const servicePages = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'service-pages.json'), 'utf8')));
+/** The upgraded page for a path, if it has one. */
+export const servicePage = (pathname) => servicePages()[pathname] || null;
+
+const svg = (body) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
+const line = (d) => svg(`<path d="${d}" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>`);
+const ICONS = {
+  wave: line('M3 8c3-3 6 3 9 0s6 3 9 0M3 16c3-3 6 3 9 0s6 3 9 0'),
+  sun: line('M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'),
+  crack: line('M4 4h16v16H4zM12 4l-2 5 4 3-3 4 1 4'),
+  gap: line('M3 6h7v12H3zM14 6h7v12h-7M10 12h4'),
+  drop: line('M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z'),
+  window: line('M5 3h14v18H5zM5 12h14M12 3v18'),
+  rain: line('M7 15a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 9a4 4 0 0 1-1 7.9M8 19l-1 2M12 18l-1 3M16 19l-1 2'),
+  down: line('M8 3v9a4 4 0 0 0 4 4h6M15 13l3 3-3 3M5 21h4'),
+};
+const CHECK = line('M5 12.5l4.2 4.2L19 7');
+const PHONE_ICON = svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>');
+const ARROW = '<span aria-hidden="true"> →</span>';
+
+const picture = (src, w, h, alt, exists, cls = '') =>
+  `<picture${cls ? ` class="${cls}"` : ''}>${exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}` +
+  `<img src="${esc(src)}" alt="${esc(alt)}"${w && h ? ` width="${w}" height="${h}"` : ''} loading="lazy" decoding="async"></picture>`;
+
+const head = (key, eyebrow, title, intro) =>
+  `<div class="pfix-sp__head">${eyebrow ? `<p class="pfix-sp__eyebrow">${esc(eyebrow)}</p>` : ''}` +
+  `<h2 class="pfix-sp__title" id="pfix-sp-${key}">${esc(title)}</h2>${intro ? `<p class="pfix-sp__intro">${esc(intro)}</p>` : ''}</div>`;
+const section = (key, cls, inner, id = '') =>
+  `<section class="pfix-sp__sec pfix-sp__sec--${cls}"${id ? ` id="${esc(id)}"` : ''} aria-labelledby="pfix-sp-${key}"><div class="pfix-sp__inner">${inner}</div></section>`;
+
+function renderTypes(t, exists) {
+  const option = (o) =>
+    `<article class="pfix-sp-type" role="listitem">` +
+    `<div class="pfix-sp-type__top">${picture(o.logo[0], 0, 0, `${o.logo[1]} logo`, exists, 'pfix-sp-type__logo')}` +
+    `<h3 class="pfix-sp-type__name">${esc(o.name)} <span>by ${esc(o.brand)}</span></h3></div>` +
+    `<p class="pfix-sp-type__text">${esc(o.text)}</p>` +
+    `<div class="pfix-sp-list" role="list">${o.points.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
+    `<p class="pfix-sp-type__best"><b>Best for</b> ${esc(o.best)}</p>` +
+    `</article>`;
+  return section(
+    'types',
+    'types',
+    head('types', t.eyebrow, t.title, t.intro) +
+      `<div class="pfix-sp-types" role="list">${t.options.map(option).join('')}</div>` +
+      (t.note ? `<p class="pfix-sp__note">${esc(t.note)} <a href="#${FORM_ID}">Get a free estimate${ARROW}</a></p>` : ''),
+    t.id
+  );
+}
+
+function renderSigns(s) {
+  return section(
+    'signs',
+    'signs',
+    head('signs', '', s.title, s.intro) +
+      `<div class="pfix-sp-signs" role="list">` +
+      s.items
+        .map(([icon, title, text]) => `<div class="pfix-sp-sign" role="listitem"><span class="pfix-sp-sign__icon">${ICONS[icon] || ICONS.crack}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`)
+        .join('') +
+      `</div>` +
+      `<div class="pfix-sp-signs__foot"><p>${esc(s.footer)}</p>` +
+      (s.reads?.length
+        ? `<p class="pfix-sp-reads"><span>Read more:</span> ${s.reads.map(([href, text]) => `<a href="${esc(href)}">${esc(text)}</a>`).join('')}</p>`
+        : '') +
+      `</div>`
+  );
+}
+
+function renderCheck(c, exists) {
+  const [src, w, h] = c.img;
+  return section(
+    'check',
+    'check',
+    `<div class="pfix-sp-check">` +
+      `<div class="pfix-sp-check__media">${picture(src, w, h, '', exists)}</div>` +
+      `<div class="pfix-sp-check__body">${head('check', '', c.title, c.intro)}` +
+      `<div class="pfix-sp-list pfix-sp-list--big" role="list">${c.items.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
+      (c.link ? `<a class="pfix-sp-link" href="${esc(c.link[0])}">${esc(c.link[1])}${ARROW}</a>` : '') +
+      `</div></div>`
+  );
+}
+
+const renderSteps = (s) =>
+  section(
+    'steps',
+    'steps',
+    head('steps', '', s.title) +
+      `<div class="pfix-sp-steps" role="list">${s.items.map(([title, text], i) => `<div class="pfix-sp-step" role="listitem"><span class="pfix-sp-steps__n" aria-hidden="true">${i + 1}</span><h3><span class="pfix-sp-sr">Step ${i + 1}: </span>${esc(title)}</h3><p>${esc(text)}</p></div>`).join('')}</div>`
+  );
+
+const renderFaq = (f, cta) =>
+  section(
+    'faq',
+    'faq',
+    head('faq', '', f.title) +
+      `<div class="pfix-sp-faq">${f.items
+        .map(([q, a]) => `<details class="pfix-sp-faq__item"><summary><span>${esc(q)}</span></summary><p>${esc(a)}</p></details>`)
+        .join('')}</div>` +
+      (cta
+        ? `<div class="pfix-sp-cta"><div><p class="pfix-sp-cta__title">${esc(cta.title)}</p><p class="pfix-sp-cta__text">${esc(cta.text)}</p></div>` +
+          `<div class="pfix-sp-cta__btns"><a class="pfix-sp-btn pfix-sp-btn--primary" href="#${FORM_ID}">Get a free estimate</a>` +
+          `<a class="pfix-sp-btn pfix-sp-btn--ghost" href="${PHONE.href}">${PHONE_ICON}Call ${PHONE.text}</a></div></div>`
+        : '')
+  );
+
+/** The block of new sections for one page. */
+export function renderServicePage(page, { siteDir } = {}) {
+  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+  return (
+    `<div class="pfix-sp pfix-sp--${esc(page.service)}" data-pfix-sp>` +
+    (page.types ? renderTypes(page.types, exists) : '') +
+    (page.signs ? renderSigns(page.signs) : '') +
+    (page.check ? renderCheck(page.check, exists) : '') +
+    (page.steps ? renderSteps(page.steps) : '') +
+    (page.faq ? renderFaq(page.faq, page.cta) : '') +
+    `</div>`
+  );
+}
+
+const faqLd = (page, url) =>
+  `<script type="application/ld+json" data-pfix-sp-ld>${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    ...(url ? { url } : {}),
+    mainEntity: page.faq.items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  }).replace(/</g, '\\u003c')}</script>`;
+
+/**
+ * Adds (or renders again) the new sections under the page's service cards, and the FAQ's
+ * structured data. Returns true when the page has them.
+ */
+export function collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes) {
+  const page = servicePage(pathname);
+  if (!page) return false;
+  const block = renderServicePage(page, { siteDir });
+  const own = find(doc, (c) => c.attrs?.some((a) => a.name === 'data-pfix-sp'));
+  if (own) {
+    const { startOffset, endOffset } = own.sourceCodeLocation;
+    if (html.slice(startOffset, endOffset) !== block) {
+      ed.outer(own, block);
+      changes.push('service page: sections rendered again');
+    }
+  } else {
+    // Under the section with the service cards (its grid, or the cards as captured).
+    const cards = find(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'pfix-svc-grid') || hasClass(x, 'Service-cards')));
+    if (!cards) {
+      console.warn(`site-fixes: ${pathname}: no service cards section, service page sections not added`);
+      return false;
+    }
+    const end = cards.sourceCodeLocation.endOffset;
+    ed.replace(end, end, block);
+    const parts = [page.types && 'siding types', page.signs && 'signs it’s time', page.check && 'what we check', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
+    changes.push(`service page: added ${parts.join(', ')} under the service cards`);
+  }
+  if (page.faq) {
+    const ld = faqLd(page, siteOrigin ? siteOrigin + pathname : '');
+    const old = find(doc, (c) => c.tagName === 'script' && c.attrs?.some((a) => a.name === 'data-pfix-sp-ld'));
+    if (old) {
+      const { startOffset, endOffset } = old.sourceCodeLocation;
+      if (html.slice(startOffset, endOffset) !== ld) ed.outer(old, ld);
+    } else {
+      const headEnd = headEndOffset(html);
+      if (headEnd >= 0) ed.replace(headEnd, headEnd, ld);
+    }
+  }
+  return true;
+}

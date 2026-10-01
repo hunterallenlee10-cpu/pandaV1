@@ -86,11 +86,13 @@ function readOwn(box) {
 }
 
 /** The gallery's markup: tabs, the carousel (every photo, in category order) and its controls. */
-export function renderProjectGallery({ categories, photos }, { uid = 'ppg-1' } = {}) {
+export function renderProjectGallery({ categories, photos }, { uid = 'ppg-1', selected = '' } = {}) {
   const groups = categories.map((c) => ({ ...c, photos: photos.filter((p) => p.cat === c.id) })).filter((g) => g.photos.length);
+  // The tab shown first: the category named `selected`, or the first one.
+  const first = Math.max(0, groups.findIndex((g) => g.name === selected));
   const tabs = groups.map(
     (g, i) =>
-      `<button class="ppg__tab" type="button" role="tab" id="${uid}-tab-${esc(g.id)}" aria-controls="${uid}-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-cat="${esc(g.id)}">` +
+      `<button class="ppg__tab" type="button" role="tab" id="${uid}-tab-${esc(g.id)}" aria-controls="${uid}-panel" aria-selected="${i === first}" tabindex="${i === first ? 0 : -1}" data-cat="${esc(g.id)}">` +
       `<span class="ppg__tab-name">${esc(g.name)}</span>` +
       `<span class="ppg__tab-count">${g.photos.length}<span class="ppg-sr"> photos</span></span>` +
       `</button>`
@@ -112,7 +114,7 @@ export function renderProjectGallery({ categories, photos }, { uid = 'ppg-1' } =
     // Without JavaScript every photo is in one sideways-scrolling row (no tabs or arrows).
     `<noscript><style>.ppg__tabs,.ppg__controls{display:none!important}</style></noscript>` +
     `<div class="ppg__tabs" role="tablist" aria-label="Project categories">${tabs.join('')}</div>` +
-    `<div class="ppg__panel" id="${uid}-panel" role="tabpanel" aria-labelledby="${uid}-tab-${esc(groups[0].id)}">` +
+    `<div class="ppg__panel" id="${uid}-panel" role="tabpanel" aria-labelledby="${uid}-tab-${esc(groups[first].id)}">` +
     `<div class="ppg__viewport">` +
     // divs with list roles: the site's stylesheet forces bullets and colours on every ul/li.
     `<div class="ppg__track" role="list">${slides.join('')}</div>` +
@@ -133,9 +135,10 @@ const range = (n) => [n.sourceCodeLocation.startOffset, n.sourceCodeLocation.end
  * Collects the project galleries of one page into the editor. Works on the page as
  * delivered, on a rendered snapshot and on a page an earlier build already fixed (whose
  * gallery is rendered again from its own markup), so it gives the same result on all
- * three. Returns true if the page now has a gallery.
+ * three. `selected`: the category whose tab is shown first (by name; the first one if the
+ * page has no such category). Returns true if the page now has a gallery.
  */
-export function collectProjectGalleries(doc, ed, changes = []) {
+export function collectProjectGalleries(doc, ed, changes = [], { selected = '' } = {}) {
   let count = 0;
   // The slider version only: /gallery/ shows the same photos as a full grid (.ee-gallery--grid).
   const isSlider = (c) => hasClass(c, 'Project-swipper') && find(c, (x) => hasClass(x, 'bde-gallery')) && find(c, (x) => hasClass(x, 'ee-gallery--slider'));
@@ -147,7 +150,7 @@ export function collectProjectGalleries(doc, ed, changes = []) {
     const used = data.categories.filter((c) => data.photos.some((p) => p.cat === c.id));
     if (!used.length) continue;
     const uid = `ppg-${++count}`;
-    ed.outer(box, renderProjectGallery(data, { uid }));
+    ed.outer(box, renderProjectGallery(data, { uid, selected }));
     const n = data.photos.filter((p) => used.some((c) => c.id === p.cat)).length;
     if (own) {
       changes.push(`project gallery: ${n} photos in ${used.length} categories (rendered again)`);

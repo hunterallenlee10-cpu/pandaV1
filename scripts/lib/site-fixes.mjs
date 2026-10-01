@@ -76,6 +76,14 @@
 //    exist on the main site (/powerwash/, /window-replacement/: Huntersville city-site
 //    pages) or to the wrong one (siding "Siding Types" -> commercial roof types); they now
 //    lead to the contact page.
+//  - /siding/, /gutters/: one strong page per service, with new sections under the cards
+//    (service-pages.mjs, custom/site-fixes/service-pages.json); the "Siding Types" card
+//    leads to the siding types section; /gutters/ opens its gallery on the Gutters photos.
+//  - Lead forms (every page with one): the same "10% OFF Roof Replacement" form everywhere,
+//    sending to Salesforce (no longer used) and others and asking for the visitor's location
+//    on load. Each form card now has a form for its page (the page's service, the roofing
+//    offer on roofing pages, or a general one), not connected to anything yet, and the old
+//    scripts are gone from every page (service-forms.mjs, custom/site-fixes/service-forms.json).
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -90,11 +98,13 @@ import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, ed
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
+import { collectServicePage, servicePage } from './service-pages.mjs';
+import { collectServiceForms } from './service-forms.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|about section colors|awards section)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|about section colors|awards section)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -176,14 +186,16 @@ const GRID_PHOTOS = {
   '/commercial-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
 };
 // Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
-// page they are on and their title. Each sits on the page that covers its service (/gutters/
-// is gutter installations, /siding/ siding replacements; there is no siding types page), so
-// they lead to the contact page.
+// page they are on, their title and the addresses they had (live, or in an earlier build).
+// Each sits on the page that covers its service (/gutters/ is gutter installations,
+// /siding/ siding replacements), so those lead to the contact page; "Siding Types" leads to
+// the siding types section further down its page (service-pages.mjs).
 const GRID_CARD_FIXES = [
-  { page: '/gutters/', title: 'Gutter Installations', from: '/powerwash/', href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
-  { page: '/siding/', title: 'Siding Replacements', from: '/window-replacement/', href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
-  { page: '/siding/', title: 'Siding Types', from: '/commercial-roofing/roof-types/', href: '/contact-us/', cta: 'Ask about siding options', img: ROOF_TYPES_CARD.img },
+  { page: '/gutters/', title: 'Gutter Installations', from: ['/powerwash/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
+  { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
+  { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
+const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -483,6 +495,18 @@ function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
 function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   const exists = fileExists(siteDir);
   let done = false;
+  // A grid an earlier build already made: its cards' links mended since then.
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'pfix-svc') && c.parentNode && hasClass(c.parentNode, 'pfix-svc-grid__item'))) {
+    const title = clean(textOf(find(a, (c) => hasClass(c, 'pfix-svc__title')) || { childNodes: [] }));
+    const href = attr(a, 'href') || '';
+    const fix = gridCardFix(pathname, title, href);
+    if (!fix || fix.href === href) continue;
+    ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
+    const more = find(a, (c) => hasClass(c, 'pfix-svc__more'));
+    if (more) ed.inner(more, `${esc(fix.cta)}<span aria-hidden="true"> →</span>`);
+    changes.push(`services grid: link mended: "${title}" ${href} -> ${fix.href}`);
+    done = true;
+  }
   for (const grid of findAll(doc, (c) => hasClass(c, 'Service-cards'))) {
     const kids = (grid.childNodes || []).filter((c) => c.tagName);
     if (!kids.length || !kids.every((c) => c.tagName === 'a' && hasClass(c, 'service-link-card'))) continue;
@@ -492,7 +516,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const text = clean(textOf(find(a, (c) => hasClass(c, 'team-para')) || { childNodes: [] }));
       // (by its corrected address, where it has one: RENAMED_PATHS in config.mjs)
       const href = renamedPath(attr(a, 'href') || '');
-      const fix = GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from === href);
+      const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
       return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
@@ -565,7 +589,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // "Our Project Gallery": the slider started three times over -> one tidy gallery
   // (project-gallery.mjs, custom/project-gallery/).
-  if (collectProjectGalleries(doc, ed, changes)) used.gallery = true;
+  if (collectProjectGalleries(doc, ed, changes, { selected: servicePage(pathname)?.gallery })) used.gallery = true;
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
   // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that
@@ -912,6 +936,14 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  // /siding/, /gutters/: what the job involves, signs it's time, how it works, questions.
+  if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;
+  // Lead forms: a form for the page's service (or the general one) in each form card, and
+  // the old form's scripts removed (service-forms.mjs).
+  if (collectServiceForms(doc, html, ed, { pathname }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
 
   // A share title copied from the About page ("Panda Exteriors | About Us") on another
   // page: the page's own title (what the browser tab and search results show).

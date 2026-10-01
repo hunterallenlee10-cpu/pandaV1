@@ -1,0 +1,138 @@
+{
+  "/siding/": {
+    "service": "siding",
+    "types": {
+      "id": "siding-types",
+      "eyebrow": "Siding types",
+      "title": "Fiber Cement or Vinyl? Compare Your Siding Options",
+      "intro": "We install James Hardie fiber cement and CertainTeed vinyl siding in a wide range of colors and styles. Both stand up to East Coast weather; they differ in look, upkeep and cost.",
+      "options": [
+        {
+          "name": "Fiber cement",
+          "brand": "James Hardie",
+          "logo": ["/wp-content/uploads/2025/04/brand-jameshardie.png", "James Hardie"],
+          "text": "Heavy-duty boards made from cement, sand and wood fibers, with the look of painted wood.",
+          "points": [
+            "Crisp lap, shingle and panel styles that look like real wood",
+            "Resists rot, insects, heat and storms",
+            "Noncombustible: it won’t melt or burn",
+            "Can be repainted if you want a new color later"
+          ],
+          "best": "A high-end look and the toughest finish"
+        },
+        {
+          "name": "Vinyl",
+          "brand": "CertainTeed",
+          "logo": ["/wp-content/uploads/2025/04/brand-certainteed.png", "CertainTeed"],
+          "text": "Lightweight panels with the color running all the way through, so they never need painting.",
+          "points": [
+            "A wide choice of colors, textures and profiles",
+            "Never needs painting; cleans up with a garden hose",
+            "Lightweight, so installation is quicker",
+            "Usually the most budget-friendly way to re-side a home"
+          ],
+          "best": "Low upkeep and a budget-friendly refresh"
+        }
+      ],
+      "note": "Not sure which suits your home? We’ll talk it through at your free estimate."
+    },
+    "signs": {
+      "title": "Signs It’s Time for New Siding",
+      "intro": "Small siding problems let water, pests and outside air get in behind your walls. Watch for these:",
+      "items": [
+        ["wave", "Warping or buckling", "Panels look wavy, bubbled or pulled away from the wall, often from heat or trapped moisture."],
+        ["sun", "Heavy fading or chalking", "The color is washed out or leaves a powdery film on your hand: the surface is breaking down."],
+        ["crack", "Cracks, splits or holes", "Even small cracks let wind-driven rain and insects in behind the siding."],
+        ["gap", "Loose or missing pieces", "Gaps where panels no longer connect leave the wall underneath exposed."],
+        ["drop", "Moisture stains or soft spots", "Stains near seams and corners can mean water is already getting behind the siding."],
+        ["window", "Cracked caulk around windows and doors", "Gaps around openings are an easy way in for water and drafts."]
+      ],
+      "footer": "If you’re seeing more than one of these, or the damage is spread across your home, it’s usually time for new siding.",
+      "reads": [
+        ["/blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/", "Summer siding problems homeowners ignore"],
+        ["/blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/", "When fading means it’s time to replace"]
+      ]
+    },
+    "steps": {
+      "title": "How Your Siding Project Works",
+      "items": [
+        ["Free estimate", "We look over your home’s siding, talk through what you want and give you a clear estimate, at no cost."],
+        ["Choose your siding and financing", "Pick fiber cement or vinyl in the color and style you like, and ask about our no-payment and no-interest financing options."],
+        ["Installed by our certified team", "Our trained and certified crew installs your new siding, with a project manager keeping you updated along the way."]
+      ]
+    },
+    "faq": {
+      "title": "Siding Questions, Answered",
+      "items": [
+        ["How do I know it’s time to replace my siding?", "Look for warping, heavy fading or chalking, cracks, loose pieces and moisture stains. When the siding is also brittle, or the damage is spread across your home, it no longer protects your home the way it should, and new siding is the right fix. We’ll take a look at your free estimate."],
+        ["Is faded siding a problem?", "Some fading is normal with age, especially on walls that get strong afternoon sun. It becomes a concern when the siding also feels chalky or brittle, or is cracking, warping or coming loose, because then it no longer protects your home the way it should."],
+        ["Which siding brands do you install?", "We partner with James Hardie for fiber cement siding and CertainTeed for vinyl siding, so you can choose from a wide range of colors and styles."],
+        ["Can I replace my siding, roof and gutters at the same time?", "Yes. Roofing, siding and gutters work together as one system, so if all three are aging at once, doing them together gives you one coordinated project, a matching look and no repeat labor later. If only one is worn out, a focused replacement may be all you need."],
+        ["Do you offer financing?", "Yes. We offer flexible financing, including no-payment and no-interest loan options. Ask about them at your free estimate."],
+        ["Are you licensed and insured?", "Yes, we’re fully licensed and insured, and our ownership team brings 30 years of combined experience in home remodeling."]
+      ]
+    },
+    "cta": {
+      "title": "Ready for new siding?",
+      "text": "Get a free, no-pressure estimate from our local team."
+    }
+  },
+  "/gutters/": {
+    "service": "gutters",
+    "gallery": "Gutters",
+    "signs": {
+      "title": "Signs It’s Time for New Gutters",
+      "intro": "Your gutters protect your roofline, fascia, siding, landscaping and foundation. When they start to fail, the damage spreads quickly. Watch for these:",
+      "items": [
+        ["gap", "Pulling away from the house", "Gaps behind the gutter let water soak the fascia, soffit and siding."],
+        ["wave", "Sagging or uneven sections", "Gutters need a slight slope toward the downspouts. Dips hold standing water, which adds weight and speeds up wear."],
+        ["crack", "Cracks, rust or split seams", "Every open joint is another leak, and rust means the system is near the end of its life."],
+        ["rain", "Overflowing in normal rain", "A sign of clogs, the wrong pitch, undersized gutters or blocked downspouts."],
+        ["drop", "Stained siding or rotting fascia", "Peeling paint and dark streaks near the roofline are often the first sign water is escaping."],
+        ["down", "Downspouts that don’t drain away", "Clogged, crushed or short downspouts dump water right beside your foundation."]
+      ],
+      "footer": "Damage in several places, sagging along the run or rust usually means a new gutter system is the better long-term fix.",
+      "reads": [
+        ["/blog/gutters-after-winter-signs-its-time-for-repair-or-replacement/", "Gutters after winter: what to look for"],
+        ["/blog/gutters-after-winter-cleaning-realignment-and-downspout-flow-tests/", "Cleaning, realignment and downspout flow tests"]
+      ]
+    },
+    "check": {
+      "title": "What We Look At on Every Gutter Job",
+      "intro": "A gutter system is only as good as its drainage path, so we look at more than the gutters themselves:",
+      "img": ["/wp-content/uploads/2025/04/Gutter-System.jpg", 1200, 800],
+      "items": [
+        "The gutters: seams, corners, end caps and fasteners",
+        "The fascia boards behind them, for soft or rotting wood",
+        "The pitch, so water runs to the downspouts instead of standing",
+        "Downspout size, placement and elbows",
+        "Where the water ends up: well away from your foundation",
+        "Whether gutter guards make sense to keep leaves and debris out"
+      ],
+      "link": ["/gutters/gutter-guards/", "About gutter guards"]
+    },
+    "steps": {
+      "title": "How Your Gutter Project Works",
+      "items": [
+        ["Free estimate", "We check your gutters, fascia and drainage and give you a clear estimate, at no cost."],
+        ["Choose your system", "Pick gutters that blend in with your home, and add gutter guards if you’d like to stop clogs."],
+        ["Installed by our certified team", "Our trained and certified crew installs your new gutters, with a project manager keeping you updated along the way."]
+      ]
+    },
+    "faq": {
+      "title": "Gutter Questions, Answered",
+      "items": [
+        ["How do I know it’s time for new gutters?", "Watch for gutters pulling away from the house, sagging sections, cracks, rust or split seams, and overflowing in normal rain. Damage in several places or along the whole run means a new system is the better long-term fix. We’ll take a look at your free estimate."],
+        ["Why are my gutters overflowing?", "Sometimes it’s just a clog of leaves, shingle granules or debris. If they overflow in normal rain even when clear, the gutters may be pitched wrong, undersized or loose, or the downspouts may not be draining."],
+        ["Can failing gutters damage my home?", "Yes. Water that escapes or backs up can rot the fascia and soffit, stain and damage siding, wash out landscaping and collect near your foundation."],
+        ["Do I need gutter guards?", "Gutter guards keep leaves, debris and pests out of your gutters, so they don’t clog and you don’t have to climb up to clean them. We can add them when we install your new gutters."],
+        ["Can I replace my gutters and roof at the same time?", "Yes. Your roof and gutters work together to move water off and away from your home, so if both are aging, doing them together means one coordinated project and no repeat labor later."],
+        ["Are you licensed and insured?", "Yes, we’re fully licensed and insured, and our ownership team brings 30 years of combined experience in home remodeling."]
+      ]
+    },
+    "cta": {
+      "title": "Ready for new gutters?",
+      "text": "Get a free, no-pressure estimate from our local team."
+    }
+  }
+}

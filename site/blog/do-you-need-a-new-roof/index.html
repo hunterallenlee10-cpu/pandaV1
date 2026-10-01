@@ -1585,9 +1585,9 @@ Residential Roofing
 March 2, 2024
 </div></div><div class="oxy-container-945-201 oxy-container text-section"></div></div><div class="oxy-container-945-193 oxy-container form-col">
 <div id="open-form-button" class="oxy-container-333-100 oxy-container form-card gap-2 p-4"><p class="oxy-text-333-106 oxy-text heading-form">
-10% OFF Roof Replacement
+Free Estimate
 </p><p class="oxy-text-333-107 oxy-text text-black form-text-p">
-Limited Time Savings - Act Now!
+Roofing, siding, gutters, solar and more. Ask about 10% off roof replacement.
 </p><picture class="oxy-image-333-101 oxy-image rating width-full" loading="lazy">
 <source type="image/webp" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png.webp 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png.webp 300w" sizes="(max-width: 600px) 100vw, 600px">
 <img src="/wp-content/uploads/2025/03/admin-ajax-2.png" alt="Google-reviews" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png 300w" sizes="(max-width: 600px) 100vw, 600px">
@@ -1615,91 +1615,7 @@ Limited Time Savings - Act Now!
 <div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black"><a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a></div>
 
 
-</div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="oxy-html-code-333-108 oxy-html-code">
-<form id="lead-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST" onsubmit="submitToZapier(event)">
-    <input type="hidden" name="oid" value="00DHo000002gd1g">
-    <input type="hidden" name="retURL" id="retURL" value="https://pandaexteriors.com/blog/do-you-need-a-new-roof/thank-you/">
-    <input type="hidden" name="lead_source" value="Internet Lead">
-    <input type="hidden" name="00NPs00000PTbNd" id="page-url-field" value="https://pandaexteriors.com/blog/do-you-need-a-new-roof/">
-    <input type="hidden" name="00NPs00000PTbNh" id="hatch-tag" value="Website Lead">
-    <div class="cf7-container">
-        <div class="name-row">
-            <input type="text" name="first_name" class="input-field" placeholder="First Name" required="">
-            <input type="text" name="last_name" class="input-field" placeholder="Last Name" required="">
-        </div>
-        <div class="name-row">
-            <input type="email" name="email" class="input-field" placeholder="Email Address" required="">
-            <input type="tel" name="phone" class="input-field" placeholder="Phone Number" required="">
-        </div>
-        <input type="text" id="address-field" class="input-field pac-target-input" placeholder="Address" autocomplete="off" style="display: block;">
-        <input type="hidden" name="city" id="city">
-        <input type="hidden" name="state" id="state">
-        <input type="hidden" name="zip" id="zip">
-        <input type="hidden" name="country" id="country">
-        <input type="hidden" name="street" id="street">
-        <label class="field-label">
-            Project Type
-            <select name="00NHo00000Xc7bb" id="00NHo00000Xc7bb" class="input-field" required="">
-                <option value="">--Select--</option>
-                <option value="Roofing">Roofing</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Gutters">Gutters</option>
-                <option value="Solar">Solar</option>
-                <option value="Attic Insulation">Attic Insulation</option>
-            </select>
-        </label>
-        <div class="form-check mb-3" style="color: white; font-size: 14px;">
-            <label class="form-check-label check-detail" for="consentCheckboxText">
-                <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxText">
-                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
-            </label>
-        </div>
-        <div class="form-check mb-3" style="color: white; font-size: 14px;">
-            <label class="form-check-label check-detail" for="consentCheckboxEmail">
-                <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxEmail">
-                I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.
-            </label>
-        </div>
-        <div>
-            <button type="submit" class="submit-btn">Get a Free Roof Inspection</button>
-        </div>
-    </div>
-</form>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const retURL = document.getElementById('retURL');
-    const pageUrlField = document.getElementById('page-url-field');
-    const currentPath = window.location.pathname;
-    const baseThankYou = '/thank-you/';
-    
-    // Set dynamic retURL
-    if (currentPath.includes('/thank-you/')) {
-        retURL.value = window.location.href;
-    } else if (currentPath.match(/\/[a-zA-Z-]+\//)) {
-        retURL.value = `https://pandaexteriors.com${currentPath}thank-you/`;
-    } else {
-        retURL.value = baseThankYou;
-    }
-    
-    // Set page URL field
-    pageUrlField.value = window.location.href;
-});
-
-function submitToZapier(event) {
-    const form = event.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => { data[key] = value; });
-    
-    fetch('https://hooks.zapier.com/hooks/catch/22066473/u3rc0jt/', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-    }).catch(error => console.error('Zapier submission error:', error));
-}
-</script>
-</div></div>
+</div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="pfix-lead" data-pfix-lead="general"><form class="pfix-lead__form cf7-container" id="pfix-lead-1" method="post" data-pfix-lead-form novalidate><input type="hidden" name="service" value="general"><input type="hidden" name="page" value="/blog/do-you-need-a-new-roof/"><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">First name</span><input type="text" name="first_name" id="pfix-lead-1-first_name" class="input-field" placeholder="First name" autocomplete="given-name" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Last name</span><input type="text" name="last_name" id="pfix-lead-1-last_name" class="input-field" placeholder="Last name" autocomplete="family-name" required></label></div><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">Email</span><input type="email" name="email" id="pfix-lead-1-email" class="input-field" placeholder="Email" autocomplete="email" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Phone</span><input type="tel" name="phone" id="pfix-lead-1-phone" class="input-field" placeholder="Phone" autocomplete="tel" required></label></div><label class="pfix-lead__field"><span class="pfix-lead__sr">Street address, city, ZIP</span><input type="text" name="address" id="pfix-lead-1-address" class="input-field" placeholder="Street address, city, ZIP" autocomplete="street-address" required></label><label class="field-label pfix-lead__question" for="pfix-lead-1-project">What do you need?<select name="project" id="pfix-lead-1-project" class="input-field" required><option value="" selected disabled>Choose one</option><option>Roof replacement</option><option>Roof inspection</option><option>Siding</option><option>Gutters or gutter guards</option><option>Solar</option><option>Attic insulation</option><option>Commercial roofing</option><option>Something else</option></select></label><label class="pfix-lead__consent"><input type="checkbox" name="sms_consent" id="pfix-lead-1-sms_consent"><span>I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. Reply HELP for help and STOP to cancel. I also agree to Panda Exteriors’s <a href="/terms-and-conditions/" target="_blank">Terms of Use</a> and <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label><label class="pfix-lead__consent"><input type="checkbox" name="email_consent" id="pfix-lead-1-email_consent"><span>I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.</span></label><p class="pfix-lead__error" role="alert" hidden></p><button type="submit" class="submit-btn">Get My Free Estimate</button><noscript><p class="pfix-lead__call">Or call <a href="tel:+18772138536">(877) 213-8536</a> to book your free estimate.</p></noscript></form><div class="pfix-lead__done" role="status" tabindex="-1" hidden><p class="pfix-lead__done-title">Thanks<span data-pfix-lead-name></span>!</p><p>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p><a class="submit-btn pfix-lead__done-call" href="tel:+18772138536">Call (877) 213-8536</a></div></div></div>
 </div></div></div></div><div class="oxy-container-945-141 oxy-container Blog-section" data-rocket-lazy-bg-454513c1-6d26-49f5-9a1f-52c41a86ffa0="excluded"><div class="oxy-container-945-102 oxy-container container"><div class="oxy-container-945-169 oxy-container Blog-detail-img d-none pfix-fit"><img width="300" height="200" class="oxy-image-945-104 oxy-image Blog-Image video-overlay" src="/wp-content/uploads/2025/03/ceiling-with-leak.2012091303550-300x200-1.jpg" sizes="(max-width: 300px) 100vw, 300px"><div class="oxy-container-945-159 oxy-container hero-content"><div class="oxy-container-945-160 oxy-container hero-container container mobile-hero py-3"><div class="oxy-container-945-161 oxy-container hero-text-col"><div class="oxy-container-945-162 oxy-container text-section pfix-fit"><h1 class="oxy-text-945-101 oxy-text Blog-Heading text-white text-shadow">
 Do you need a new roof?
 </h1><div class="oxy-text-945-106 oxy-text d-inline tag-text">
@@ -1708,9 +1624,9 @@ Attic Insulation
 March 2, 2024
 </div></div></div><div class="oxy-container-945-167 oxy-container form-col">
 <div id="open-form-button" class="oxy-container-333-100 oxy-container form-card gap-2 p-4"><p class="oxy-text-333-106 oxy-text heading-form">
-10% OFF Roof Replacement
+Free Estimate
 </p><p class="oxy-text-333-107 oxy-text text-black form-text-p">
-Limited Time Savings - Act Now!
+Roofing, siding, gutters, solar and more. Ask about 10% off roof replacement.
 </p><picture class="oxy-image-333-101 oxy-image rating width-full" loading="lazy">
 <source type="image/webp" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png.webp 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png.webp 300w" sizes="(max-width: 600px) 100vw, 600px">
 <img src="/wp-content/uploads/2025/03/admin-ajax-2.png" alt="Google-reviews" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png 300w" sizes="(max-width: 600px) 100vw, 600px">
@@ -1738,91 +1654,7 @@ Limited Time Savings - Act Now!
 <div id="total-reviews" style="text-align: center; font-family: Roboto, sans-serif; color:black"><a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a></div>
 
 
-</div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="oxy-html-code-333-108 oxy-html-code">
-<form id="lead-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST" onsubmit="submitToZapier(event)">
-    <input type="hidden" name="oid" value="00DHo000002gd1g">
-    <input type="hidden" name="retURL" id="retURL" value="">
-    <input type="hidden" name="lead_source" value="Internet Lead">
-    <input type="hidden" name="00NPs00000PTbNd" id="page-url-field" value="">
-    <input type="hidden" name="00NPs00000PTbNh" id="hatch-tag" value="Website Lead">
-    <div class="cf7-container">
-        <div class="name-row">
-            <input type="text" name="first_name" class="input-field" placeholder="First Name" required="">
-            <input type="text" name="last_name" class="input-field" placeholder="Last Name" required="">
-        </div>
-        <div class="name-row">
-            <input type="email" name="email" class="input-field" placeholder="Email Address" required="">
-            <input type="tel" name="phone" class="input-field" placeholder="Phone Number" required="">
-        </div>
-        <input type="text" id="address-field" class="input-field" placeholder="Address">
-        <input type="hidden" name="city" id="city">
-        <input type="hidden" name="state" id="state">
-        <input type="hidden" name="zip" id="zip">
-        <input type="hidden" name="country" id="country">
-        <input type="hidden" name="street" id="street">
-        <label class="field-label">
-            Project Type
-            <select name="00NHo00000Xc7bb" id="00NHo00000Xc7bb" class="input-field" required="">
-                <option value="">--Select--</option>
-                <option value="Roofing">Roofing</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Gutters">Gutters</option>
-                <option value="Solar">Solar</option>
-                <option value="Attic Insulation">Attic Insulation</option>
-            </select>
-        </label>
-        <div class="form-check mb-3" style="color: white; font-size: 14px;">
-            <label class="form-check-label check-detail" for="consentCheckboxText">
-                <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxText">
-                I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. 3 Msgs are typically sent per appointment request. Reply HELP for help and STOP to cancel. By checking this box, I am also agreeing to Panda Exteriors’s <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of Use</a> and <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
-            </label>
-        </div>
-        <div class="form-check mb-3" style="color: white; font-size: 14px;">
-            <label class="form-check-label check-detail" for="consentCheckboxEmail">
-                <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckboxEmail">
-                I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.
-            </label>
-        </div>
-        <div>
-            <button type="submit" class="submit-btn">Get a Free Roof Inspection</button>
-        </div>
-    </div>
-</form>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const retURL = document.getElementById('retURL');
-    const pageUrlField = document.getElementById('page-url-field');
-    const currentPath = window.location.pathname;
-    const baseThankYou = '/thank-you/';
-    
-    // Set dynamic retURL
-    if (currentPath.includes('/thank-you/')) {
-        retURL.value = window.location.href;
-    } else if (currentPath.match(/\/[a-zA-Z-]+\//)) {
-        retURL.value = `https://pandaexteriors.com${currentPath}thank-you/`;
-    } else {
-        retURL.value = baseThankYou;
-    }
-    
-    // Set page URL field
-    pageUrlField.value = window.location.href;
-});
-
-function submitToZapier(event) {
-    const form = event.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => { data[key] = value; });
-    
-    fetch('https://hooks.zapier.com/hooks/catch/22066473/u3rc0jt/', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-    }).catch(error => console.error('Zapier submission error:', error));
-}
-</script>
-</div></div>
+</div><div class="oxy-container-333-102 oxy-container rating-star-text-container"></div><div class="pfix-lead" data-pfix-lead="general"><form class="pfix-lead__form cf7-container" id="pfix-lead-2" method="post" data-pfix-lead-form novalidate><input type="hidden" name="service" value="general"><input type="hidden" name="page" value="/blog/do-you-need-a-new-roof/"><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">First name</span><input type="text" name="first_name" id="pfix-lead-2-first_name" class="input-field" placeholder="First name" autocomplete="given-name" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Last name</span><input type="text" name="last_name" id="pfix-lead-2-last_name" class="input-field" placeholder="Last name" autocomplete="family-name" required></label></div><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">Email</span><input type="email" name="email" id="pfix-lead-2-email" class="input-field" placeholder="Email" autocomplete="email" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Phone</span><input type="tel" name="phone" id="pfix-lead-2-phone" class="input-field" placeholder="Phone" autocomplete="tel" required></label></div><label class="pfix-lead__field"><span class="pfix-lead__sr">Street address, city, ZIP</span><input type="text" name="address" id="pfix-lead-2-address" class="input-field" placeholder="Street address, city, ZIP" autocomplete="street-address" required></label><label class="field-label pfix-lead__question" for="pfix-lead-2-project">What do you need?<select name="project" id="pfix-lead-2-project" class="input-field" required><option value="" selected disabled>Choose one</option><option>Roof replacement</option><option>Roof inspection</option><option>Siding</option><option>Gutters or gutter guards</option><option>Solar</option><option>Attic insulation</option><option>Commercial roofing</option><option>Something else</option></select></label><label class="pfix-lead__consent"><input type="checkbox" name="sms_consent" id="pfix-lead-2-sms_consent"><span>I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. Reply HELP for help and STOP to cancel. I also agree to Panda Exteriors’s <a href="/terms-and-conditions/" target="_blank">Terms of Use</a> and <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label><label class="pfix-lead__consent"><input type="checkbox" name="email_consent" id="pfix-lead-2-email_consent"><span>I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.</span></label><p class="pfix-lead__error" role="alert" hidden></p><button type="submit" class="submit-btn">Get My Free Estimate</button><noscript><p class="pfix-lead__call">Or call <a href="tel:+18772138536">(877) 213-8536</a> to book your free estimate.</p></noscript></form><div class="pfix-lead__done" role="status" tabindex="-1" hidden><p class="pfix-lead__done-title">Thanks<span data-pfix-lead-name></span>!</p><p>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p><a class="submit-btn pfix-lead__done-call" href="tel:+18772138536">Call (877) 213-8536</a></div></div></div>
 </div></div></div></div><div class="oxy-container-945-116 oxy-container Blog-detail detail-static pt-lg-5 pt-3 pfix-fit"><div class="bde-social-share-buttons-945-172 bde-social-share-buttons desktop-social-icons">
 <a class="bde-social-share-button bde-social-share-button-mobile js-breakdance-share-mobile pfix-share-native" data-share-url="https://pandaexteriors.com/blog/do-you-need-a-new-roof/" data-share-title="Do You Need A New Roof? | Panda Exteriors" href="mailto:?subject=Do%20You%20Need%20A%20New%20Roof%3F%20%7C%20Panda%20Exteriors&amp;body=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fdo-you-need-a-new-roof%2F">
   <span class="bde-social-share-button-icon">
@@ -2015,9 +1847,9 @@ As a BBB A-rated business and GAF Master Elite contractor, we know what it takes
 
 </div><div class="oxy-container-364-114 oxy-container py-1 center top-padding-20px"><div class="pfix-badges" role="list" aria-label="Certifications and awards"><div class="pfix-badges__item pfix-badges__item--gaf" role="listitem"><picture><source type="image/webp" srcset="/wp-content/uploads/2025/04/brand-gaf-pledge.png.webp"><img src="/wp-content/uploads/2025/04/brand-gaf-pledge.png" alt="GAF Diamond Pledge: NDL roof guarantee" width="120" height="120" loading="lazy" decoding="async"></picture></div><div class="pfix-badges__item pfix-badges__item--gaf" role="listitem"><picture><source type="image/webp" srcset="/wp-content/uploads/2025/04/brand-gaf.png.webp"><img src="/wp-content/uploads/2025/04/brand-gaf.png" alt="GAF President’s Club: residential award winner" width="120" height="120" loading="lazy" decoding="async"></picture></div><div class="pfix-badges__item pfix-badges__item--gaf" role="listitem"><picture><source type="image/webp" srcset="/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png.webp"><img src="/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png" alt="GAF Metal Certified: Timbersteel roofing contractor" width="120" height="120" loading="lazy" decoding="async"></picture></div><div class="pfix-badges__item pfix-badges__item--inc" role="listitem"><picture><source type="image/webp" srcset="/wp-content/uploads/2025/04/inc-2004.png.webp"><img src="/wp-content/uploads/2025/04/inc-2004.png" alt="Inc. 5000 2024: No. 50 of America’s fastest-growing private companies" width="150" height="130" loading="lazy" decoding="async"></picture></div><div class="pfix-badges__item pfix-badges__item--inc" role="listitem"><picture><source type="image/webp" srcset="/wp-content/uploads/2025/04/inc-1.png.webp"><img src="/wp-content/uploads/2025/04/inc-1.png" alt="Inc. 5000 2024: No. 1 in construction among America’s fastest-growing private companies" width="150" height="130" loading="lazy" decoding="async"></picture></div></div>
 </div></div><div class="oxy-container-364-107 oxy-container form-col ms-auto"><div class="oxy-container-364-119 oxy-container form-card gap-2 p-4"><p class="oxy-text-364-125 oxy-text heading-form">
-10% OFF Roof Replacement
+Free Estimate
 </p><p class="oxy-text-364-126 oxy-text text-black form-text-p">
-Limited Time Savings - Act Now!
+Roofing, siding, gutters, solar and more. Ask about 10% off roof replacement.
 </p><picture class="oxy-image-364-127 oxy-image rating width-full" loading="lazy">
 <source type="image/webp" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png.webp 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png.webp 300w" sizes="(max-width: 600px) 100vw, 600px">
 <img src="/wp-content/uploads/2025/03/admin-ajax-2.png" alt="google-reviews" srcset="/wp-content/uploads/2025/03/admin-ajax-2.png 600w, /wp-content/uploads/2025/03/admin-ajax-2-300x97.png 300w" sizes="(max-width: 600px) 100vw, 600px">
@@ -2046,64 +1878,7 @@ Limited Time Savings - Act Now!
 
 
 
-</div><div class="oxy-html-code-364-123 oxy-html-code">
-<form id="lead-form-2" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&amp;orgId=00DHo000002gd1g" method="POST">
-  <input type="hidden" name="oid" value="00DHo000002gd1g">
-  <input type="hidden" name="retURL" value="https://pandaexteriors.com/thank-you/">
-  <input type="hidden" name="lead_source" value="Internet Lead" class="input-field">
-
-  <div class="cf7-container">
-
-    <div class="name-row">
-      <input type="text" name="first_name" class="input-field" placeholder="First Name" required="">
-      <input type="text" name="last_name" class="input-field" placeholder="Last Name" required="">
-    </div>
-
-    <div class="name-row">
-      <input type="email" name="email" class="input-field" placeholder="Email Address" required="">
-      <input type="tel" name="phone" class="input-field" placeholder="Phone Number" required="">
-    </div>
-
-    <input type="text" id="address-field-2" class="input-field pac-target-input" placeholder="Address" autocomplete="off" style="display: block;">
-
-
-    <input type="hidden" name="city" id="city-2">
-    <input type="hidden" name="state" id="state-2">
-    <input type="hidden" name="zip" id="zip-2">
-    <input type="hidden" name="country" id="country-2">
-    <input type="hidden" name="street" id="street-2">
-    <input type="hidden" name="00NPs00000PTbNd" value="https://pandaexteriors.com/blog/do-you-need-a-new-roof/" id="page-url-field">
-    <label class="field-label">
-      Project Type
-    <select name="00NHo00000Xc7bb" id="00NHo00000Xc7bb" class="input-field" required="">
-  <option value="">--Select--</option>
-  <option value="Roofing">Roofing</option>
-  <option value="Commercial">Commercial</option>
-  <option value="Gutters">Gutters</option>
-  <option value="Solar">Solar</option>
-  <option value="Attic Insulation">Attic Insulation</option>
-</select>
-    </label>
-
-    <!-- Consent Checkbox (Checked by Default) -->
-    <div class="form-check mb-3" style="color: white; font-size: 14px;">
-      <label class="form-check-label check-detail" for="consentCheckbox">
-        <input type="checkbox" class="form-check-input me-2 text-black" id="consentCheckbox" required="" checked="">
-        By checking this box, I authorize Panda Exteriors to send me marketing calls and text messages at the number
-        provided above, including by using an autodialer or a prerecorded message. I understand that I am not required
-        to give this authorization as a condition of doing business with Panda Exteriors. By checking this box, I am
-        also agreeing to Panda Exteriors’s
-        <a href="/terms-and-conditions" target="_blank" style="text-decoration: underline; color: #fff;">Terms of
-          Use</a> and
-        <a href="/privacy-policy/" target="_blank" style="text-decoration: underline; color: #fff;">Privacy Policy</a>.
-      </label>
-    </div>
-    <div class="">
-      <button type="submit" class="submit-btn">Schedule a Free Estimate</button>
-    </div>
-  </div>
-</form>
-</div></div></div></div></div>
+</div><div class="pfix-lead" data-pfix-lead="general"><form class="pfix-lead__form cf7-container" id="pfix-lead-3" method="post" data-pfix-lead-form novalidate><input type="hidden" name="service" value="general"><input type="hidden" name="page" value="/blog/do-you-need-a-new-roof/"><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">First name</span><input type="text" name="first_name" id="pfix-lead-3-first_name" class="input-field" placeholder="First name" autocomplete="given-name" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Last name</span><input type="text" name="last_name" id="pfix-lead-3-last_name" class="input-field" placeholder="Last name" autocomplete="family-name" required></label></div><div class="name-row"><label class="pfix-lead__field"><span class="pfix-lead__sr">Email</span><input type="email" name="email" id="pfix-lead-3-email" class="input-field" placeholder="Email" autocomplete="email" required></label><label class="pfix-lead__field"><span class="pfix-lead__sr">Phone</span><input type="tel" name="phone" id="pfix-lead-3-phone" class="input-field" placeholder="Phone" autocomplete="tel" required></label></div><label class="pfix-lead__field"><span class="pfix-lead__sr">Street address, city, ZIP</span><input type="text" name="address" id="pfix-lead-3-address" class="input-field" placeholder="Street address, city, ZIP" autocomplete="street-address" required></label><label class="field-label pfix-lead__question" for="pfix-lead-3-project">What do you need?<select name="project" id="pfix-lead-3-project" class="input-field" required><option value="" selected disabled>Choose one</option><option>Roof replacement</option><option>Roof inspection</option><option>Siding</option><option>Gutters or gutter guards</option><option>Solar</option><option>Attic insulation</option><option>Commercial roofing</option><option>Something else</option></select></label><label class="pfix-lead__consent"><input type="checkbox" name="sms_consent" id="pfix-lead-3-sms_consent"><span>I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. Reply HELP for help and STOP to cancel. I also agree to Panda Exteriors’s <a href="/terms-and-conditions/" target="_blank">Terms of Use</a> and <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label><label class="pfix-lead__consent"><input type="checkbox" name="email_consent" id="pfix-lead-3-email_consent"><span>I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.</span></label><p class="pfix-lead__error" role="alert" hidden></p><button type="submit" class="submit-btn">Get My Free Estimate</button><noscript><p class="pfix-lead__call">Or call <a href="tel:+18772138536">(877) 213-8536</a> to book your free estimate.</p></noscript></form><div class="pfix-lead__done" role="status" tabindex="-1" hidden><p class="pfix-lead__done-title">Thanks<span data-pfix-lead-name></span>!</p><p>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p><a class="submit-btn pfix-lead__done-call" href="tel:+18772138536">Call (877) 213-8536</a></div></div></div></div></div></div>
 
 <div data-wpr-lazyrender="1" class="oxy-container-368-100 oxy-container footer bg-black"><div class="oxy-container-368-101 oxy-container container footer-grid py-lg-5 py-3"><div class="oxy-container-368-102 oxy-container footer-logo-container"><a class="oxy-container-link-368-103 oxy-container-link d-inline logo-padd" href="/" target="_self"><div class="oxy-container-368-104 oxy-container footer-logo"><picture class="oxy-image-368-105 oxy-image footer-logo-img width-full" loading="lazy">
 <source type="image/webp" data-lazy-srcset="/wp-content/uploads/2025/03/image-1-5.png.webp 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png.webp 226w" sizes="(max-width: 385px) 100vw, 385px" srcset="/wp-content/uploads/2025/03/image-1-5.png.webp 385w, /wp-content/uploads/2025/03/image-1-5-226x300.png.webp 226w">
@@ -2318,85 +2093,10 @@ window._googlesitekit.contentEvents = {"postID":1382,"isSinglePost":true,"hasVim
 
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjTb3dJlMr54DxxDeji_LLehtF7OoP9Fk&amp;libraries=places" data-rocket-defer="" defer=""></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const formIds = ['lead-form', 'lead-form-2'];
-    const commercialPages = [
-      'commercial-roof-types',
-      'commerical/',
-      'commercial-roof-replacement'
-    ];
-    const currentURL = window.location.href;
-    const isCommercial = commercialPages.some(slug => currentURL.includes(slug));
 
-    formIds.forEach(formId => {
-      const form = document.getElementById(formId);
-      if (!form) return;
 
-      // 1) Set the page URL
-      //    select by name (or by class), not by duplicated ID
-      const pageField = form.querySelector('input[name="00NPs00000PTbNd"]');
-      if (pageField) {
-        pageField.value = currentURL;
-      }
 
-      // 2) Set the property type
-      const propertyTypeField = form.querySelector('select[name="00NHo00000Xc7bY"]');
-      if (propertyTypeField) {
-        propertyTypeField.value = isCommercial ? 'Commercial' : 'Residential';
-      }
 
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const submitButton = form.querySelector('.submit-btn');
-    const requiredFields = [
-      { name: 'first_name', label: 'First Name' },
-      { name: 'last_name', label: 'Last Name' },
-      { name: 'email', label: 'Email', type: 'email' },
-      { name: 'phone', label: 'Phone Number' },
-      { name: 'street', label: 'Address' },
-      { name: '00NHo00000Xc7bb', label: 'Project Type' },
-      { name: '00NHo00000XcFMN', label: 'Project Description' }
-    ];
-
-    const errorStyle = 'color: red; font-size: 0.9em; margin-top: 2px;';
-
-    form.addEventListener('submit', function (e) {
-      let isValid = true;
-
-      // Clear old errors
-      form.querySelectorAll('.field-error').forEach(el => el.remove());
-
-      requiredFields.forEach(field => {
-        const input = form.querySelector(`[name="${field.name}"]`);
-        if (!input) return;
-
-        const value = input.value.trim();
-        const isEmail = field.type === 'email';
-
-        if ((isEmail && !/^\S+@\S+\.\S+$/.test(value)) || (!isEmail && !value)) {
-          isValid = false;
-
-          const errorEl = document.createElement('div');
-          errorEl.className = 'field-error';
-          errorEl.setAttribute('style', errorStyle);
-          errorEl.innerText = isEmail ? `Please enter a valid email.` : `${field.label} is required.`;
-
-          input.parentElement.insertAdjacentElement('beforeend', errorEl);
-        }
-      });
-
-      if (!isValid) {
-        e.preventDefault();
-      }
-    });
-  });
-</script>
 
 <!-- <script>
   function setupAutocompleteSet(idSuffix = '') {
@@ -2459,355 +2159,11 @@ window._googlesitekit.contentEvents = {"postID":1382,"isSinglePost":true,"hasVim
   });
 </script> -->
 
-<script>
-  const suffixes = ['', '-2'];
 
-  function setupAutocompleteSet(idSuffix = '') {
-    const addressInput = document.getElementById(`address-field${idSuffix}`);
-    const street = document.getElementById(`street${idSuffix}`);
-    const city = document.getElementById(`city${idSuffix}`);
-    const state = document.getElementById(`state${idSuffix}`);
-    const zip = document.getElementById(`zip${idSuffix}`);
-    const country = document.getElementById(`country${idSuffix}`);
 
-    if (!addressInput) return;
 
-    const ac = new google.maps.places.Autocomplete(addressInput, {
-      types: ['address'],
-      componentRestrictions: { country: 'us' }
-    });
 
-    ac.addListener('place_changed', () => {
-      const place = ac.getPlace();
-      const comps = {
-        street_number: '',
-        route: '',
-        locality: '',
-        administrative_area_level_1: '',
-        postal_code: '',
-        country: ''
-      };
 
-      place.address_components.forEach(c => {
-        if (c.types.includes('street_number')) comps.street_number = c.long_name;
-        if (c.types.includes('route')) comps.route = c.long_name;
-        if (c.types.includes('locality')) comps.locality = c.long_name;
-        if (c.types.includes('administrative_area_level_1'))
-          comps.administrative_area_level_1 = c.long_name;
-        if (c.types.includes('postal_code')) comps.postal_code = c.long_name;
-        if (c.types.includes('country')) comps.country = c.long_name;
-      });
-
-      const fullStreet = [comps.street_number, comps.route].filter(Boolean).join(' ');
-      if (street) street.value = fullStreet;
-      if (city) city.value = comps.locality;
-      if (state) state.value = comps.administrative_area_level_1;
-      if (zip) zip.value = comps.postal_code;
-      if (country) country.value = comps.country;
-    });
-  }
-
-  function onGeoSuccess({ coords: { latitude: lat, longitude: lon } }) {
-    // hide address text inputs
-    suffixes.forEach(s => {
-      const el = document.getElementById(`address-field${s}`);
-      if (el) el.style.display = 'none';
-    });
-
-    // reverse geocode via OpenStreetMap
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-      .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
-      .then(data => {
-        const addr = data.address || {};
-        const streetLine = [addr.house_number, addr.road].filter(Boolean).join(' ');
-        const cityVal = addr.city || addr.town || addr.village || '';
-
-        suffixes.forEach(s => {
-          const set = id => document.getElementById(id + s);
-          if (set('address-field')) set('address-field').value = data.display_name || '';
-          if (set('street')) set('street').value = streetLine;
-          if (set('city')) set('city').value = cityVal;
-          if (set('state')) set('state').value = addr.state || '';
-          if (set('zip')) set('zip').value = addr.postcode || '';
-          if (set('country')) set('country').value = addr.country || '';
-        });
-      })
-      .catch(err => console.error('Reverse-geocode error:', err));
-  }
-
-  function onGeoError() {
-    // show address fields and wire up Google autocomplete
-    suffixes.forEach(s => {
-      const el = document.getElementById(`address-field${s}`);
-      if (el) el.style.display = 'block';
-      setupAutocompleteSet(s);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!navigator.geolocation) {
-      return onGeoError();
-    }
-    navigator.geolocation.getCurrentPosition(
-      onGeoSuccess,
-      onGeoError,
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-    );
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('lead-form');
-    const addressField = document?.getElementById('address-field') || document?.getElementById('address-field-2');
-    const isSecondForm = addressField?.id === 'address-field-2';
-    const suffix = isSecondForm ? '-2' : '';
-
-    const requiredAddressFields = [
-      { id: `street${suffix}`, label: 'Street' },
-      { id: `city${suffix}`, label: 'City' },
-      { id: `state${suffix}`, label: 'State' },
-      { id: `zip${suffix}`, label: 'Zip Code' },
-      { id: `country${suffix}`, label: 'Country' }
-    ];
-
-    const errorStyle = `
-      color: red;
-      font-size: 0.9em;
-      margin-top: 4px;
-      display: block;
-    `;
-    form?.addEventListener('submit', function (e) {
-      // Remove previous error
-      const oldError = document.querySelector('.address-error');
-      if (oldError) oldError.remove();
-
-      let isValid = true;
-
-      requiredAddressFields.forEach(field => {
-        const el = document.getElementById(field.id);
-        if (!el || !el.value.trim()) {
-          isValid = false;
-        }
-      });
-
-      if (!isValid) {
-        e.preventDefault();
-
-        const errorEl = document.createElement('div');
-        errorEl.className = 'address-error';
-        errorEl.setAttribute('style', errorStyle);
-        errorEl.innerText = 'Looks like the address is missing details. Please choose a full address from the dropdown.';
-
-        // Insert after the address input field
-        addressField?.insertAdjacentElement('afterend', errorEl);
-      }
-    });
-  });
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const timeMappings = {
-      'Early Morning': '07:00:00',
-      'Morning': '09:00:00',
-      'Noon': '12:00:00',
-      'Afternoon': '14:00:00',
-      'Early Evening': '17:00:00',
-      'Evening': '19:00:00',
-    };
-
-    const errorStyle = `
-    color: red;
-    font-size: 0.9em;
-    margin-top: 4px;
-    display: block;
-  `;
-
-    function attachFormHandler(formId, suffix = '') {
-      const form = document.getElementById(formId);
-      const submitButton = form.querySelector('.submit-btn');
-      const addressField = document?.getElementById(`address-field${suffix}`);
-      const requiredAddressFields = [
-        { id: `street${suffix}`, label: 'Street' },
-        { id: `city${suffix}`, label: 'City' },
-        { id: `state${suffix}`, label: 'State' },
-        { id: `zip${suffix}`, label: 'Zip Code' },
-        { id: `country${suffix}`, label: 'Country' }
-      ];
-
-      form?.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        submitButton.innerText = 'Processing...';
-        submitButton.disabled = true;
-        // Clear previous error
-        const oldError = form?.querySelector('.address-error');
-        if (oldError) oldError.remove();
-
-        // Validate address fields
-        let isValid = true;
-        requiredAddressFields.forEach(field => {
-          const el = document.getElementById(field.id);
-          if (!el || !el.value.trim()) {
-            isValid = false;
-          }
-        });
-
-        if (!isValid) {
-          const errorEl = document.createElement('div');
-          errorEl.className = 'address-error';
-          errorEl.setAttribute('style', errorStyle);
-          errorEl.innerText = 'Looks like the address is missing details. Please choose a full address from the dropdown.';
-          addressField?.insertAdjacentElement('afterend', errorEl);
-          submitButton.innerText = 'Send';
-          submitButton.disabled = false;
-          return;
-        }
-
-        // Proceed with fetch
-        requiredAddressFields.forEach(field => {
-          const el = document.getElementById(field.id);
-          if (el) {
-            const hiddenInput = form.querySelector(`[name="${field.id}"]`);
-            if (hiddenInput) hiddenInput.value = el.value;
-          }
-        });
-        // Now safely collect form values
-        const formData = new FormData(form);
-
-        const firstName = formData.get('first_name');
-        const lastName = formData.get('last_name');
-        const email = formData.get('email');
-        const phone = formData.get('phone');
-        const street = formData?.get(`street`);
-        const city = formData?.get(`city`);
-        const state = formData?.get(`state`);
-        const zip = formData?.get(`zip`);
-        const country = formData?.get(`country`);
-        const workType = formData?.get('00NHo00000Xc7bb');
-        const description = formData?.get('00NHo00000XcFMN');
-        const date = formData?.get('00NPs00000Sge5s');
-        const timeLabel = formData?.get('00NPs00000PTrNV');
-        const pageUrl = window.location.href;
-
-        let appointmentDateTime = '';
-        if (date && timeLabel && timeMappings[timeLabel]) {
-          appointmentDateTime = `${date}T${timeMappings[timeLabel]}`;
-        } else if (date) {
-          appointmentDateTime = `${date}T09:00:00`;
-        }
-
-        console.log("form", formData?.get(`street${suffix}`));
-        const payload = {
-          firstName,
-          lastName,
-          emailAddress: email,
-          phoneNumber1: phone,
-          street,
-          city,
-          state,
-          zip,
-          country,
-          workType,
-          initialAppointmentDate: appointmentDateTime || undefined,
-          notes: `Description: ${description || ''}\n\nPage URL: ${pageUrl}`
-        };
-
-        try {
-          const response = await fetch('/wp-json/custom/v1/acculynx-lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-
-          const result = await response.json();
-
-          if (response.ok && result.success) {
-            console.log("payload", payload);
-            window.location.href = '/thank-you/';
-          } else if (result.errors) {
-            let errorMessages = [];
-
-            for (const [field, messages] of Object.entries(result.errors)) {
-              messages.forEach(msg => {
-                errorMessages.push(`${field}: ${msg}`);
-              });
-            }
-
-            alert("Submission failed:\n\n" + errorMessages.join("\n"));
-
-          } else {
-            alert('An unexpected error occurred. Please try again.');
-
-          }
-          form.submit();
-        } catch (err) {
-          console.error('Fetch error:', err);
-          alert('Unable to submit the form. Please check your internet connection or try again later.');
-
-        }
-        const queryParams = new URLSearchParams({
-          F9domain: 'Panda Exteriors',
-          F9list: 'WordPress_Leads',
-          number1: payload.phoneNumber1,
-          email: payload.emailAddress,
-          zip: payload.zip,
-          state: payload.state,
-          city: payload.city,
-          street: payload.street,
-          last_name: payload.lastName,
-          first_name: payload.firstName,
-          company: payload.workType,
-          "Current Status": pageUrl,
-        }).toString();
-        try {
-          const response = await fetch(`https://api.five9.com/web2campaign/AddToList?${queryParams}`, {
-            method: 'GET', // Use GET for Five9 API request
-            headers: {
-              'Authorization': 'Basic cm9id2ludGVyc0BwYW5kYWV4dGVyaW9ycy5jb206MTA0MDMxMEJrITE5', // Basic Auth header
-            }
-          });
-
-          const textResponse = await response.text(); // Get the raw HTML response
-
-          // Parse the HTML response
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(textResponse, 'text/html');
-          const errorDesc = doc.querySelector('#F9errDesc') ? doc.querySelector('#F9errDesc').value : '';
-
-          // Check if the error description indicates success
-          if (response.ok && errorDesc === "The request was successfully processed") {
-            window.location.href = '/thank-you/'; // Redirect to a thank-you page
-            submitButton.innerText = 'Send';
-            submitButton.disabled = false;
-          } else {
-            alert('An error occurred: ' + errorDesc);
-            let errorMessages = [];
-            for (const [field, messages] of Object?.entries(errorDesc)) {
-              messages.forEach(msg => {
-                errorMessages.push(`${field}: ${msg}`);
-              });
-            }
-            alert("Submission failed:\n\n" + errorMessages.join("\n"));
-            submitButton.innerText = 'Send';
-            submitButton.disabled = false;
-          }
-        } catch (err) {
-          // Handle any fetch errors
-          console.error('Fetch error:', err);
-          alert('Unable to submit the form. Please check your internet connection or try again later.');
-          submitButton.innerText = 'Send';
-          submitButton.disabled = false;
-        }
-      });
-    }
-
-    // Attach to both forms
-    attachFormHandler('lead-form');     // First form
-    attachFormHandler('lead-form-2', '-2'); // Second form with suffix
-  });
-</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     // Get the spinner and submit button elements
@@ -2833,4 +2189,4 @@ if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_c
 
     
 
-<div class="pac-container pac-logo" style="display: none;"></div><div class="pac-container pac-logo" style="display: none;"></div><iframe name="__privateStripeMetricsController3420" frameborder="0" allowtransparency="true" scrolling="no" role="presentation" allow="payment *" src="https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fdo-you-need-a-new-roof%2F&amp;title=Do%20You%20Need%20A%20New%20Roof%3F%20%7C%20Panda%20Exteriors&amp;referrer=&amp;muid=NA&amp;sid=NA&amp;version=6&amp;preview=false&amp;__shared_params__[version]=v3" aria-hidden="true" tabindex="-1" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; visibility: hidden !important; position: fixed !important; height: 1px !important; pointer-events: none !important; user-select: none !important;"></iframe></body></html>
+<iframe name="__privateStripeMetricsController3420" frameborder="0" allowtransparency="true" scrolling="no" role="presentation" allow="payment *" src="https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Fpandaexteriors.com%2Fblog%2Fdo-you-need-a-new-roof%2F&amp;title=Do%20You%20Need%20A%20New%20Roof%3F%20%7C%20Panda%20Exteriors&amp;referrer=&amp;muid=NA&amp;sid=NA&amp;version=6&amp;preview=false&amp;__shared_params__[version]=v3" aria-hidden="true" tabindex="-1" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; visibility: hidden !important; position: fixed !important; height: 1px !important; pointer-events: none !important; user-select: none !important;"></iframe></body></html>
