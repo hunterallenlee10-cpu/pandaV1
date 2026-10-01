@@ -358,7 +358,7 @@ root-relative (`/roofing/`), so the copy must be served from the root of a host.
 | 4 | `04-visual-diff.mjs` | Serves `site/` with `serve`, screenshots every page exactly like the live capture, and pixel-diffs it against the live screenshots with pixelmatch. Pages that differ by more than 1% are flagged. It also blocks and reports any request the copy makes to the live site. |
 | 4b | `04b-choose-page-source.mjs` | For flagged pages, builds the page from the HTML as delivered instead of the rendered DOM and keeps whichever matches live (see below). |
 | 5 | `05-check-links.mjs` | Checks that every internal reference in every page, stylesheet and manifest resolves to a file, runs `linkinator` over the served copy, and confirms every inventory URL has its file. |
-| 6 | `06-lfs-attributes.mjs` | Writes `.gitattributes`: Git LFS for all video and for every image over 1 MB. |
+| 6 | `06-lfs-attributes.mjs` | Writes `.gitattributes`: Git LFS for all video. Images stay regular files so hosts serve them without LFS. |
 | 7 | `07-summary.mjs` | Writes `docs/capture-summary.md`. |
 
 **Rendered DOM vs as-delivered HTML.** By default each page in `site/` is the fully rendered DOM that Chromium
@@ -384,7 +384,7 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 - `scripts/test/fixture-server.mjs` is a small synthetic stand-in site used to test the pipeline without touching the
   real website:
   `SITE_ORIGIN=http://localhost:8099 SITE_DIR=/tmp/t/site DOCS_DIR=/tmp/t/docs WORK_DIR=/tmp/t/.work CACHE_DIR=/tmp/t/.cache bash scripts/capture-all.sh`.
-- After a re-capture, run `node scripts/06-lfs-attributes.mjs` before `git add`, so new large images go to LFS.
+- After a re-capture, run `node scripts/06-lfs-attributes.mjs` before `git add`, so any video goes to LFS.
 
 ### Update `site/` without the capture cache
 
@@ -418,13 +418,13 @@ would make them. The map sections are the exception: only `03-build.mjs` renders
 
 The `site/` folder is a plain static site and works on any static host that serves it from the domain root.
 
-> **Git LFS note:** images over 1 MB and all video are stored with Git LFS. Hosts that build straight from the git
+> **Git LFS note:** video files are stored with Git LFS (images are regular files). Hosts that build straight from the git
 > repository may receive LFS *pointer files* instead of the real files unless LFS is enabled for the build. Deploying
 > from a checkout with the LFS files pulled (`git lfs pull`) via each host's CLI avoids this.
 
 - **Vercel** — import the GitHub repo. The generated `vercel.json` (written by `scripts/03-build.mjs`) makes Vercel
   skip the install and build steps and serve `site/` as static files, with trailing slashes like WordPress and the
-  redirects seen on the live site. In the Vercel project, turn on **Git LFS** (Settings → Git) so large images and
+  redirects seen on the live site. In the Vercel project, turn on **Git LFS** (Settings → Git) so any
   videos deploy as real files. A deployment only succeeds once the captured `site/` folder is in the repository.
 - **Netlify** — drag-and-drop `site/` in the Netlify UI, or `npx netlify-cli deploy --dir site --prod`. `_redirects`
   and `_headers` are applied automatically.
