@@ -9,6 +9,11 @@
       "source": "/interiors",
       "destination": "/",
       "type": 301
+    },
+    {
+      "source": "/roofing/repairs",
+      "destination": "/roofing/replacement/",
+      "type": 301
     }
   ],
   "rewrites": [
