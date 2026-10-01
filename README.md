@@ -114,6 +114,8 @@ Most of these problems are on the live site too.
   - **Smaller cases**: the badges picture on `/roofing/residential/` (480–529 px), and on the smallest phones a long
     email address in a blog post and the topic tags at the top of blog posts.
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
+- **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
+  "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers

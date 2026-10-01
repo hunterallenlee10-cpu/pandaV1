@@ -322,6 +322,25 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       changes.push('removed on request: the "Read More Reviews!" button');
     }
   }
+  if (pathname === '/service-areas/') {
+    // "Expert Roofers on the East Coast" (text and truck photo, under the hero) and the
+    // green "Learn More About Our Exterior Remodeling Services" band (text and photo).
+    const SECTIONS = [
+      ['Service-container', 'Expert Roofers on the East Coast'],
+      ['Client-section', 'Learn More About Our Exterior Remodeling Services'],
+    ];
+    for (const [cls, title] of SECTIONS) {
+      const heading = (c) => /^h[1-6]$/.test(c.tagName) && clean(textOf(c)) === title;
+      for (const box of findAll(doc, (c) => hasClass(c, cls) && find(c, heading))) {
+        ed.outer(box, '');
+        changes.push(`removed on request: the "${title}" section`);
+      }
+    }
+    // The truck photo went with its section: no more fetching it first.
+    for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && /Panda-Exteriors-Truck/.test(attr(c, 'imagesrcset') || attr(c, 'href') || ''))) {
+      ed.outer(l, '');
+    }
+  }
 
   // Pictures that are missing (on the live site too).
   const exists = (src) => {
