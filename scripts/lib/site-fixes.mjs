@@ -67,6 +67,9 @@
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
+//  - Roof repairs (Panda does not do them): /roofing/repairs/ is removed (config.mjs), and
+//    so are the cards and sections about repairs and every link to the page; wording that
+//    offered repairs now says what Panda does (REPAIR_COPY).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -121,8 +124,6 @@ const SA_MAP_ID = 'service-map';
 const SERVICE_CARDS = [
   { group: 'Roofing', title: 'Roof Replacement', href: '/roofing/replacement/', img: ['/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg', 768, 432],
     text: 'GAF Master Elite certified crews replace worn-out roofs quickly and stand behind the work.' },
-  { group: 'Roofing', title: 'Roof Repairs', href: '/roofing/repairs/', img: ['/wp-content/uploads/2025/04/Roofing-Repairs.jpg', 1200, 798],
-    text: 'Leaks, storm damage and missing shingles fixed at fair prices, with help on insurance claims.' },
   { group: 'Roofing', title: 'Residential Roofing', href: '/roofing/residential/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
     text: 'A new roof for your home in the style you want, from an A-rated, GAF Master Elite roofer.' },
   { group: 'Roofing', title: 'Attic Insulation', href: '/roofing/attic-insulation/', img: ['/wp-content/uploads/2025/04/Attic-Insulation.jpg', 1200, 799],
@@ -132,7 +133,7 @@ const SERVICE_CARDS = [
   { group: 'Solar', title: 'GAF Solar Roof', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
   { group: 'Commercial', title: 'Commercial Roofing', href: '/commerical-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
-    text: 'Flat roof repairs and full replacements for businesses, from inspection to final walkthrough.' },
+    text: 'Flat roof replacements for businesses, from inspection to final walkthrough.' },
   { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
     text: 'New siding that refreshes how your home looks and protects it from the weather.' },
   { group: 'Exterior', title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
@@ -145,6 +146,36 @@ const TYPOS = [
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
   [/\bCommerical\b/g, 'Commercial'],
   [/\bOur Services Areas\b/g, 'Our Service Areas'],
+];
+
+// Panda does not do roof repairs (small repair jobs), so the site no longer offers them:
+// /roofing/repairs/ is removed (REMOVED_PAGES in config.mjs), and wording that offers
+// repairs says what Panda does instead. Matched in the page source (so &nbsp; and the
+// site's own apostrophes as written there).
+const REPAIRS_PAGE = /^(?:https?:\/\/(?:www\.)?pandaexteriors\.com)?\/roofing\/repairs\/?(?:[?#].*)?$/;
+const REPAIR_COPY = [
+  // "About Our Team", on most pages
+  [/From roof repairs and solar panel installations to commercial roof replacement and maintenance/g, 'From full roof replacements and solar panel installations to commercial roofing'],
+  // home page, and the company description in every page's structured data
+  [/Whether you need expert roof repairs, a full commercial roof replacement/g, 'Whether you need a new roof for your home, a full commercial roof replacement'],
+  [/From repairs to complete roof replacements, Panda Exteriors/g, 'From free roof inspections to complete roof replacements, Panda Exteriors'],
+  // /commerical-roofing/, /commercial-capabilities/
+  [/delivers expert roof repairs, replacements, and solar shingle installations/g, 'delivers expert roof replacements and solar shingle installations'],
+  // /roofing/, /commerical-roofing/
+  [/comprehensive repair and replacement services/g, 'comprehensive replacement and installation services'],
+  // /roofing/types/
+  [/Whether you need a complete replacement or a(?:\s|&nbsp;)+roof repair for your East Coast home, you(['’]|&#8217;)ll benefit/g, 'When you replace the roof on your East Coast home, you$1ll benefit'],
+  // /roofing-costs/
+  [/Quality Roof Replacements and Repairs/g, 'Quality Roof Replacements'],
+  // /gutters/gutter-guards/
+  [/local gutter repair company/g, 'local gutter company'],
+  // /about/
+  [/the repairs completed on these properties are only as good as/g, 'the work completed on these properties is only as good as'],
+  // /about/, /podcast/
+  [/From repairing a broken gutter to working on an insurance approved restoration/g, 'From new gutter systems to insurance-approved restorations'],
+  // The roofing cards (/roofing/, /about/, /podcast/): the Attic Insulation card carried the
+  // Roof Repairs card's text.
+  [/In addition to new roof installations, our team has experience repairing issues with existing roofs\./g, 'Environmentally friendly insulation that keeps your home comfortable all year.'],
 ];
 
 const ancestors = (n) => {
@@ -246,7 +277,10 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
 function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
   const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
   const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
-  if (!grid) return false;
+  // Already a carousel (a page built before): the cards may have changed, so it is
+  // rendered again from SERVICE_CARDS.
+  const built = !grid && section && hasClass(section, 'pfix-services') ? find(section, (c) => hasClass(c, 'pfix-marquee--cards')) : null;
+  if (!grid && !built) return false;
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
   const cards = SERVICE_CARDS.filter((s) => exists(s.img[0]));
   if (cards.length < SERVICE_CARDS.length) console.warn(`site-fixes: ${pathname}: ${SERVICE_CARDS.length - cards.length} service photo(s) missing, those cards left out`);
@@ -262,13 +296,16 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
       `<span class="pfix-svc__more">Learn more<span aria-hidden="true"> →</span></span></span></a></div>`
     );
   };
-  ed.retag(section, withClass(section, ['pfix-services']));
-  ed.outer(
-    grid,
+  const row =
     `<div class="pfix-marquee pfix-marquee--cards" data-speed="34" role="region" aria-label="Our services">` +
-      `<div class="pfix-marquee__track" role="list">${cards.map(card).join('')}</div></div>` +
-      `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`
-  );
+    `<div class="pfix-marquee__track" role="list">${cards.map(card).join('')}</div></div>`;
+  if (built) {
+    ed.outer(built, row);
+    changes.push(`services carousel: ${cards.length} photo cards (rendered again from SERVICE_CARDS)`);
+    return true;
+  }
+  ed.retag(section, withClass(section, ['pfix-services']));
+  ed.outer(grid, row + `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`);
   // The intro ran its two sentences together ("renovations.Some of…") on wide screens.
   const intro = find(section, (c) => c.tagName === 'p' && /manufacturers’ warranties/.test(textOf(c)));
   if (intro)
@@ -278,6 +315,57 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
     );
   changes.push(`services carousel: ${cards.length} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
   return true;
+}
+
+// Roof repairs, off the site: the sections and cards about them, and every link to the
+// removed /roofing/repairs/ page (a menu or site-map entry goes with its link; a link in
+// running text keeps its words). The copy is handled with the typos (REPAIR_COPY).
+function noRoofRepairs(doc, html, ed, changes) {
+  const heading = (re) => (c) => /^h[1-6]$/.test(c.tagName) && re.test(clean(textOf(c)));
+  const free = (n) => n.sourceCodeLocation && !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  let sections = 0;
+  // /roofing/residential/: "Trustworthy East Coast Roof Repairs".
+  for (const box of findAll(doc, (c) => hasClass(c, 'Service-container') && find(c, heading(/^Trustworthy East Coast Roof Repairs$/i)))) {
+    if (!free(box)) continue;
+    ed.outer(box, '');
+    sections++;
+  }
+  // The roofing cards (/roofing/, /about/, /podcast/): the "Roof Repairs" card.
+  for (const card of findAll(doc, (c) => hasClass(c, 'swiper-slide') && find(c, heading(/^Roof Repairs$/i)))) {
+    if (!free(card)) continue;
+    ed.outer(card, '');
+    sections++;
+  }
+  // /roofing/residential/: "Roof Repairs" in the "Our services include:" list.
+  for (const row of findAll(doc, (c) => hasClass(c, 'points-row') && clean(textOf(find(c, (x) => hasClass(x, 'Point-text')) || { childNodes: [] })) === 'Roof Repairs')) {
+    if (!free(row)) continue;
+    ed.outer(row, '');
+    sections++;
+  }
+  // /reviews/: the one review that praises a roof repair (also out of reviews.json).
+  for (const review of findAll(doc, (c) => hasClass(c, 'review') && /\brepairing my roof\b/i.test(textOf(find(c, (x) => hasClass(x, 'review-text')) || { childNodes: [] })))) {
+    if (!free(review)) continue;
+    ed.outer(review, '');
+    sections++;
+  }
+  if (sections) changes.push(`roof repairs: ${sections} section(s), card(s), list entries or reviews about roof repairs removed`);
+  let removed = 0;
+  let unwrapped = 0;
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && REPAIRS_PAGE.test(attr(c, 'href') || ''))) {
+    if (!free(a)) continue;
+    const parent = a.parentNode;
+    const sole = parent && (parent.tagName === 'li' || hasClass(parent, 'li')) && clean(textOf(parent)) === clean(textOf(a));
+    if (hasClass(a, 'swiper-slide') || sole) {
+      ed.outer(sole ? parent : a, '');
+      removed++;
+    } else if (a.sourceCodeLocation.endTag) {
+      const { startTag, endTag } = a.sourceCodeLocation;
+      ed.replace(startTag.startOffset, startTag.endOffset, '');
+      ed.replace(endTag.startOffset, endTag.endOffset, '');
+      unwrapped++;
+    }
+  }
+  if (removed || unwrapped) changes.push(`roof repairs: links to the removed page (${removed} removed with their menu or list entry, ${unwrapped} kept as plain words)`);
 }
 
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
@@ -677,24 +765,35 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     }
   }
 
-  // Typos in visible text (not in URLs or attributes). Skips text already being edited.
+  // Roof repairs: sections, cards and links (the wording is edited with the typos below).
+  noRoofRepairs(doc, html, ed, changes);
+
+  // Typos in visible text (not in URLs or attributes), and wording that offered roof
+  // repairs (REPAIR_COPY). Skips text already being edited.
   const body = find(doc, (c) => c.tagName === 'body');
   const skip = new Set(['script', 'style', 'noscript', 'textarea', 'template']);
   const fixedTypos = new Set();
+  let repairCopy = 0;
+  const repairWording = (s) => REPAIR_COPY.reduce((x, [re, to]) => x.replace(re, (...m) => (repairCopy++, to.replace(/\$1/g, m[1] ?? ''))), s);
   const walkText = (n) => {
     if (n.tagName && skip.has(n.tagName)) return;
     if (n.nodeName === '#text') {
       const l = n.sourceCodeLocation;
       if (!l || ed.overlaps(l.startOffset, l.endOffset)) return;
       editText(ed, html, n, (s) =>
-        TYPOS.reduce((x, [re, to]) => x.replace(re, (m) => (fixedTypos.add(`${m} -> ${to}`), to)), s)
+        repairWording(TYPOS.reduce((x, [re, to]) => x.replace(re, (m) => (fixedTypos.add(`${m} -> ${to}`), to)), s))
       );
       return;
     }
     for (const c of n.childNodes || []) walkText(c);
   };
   if (body) walkText(body);
+  // The company description in the page's structured data (read by search engines).
+  for (const s of findAll(doc, (c) => c.tagName === 'script' && attr(c, 'type') === 'application/ld+json')) {
+    for (const t of s.childNodes || []) if (t.nodeName === '#text' && t.sourceCodeLocation && !ed.overlaps(t.sourceCodeLocation.startOffset, t.sourceCodeLocation.endOffset)) editText(ed, html, t, repairWording);
+  }
   if (fixedTypos.size) changes.push(`typos: ${[...fixedTypos].join('; ')}`);
+  if (repairCopy) changes.push(`roof repairs: ${repairCopy} sentence(s) that offered repairs reworded`);
 
   return used;
 }

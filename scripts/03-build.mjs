@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
@@ -145,7 +145,7 @@ const isRemovedLink =
     : null;
 function replaceRemovedUrl(abs) {
   const u = new URL(abs);
-  if (isRemovedPage(u.pathname)) return SITE_ORIGIN + '/';
+  if (isRemovedPage(u.pathname)) return SITE_ORIGIN + removedPageTarget(u.pathname);
   const prefix = subsitePrefixes.find((p) => u.pathname.startsWith(p) || u.pathname === p.replace(/\/$/, '')) || '';
   const rest = '/' + u.pathname.slice(prefix.length).replace(/^\/+/, '');
   return SITE_ORIGIN + (pagePaths.has(rest) ? rest : '/');
@@ -353,8 +353,9 @@ for (const a of assets) {
     if (hop.location && !redirectRows.has(hop.url)) redirectRows.set(hop.url, { from: hop.url, status: hop.status, to: hop.location, kind: 'asset' });
   }
 }
-// The address of a page removed on request leads to the home page.
-for (const p of removedPages) redirectRows.set(p.url, { from: p.url, status: 301, to: SITE_ORIGIN + '/', kind: 'page removed on request' });
+// The address of a page removed on request leads to its closest page still on the site
+// (REMOVED_PAGE_TARGETS), or else the home page.
+for (const p of removedPages) redirectRows.set(p.url, { from: p.url, status: 301, to: SITE_ORIGIN + removedPageTarget(new URL(p.url).pathname), kind: 'page removed on request' });
 for (const c of captures.values()) {
   for (const vp of Object.values(c.viewports || {})) {
     for (const r of vp.siteRequests || []) {

@@ -26,6 +26,16 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   photos and styles) are left out, and the old address redirects to the home page. It was captured, so it is
   counted in `docs/capture-summary.md` rather than in the exclusions list. Controlled by `REMOVE_PAGES` in
   `scripts/lib/config.mjs`.
+- **Roof repairs**, removed on request (Panda does not do small repairs). `/roofing/repairs/` is left out the same
+  way (its sitemap entry and the 7 files only it used go too), and its old address redirects to `/roofing/replacement/`
+  (`REMOVED_PAGE_TARGETS` in `scripts/lib/config.mjs`). Everything else about repairs is handled by the site fixes
+  (`scripts/lib/site-fixes.mjs`): the "Roof Repairs" entry in the Services menu and on the Site Map, the "Roof
+  Repairs" card in the roofing cards (`/roofing/`, `/about/`, `/podcast/`) and on Service Areas, the "Trustworthy East
+  Coast Roof Repairs" section and list entry on `/roofing/residential/`, and the one review that praises a repair
+  (also out of `custom/reviews/reviews.json`). Wording that offered repairs (the "About Our Team" paragraph, the home
+  page, the commercial pages, Roofing Types, Roofing Costs, Gutter Guards, About and the company description in every
+  page's structured data) now says what Panda does (`REPAIR_COPY`). The FAQ answer that recommends a full replacement
+  over repairs is kept. Blog posts are unchanged.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.

@@ -36,6 +36,11 @@
       "source": "/interiors/",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/roofing/repairs/",
+      "destination": "/roofing/replacement/",
+      "statusCode": 301
     }
   ]
 }

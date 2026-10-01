@@ -222,14 +222,22 @@ export const MEDIA_PAGE = (process.env.MEDIA_PAGE ?? (process.env.SITE_ORIGIN ? 
 
 // Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
-// page about them. Removed pages are not built, links to them are removed like the
-// sub-site links, their sitemap entries and the files only they used are left out, and
-// their address redirects to the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/'))
+// page about them; and Panda does not do roof repairs, so /roofing/repairs/ goes too (the
+// rest of the roof-repair wording is handled by scripts/lib/site-fixes.mjs). Removed pages
+// are not built, links to them are removed like the sub-site links, their sitemap entries
+// and the files only they used are left out, and their address redirects to the page in
+// REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
+// Where a removed page's address leads: the closest page that is still on the site.
+export const REMOVED_PAGE_TARGETS = { '/roofing/repairs/': '/roofing/replacement/' };
+export const removedPageTarget = (pathname) => {
+  const p = REMOVED_PAGES.find((x) => pathname.startsWith(x) || pathname === x.replace(/\/+$/, ''));
+  return (p && REMOVED_PAGE_TARGETS[p]) || '/';
+};
 
 // The homepage hero plays a muted, looping YouTube video behind its text; the copy
 // plays this video there instead of the live site's, sized to cover the whole hero (see

@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { LinkChecker } from 'linkinator';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isForbidden, isRemovedPage } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isForbidden, isRemovedPage, removedPageTarget } from './lib/config.mjs';
 import { extractFromHtml, cssRefs, resolveUrl } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { startServer } from './lib/server.mjs';
@@ -184,7 +184,7 @@ for (const row of inv.rows) {
   let present = 'n/a';
   let note = '';
   const u = new URL(row.url);
-  if (row.type === 'page' && isSiteUrl(u) && isRemovedPage(u.pathname)) note = 'page removed from the copy on request (redirects to /)';
+  if (row.type === 'page' && isSiteUrl(u) && isRemovedPage(u.pathname)) note = `page removed from the copy on request (redirects to ${removedPageTarget(u.pathname)})`;
   else if (row.type === 'page' && status === 200) expected = pageLocalPath(row.url, 'text/html');
   else if (row.type === '404-page') expected = '404.html';
   else if (row.type === 'robots' && status === 200) expected = 'robots.txt';
