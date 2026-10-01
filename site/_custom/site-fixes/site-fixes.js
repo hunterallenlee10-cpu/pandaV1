@@ -2,6 +2,7 @@
    - The phone-only "Share" button on blog posts opens the device's share sheet where the
      browser supports it; otherwise the link falls back to an email draft.
    - "Experts You Can Trust" (home page): the logos glide past in one continuous row.
+   - /service-areas/: the service cards glide past the same way (.pfix-marquee--cards).
    - /service-areas/ hero: the state chips zoom the map to their state. */
 (function () {
   'use strict';
@@ -22,7 +23,7 @@
    reduced motion, and browsers without the Web Animations API, get the still row. */
 (function () {
   'use strict';
-  var SPEED = 42; // px per second
+  var SPEED = 42; // px per second (a row's data-speed overrides it)
   var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   if (reduceMotion || !Element.prototype.animate) return;
 
@@ -53,11 +54,17 @@
     var rateTarget = 1;
     var rateFrame = 0;
     var visible = true;
+    var speed = parseFloat(box.getAttribute('data-speed')) || SPEED;
+    var hovered = false;
 
     function copyRow() {
       items.forEach(function (item) {
         var c = item.cloneNode(true);
         c.setAttribute('aria-hidden', 'true');
+        // the copies' links stay out of the keyboard order
+        toArray(c.querySelectorAll('a, button')).forEach(function (el) {
+          el.setAttribute('tabindex', '-1');
+        });
         c.classList.add('is-copy');
         toArray(c.querySelectorAll('[data-lazy-src], [data-lazy-srcset], [data-ll-status]')).forEach(function (el) {
           el.removeAttribute('data-lazy-src');
@@ -84,10 +91,10 @@
       if (anim && Math.abs(w - width) < 0.5) return;
       // Same point in the loop after a change of width (the logos finished loading, the
       // window was resized), so the row never jumps back to the start.
-      var progress = anim && width ? (anim.currentTime % ((width / SPEED) * 1000)) / ((width / SPEED) * 1000) : 0;
+      var progress = anim && width ? (anim.currentTime % ((width / speed) * 1000)) / ((width / speed) * 1000) : 0;
       if (anim) anim.cancel();
       width = w;
-      var duration = (w / SPEED) * 1000;
+      var duration = (w / speed) * 1000;
       anim = track.animate([{ transform: 'translate3d(0, 0, 0)' }, { transform: 'translate3d(' + -w + 'px, 0, 0)' }], {
         duration: duration,
         iterations: Infinity,
@@ -119,10 +126,21 @@
     box.classList.add('is-running');
     layout();
     box.addEventListener('pointerenter', function (e) {
-      if (e.pointerType === 'mouse') easeTo(0);
+      if (e.pointerType !== 'mouse') return;
+      hovered = true;
+      easeTo(0);
     });
     box.addEventListener('pointerleave', function (e) {
-      if (e.pointerType === 'mouse') easeTo(1);
+      if (e.pointerType !== 'mouse') return;
+      hovered = false;
+      if (!box.contains(document.activeElement)) easeTo(1);
+    });
+    // Still while a link in the row has keyboard focus, so it stays where it is.
+    box.addEventListener('focusin', function () {
+      easeTo(0);
+    });
+    box.addEventListener('focusout', function (e) {
+      if (!hovered && !box.contains(e.relatedTarget)) easeTo(1);
     });
     if (window.IntersectionObserver) {
       new IntersectionObserver(function (entries) {

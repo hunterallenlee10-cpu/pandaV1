@@ -116,6 +116,13 @@ Most of these problems are on the live site too.
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
+- **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text
+  (Roofing, Solar Roofing, Commercial Roofing, Gutters). It is now a row of photo cards for all ten service pages
+  (roof replacement, roof repairs, residential roofing, attic insulation, solar panels, GAF solar roof, commercial
+  roofing, siding, gutters and gutter guards), each linking to its page, plus a "See all our services" button. The
+  row glides past like the home page's logo row and eases to a stop under the mouse or while a card has keyboard
+  focus; with reduced motion, or without JavaScript, the cards sit still in rows. The cards are listed in
+  `SERVICE_CARDS` in `scripts/lib/site-fixes.mjs`, using photos already on the site.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
