@@ -70,8 +70,9 @@
 //  - Service card grids (/services/, /solar/, /siding/, /gutters/, /commerical-roofing/):
 //    the same orange icon cards, standing still, become the same photo cards in a grid,
 //    with each page's own titles and text. Three of their links led to pages that don't
-//    exist (/powerwash/, /window-replacement/) or to the wrong one (siding "Siding Types"
-//    -> commercial roof types); they now lead to the contact page.
+//    exist on the main site (/powerwash/, /window-replacement/: Huntersville city-site
+//    pages) or to the wrong one (siding "Siding Types" -> commercial roof types); they now
+//    lead to the contact page.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -164,7 +165,8 @@ const GRID_PHOTOS = {
   '/commerical-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
 };
 // Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
-// page they are on and their title. There is no siding or gutter installation page, so
+// page they are on and their title. Each sits on the page that covers its service (/gutters/
+// is gutter installations, /siding/ siding replacements; there is no siding types page), so
 // they lead to the contact page.
 const GRID_CARD_FIXES = [
   { page: '/gutters/', title: 'Gutter Installations', from: '/powerwash/', href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
