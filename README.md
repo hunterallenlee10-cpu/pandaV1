@@ -154,6 +154,14 @@ Most of these problems are on the live site too.
     them) did the same. The header now uses the whole width there, and those blocks stop at the column's edge.
   - **Smaller cases**: the badges picture on `/roofing/residential/` (480–529 px), and on the smallest phones a long
     email address in a blog post and the topic tags at the top of blog posts.
+- **The header on phones** (every page, up to 768 px; on the live site too): a rule in every page stacked the
+  header's row, so the menu button sat under the logo, and the header was placed 46 px down, below a top bar of two
+  lines (it is one). It ended at 186 px while the page starts at 150 px, so it covered the top 36 px of every page,
+  the top of the heading on blog posts and the offer pages. The logo and the menu button are one row again (the
+  opened menu still drops below them), the header sits right under the top bar, as on larger screens, and ends at
+  148 px; the menu button has a 44 px tap area. On `/careers/`, whose own header styles kept the whole menu open over
+  the top of the page up to 1024 px (the button closed it), the menu starts closed and opens as the same full-width
+  list as everywhere else. CSS only (`custom/site-fixes/site-fixes.css`).
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
