@@ -49,18 +49,24 @@
 //    they are now plain share links.
 //  - /position-details/ can only show "Failed to load job details." in a static copy;
 //    it now points to the open positions on /careers/.
+//  - /service-areas/ hero: it said only "Our Service Areas" and a tagline over a blurry,
+//    stretched strip of roof (a 2000x450 picture pinned to the screen). It now says where
+//    Panda works, with the numbers from the US map's areas.json (jobs, states, offices),
+//    has state chips that glide to the map and zoom to that state, call and map buttons,
+//    and a sharp drone photo that loads first.
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
-import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes } from './html-edit.mjs';
+import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
+import { loadUsMap } from './us-map.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -76,6 +82,14 @@ const BADGES = [
 
 // The number in the site's header on every page.
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
+// The Google rating in the lead form's rating picture (admin-ajax-2.png).
+const GOOGLE_RATING = '4.9';
+
+// /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
+// (already on the site, with a .webp copy). site-fixes.css uses the same file.
+const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
+const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
+const SA_MAP_ID = 'service-map';
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -100,6 +114,79 @@ const withClass = (n, add, remove = []) => n.attrs.map((a) => (a.name === 'class
 
 let capabilities;
 const capabilitiesMap = () => (capabilities ??= JSON.parse(fs.readFileSync(path.join(SITE_FIXES_DIR, 'capabilities-map.json'), 'utf8')));
+
+const fmt = (n) => n.toLocaleString('en-US');
+const andList = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs.join(''));
+const ICON_PHONE =
+  '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>';
+const ICON_DOWN = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 4h2v12.2l4.6-4.6 1.4 1.4-7 7-7-7 1.4-1.4 4.6 4.6z"/></svg>';
+
+// /service-areas/ hero: the text column says where Panda works (from the US map's data,
+// so the two always agree), the map section gets an id for the chips and the map button
+// to point at, and the photo is preloaded. The photo itself is set in site-fixes.css.
+function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
+  const hero = find(doc, (c) => hasClass(c, 'service-area-hero'));
+  const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
+  const h1 = text && find(text, (c) => c.tagName === 'h1');
+  if (!h1 || hasClass(hero, 'pfix-sa-hero')) return false;
+  if (siteDir && ![SA_HERO_PHOTO, `${SA_HERO_PHOTO}.webp`].every((f) => fs.existsSync(path.join(siteDir, f)))) {
+    console.warn(`site-fixes: ${pathname}: the hero photo is missing from the site, hero left as is`);
+    return false;
+  }
+  const { states, stateByCode, areas } = loadUsMap();
+  const jobs = states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
+  const offices = areas.length;
+  const officeStates = [...new Set(areas.map((a) => a.state))].map((code) => stateByCode.get(code).name);
+  const top = [...states].sort((a, b) => (Number(b.jobs) || 0) - (Number(a.jobs) || 0)).slice(0, SA_HERO_CHIPS);
+  const more = states.length - top.length;
+
+  const stat = (value, label) => `<div class="pfix-sa-hero__stat" role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
+  const chip = (s) =>
+    `<a class="pfix-sa-hero__chip" href="#${SA_MAP_ID}" data-pfix-state="${esc(s.code)}">${esc(s.name)}${s.jobs ? ` <span>${fmt(Number(s.jobs))}</span>` : ''}</a>`;
+  const column =
+    `<p class="pfix-sa-hero__eyebrow">Our Service Areas</p>` +
+    startTag(h1, withClass(h1, ['pfix-sa-hero__title'])) +
+    esc(`Local exterior remodelers with ${offices} offices on the East Coast`) +
+    `</h1>` +
+    `<p class="pfix-sa-hero__sub">${esc(
+      `${jobs ? `We’ve completed ${fmt(jobs)} jobs in ${states.length} states.` : `We work in ${states.length} states.`} ` +
+        `Our local offices are in ${andList(officeStates)}.`
+    )}</p>` +
+    `<div class="pfix-sa-hero__stats" role="list">` +
+    (jobs ? stat(fmt(jobs), 'Jobs completed') : '') +
+    stat(states.length, 'States') +
+    stat(offices, 'Local offices') +
+    stat(`${GOOGLE_RATING}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
+    `</div>` +
+    `<div class="pfix-sa-hero__areas">` +
+    `<p class="pfix-sa-hero__label" id="pfix-sa-hero-areas">${jobs ? 'Jobs completed by state' : 'Some of the states we work in'}</p>` +
+    `<div class="pfix-sa-hero__chips" role="group" aria-labelledby="pfix-sa-hero-areas">` +
+    top.map(chip).join('') +
+    (more > 0 ? `<a class="pfix-sa-hero__chip pfix-sa-hero__chip--more" href="#${SA_MAP_ID}" data-pfix-state="" aria-label="See all ${states.length} states on the map">+${more} more</a>` : '') +
+    `</div></div>` +
+    `<div class="pfix-sa-hero__ctas">` +
+    `<a class="pfix-sa-hero__btn pfix-sa-hero__btn--call" href="${PHONE.href}">${ICON_PHONE}` +
+    `<span class="pfix-sa-hero__long">Call ${PHONE.text}</span><span class="pfix-sa-hero__short" aria-hidden="true">Call us</span></a>` +
+    `<a class="pfix-sa-hero__btn pfix-sa-hero__btn--map" href="#${SA_MAP_ID}">${ICON_DOWN}See the map</a>` +
+    `</div>`;
+  ed.retag(hero, withClass(hero, ['pfix-sa-hero']));
+  ed.inner(text, column);
+
+  // The section the large map sits in (its heading is "Proud to Serve…").
+  const section = find(doc, (c) => hasClass(c, 'Area_Section'));
+  if (section && !attr(section, 'id')) ed.retag(section, [...section.attrs, { name: 'id', value: SA_MAP_ID }]);
+  else if (!section) console.warn(`site-fixes: ${pathname}: no map section, the hero's map links go nowhere`);
+
+  // Fetch the photo with the page instead of when WP Rocket's lazy loader gets to it.
+  const headEnd = headEndOffset(html);
+  if (headEnd >= 0) ed.replace(headEnd, headEnd, `<link rel="preload" as="image" type="image/webp" href="${SA_HERO_PHOTO}.webp" fetchpriority="high">`);
+
+  changes.push(
+    `service areas hero: says where Panda works (${fmt(jobs)} jobs, ${states.length} states, ${offices} offices), ` +
+      `with state chips that zoom the map, call and map buttons and a sharp drone photo (was a stretched roof strip)`
+  );
+  return true;
+}
 
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
@@ -391,6 +478,12 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       for (const s of inlineScripts(/fetchJobDetails/)) ed.outer(s, '');
       changes.push('job details page: "Failed to load job details." -> pointer to the open positions on /careers/');
     }
+  }
+
+  // /service-areas/: the hero says where Panda works and links to the map.
+  if (pathname === '/service-areas/' && serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
   }
 
   // Typos in visible text (not in URLs or attributes). Skips text already being edited.
