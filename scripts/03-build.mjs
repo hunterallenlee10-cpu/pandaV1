@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, RENAMED_PATHS, renamedPath, renamePaths, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
@@ -53,6 +53,15 @@ for (const a of assets) {
   if (redirected && !assetIndex.has(stripHash(finalUrl))) {
     assetIndex.set(stripHash(finalUrl), { url: finalUrl, rel, renamed, finalUrl, contentType: a.contentType, bytes: a.bytes, kinds: a.kinds });
   }
+}
+
+// A page URL at its corrected address (RENAMED_PATHS), if it has one.
+function renamedUrl(urlStr) {
+  const u = new URL(urlStr);
+  const p = renamedPath(u.pathname);
+  if (p === u.pathname) return urlStr;
+  u.pathname = p;
+  return u.href;
 }
 
 function inSubsite(pathname) {
@@ -159,7 +168,8 @@ const externalSeen = new Map();
 let pagesFromRendered = 0;
 for (const row of pages) {
   const is404 = row.type === '404-page';
-  const rel = is404 ? '404.html' : pageLocalPath(row.url, 'text/html');
+  // A page at a corrected address (RENAMED_PATHS) is written there; its old address redirects.
+  const rel = is404 ? '404.html' : pageLocalPath(renamedUrl(row.url), 'text/html');
   const raw = fetcher.readCache(row.url);
   if (!raw) {
     pageReports.push({ url: row.url, rel, error: 'raw HTML missing from cache' });
@@ -271,6 +281,15 @@ for (const row of inv.rows) {
   const u = new URL(row.url);
   const rel = row.type === 'robots' ? 'robots.txt' : pageLocalPath(row.url, res.contentType);
   let body = res.body;
+  if (row.type === 'sitemap' && Object.keys(RENAMED_PATHS).length) {
+    // Entries of pages at a corrected address list the new address.
+    const xml = body.toString('utf8');
+    const moved = renamePaths(xml);
+    if (moved !== xml) {
+      body = Buffer.from(moved, 'utf8');
+      if (!sitemapsEdited.includes(u.pathname)) sitemapsEdited.push(u.pathname);
+    }
+  }
   if (row.type === 'sitemap' && removedPages.length) {
     // Sitemap entries of the pages removed on request go too.
     const xml = body.toString('utf8');
@@ -284,7 +303,7 @@ for (const row of inv.rows) {
     });
     if (kept !== xml) {
       body = Buffer.from(kept, 'utf8');
-      sitemapsEdited.push(u.pathname);
+      if (!sitemapsEdited.includes(u.pathname)) sitemapsEdited.push(u.pathname);
     }
   }
   if (!written.has(rel)) put(rel, body, row.url);
@@ -356,6 +375,12 @@ for (const a of assets) {
 // The address of a page removed on request leads to its closest page still on the site
 // (REMOVED_PAGE_TARGETS), or else the home page.
 for (const p of removedPages) redirectRows.set(p.url, { from: p.url, status: 301, to: SITE_ORIGIN + removedPageTarget(new URL(p.url).pathname), kind: 'page removed on request' });
+// The old address of a page at a corrected address leads to the new one.
+for (const r of pages) {
+  if (r.type === '404-page' || isRemovedPage(new URL(r.url).pathname)) continue;
+  const to = renamedUrl(r.url);
+  if (to !== r.url) redirectRows.set(r.url, { from: r.url, status: 301, to, kind: 'page moved to a corrected address' });
+}
 for (const c of captures.values()) {
   for (const vp of Object.values(c.viewports || {})) {
     for (const r of vp.siteRequests || []) {

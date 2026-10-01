@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { LinkChecker } from 'linkinator';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isForbidden, isRemovedPage, removedPageTarget } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isForbidden, isRemovedPage, removedPageTarget, renamedPath } from './lib/config.mjs';
 import { extractFromHtml, cssRefs, resolveUrl } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { startServer } from './lib/server.mjs';
@@ -185,7 +185,11 @@ for (const row of inv.rows) {
   let note = '';
   const u = new URL(row.url);
   if (row.type === 'page' && isSiteUrl(u) && isRemovedPage(u.pathname)) note = `page removed from the copy on request (redirects to ${removedPageTarget(u.pathname)})`;
-  else if (row.type === 'page' && status === 200) expected = pageLocalPath(row.url, 'text/html');
+  else if (row.type === 'page' && status === 200) {
+    const moved = new URL(row.url);
+    moved.pathname = renamedPath(moved.pathname); // a page at a corrected address (RENAMED_PATHS)
+    expected = pageLocalPath(moved.href, 'text/html');
+  }
   else if (row.type === '404-page') expected = '404.html';
   else if (row.type === 'robots' && status === 200) expected = 'robots.txt';
   else if (['sitemap', 'sitemap-stylesheet', 'feed', 'xml', 'file'].includes(row.type) && status === 200) expected = pageLocalPath(row.url, row.content_type);

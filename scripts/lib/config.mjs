@@ -234,6 +234,31 @@ export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIG
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 // Where a removed page's address leads: the closest page that is still on the site.
 export const REMOVED_PAGE_TARGETS = { '/roofing/repairs/': '/roofing/replacement/' };
+
+// Pages moved to a corrected address (path prefixes, old -> new). The live site spells the
+// commercial roofing pages "commerical"; the copy serves them at /commercial-roofing/ and
+// redirects the old addresses there (scripts/03-build.mjs). Every reference in the copy
+// (links, canonical and share tags, structured data, sitemap) follows (renamePaths, applied
+// to every page by scripts/lib/customize.mjs). RENAME_PAGES=0 keeps the live addresses.
+export const RENAMED_PATHS =
+  (process.env.RENAME_PAGES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1' ? { '/commerical-roofing/': '/commercial-roofing/' } : {};
+export const renamedPath = (pathname) => {
+  for (const [from, to] of Object.entries(RENAMED_PATHS)) {
+    if (pathname.startsWith(from)) return to + pathname.slice(from.length);
+    if (pathname === from.replace(/\/+$/, '')) return to.replace(/\/+$/, '');
+  }
+  return pathname;
+};
+// The same move inside text: any URL path that starts with an old address, plain, with
+// JSON-escaped slashes (\/) or URL-encoded (%2F). File names that merely look alike
+// (Commerical-Roofing-Project.jpg) are left alone: the match is case-sensitive.
+const renameRes = Object.entries(RENAMED_PATHS).map(([from, to]) => {
+  const slug = from.replace(/^\/+|\/+$/g, '');
+  const next = to.replace(/^\/+|\/+$/g, '');
+  return [new RegExp(`(\\/|/|%2F)${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9_-])`, 'gi'), next];
+});
+export const renamePaths = (text) =>
+  renameRes.reduce((t, [re, next]) => t.replace(re, (m, sep, offset, all) => (/[A-Z]/.test(m.slice(sep.length, sep.length + 1)) ? m : sep + next)), text);
 export const removedPageTarget = (pathname) => {
   const p = REMOVED_PAGES.find((x) => pathname.startsWith(x) || pathname === x.replace(/\/+$/, ''));
   return (p && REMOVED_PAGE_TARGETS[p]) || '/';
