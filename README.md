@@ -184,7 +184,8 @@ Most of these problems are on the live site too.
 - **Share titles**: `/podcast/` and `/referrals/` were shared on social media as "Panda Exteriors | About Us" (copied
   from the About page). They now use their own page titles.
 - **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`)
-  and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
+  and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas", "is a East
+  Coast" in the footer, "o matter what part of your exterior…" and "your schedule a budget" in "Our Process").
 
 Pages where a fix replaces a whole section or message are listed as "edited on purpose" in
 `docs/visual-diff/summary.md`; pages with only the small fixes are compared with live as usual. (`docs/visual-diff/`

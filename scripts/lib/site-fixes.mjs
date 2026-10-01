@@ -189,6 +189,11 @@ const TYPOS = [
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
   [/\bCommerical\b/g, 'Commercial'],
   [/\bOur Services Areas\b/g, 'Our Service Areas'],
+  // footer, every page
+  [/\bis a East Coast exterior remodeling company\b/g, 'is an East Coast exterior remodeling company'],
+  // "Our Process" (/roofing/, /commerical-roofing/): a dropped first letter, and a missing "and"
+  [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
+  [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],
 ];
 
 // Panda does not do roof repairs (small repair jobs), so the site no longer offers them:
