@@ -168,17 +168,21 @@ Most of these problems are on the live site too.
     a free estimate" (it leads to the lead form at the top of the page) and the phone number.
 
   `/gutters/` also opens its project gallery on the Gutters photos instead of Roofing.
-- **Estimate forms built for each service** (`/siding/`, `/gutters/`, `/gutters/gutter-guards/`, the three solar pages,
-  the three commercial pages and `/roofing/attic-insulation/`): both form cards (the hero's and the one beside
-  "About Our Team") offered "10% OFF Roof Replacement" with a "Get a Free Roof Inspection" button, and the project
-  type had no siding option. Each card now has a form for its page's service: its own heading, line and button, the
-  contact fields, and questions about the job, with the page's own service already chosen where it has one
-  (`custom/site-fixes/service-forms.json`, `scripts/lib/service-forms.mjs`). The Google rating and reviews link stay.
-  **The forms are not connected to anything yet**: on submit the fields are checked, then the card says online
-  requests aren't switched on and offers the phone number, so nobody thinks a request went through. The old forms'
-  scripts are removed from these pages: they sent leads to Salesforce (no longer used), Zapier, AccuLynx and Five9,
-  looked up addresses with Google Maps, and asked every visitor for their location as the page loaded. The other
-  pages still have the old form.
+- **Lead forms** (every page with one: 131 pages, from the home page to every blog post): the form cards (in the
+  hero, beside "About Our Team", on blog posts) all held the same form, "10% OFF Roof Replacement" with a "Get a Free
+  Roof Inspection" button, even on the siding, gutter and solar pages, and a project type with no siding option.
+  Each card now has a form for its page (`custom/site-fixes/service-forms.json`, `scripts/lib/service-forms.mjs`):
+  `/siding/`, `/gutters/` and `/gutters/gutter-guards/`, the three solar pages, the three commercial pages and
+  `/roofing/attic-insulation/` get one for their service; the other roofing pages keep the roof replacement offer
+  with a roofing form; every other page gets a general "Free Estimate" form that asks what the visitor needs. Each
+  has its own heading, line and button, the contact fields and questions about the job, with the page's own service
+  already chosen where it has one. The Google rating and reviews link stay. **The forms are not connected to anything
+  yet**: on submit the fields are checked, then the card says online requests aren't switched on and offers the
+  phone number, so nobody thinks a request went through. The old form's scripts are removed from every page (163,
+  including the project pages and the 404 page, which loaded them without a form): they sent leads to Salesforce
+  (no longer used), Zapier, AccuLynx and Five9, looked up addresses with Google Maps, and **asked every visitor for
+  their location as the page loaded**. That also clears two console errors on most pages. (The careers pages' own
+  placeholders, which switch the location prompt off, are left alone.)
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers

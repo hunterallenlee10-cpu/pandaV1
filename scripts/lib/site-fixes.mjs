@@ -79,10 +79,11 @@
 //  - /siding/, /gutters/: one strong page per service, with new sections under the cards
 //    (service-pages.mjs, custom/site-fixes/service-pages.json); the "Siding Types" card
 //    leads to the siding types section; /gutters/ opens its gallery on the Gutters photos.
-//  - Siding, gutter, solar, commercial and attic insulation pages: both form cards offered
-//    "10% OFF Roof Replacement"; each now has an estimate form for the page's service, not
-//    connected to anything yet, and the old forms' lead-routing and location-prompt scripts
-//    are gone (service-forms.mjs, custom/site-fixes/service-forms.json).
+//  - Lead forms (every page with one): the same "10% OFF Roof Replacement" form everywhere,
+//    sending to Salesforce (no longer used) and others and asking for the visitor's location
+//    on load. Each form card now has a form for its page (the page's service, the roofing
+//    offer on roofing pages, or a general one), not connected to anything yet, and the old
+//    scripts are gone from every page (service-forms.mjs, custom/site-fixes/service-forms.json).
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -824,8 +825,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /siding/, /gutters/: what the job involves, signs it's time, how it works, questions.
   if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;
-  // Siding, gutter, solar, commercial and attic insulation pages: an estimate form for the
-  // page's service in place of the roof replacement offer (service-forms.mjs).
+  // Lead forms: a form for the page's service (or the general one) in each form card, and
+  // the old form's scripts removed (service-forms.mjs).
   if (collectServiceForms(doc, html, ed, { pathname }, changes)) {
     used.css = true;
     used.js = true;
