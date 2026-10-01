@@ -212,3 +212,309 @@ a.bde-social-share-button:hover {
   width: 100%;
   height: auto;
 }
+
+/* /service-areas/ hero: says where Panda works, with numbers, state chips and buttons, over
+   a sharp drone photo of the Laurel office and the homes around it. The photo replaces a
+   2000x450 strip of roof that was pinned to the screen (background-attachment: fixed), so
+   it was blown up about 2x and showed only shingles on phones. It scrolls with the page
+   and is darkened behind the text so the white type stays readable. */
+.hero-section.pfix-sa-hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #1f262a;
+  background-image: url("/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg");
+  background-image: image-set(
+    url("/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg.webp") type("image/webp"),
+    url("/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg") type("image/jpeg")
+  );
+  background-size: cover;
+  background-position: 50% 45%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-blend-mode: normal;
+}
+.hero-section.pfix-sa-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(9, 13, 15, 0.86) 0%, rgba(9, 13, 15, 0.66) 40%, rgba(9, 13, 15, 0.18) 72%, rgba(9, 13, 15, 0.1) 100%);
+  pointer-events: none;
+}
+.pfix-sa-hero .text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+}
+.pfix-sa-hero .text-section > * {
+  max-width: 100%;
+  margin: 0;
+}
+.pfix-sa-hero .pfix-sa-hero__eyebrow {
+  color: #c3ea79;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pfix-sa-hero .pfix-sa-hero__title {
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: left;
+  text-wrap: balance;
+}
+.pfix-sa-hero .pfix-sa-hero__sub {
+  padding: 0;
+  color: #eef0ea;
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* Numbers: one row on wide screens, two by two where the column is narrower. */
+.pfix-sa-hero .pfix-sa-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.pfix-sa-hero .pfix-sa-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.28);
+}
+.pfix-sa-hero .pfix-sa-hero__stat:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.pfix-sa-hero .pfix-sa-hero__stat b {
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.pfix-sa-hero .pfix-sa-hero__stat span {
+  color: #d4dacb;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pfix-sa-hero .pfix-sa-hero__stat .pfix-sa-hero__star {
+  color: #f9b800;
+  font-size: inherit;
+  letter-spacing: 0;
+}
+
+/* State chips: each one glides down to the map and zooms it to that state (site-fixes.js). */
+.pfix-sa-hero .pfix-sa-hero__areas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+.pfix-sa-hero .pfix-sa-hero__label {
+  margin: 0;
+  color: #d4dacb;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pfix-sa-hero .pfix-sa-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.pfix-sa-hero a.pfix-sa-hero__chip,
+.pfix-sa-hero a.pfix-sa-hero__chip:hover {
+  display: inline-flex;
+  flex: none;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pfix-sa-hero a.pfix-sa-hero__chip:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.pfix-sa-hero a.pfix-sa-hero__chip span {
+  color: #c3ea79;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Call and map buttons. */
+.pfix-sa-hero .pfix-sa-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn,
+.pfix-sa-hero a.pfix-sa-hero__btn:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 24px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn--call {
+  background: #ff6600;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn--call:hover {
+  background: #e65c00;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn--map {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+.pfix-sa-hero a.pfix-sa-hero__btn--map:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.pfix-sa-hero .pfix-sa-hero__short {
+  display: none;
+}
+.pfix-sa-hero a.pfix-sa-hero__chip:focus-visible,
+.pfix-sa-hero a.pfix-sa-hero__btn:focus-visible {
+  outline: 3px solid #c3ea79;
+  outline-offset: 2px;
+}
+
+@media (min-width: 1200px) {
+  .pfix-sa-hero .text-section {
+    width: 560px;
+  }
+}
+/* Side by side in the narrower container: leave a gap before the form (the site's own
+   493px column ends right where the form starts). */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .pfix-sa-hero .text-section {
+    width: 456px;
+  }
+  .pfix-sa-hero .text-section .pfix-sa-hero__title {
+    font-size: 38px;
+  }
+}
+@media (max-width: 1199.98px) {
+  .pfix-sa-hero .pfix-sa-hero__title {
+    font-size: 40px;
+  }
+  .pfix-sa-hero .pfix-sa-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 0;
+    width: 100%;
+  }
+  .pfix-sa-hero .pfix-sa-hero__stat:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+/* Columns stacked: the text above the form, darkened evenly. The text column takes the
+   container's width (centred in it as before) instead of its content's, so the row of
+   chips that scrolls sideways on phones can't make it wider than the screen. */
+@media (max-width: 1023.98px) {
+  .hero-section.pfix-sa-hero::before {
+    background: linear-gradient(180deg, rgba(9, 13, 15, 0.82) 0%, rgba(9, 13, 15, 0.62) 55%, rgba(9, 13, 15, 0.5) 100%);
+  }
+  .pfix-sa-hero .hero-text-col {
+    align-self: stretch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .pfix-sa-hero .text-section {
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+@media (max-width: 767.98px) {
+  .pfix-sa-hero .text-section {
+    gap: 14px;
+  }
+  .pfix-sa-hero .pfix-sa-hero__title {
+    font-size: 30px;
+  }
+  .pfix-sa-hero .pfix-sa-hero__sub {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .pfix-sa-hero .pfix-sa-hero__stat b {
+    font-size: 24px;
+  }
+  .pfix-sa-hero .pfix-sa-hero__stat span {
+    font-size: 11px;
+  }
+  /* one row of chips that scrolls sideways */
+  .pfix-sa-hero .pfix-sa-hero__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .pfix-sa-hero .pfix-sa-hero__chips::-webkit-scrollbar {
+    display: none;
+  }
+  .pfix-sa-hero .pfix-sa-hero__ctas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .pfix-sa-hero a.pfix-sa-hero__btn,
+  .pfix-sa-hero a.pfix-sa-hero__btn:hover {
+    padding: 13px 10px;
+    font-size: 15px;
+  }
+}
+/* Narrow phones: "Call us" on the button (the number is still read out). */
+@media (max-width: 479.98px) {
+  .pfix-sa-hero .pfix-sa-hero__long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pfix-sa-hero .pfix-sa-hero__short {
+    display: inline;
+  }
+}

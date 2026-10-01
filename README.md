@@ -91,6 +91,13 @@ Most of these problems are on the live site too.
   LinkedIn and email share links.
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
   positions on `/careers/`.
+- **`/service-areas/` hero** said only "Our Service Areas" and a tagline, over a 2000×450 strip of roof pinned to
+  the screen (`background-attachment: fixed`), so the photo was blown up about 2× and showed only shingles on phones.
+  The hero now says where Panda works: a headline and line naming the office states, the jobs, states and offices
+  (read from `custom/us-map/areas.json`, so they always match the map) and the Google rating. Chips for the six
+  states with the most jobs glide down to the map and zoom it to that state. It also has call and "See the map"
+  buttons, and a sharp drone photo of the Laurel office (`DJI_20250722134520_0995_D.jpg`), preloaded so it shows
+  straight away. The lead form beside it is unchanged.
 - **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`)
   and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
 
