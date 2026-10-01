@@ -115,6 +115,14 @@ Most of these problems are on the live site too.
   row of same-size photos with arrows and dots centred below it, and a full-size photo viewer — see
   [`custom/project-gallery/README.md`](custom/project-gallery/README.md). `/gallery/` (a full grid, which works) is
   unchanged.
+- **`/past-projects/`: "Some of our favorite past projects".** Under the map, a "Featured Projects" grid listed every
+  project (16 cards): five near-identical drone shots of the same houses titled "Panda Ext-14098" and the like, three
+  cards titled just "Roof Replacement", photos of bare decking mid-tear-off, and three photos that often didn't show.
+  The page now opens, right under the hero, with six hand-picked projects (residential, solar, commercial and
+  multi-family) in a photo grid, each with its type, a better name where it had only a job number, a line from its
+  project page and a link to it, then a "Get a free estimate" band with a link to `/gallery/`; the map follows. The
+  projects and their wording are in `custom/past-projects/favorites.json` — see
+  [`custom/past-projects/README.md`](custom/past-projects/README.md) to change them.
 - **"Experts You Can Trust"** (home page): the certification logos jumped a step every 2.5 seconds, and the copies
   the carousel made to loop never loaded their logos. They now glide past in one continuous row, easing to a stop
   under the mouse (and stay still for people who prefer reduced motion).
@@ -244,6 +252,7 @@ site/                    the website — deploy this folder
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
   _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
   _custom/project-gallery/            the project gallery's stylesheet and script (copied from custom/project-gallery/)
+  _custom/past-projects/              the favorite projects' stylesheet and photos (copied from custom/past-projects/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
   media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
@@ -271,6 +280,7 @@ custom/us-map/             the animated "areas we serve" map: areas.json (what i
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
 custom/project-gallery/    the "Our Project Gallery" section: styles, script
+custom/past-projects/      "Some of our favorite past projects": favorites.json (the projects), photos, styles
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 ```
