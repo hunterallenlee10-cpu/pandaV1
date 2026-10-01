@@ -18,6 +18,7 @@ import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
+import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
@@ -77,6 +78,9 @@ const files = [
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
+// The favorite projects on /past-projects/: their stylesheet and photos (the photos are in
+// srcset attributes, which the list of linked files above doesn't read).
+if (linked.has(PAST_PROJECTS_FILES['past-projects.css'])) files.push(...pastProjectsFiles());
 // Everything the Media page and the Podcast page's player use (their pictures are in
 // src/srcset/poster attributes).
 const mediaUsed = media || linked.has(MEDIA_FILES['media.js']);

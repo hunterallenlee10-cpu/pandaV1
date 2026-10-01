@@ -1,0 +1,67 @@
+{
+  "eyebrow": "Our work",
+  "title": "Some of our favorite past projects",
+  "intro": "From family homes to apartment communities and our own headquarters, here are a few jobs our crews are especially proud of.",
+  "cta": {
+    "title": "Ready to be our next favorite?",
+    "text": "Tell us about your home or building and we’ll come out for a free estimate.",
+    "button": ["Get a free estimate", "/contact-us/"],
+    "more": ["See more photos in our gallery", "/gallery/"]
+  },
+  "projects": [
+    {
+      "href": "/blog/project/spanish-tile/",
+      "title": "Spanish Tile Roof",
+      "tag": "Residential",
+      "text": "A classic red tile roof that gives this two-story home its warm, timeless look.",
+      "photo": "/wp-content/uploads/2025/07/Website-Map-7-May-22-2025-05_46am-iYjP.jpg",
+      "alt": "Aerial view of a two-story home with a new red Spanish tile roof, surrounded by autumn trees",
+      "position": "50% 55%"
+    },
+    {
+      "href": "/blog/project/panda-ext-15321/",
+      "title": "GAF Timberline Solar Roof",
+      "tag": "Solar",
+      "text": "Solar shingles that protect the home and make about 7 kW of clean power.",
+      "photo": "/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg",
+      "alt": "Home with three dormers and a dark GAF Timberline Solar shingle roof",
+      "position": "50% 45%"
+    },
+    {
+      "href": "/blog/project/expert-tpo-roofing/",
+      "title": "Expert TPO Roofing",
+      "tag": "Commercial",
+      "text": "A bright white TPO system over tapered insulation, finished in just two days.",
+      "photo": "/wp-content/uploads/2025/07/down-net_http20250709-96-yidm03-scaled.jpg",
+      "alt": "New white TPO rooftop with a city skyline and a cathedral in the background",
+      "position": "50% 40%"
+    },
+    {
+      "href": "/blog/project/roof-replacement-gutter-guards/",
+      "title": "Roof Replacement & Gutter Guards",
+      "tag": "Residential",
+      "text": "New architectural shingles, plus gutter guards to keep leaves and debris out.",
+      "photo": "/wp-content/uploads/2025/07/Website-Map-12-Jul-08-2025-09_15am-BcLM.jpg",
+      "alt": "Freshly installed gray shingle roof overlooking a green hillside neighborhood",
+      "position": "50% 35%"
+    },
+    {
+      "href": "/blog/project/panda-exteriors-hq/",
+      "title": "Panda Exteriors HQ",
+      "tag": "Commercial",
+      "text": "Our own Maryland headquarters, re-roofed by the only team we trust: ours.",
+      "photo": "/wp-content/uploads/2025/07/DJI_20250722134618_0999_D.jpg",
+      "alt": "Drone view of the Panda Exteriors headquarters building with its new roof",
+      "position": "50% 60%"
+    },
+    {
+      "href": "/blog/project/chapel-branch-apartments/",
+      "title": "Chapel Branch Apartments",
+      "tag": "Multi-family",
+      "text": "A multi-building apartment community, roofed by our GAF Presidential Master Elite team.",
+      "photo": "/wp-content/uploads/2025/07/10-Jul-14-2025-03_23pm-Qrvs.jpg",
+      "alt": "New three-story apartment building at Chapel Branch, seen from a freshly shingled roof",
+      "position": "50% 30%"
+    }
+  ]
+}

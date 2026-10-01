@@ -98,6 +98,10 @@
 //  - /offers/: a new hero photo (a Panda GAF solar roof) and text, and the five flyer bands
 //    become the two offers as coupon cards, what comes with every project and how to claim
 //    an offer (offers-page.mjs, custom/site-fixes/offers-page.json).
+//  - /past-projects/: the "Featured Projects" grid of every project (duplicate drone shots,
+//    cards titled "Panda Ext-14098", photos that didn't load) becomes "Some of our favorite
+//    past projects", six hand-picked jobs above the map (past-projects.mjs,
+//    custom/past-projects/).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -109,11 +113,12 @@ import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage } from './offers-page.mjs';
+import { renderPastProjects } from './past-projects.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|favorite projects)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -559,7 +564,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false, gallery: false };
+  const used = { css: false, js: false, reviews: false, gallery: false, pastProjects: false };
   const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
@@ -606,6 +611,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // "Our Project Gallery": the slider started three times over -> one tidy gallery
   // (project-gallery.mjs, custom/project-gallery/).
   if (collectProjectGalleries(doc, ed, changes, { selected: servicePage(pathname)?.gallery })) used.gallery = true;
+
+  // /past-projects/: the grid of every project -> six favorites above the map
+  // (past-projects.mjs; a full build puts them there while it adds the map, customize.mjs).
+  if (renderPastProjects(doc, html, ed, { pathname }, changes)) used.pastProjects = true;
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
   // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that

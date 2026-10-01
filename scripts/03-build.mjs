@@ -17,6 +17,7 @@ import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-gallery.mjs';
+import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
@@ -265,6 +266,10 @@ if (reviewPages.length) {
 const galleryPages = fixPages.filter((c) => c.siteFixes.some((f) => /^project gallery:/.test(f)));
 if (galleryPages.length) {
   for (const [name, url] of Object.entries(PROJECT_GALLERY_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(PROJECT_GALLERY_DIR, name)), `custom/project-gallery/${name}`);
+}
+// The favorite projects on /past-projects/ (custom/past-projects/: stylesheet and photos).
+if (fixPages.some((c) => c.siteFixes.some((f) => /^favorite projects:/.test(f)))) {
+  for (const [from, url] of pastProjectsFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/past-projects/${path.relative(PAST_PROJECTS_DIR, from).split(path.sep).join('/')}`);
 }
 if (SMOOTH_SCROLL) {
   for (const [name, url] of Object.entries(SMOOTH_SCROLL_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SMOOTH_SCROLL_DIR, name)), `custom/smooth-scroll/${name}`);
