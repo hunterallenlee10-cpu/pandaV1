@@ -1,0 +1,82 @@
+{
+  "show": {
+    "title": "Panda Vision",
+    "description": [
+      "Panda Vision is the official podcast of Panda Exteriors, where we spotlight the people, projects, and passion that power our team. From rooftop stories and behind-the-scenes insights to conversations with team members who are shaping the future of roofing, siding, and solar, this show brings you closer to the heart of Panda.",
+      "Each episode dives into the experiences of our crew—whether it’s learning from leaders who’ve been in the industry for decades, hearing about standout transformations on job sites, or celebrating the voices of new team members making their mark.",
+      "Panda Vision isn’t just about what we build—it’s about who we are. Tune in to connect with the Panda family, discover what drives us, and see how we’re raising the standard in our industry and our community."
+    ],
+    "cover": "podcast/cover.jpg",
+    "feed": "https://rss.mypodops.com/panda-vision.xml",
+    "appleId": "1863717313",
+    "apple": "https://podcasts.apple.com/us/podcast/panda-vision/id1863717313",
+    "updated": "2026-10-01"
+  },
+  "episodes": [
+    {
+      "guid": "episode-8411",
+      "number": 5,
+      "season": 1,
+      "title": "Tony Talks Talent",
+      "date": "2025-09-11T12:59:35.000Z",
+      "duration": 1052,
+      "summary": "Ready for a wild ride behind the curtain of PandaVision’s hiring process? This episode is packed with expert insights from Tony Valenti, our charismatic selection interview specialist. From quirky twin facts to hilarious interview bloopers, Tony doesn't just hire—he entertains and educates!",
+      "video": "https://mypodops-hosting-production.s3.us-east-2.amazonaws.com/hosting/episodes/2978/panda-vision/48631_audio.mp3",
+      "videoType": "video/mp4",
+      "apple": "https://podcasts.apple.com/us/podcast/tony-talks-talent/id1863717313?i=1000742477679",
+      "poster": "podcast/ep-5.jpg"
+    },
+    {
+      "guid": "episode-8410",
+      "number": 4,
+      "season": 1,
+      "title": "Tile Talk With Tommy",
+      "date": "2025-08-28T12:56:41.000Z",
+      "duration": 757,
+      "summary": "Ever wondered what it takes to build a career from the ground up in the roofing industry? In this episode of PandaVision, we dive deep with Tommy Hall, the VP of Operations at Panda Exteriors, as he shares his remarkable journey with the company. Discover how a job on a naval base launched a lifelong passion for roofing and why he’s known as the GOAT by his peers.",
+      "video": "https://mypodops-hosting-production.s3.us-east-2.amazonaws.com/hosting/episodes/2978/panda-vision/48039_audio.mp3",
+      "videoType": "video/mp4",
+      "apple": "https://podcasts.apple.com/us/podcast/tile-talk-with-tommy/id1863717313?i=1000742477581",
+      "poster": "podcast/ep-4.jpg"
+    },
+    {
+      "guid": "episode-8409",
+      "number": 3,
+      "season": 1,
+      "title": "The Toddcast",
+      "date": "2025-08-13T20:19:54.000Z",
+      "duration": 502,
+      "summary": "Ever wondered what it’s like to navigate the chaotic world of business operations while juggling personal surprises? In this episode of PandaVision, join host Rob Winters as he dives into a captivating conversation with Todd Sandberg, the dynamic Director of Business Operations. From his unexpected journey of becoming a big brother at an age most wouldn’t expect, to managing the exhilarating chaos of a rapidly growing company, Todd shares stories that will resonate with anyone who’s ever felt the push and pull of life’s surprises.",
+      "video": "https://mypodops-hosting-production.s3.us-east-2.amazonaws.com/hosting/episodes/2978/panda-vision/47843_audio.mp3",
+      "videoType": "video/mp4",
+      "apple": "https://podcasts.apple.com/us/podcast/the-toddcast/id1863717313?i=1000742477580",
+      "poster": "podcast/ep-3.jpg"
+    },
+    {
+      "guid": "episode-8408",
+      "number": 2,
+      "season": 1,
+      "title": "Turbocharging Growth: AI Innovation and Panda's Billion-Dollar Vision",
+      "date": "2025-07-23T16:23:12.000Z",
+      "duration": 883,
+      "summary": "Ready to turbocharge your understanding of business growth and innovation? Dive into Episode 2 of PandaVision with Scott Tucker, where cutting-edge AI meets dynamic company expansion! Discover how TurboClaims, an AI-driven tool, is not just meeting but exceeding expectations by processing claims 30% faster, revolutionizing the insurance industry.",
+      "video": "https://mypodops-hosting-production.s3.us-east-2.amazonaws.com/hosting/episodes/2978/panda-vision/47552_audio.mp3",
+      "videoType": "video/mp4",
+      "apple": "https://podcasts.apple.com/us/podcast/turbocharging-growth-ai-innovation-and-pandas-billion/id1863717313?i=1000742477625",
+      "poster": "podcast/ep-2.jpg"
+    },
+    {
+      "guid": "episode-8407",
+      "number": 1,
+      "season": 1,
+      "title": "Welcome to Panda Vision!",
+      "date": "2025-07-10T15:57:21.000Z",
+      "duration": 936,
+      "summary": "Welcome to the premiere episode of Panda Vision, where the excitement is as palpable as the bamboo our mascot's named after! Dive into a world where financial empowerment and team collaboration take center stage. Join us as we celebrate a 109% increase in employee 401k contributions, reflecting a triumphant financial outlook for the second quarter of 2025. This isn't just about numbers—it's about securing futures and building a community that's thriving together.",
+      "video": "https://mypodops-hosting-production.s3.us-east-2.amazonaws.com/hosting/episodes/2978/panda-vision/47257_audio.mp3",
+      "videoType": "video/mp4",
+      "apple": "https://podcasts.apple.com/us/podcast/welcome-to-panda-vision/id1863717313?i=1000742477624",
+      "poster": "podcast/ep-1.jpg"
+    }
+  ]
+}

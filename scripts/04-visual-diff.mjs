@@ -160,7 +160,9 @@ async function main() {
   // replaced by the animated US map, a section or message changed by a site-audit fix,
   // the hero's background video swapped) are expected to differ from live: report them
   // separately instead of as failures.
-  const editedPages = new Map((build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length || c.siteFixSections?.length || c.heroVideo?.length).map((c) => [c.url, c]));
+  const editedPages = new Map(
+    (build.intentionalChanges || []).filter((c) => c.removedLinks || c.customSections?.length || c.siteFixSections?.length || c.heroVideo?.length || c.mediaSections?.length).map((c) => [c.url, c])
+  );
   for (const r of results) {
     const c = editedPages.get(r.url);
     const what = c
@@ -169,6 +171,7 @@ async function main() {
           c.customSections?.length ? 'old map section replaced with the animated US map' : '',
           (c.siteFixSections || []).join('; '),
           c.heroVideo?.length ? 'hero background video swapped and resized' : '',
+          (c.mediaSections || []).join('; '),
         ]
       : [];
     r.intentional = c ? `edited on purpose: ${what.filter(Boolean).join('; ')}` : '';

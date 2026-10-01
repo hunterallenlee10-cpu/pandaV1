@@ -54,6 +54,9 @@
 //    Panda works, with the numbers from the US map's areas.json (jobs, states, offices),
 //    has state chips that glide to the map and zoom to that state, call and map buttons,
 //    and a sharp drone photo that loads first.
+//  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
+//    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
+//    own title.
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -484,6 +487,18 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (pathname === '/service-areas/' && serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
+  }
+
+  // A share title copied from the About page ("Panda Exteriors | About Us") on another
+  // page: the page's own title (what the browser tab and search results show).
+  if (pathname && pathname !== '/about/') {
+    const title = clean(textOf(find(doc, (c) => c.tagName === 'title') || { childNodes: [] }));
+    const shared = findAll(doc, (c) => c.tagName === 'meta' && ['og:title', 'twitter:title'].includes(attr(c, 'property') || attr(c, 'name')) && /\|\s*About Us$/.test(attr(c, 'content') || ''));
+    if (title && shared.length) {
+      const was = attr(shared[0], 'content');
+      for (const m of shared) ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: title } : a)));
+      changes.push(`share title: "${was}" -> "${title}"`);
+    }
   }
 
   // Typos in visible text (not in URLs or attributes). Skips text already being edited.
