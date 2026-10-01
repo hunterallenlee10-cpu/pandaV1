@@ -89,5 +89,27 @@
   "cta": {
     "title": "Ready to save on your project?",
     "text": "These offers are for a limited time. Book your free estimate today."
+  },
+  "details": {
+    "/blog/offer/10-off-roof-replacement/": {
+      "photo": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675],
+      "subtitle": "Get 10% off your roof replacement when you work with Panda Exteriors."
+    },
+    "/blog/offer/1500-off-solar-project/": {
+      "photo": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg", 1000, 667],
+      "subtitle": "Get $1,500 off your solar installation."
+    },
+    "/blog/offer/find-out-about-our-no-interest-financial-options/": {
+      "photo": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
+      "subtitle": "Get the home remodeling work you need completed without breaking the budget. Service Finance, LLC"
+    },
+    "/blog/offer/our-installation-work-is-completed-by-certified-professionals/": {
+      "photo": ["/wp-content/uploads/2025/07/1-Jun-24-2025-09_32am-Qg47-scaled.jpg", 2560, 1182],
+      "subtitle": "We ensure that our products are installed correctly every time—guaranteed!"
+    },
+    "/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/": {
+      "photo": ["/wp-content/uploads/2025/04/roofing-types-and-materials.jpg", 1200, 806],
+      "subtitle": "In addition to products with excellent manufacturer’s warranties, we also back up the work of our team."
+    }
   }
 }

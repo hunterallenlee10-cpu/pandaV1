@@ -95,6 +95,10 @@
 //    so are the cards and sections about repairs and every link to the page; wording that
 //    offered repairs now says what Panda does (REPAIR_COPY).
 //  - "Request an Appointment" (/offers/): its paragraph was printed twice; it is shown once.
+//  - The offer pages (/blog/offer/…/): the header's phone button said (877) 213-1240 (a link
+//    phones can't dial) instead of the site's number; their heroes get a sharp photo and a
+//    readable line under the heading (offers-page.mjs). Lists in blog posts were white on
+//    white (site-fixes.css).
 //  - /offers/: a new hero photo (a Panda GAF solar roof) and text, and the five flyer bands
 //    become the two offers as coupon cards, what comes with every project and how to claim
 //    an offer (offers-page.mjs, custom/site-fixes/offers-page.json).
@@ -112,13 +116,13 @@ import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
-import { collectOffersPage } from './offers-page.mjs';
+import { collectOffersPage, collectOfferDetailPage } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|favorite projects)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -602,6 +606,17 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
+  }
+  // /blog/offer/…/: a sharp hero photo and a readable line under the heading (offers-page.mjs).
+  if (collectOfferDetailPage(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+
+  // Header phone button: the offer pages' header said (877) 213-1240, with a link phones can't
+  // dial (tel:+(877) 213-1240), where every other page's says the site's number.
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && /^tel:/.test(attr(c, 'href') || '') && ancestors(c).some((x) => hasClass(x, 'button-green')) && ancestors(c).some((x) => hasClass(x, 'nav')))) {
+    if ((attr(a, 'href') || '').replace(/\D/g, '').replace(/^1/, '') === PHONE.href.replace(/\D/g, '').replace(/^1/, '')) continue;
+    ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: PHONE.href } : x)));
+    for (const t of textNodes(a)) editText(ed, html, t, (s) => s.replace(/\(\d{3}\) \d{3}-\d{4}/, PHONE.text));
+    changes.push(`header phone button: ${clean(textOf(a))} -> ${PHONE.text}`);
   }
 
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).

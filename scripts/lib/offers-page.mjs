@@ -21,6 +21,15 @@
 // (Lists are divs with list roles: the site's stylesheet forces white text and bullets on
 // every ul and li.)
 //
+// The five offer pages it links to (/blog/offer/…/) get a new hero photo and a readable line
+// under the heading (collectOfferDetailPage, the "details" in the JSON). Three of the heroes
+// were the flyer pictures, blown up behind the heading with their baked-in text ("Spring
+// Savings", "877 213 1240") showing through; the other two were 550 px photos stretched to
+// the screen's width. All five sat under a 90% black overlay, and the picture kept its own
+// shape, so it stopped short of the right edge. The line under the heading had slipped out
+// of its styled paragraph into a bare one (dark grey on the dark hero); on the two offers it
+// was an internal note ("… Panda Exteriors Internal Promotion"), now the offer in a sentence.
+//
 // Applied by site-fixes.mjs. The sections are rendered again on every run, so editing the
 // JSON and running `npm run update:site` updates the page.
 import fs from 'node:fs';
@@ -205,3 +214,53 @@ export function collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)
   return done;
 }
 
+
+/**
+ * /blog/offer/…/: the hero's photo and the line under its heading (the "details" in the
+ * JSON), rendered again on a page built before. Returns true when the page has them.
+ */
+export function collectOfferDetailPage(doc, html, ed, { pathname, siteDir }, changes) {
+  const page = offersPage().details?.[pathname];
+  if (!page) return false;
+  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+  const hero = find(doc, (c) => hasClass(c, 'hero') && find(c, (x) => hasClass(x, 'video-background')));
+  const bg = hero && find(hero, (c) => hasClass(c, 'video-background'));
+  const pic = bg && find(bg, (c) => c.tagName === 'picture' || c.tagName === 'img');
+  const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
+  const h1 = text && find(text, (c) => c.tagName === 'h1');
+  const para = text && find(text, (c) => c.tagName === 'p' && hasClass(c, 'para'));
+  const [src, w, h] = page.photo;
+  if (!pic || !h1 || !para) {
+    console.warn(`site-fixes: ${pathname}: no offer hero, left as is`);
+    return false;
+  }
+  if (!exists(src)) {
+    console.warn(`site-fixes: ${pathname}: the hero photo is missing from the site, offer hero left as is`);
+    return false;
+  }
+  const slice = (n) => html.slice(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  const keep = (n, extra) => [...classes(n).filter((c) => !c.startsWith('pfix-offer-hero')), extra].join(' ');
+  const photo =
+    `<picture class="${esc(keep(pic.tagName === 'picture' ? pic : { attrs: [] }, 'pfix-offer-hero__photo'))}">` +
+    (exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '') +
+    `<img src="${esc(src)}" alt="" width="${w}" height="${h}" fetchpriority="high" decoding="async" data-no-lazy=""></picture>`;
+  const line = `<p class="${esc(keep(para, 'pfix-offer-hero__sub'))}">${esc(page.subtitle)}</p>`;
+  const built = hasClass(hero, 'pfix-offer-hero');
+  let n = 0;
+  if (slice(pic) !== photo) {
+    ed.outer(pic, photo);
+    n++;
+  }
+  // Everything after the heading: the styled paragraph (empty as captured) and the bare ones
+  // the line slipped into.
+  const rest = { start: h1.sourceCodeLocation.endOffset, end: text.sourceCodeLocation.endTag.startOffset };
+  if (html.slice(rest.start, rest.end) !== line) {
+    ed.replace(rest.start, rest.end, line);
+    n++;
+  }
+  if (!built) {
+    ed.retag(hero, hero.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: [...classes(hero), 'pfix-offer-hero'].join(' ') } : a)));
+    changes.push('offer page hero: a sharp photo across the whole hero in place of the blown-up flyer or small photo, and the line under the heading readable');
+  } else if (n) changes.push('offer page hero: rendered again');
+  return true;
+}
