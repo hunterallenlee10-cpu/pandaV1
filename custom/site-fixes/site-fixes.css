@@ -1576,3 +1576,131 @@ a.bde-social-share-button:hover {
     transition: none;
   }
 }
+
+/* Service estimate forms (service-forms.mjs): the site's own field and button styles
+   (.input-field, .submit-btn, .name-row) with labels for screen readers, the questions
+   about the job, and the "not switched on yet" message shown on submit. */
+.pfix-lead {
+  width: 100%;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.pfix-lead .pfix-lead__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+.pfix-lead .name-row {
+  margin: 0;
+}
+.pfix-lead .pfix-lead__field {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.pfix-lead .pfix-lead__field .input-field,
+.pfix-lead .pfix-lead__question .input-field {
+  width: 100%;
+  margin: 0;
+}
+.pfix-lead .pfix-lead__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.pfix-lead .pfix-lead__question {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+}
+.pfix-lead .input-field[aria-invalid='true'] {
+  outline: 2px solid #dc2626;
+  outline-offset: 0;
+}
+.pfix-lead .pfix-lead__consent {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 2px 0 0;
+  color: #4b5563;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.pfix-lead .pfix-lead__consent input {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+  accent-color: #f26924;
+}
+.pfix-lead .pfix-lead__consent a {
+  color: inherit;
+  text-decoration: underline;
+}
+.pfix-lead .pfix-lead__error {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+.pfix-lead .submit-btn {
+  width: 100%;
+  margin-top: 4px;
+}
+.pfix-lead .pfix-lead__call {
+  margin: 0;
+  color: #374151;
+  font-size: 14px;
+  text-align: center;
+}
+.pfix-lead .pfix-lead__done {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fff7f1;
+  color: #374151;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
+.pfix-lead .pfix-lead__done[hidden],
+.pfix-lead .pfix-lead__form[hidden],
+.pfix-lead .pfix-lead__error[hidden] {
+  display: none;
+}
+.pfix-lead .pfix-lead__done:focus {
+  outline: none;
+}
+.pfix-lead .pfix-lead__done p {
+  margin: 0;
+}
+.pfix-lead .pfix-lead__done-title {
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+}
+.pfix-lead a.pfix-lead__done-call,
+.pfix-lead a.pfix-lead__done-call:hover {
+  display: block;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+}
+.form-card:has(.pfix-lead) .form-text-p {
+  text-align: center;
+}

@@ -4,7 +4,8 @@
    - "Experts You Can Trust" (home page): the logos glide past in one continuous row.
    - /service-areas/, /about/, /podcast/, /roofing/: the service cards glide past the same
      way (.pfix-marquee--cards).
-   - /service-areas/ hero: the state chips zoom the map to their state. */
+   - /service-areas/ hero: the state chips zoom the map to their state.
+   - Service estimate forms: checked on submit, then a "not switched on yet" message. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -225,5 +226,57 @@
       io.observe(target.closest('.pmap-card') || section);
     }
     timer = setTimeout(press, 1500);
+  });
+})();
+
+/* Service estimate forms (service-forms.mjs): not connected to anything yet. On submit the
+   fields are checked; then, instead of pretending the request was sent, the card says
+   online requests aren't switched on and offers the phone number. */
+(function () {
+  'use strict';
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function label(el) {
+    return (el.getAttribute('placeholder') || (el.closest('label') ? el.closest('label').textContent : '') || 'This field').replace(/\s*\(optional\)$/, '').trim();
+  }
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!form || !form.hasAttribute || !form.hasAttribute('data-pfix-lead-form')) return;
+    event.preventDefault();
+    var error = form.querySelector('.pfix-lead__error');
+    var bad = null;
+    var message = '';
+    Array.prototype.forEach.call(form.querySelectorAll('input, select'), function (el) {
+      var value = (el.value || '').trim();
+      var wrong = (el.required && !value) || (el.type === 'email' && value && !EMAIL.test(value)) || (el.type === 'tel' && value && value.replace(/\D/g, '').length < 10);
+      if (wrong) el.setAttribute('aria-invalid', 'true');
+      else el.removeAttribute('aria-invalid');
+      if (wrong && !bad) {
+        bad = el;
+        message = !value ? label(el) + ' is needed.' : el.type === 'email' ? 'Please check your email address.' : 'Please check your phone number.';
+      }
+    });
+    if (bad) {
+      if (error) {
+        error.textContent = message;
+        error.hidden = false;
+      }
+      bad.focus();
+      return;
+    }
+    if (error) error.hidden = true;
+    var box = form.closest('.pfix-lead');
+    var done = box && box.querySelector('.pfix-lead__done');
+    if (!done) return;
+    var first = form.querySelector('[name="first_name"]');
+    var name = done.querySelector('[data-pfix-lead-name]');
+    if (name && first && first.value.trim()) name.textContent = ', ' + first.value.trim().split(/\s+/)[0];
+    form.hidden = true;
+    done.hidden = false;
+    done.focus();
+  });
+  // Clear a field's error mark as soon as it is edited.
+  document.addEventListener('input', function (event) {
+    var el = event.target;
+    if (el && el.closest && el.closest('[data-pfix-lead-form]') && el.getAttribute('aria-invalid')) el.removeAttribute('aria-invalid');
   });
 })();

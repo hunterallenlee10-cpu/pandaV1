@@ -79,6 +79,10 @@
 //  - /siding/, /gutters/: one strong page per service, with new sections under the cards
 //    (service-pages.mjs, custom/site-fixes/service-pages.json); the "Siding Types" card
 //    leads to the siding types section; /gutters/ opens its gallery on the Gutters photos.
+//  - Siding, gutter, solar, commercial and attic insulation pages: both form cards offered
+//    "10% OFF Roof Replacement"; each now has an estimate form for the page's service, not
+//    connected to anything yet, and the old forms' lead-routing and location-prompt scripts
+//    are gone (service-forms.mjs, custom/site-fixes/service-forms.json).
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -91,11 +95,12 @@ import { collectReviewCarousels } from './reviews.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
+import { collectServiceForms } from './service-forms.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|about section colors|awards section)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|about section colors|awards section)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -819,6 +824,12 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /siding/, /gutters/: what the job involves, signs it's time, how it works, questions.
   if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;
+  // Siding, gutter, solar, commercial and attic insulation pages: an estimate form for the
+  // page's service in place of the roof replacement offer (service-forms.mjs).
+  if (collectServiceForms(doc, html, ed, { pathname }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
 
   // A share title copied from the About page ("Panda Exteriors | About Us") on another
   // page: the page's own title (what the browser tab and search results show).
