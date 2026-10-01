@@ -806,13 +806,70 @@ a.bde-social-share-button:hover {
 .pfix-services--warm .pfix-services__all a:hover {
   background: #d9541a;
 }
+/* /services/, /solar/, /siding/, /gutters/, /commerical-roofing/: the same photo cards,
+   standing still in a grid (three across, or a centred pair), each as tall as its row. */
+.pfix-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 28px auto 0;
+  padding: 0 0 8px;
+}
+.pfix-svc-grid.pfix-svc-grid--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 880px;
+}
+.pfix-svc-grid .pfix-svc-grid__item {
+  display: flex;
+  min-width: 0;
+}
+.pfix-services .pfix-svc-grid a.pfix-svc,
+.pfix-services .pfix-svc-grid a.pfix-svc:hover {
+  width: 100%;
+}
+.pfix-svc-grid .pfix-svc .pfix-svc__media {
+  aspect-ratio: 16 / 10;
+}
+.pfix-svc-grid .pfix-svc__media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.pfix-services .pfix-svc-grid a.pfix-svc:hover .pfix-svc__media img {
+  transform: scale(1.05);
+}
+.pfix-svc-grid .pfix-svc .pfix-svc__body {
+  padding: 22px 24px 24px;
+}
+.pfix-svc-grid .pfix-svc .pfix-svc__title {
+  margin-top: 0;
+}
+@media (max-width: 991.98px) {
+  .pfix-svc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+@media (max-width: 639.98px) {
+  .pfix-svc-grid,
+  .pfix-svc-grid.pfix-svc-grid--pair {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 440px;
+    gap: 18px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .pfix-services a.pfix-svc,
-  .pfix-marquee .pfix-marquee__item .pfix-svc__media img {
+  .pfix-marquee .pfix-marquee__item .pfix-svc__media img,
+  .pfix-svc-grid .pfix-svc__media img {
     transition: none;
   }
   .pfix-services a.pfix-svc:hover,
   .pfix-services a.pfix-svc:hover .pfix-svc__media img,
+  .pfix-services .pfix-svc-grid a.pfix-svc:hover .pfix-svc__media img,
   .pfix-services--warm a.pfix-svc:hover .pfix-svc__more > span,
   .pfix-services--warm a.pfix-svc:focus-visible .pfix-svc__more > span {
     transform: none;

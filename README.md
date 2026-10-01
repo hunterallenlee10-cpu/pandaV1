@@ -131,6 +131,14 @@ Most of these problems are on the live site too.
   services on `/about/` and `/podcast/`, and the six roofing ones (Roof Types included) on `/roofing/`
   (`ROOFING_CARDS`), with a "See all our services" button. On phones, with reduced motion or without JavaScript,
   the still cards are one row to swipe through rather than a long column (on `/service-areas/` too).
+- **Service card grids** (`/services/`, `/solar/`, `/siding/`, `/gutters/`, `/commerical-roofing/`) used the same orange
+  icon cards, standing still. They are now the same photo cards, in a grid (three across on `/services/`, a centred
+  pair elsewhere, one column on phones), with each page's own titles and text (photos in `GRID_PHOTOS`). Three of
+  their links were broken on the live site too: "Gutter Installations" led to `/powerwash/` and "Siding
+  Replacements" to `/window-replacement/` (neither page exists), and "Siding Types" led to the commercial roof types
+  page. There are no pages for those services, so they now lead to the contact page ("Get a free estimate", "Ask
+  about siding options"; `GRID_CARD_FIXES`). On `/services/` the two empty headings around "Our Services" are
+  removed and the heading gets the site's section-heading style. The office cards on `/contact-us/` are unchanged.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
