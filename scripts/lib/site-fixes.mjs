@@ -49,6 +49,9 @@
 //    they are now plain share links.
 //  - /position-details/ can only show "Failed to load job details." in a static copy;
 //    it now points to the open positions on /careers/.
+//  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
+//    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
+//    own title.
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -390,6 +393,18 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       }
       for (const s of inlineScripts(/fetchJobDetails/)) ed.outer(s, '');
       changes.push('job details page: "Failed to load job details." -> pointer to the open positions on /careers/');
+    }
+  }
+
+  // A share title copied from the About page ("Panda Exteriors | About Us") on another
+  // page: the page's own title (what the browser tab and search results show).
+  if (pathname && pathname !== '/about/') {
+    const title = clean(textOf(find(doc, (c) => c.tagName === 'title') || { childNodes: [] }));
+    const shared = findAll(doc, (c) => c.tagName === 'meta' && ['og:title', 'twitter:title'].includes(attr(c, 'property') || attr(c, 'name')) && /\|\s*About Us$/.test(attr(c, 'content') || ''));
+    if (title && shared.length) {
+      const was = attr(shared[0], 'content');
+      for (const m of shared) ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: title } : a)));
+      changes.push(`share title: "${was}" -> "${title}"`);
     }
   }
 

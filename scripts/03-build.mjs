@@ -206,8 +206,8 @@ for (const row of pages) {
       siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
       heroVideo: hero.changes,
       mediaMenu: custom.changes.media,
-      // The Podcast page's player, replaced (listed as edited on purpose by the visual diff).
-      mediaSections: custom.changes.media.filter((f) => /^podcast page: player/.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
+      // The Podcast page's player and intro, replaced (listed as edited on purpose by the visual diff).
+      mediaSections: custom.changes.media.filter((f) => /^podcast page: (player|intro)/.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
     });
   }
 

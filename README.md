@@ -67,8 +67,9 @@ Panda Vision, the company's video podcast, with its newest episode in a player a
 on Apple Podcasts, or in any podcast app). Every episode follows in a row across the page. The page keeps the site's
 header and footer. On phones, the first entry under Media, which said "Blog" like the entry below it, is now "Media
 Hub". The Podcast page (`/podcast/`) gets the same player in place of its own, which pointed at an address that
-no longer works and showed an empty space, and its "Listen on Apple Podcasts" badge now leads to the show's current
-listing (the old one is gone). The episodes are refreshed with `npm run media:podcast` — see
+no longer works and showed an empty space, its "Listen on Apple Podcasts" badge now leads to the show's current
+listing (the old one is gone), and its intro, which described a show about "technology, innovation, and the future",
+is the show's own description from its feed. The episodes are refreshed with `npm run media:podcast` — see
 [`custom/media/README.md`](custom/media/README.md).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
@@ -122,6 +123,8 @@ Most of these problems are on the live site too.
   LinkedIn and email share links.
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
   positions on `/careers/`.
+- **Share titles**: `/podcast/` and `/referrals/` were shared on social media as "Panda Exteriors | About Us" (copied
+  from the About page). They now use their own page titles.
 - **Small fixes**: a link whose address had slipped into its `style` attribute ("roofing team" on `/roofing/types/`)
   and typos ("Experts Your Can Trust", "Exterior Modeling", "Commerical", "Our Services Areas").
 

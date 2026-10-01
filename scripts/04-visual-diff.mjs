@@ -171,7 +171,7 @@ async function main() {
           c.customSections?.length ? 'old map section replaced with the animated US map' : '',
           (c.siteFixSections || []).join('; '),
           c.heroVideo?.length ? 'hero background video swapped and resized' : '',
-          c.mediaSections?.length ? 'dead podcast player replaced with the Panda Vision player' : '',
+          (c.mediaSections || []).join('; '),
         ]
       : [];
     r.intentional = c ? `edited on purpose: ${what.filter(Boolean).join('; ')}` : '';

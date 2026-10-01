@@ -15,8 +15,10 @@ The **Podcast page** (`/podcast/`) gets the same player. Its own player was PodO
 leads nowhere (the page showed an empty space), and its "Listen on Apple Podcasts" badge linked to a listing Apple no
 longer has (`id1839234062`). The empty space is now a dark card with the newest episode in the player, every episode
 beside it (they scroll beside the player when there are more than fit), and the ways to watch below; the badge leads
-to the show's current listing. The rest of the page is as captured. Each build renders the card again, so new episodes
-show up there too.
+to the show's current listing. Its intro described some other show ("your go-to podcast for insightful discussions on
+technology, innovation, and the future"); it is now the first paragraph of the show's own description, from its feed
+(`show.description` in `podcast.json`). The rest of the page is as captured. Each build renders the card and the intro
+again, so new episodes and a new description show up there too.
 
 On every page, the Media menu item now links to `/media/`. On phones, where tapping Media opens its list, the list's
 first entry (which said "Blog", the same as the entry below it) is now **Media Hub** and leads there too, the way

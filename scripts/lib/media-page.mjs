@@ -17,7 +17,9 @@
 //
 // The Podcast page (/podcast/) gets the same podcast player (collectPodcastPage): its own
 // player came from PodOps' old player address, which now leads nowhere, and its "Listen on
-// Apple Podcasts" badge pointed at a listing Apple no longer has.
+// Apple Podcasts" badge pointed at a listing Apple no longer has. Its intro, which described
+// some other show ("technology, innovation, and the future"), becomes the show's own
+// description from its feed.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse, parseFragment } from 'parse5';
@@ -418,6 +420,15 @@ export function collectPodcastPage(doc, html, ed, changes) {
       changes.push(dead ? `podcast page: player -> the ${show.title} player (${podcast.episodes.length} episodes; the old PodOps player address leads nowhere)` : 'podcast page: player re-rendered (episodes refreshed)');
     }
     player = true;
+    // The intro beside the heading, in the same section as the player.
+    let section = box.parentNode;
+    while (section && !hasClass(section, 'Service-container')) section = section.parentNode;
+    const intro = section && find(section, (c) => c.tagName === 'p' && !isInside(c, box));
+    const text = (show.description || [])[0];
+    if (intro && text && clean(textOf(intro)) !== text) {
+      ed.inner(intro, `\n${esc(text)}\n`);
+      changes.push(`podcast page: intro -> the show's own description (it described a show about "technology, innovation, and the future")`);
+    }
   }
   // Links to this show (its name in the address) at an old listing; other podcasts are left alone.
   const slug = new URL(show.apple).pathname.split('/')[3];
