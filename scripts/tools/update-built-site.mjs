@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Applies the site fixes (scripts/lib/site-fixes.mjs) and smooth scrolling to the pages
-// already built in site/, and copies the custom/ files they use into site/_custom/.
+// Applies the site fixes (scripts/lib/site-fixes.mjs), smooth scrolling and the "Media" menu
+// link to the pages already built in site/, (re)builds the Media page (/media/,
+// scripts/lib/media-page.mjs), and copies the custom/ files they use into site/_custom/.
 //
 // 03-build.mjs rebuilds site/ from the capture cache (.cache/, .work/), which is not in
 // the repository; this updates a checkout that only has site/. The fixes are written to
@@ -12,10 +13,11 @@
 //   node scripts/tools/update-built-site.mjs [--only=/,/roofing/] [--dry-run]
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL } from '../lib/config.mjs';
+import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE } from '../lib/config.mjs';
 import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../lib/customize.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
+import { buildMediaPage, mediaFiles, MEDIA_PATH } from '../lib/media-page.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
 const opts = args();
@@ -32,7 +34,9 @@ function pageUrl(file) {
   return `${SITE_ORIGIN}/${rel.replace(/(^|\/)index\.html$/, '$1')}`;
 }
 
-const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw'));
+// The Media page is rebuilt below, from the other pages.
+const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');
+const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile));
 const counts = {};
 const linked = new Set(); // the /_custom/ files the pages link
 let changed = 0;
@@ -41,10 +45,10 @@ for (const file of pages.sort()) {
   const html = fs.readFileSync(file, 'utf8');
   let out = { html };
   if (!only || only.has(new URL(url).pathname)) {
-    out = applyCustomizations(html, { pageUrl: url, map: false, fixes: SITE_FIXES, smoothScroll: SMOOTH_SCROLL, siteDir: SITE, siteOrigin: SITE_ORIGIN });
+    out = applyCustomizations(html, { pageUrl: url, map: false, fixes: SITE_FIXES, smoothScroll: SMOOTH_SCROLL, media: MEDIA_PAGE, siteDir: SITE, siteOrigin: SITE_ORIGIN });
     if (out.html !== html) {
       changed++;
-      for (const f of out.changes.fixes) {
+      for (const f of [...out.changes.fixes, ...out.changes.media]) {
         const k = f.replace(/\s*\(.*$/, '').replace(/:.*$/, '');
         counts[k] = (counts[k] || 0) + 1;
       }
@@ -54,12 +58,25 @@ for (const file of pages.sort()) {
   for (const m of out.html.matchAll(/(?:href|src)="(\/_custom\/[^"?#]+)"/g)) linked.add(m[1]);
 }
 
+// The Media page, from the pages just updated (its header and footer come from one of them).
+let media = null;
+if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
+  media = buildMediaPage({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  if (media && (!fs.existsSync(mediaFile) || fs.readFileSync(mediaFile, 'utf8') !== media.html)) {
+    changed++;
+    if (!dryRun) writeFile(mediaFile, media.html);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, mediaFile)} (latest post ${media.post?.href || 'none'}; ${media.episodes} podcast episode(s))`);
+  }
+}
+
 // The stylesheets and scripts the pages link.
 const files = [
   ...Object.entries(SITE_FIXES_FILES).map(([name, url]) => [path.join(SITE_FIXES_DIR, name), url]),
   ...Object.entries(REVIEWS_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
+// Everything the Media page uses (its pictures are in src/srcset/poster attributes).
+if (media) files.push(...mediaFiles());
 let copied = 0;
 for (const [from, url] of files) {
   const to = path.join(SITE, url);
@@ -70,5 +87,15 @@ for (const [from, url] of files) {
   console.log(`${dryRun ? 'would copy' : 'copied'} ${path.relative(ROOT, from)} -> ${path.relative(ROOT, to)}`);
 }
 
-console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
+// Pictures of podcast episodes no longer in custom/media/podcast.json.
+if (media) {
+  const keep = new Set(mediaFiles().map(([, url]) => path.join(SITE, url)));
+  for (const f of listFiles(path.join(SITE, '_custom', 'media'))) {
+    if (keep.has(f)) continue;
+    if (!dryRun) fs.rmSync(f);
+    console.log(`${dryRun ? 'would remove' : 'removed'} ${path.relative(ROOT, f)}`);
+  }
+}
+
+console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0)} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
 for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(3)} × ${k}`);

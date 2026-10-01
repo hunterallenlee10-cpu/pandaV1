@@ -214,6 +214,12 @@ export const SITE_FIXES = (process.env.SITE_FIXES ?? (process.env.SITE_ORIGIN ? 
 // browser's own scrolling.
 export const SMOOTH_SCROLL = (process.env.SMOOTH_SCROLL ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// The header's "Media" menu item (a dead "#" link on the live site) leads to a generated
+// Media page, /media/: the newest blog posts beside the Panda Vision podcast and the ways to
+// watch it (scripts/lib/media-page.mjs, custom/media/). MEDIA_PAGE=0 builds no page and
+// leaves the menu item as captured.
+export const MEDIA_PAGE = (process.env.MEDIA_PAGE ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 // Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
 // page about them. Removed pages are not built, links to them are removed like the

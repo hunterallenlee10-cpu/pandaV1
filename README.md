@@ -32,7 +32,7 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 
 ## Deliberate changes
 
-Besides removing the city links (above), the copy differs from the live site on purpose in four ways.
+Besides removing the city links (above), the copy differs from the live site on purpose in five ways.
 
 **The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs`
 during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
@@ -58,6 +58,16 @@ like on the live site it is hidden on phones (under 768 px wide).
 underneath, so sticky bars, lazy-loaded images and the site's other scripts work as before. Touch scrolling stays the
 device's own, links to a spot on the same page glide there and stop below the fixed header, and people who prefer
 reduced motion get instant scrolling — see [`custom/smooth-scroll/README.md`](custom/smooth-scroll/README.md).
+
+**The header's Media menu item leads to a new Media page.** On the live site the item (Blog and Podcast under it)
+went nowhere: its link was `#`. On every page it now leads to `/media/` (`custom/media/`, written by
+`scripts/lib/media-page.mjs` during the build, `MEDIA_PAGE=0` to turn off), which sets the blog and the podcast side
+by side: the newest blog post (read from the site's own feed when the page is built) with the three before it, and
+Panda Vision, the company's video podcast, with its newest episode in a player and the ways to watch it (on the page,
+on Apple Podcasts, or in any podcast app). Every episode follows in a row across the page. The page keeps the site's
+header and footer. On phones, the first entry under Media, which said "Blog" like the entry below it, is now "Media
+Hub". The episodes are refreshed with `npm run media:podcast` — see
+[`custom/media/README.md`](custom/media/README.md).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
 the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.
@@ -110,6 +120,8 @@ site/                    the website — deploy this folder
   _custom/site-fixes/                 styles and script for the site-audit fixes (copied from custom/site-fixes/)
   _custom/reviews/                    the review carousel's stylesheet and script (copied from custom/reviews/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
+  _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
+  media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
@@ -134,6 +146,7 @@ custom/us-map/             the animated "areas we serve" map: areas.json (what i
 custom/site-fixes/         styles, script and data for the site-audit fixes (the fixes are in scripts/lib/site-fixes.mjs)
 custom/reviews/            the review carousel: reviews.json (the reviews it shows), styles, script
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
+custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 ```
 
 ## View it locally
@@ -189,7 +202,8 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 
 `.cache/` and `.work/` are not in the repository, so a fresh clone cannot run `03-build.mjs`. After changing
 `custom/` or the site fixes, `npm run update:site` (`node scripts/tools/update-built-site.mjs`, add `--dry-run` to
-preview) applies the site fixes and smooth scrolling to the pages already in `site/` and copies the custom files.
+preview) applies the site fixes, smooth scrolling and the Media menu link to the pages already in `site/`, rebuilds
+the Media page and copies the custom files.
 Each fix gives the same result on a built page as on the page as captured, so the pages come out as a full rebuild
 would make them. The map sections are the exception: only `03-build.mjs` renders them.
 

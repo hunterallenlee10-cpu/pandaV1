@@ -12,7 +12,8 @@
 //    map, and the page's hidden project list becomes a visible grid;
 //  - /service-areas/: the large map goes where the city list used to be.
 //
-// Every page also gets smooth scrolling (custom/smooth-scroll/, SMOOTH_SCROLL).
+// Every page also gets smooth scrolling (custom/smooth-scroll/, SMOOTH_SCROLL), and the
+// header's "Media" menu item leads to the Media page (media-page.mjs, MEDIA_PAGE).
 //
 // Separately, applyHeroVideo swaps the homepage hero's background video.
 import path from 'node:path';
@@ -21,6 +22,7 @@ import { ROOT } from './config.mjs';
 import { renderCompactMap, renderExplorerMap, US_MAP_FILES } from './us-map.mjs';
 import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
+import { collectMediaNav } from './media-page.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -164,14 +166,15 @@ export function applyHeroVideo(html, { videoId } = {}) {
 
 // ----------------------------------------------------------------- main
 // map: replace the old map sections (CUSTOM_US_MAP). fixes: the audit fixes in
-// site-fixes.mjs (SITE_FIXES). smoothScroll: Lenis on the page (SMOOTH_SCROLL).
+// site-fixes.mjs (SITE_FIXES). smoothScroll: Lenis on the page (SMOOTH_SCROLL). media:
+// the "Media" menu item -> /media/ (MEDIA_PAGE).
 // Returns the new HTML and what changed, per group. Stylesheets and scripts the page
 // already links are not added again, so the fixes (not the map) can also be run over an
 // already built page (scripts/tools/update-built-site.mjs).
-export function applyCustomizations(html, { pageUrl, map = true, fixes = false, smoothScroll = false, siteDir, siteOrigin } = {}) {
+export function applyCustomizations(html, { pageUrl, map = true, fixes = false, smoothScroll = false, media = false, siteDir, siteOrigin } = {}) {
   const doc = parse(html, { sourceCodeLocationInfo: true });
   const ed = makeEditor(html);
-  const changes = { map: [], fixes: [] };
+  const changes = { map: [], fixes: [], media: [] };
   let n = 0;
   const uid = () => `pmap-${++n}`;
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
@@ -208,6 +211,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   }
 
   const fixAssets = fixes ? collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes.fixes) : {};
+  if (media) collectMediaNav(doc, html, ed, changes.media);
 
   // Stylesheets and scripts go just before the page's own </head>. If a page has none,
   // they go right before the first edit instead (still valid HTML), never above the

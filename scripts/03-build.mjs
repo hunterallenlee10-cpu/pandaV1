@@ -9,13 +9,14 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
 import { US_MAP_DIR, US_MAP_FILES } from './lib/us-map.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES, SECTION_FIXES } from './lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
+import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -181,15 +182,16 @@ for (const row of pages) {
   const { report } = transformed;
   // Deliberate changes on top of the copy: the old map sections -> the animated US map
   // (CUSTOM_US_MAP), the fixes from the site audit (SITE_FIXES), smooth scrolling
-  // (SMOOTH_SCROLL), and the homepage hero's background video -> HERO_VIDEO_ID.
+  // (SMOOTH_SCROLL), the "Media" menu item -> /media/ (MEDIA_PAGE), and the homepage
+  // hero's background video -> HERO_VIDEO_ID.
   const custom =
-    CUSTOM_US_MAP || SITE_FIXES || SMOOTH_SCROLL
-      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, smoothScroll: SMOOTH_SCROLL, siteDir: OUT, siteOrigin: SITE_ORIGIN })
-      : { html: transformed.html, changes: { map: [], fixes: [] } };
+    CUSTOM_US_MAP || SITE_FIXES || SMOOTH_SCROLL || MEDIA_PAGE
+      ? applyCustomizations(transformed.html, { pageUrl: row.url, map: CUSTOM_US_MAP, fixes: SITE_FIXES, smoothScroll: SMOOTH_SCROLL, media: MEDIA_PAGE, siteDir: OUT, siteOrigin: SITE_ORIGIN })
+      : { html: transformed.html, changes: { map: [], fixes: [], media: [] } };
   const hero = applyHeroVideo(custom.html, { videoId: HERO_VIDEO_ID });
   put(rel, hero.html, row.url);
   pageReports.push({ url: row.url, rel, source: useRendered ? 'rendered' : 'raw', rewrites: report.rewrites, trackersDisabled: report.disabledCount, charset });
-  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length || hero.changes.length) {
+  if (report.removedLinks || report.valueRewrites || custom.changes.map.length || custom.changes.fixes.length || custom.changes.media.length || hero.changes.length) {
     intentionalChanges.push({
       url: row.url,
       removedLinks: report.removedLinks,
@@ -202,6 +204,7 @@ for (const row of pages) {
       // as edited on purpose; pages with only the small fixes must still match live).
       siteFixSections: custom.changes.fixes.filter((f) => SECTION_FIXES.test(f)).map((f) => f.replace(/\s*\(.*$/, '')),
       heroVideo: hero.changes,
+      mediaMenu: custom.changes.media,
     });
   }
 
@@ -279,6 +282,18 @@ for (const row of inv.rows) {
   if (!written.has(rel)) put(rel, body, row.url);
   const servedAt = '/' + rel;
   if (u.pathname !== servedAt && u.pathname.endsWith('/')) rewrites.push({ from: u.pathname, to: relToUrlPath(rel) });
+}
+
+// 3a. The Media page (MEDIA_PAGE): generated from a built page, the site's feed (written
+// just above) and custom/media/ (scripts/lib/media-page.mjs). Before 3b, so the files it
+// shows are kept.
+let mediaPage = null;
+if (MEDIA_PAGE) {
+  mediaPage = buildMediaPage({ siteDir: OUT, siteOrigin: SITE_ORIGIN });
+  if (mediaPage) {
+    put(path.posix.join(MEDIA_PATH.replace(/^\/|\/$/g, ''), 'index.html'), mediaPage.html, 'custom/media');
+    for (const [from, url] of mediaFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/media/${path.relative(MEDIA_DIR, from).split(path.sep).join('/')}`);
+  }
 }
 
 // 3b. Files only the pages removed on request used (their photos, page-only styles …)
@@ -626,6 +641,7 @@ writeJson(path.join(PATHS.work, 'build-report.json'), {
   forms: formsList.length,
   jsErrorsLive: jsErrors.length,
   intentionalChanges,
+  mediaPage: mediaPage ? { path: MEDIA_PATH, latestPost: mediaPage.post?.href || null, episodes: mediaPage.episodes } : null,
   removedPages: removedPages.map((p) => p.url),
   removedPageFiles: [...leftOut].sort(),
   sitemapsEdited,
@@ -657,6 +673,14 @@ if (SITE_FIXES) {
 }
 if (reviewPages.length) console.log(`  review carousel: ${reviewPages.length} page(s) — ${reviewPages.map((c) => new URL(c.url).pathname).join(', ')}`);
 if (SMOOTH_SCROLL) console.log('  smooth scrolling (Lenis): every page');
+if (MEDIA_PAGE) {
+  const menuPages = intentionalChanges.filter((c) => c.mediaMenu?.length).length;
+  console.log(
+    mediaPage
+      ? `  media page: ${MEDIA_PATH} (latest post ${mediaPage.post?.href || 'none'}; ${mediaPage.episodes} podcast episode(s)); "Media" menu item linked to it on ${menuPages} page(s)`
+      : '  media page: not built (see the warning above)',
+  );
+}
 if (removedPages.length) {
   console.log(`  pages removed on request: ${removedPages.map((p) => new URL(p.url).pathname).join(', ')} — plus ${leftOut.size} file(s) only they used; sitemap entries dropped from ${sitemapsEdited.join(', ') || 'none'}`);
 }
