@@ -104,6 +104,12 @@ Most of these problems are on the live site too.
 - **Award badges** ("About Our Team" and "Request an Appointment", 123 pages): the picture of the GAF President's Club
   and Inc. 5000 badges sat in a lot of empty space. The site's other GAF certifications, Diamond Pledge and Metal
   Certified, are added beside President's Club, with the two Inc. 5000 badges nested below.
+- **Inc. 5000 awards section** (`/roofing/`, `/about/`, `/podcast/`): on `/about/` and `/podcast/` it sat on lime with
+  white swooshes (hard-to-read white text, a swoosh running through the paragraph, the badges' white circles showing on
+  the lime); on `/roofing/` it was plain black on white with a centred heading over left-aligned text. Everywhere it is
+  now one light band: the same heading and paragraph on the left with the two rankings the badges show (No. 50 of
+  America's fastest-growing private companies and No. 1 in construction, 2024), and the sharper picture of the three
+  badges (`Inc-trio.png`) on a white card on the right.
 - **"About Our Team" colors** (134 pages, the lead-form block above the footer): white text on Panda lime was hard to
   read (about 1.7:1, with the paragraphs also at 80% opacity). The block now sits on a charcoal green (Panda lime
   darkened, `#1a2418`): paragraphs about 11:1, a lime "Learn More" button with dark text, and it stays distinct from the
