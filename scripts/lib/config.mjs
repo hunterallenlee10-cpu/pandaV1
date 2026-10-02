@@ -232,17 +232,19 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // rest of the roof-repair wording is handled by scripts/lib/site-fixes.mjs); and
 // /affirm-payment/ is an empty page (header and footer only, nothing links to it); and
 // /thank-you/ was where the lead forms sent visitors after submitting, which the copy's
-// forms no longer do (they are not connected; nothing links to it). Removed pages
+// forms no longer do (they are not connected; nothing links to it); and /position-details/
+// loaded one job listing from WordPress, which a static copy can't (nothing links to it).
+// Removed pages
 // are not built, links to them are removed like the sub-site links, their sitemap entries
 // and the files only they used are left out, and their address redirects to the page in
 // REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/'))
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 // Where a removed page's address leads: the closest page that is still on the site.
-export const REMOVED_PAGE_TARGETS = { '/roofing/repairs/': '/roofing/replacement/' };
+export const REMOVED_PAGE_TARGETS = { '/roofing/repairs/': '/roofing/replacement/', '/position-details/': '/careers/' };
 
 // Pages moved to a corrected address (path prefixes, old -> new). The live site spells the
 // commercial roofing pages "commerical"; the copy serves them at /commercial-roofing/ and

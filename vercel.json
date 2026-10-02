@@ -58,6 +58,11 @@
       "statusCode": 301
     },
     {
+      "source": "/position-details/",
+      "destination": "/careers/",
+      "statusCode": 301
+    },
+    {
       "source": "/roofing/repairs/",
       "destination": "/roofing/replacement/",
       "statusCode": 301

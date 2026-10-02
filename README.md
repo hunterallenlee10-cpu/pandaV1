@@ -45,6 +45,10 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   they submitted. The copy's forms are not connected and send nobody there, and nothing linked to it (it was listed in
   the sitemap). It is left out the same way (its sitemap entry and the 5 files only it used go too), and its old
   address redirects to the home page.
+- **Position Details**, removed on request. `/position-details/` showed one job listing loaded from WordPress, so in
+  the copy it could only say the listing wasn't available; nothing linked to it (it was listed in the sitemap). It is
+  left out the same way (its sitemap entry and the 5 files only it used go too), and its old address redirects to
+  `/careers/`.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -423,7 +427,7 @@ Most of these problems are on the live site too.
 - **Blog share buttons** (93 posts) did nothing (their script is missing). They are now plain Facebook, Twitter,
   LinkedIn and email share links.
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
-  positions on `/careers/`.
+  positions on `/careers/` (only when the page is kept: it is removed on request, above).
 - **`/service-areas/` hero** said only "Our Service Areas" and a tagline, over a 2000×450 strip of roof pinned to
   the screen (`background-attachment: fixed`), so the photo was blown up about 2× and showed only shingles on phones.
   The hero now says where Panda works: a headline and line naming the office states, the jobs, states and offices
