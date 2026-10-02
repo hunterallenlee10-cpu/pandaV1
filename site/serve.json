@@ -61,6 +61,11 @@
       "type": 301
     },
     {
+      "source": "/referral",
+      "destination": "/referrals/",
+      "type": 301
+    },
+    {
       "source": "/roofing/repairs",
       "destination": "/roofing/replacement/",
       "type": 301

@@ -59,6 +59,12 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   It is left out the same way (its sitemap entry and the 19 files only it used, mostly sizes of that picture, go too),
   and its old address redirects to `/commercial-roofing/`. Its fix (links over the picture's QR codes, listed under
   it) went with it, so a build that keeps it shows the page as the live site does.
+- **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
+  someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
+  now lead to the Refer & Earn page about the Panda Exteriors app (`/referrals/`), like the menu on every other page
+  (`RELINKED_PAGES` in `scripts/lib/config.mjs` keeps those links instead of removing them). No file was used only by
+  it, and its old address redirects to `/referrals/`. Its fix (the form no longer opened an email to the careers
+  address) went with it.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -412,9 +418,6 @@ Most of these problems are on the live site too.
   buttons, the QR codes and the phone number. The amounts and store links are the ones on Panda's live GetTheReferral page; the
   $25 for downloading the app was added on request, and bath referrals are left out like Panda Bath. The page's
   description (search results and share cards) says what the program pays.
-- **Employee referral form** (`/referral/`): on submit it opened an email to Panda's careers address with the
-  referral in it. It is not connected yet either: the form still checks its fields, then says online referrals
-  aren't switched on yet, and nothing is sent.
 - **`/offers/`, redesigned.** The hero sat over the same drone photo as `/service-areas/`, pinned to the screen
   (`background-attachment: fixed`) and so blown up, with "We make sure our team is the best available…" as its only
   line. Below it were five identical alternating lime and cream bands, each a flyer picture beside a heading and a
@@ -587,9 +590,9 @@ would make them. The map sections are the exception: only `03-build.mjs` renders
   showed the live GetTheReferral sign-up; with the site fixes on (the default) none of them is left: the estimate
   forms say online requests aren't switched on yet and give the phone number, and the referral page links to the
   Panda Exteriors app instead, so **no lead
-  form on the copy sends anything to Panda or any lead service**; the employee referral form on `/referral/` no
-  longer opens an email to Panda's careers address either. [`docs/forms.md`](docs/forms.md) lists the forms as
-  captured, before the site fixes.
+  form on the copy sends anything to Panda or any lead service** (the employee referral form, which opened an email
+  to Panda's careers address, went with `/referral/`). [`docs/forms.md`](docs/forms.md) lists the forms as captured,
+  before the site fixes.
 - **Site search** (`/?s=…`) and anything else that needs WordPress to run: **comments**, AJAX "load more",
   `admin-ajax.php` / REST API calls, logins, previews.
 - **Query-string URLs** show the same page as the path without the query, because a static host ignores the query.

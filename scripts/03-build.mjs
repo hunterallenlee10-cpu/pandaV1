@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, RENAMED_PATHS, renamedPath, renamePaths, HERO_VIDEO_ID, MEDIA_PAGE, SITE_MAP_PAGE } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, isRelinkedPage, removedPageTarget, RENAMED_PATHS, renamedPath, renamePaths, HERO_VIDEO_ID, MEDIA_PAGE, SITE_MAP_PAGE } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
@@ -89,6 +89,8 @@ function mapUrl(abs, { relative = false } = {}) {
     if (page) return pageHref && stripHash(asset.finalUrl) !== stripHash(u.href) ? pageHref : null;
     return asset && asset.renamed ? relToUrlPath(asset.rel) + u.hash : null;
   }
+  // A page removed on request whose links stay (RELINKED_PAGES): its replacement.
+  if (isSiteUrl(u) && isRelinkedPage(u.pathname)) return removedPageTarget(u.pathname) + u.hash;
   if (isSiteUrl(u)) {
     if (inSubsite(u.pathname)) return null; // separate site: keep live link (unless links to it are removed)
     if (pageHref) return pageHref;
@@ -154,14 +156,15 @@ if (SITE_FIXES) {
 // when REMOVE_SUBSITE_LINKS is on; a sub-site URL inside a form value (e.g. the
 // lead form's post-submit redirect) becomes the matching main-site page. Links to
 // pages removed on request (REMOVED_PAGES) go the same way; their form values
-// become the home page.
+// become the home page (or the page in REMOVED_PAGE_TARGETS). Links to RELINKED_PAGES stay
+// and lead to that page (mapUrl).
 const pagePaths = new Set(pages.map((r) => new URL(r.url).pathname).filter((p) => !isRemovedPage(p)));
 const isRemovedLink =
   REMOVE_SUBSITE_LINKS || REMOVED_PAGES.length
     ? (abs) => {
         try {
           const u = new URL(abs);
-          return isSiteUrl(u) && ((REMOVE_SUBSITE_LINKS && inSubsite(u.pathname)) || isRemovedPage(u.pathname));
+          return isSiteUrl(u) && ((REMOVE_SUBSITE_LINKS && inSubsite(u.pathname)) || (isRemovedPage(u.pathname) && !isRelinkedPage(u.pathname)));
         } catch {
           return false;
         }

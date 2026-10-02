@@ -89,8 +89,6 @@
 //    whole page) becomes a page that explains the referral program and links to the Panda
 //    Exteriors app on the App Store and Google Play (referrals-page.mjs,
 //    custom/site-fixes/referrals-page.json).
-//  - /referral/: the employee referral form opened an email to the careers address; it now
-//    says on submit that online referrals aren't switched on yet, and sends nothing.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
 //    /referrals/ were shared as "Panda Exteriors | About Us"; they now use the page's
 //    own title.
@@ -1095,36 +1093,6 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // program and links to the Panda Exteriors app, which is where referrals are sent
   // (referrals-page.mjs).
   if (collectReferralsPage(doc, html, ed, { pathname }, changes)) used.css = true;
-  // /referral/: the employee referral form opened an email to the careers address with the
-  // referral in it. It is not connected yet either: on submit the form says so and sends
-  // nothing (its script no longer builds the email).
-  if (pathname === '/referral/') {
-    let n = 0;
-    const script = find(doc, (c) => c.tagName === 'script' && /openMailClient\(formData\)/.test(rawText(c)));
-    if (script?.childNodes[0]) {
-      const ok = editText(ed, html, script.childNodes[0], (s) => {
-        const out = s
-          .replace(/\n[ \t]*var recipient = '[^']*';\n/, '\n')
-          .replace(/\n\n[ \t]*function openMailClient\(formData\) \{[\s\S]*?\n[ \t]*window\.location\.href = 'mailto:'[^\n]*\n[ \t]*\}\n/, '\n')
-          .replace(/\n[ \t]*var formData = \{[\s\S]*?\n[ \t]*\};\n\s*openMailClient\(formData\);\n/, '\n');
-        // All three or none, so the script never calls a function it no longer has.
-        return /openMailClient|mailto:/.test(out) ? s : out;
-      });
-      if (ok) n++;
-    }
-    const done = find(doc, (c) => attr(c, 'id') === 'pcv2-referral-success');
-    const title = done && find(done, (c) => c.tagName === 'h2');
-    const line = done && find(done, (c) => c.tagName === 'p');
-    const say = (el, text) => {
-      if (el && clean(textOf(el)) !== clean(text)) {
-        ed.inner(el, text);
-        n++;
-      }
-    };
-    say(title, 'Thanks!');
-    say(line, 'Online referrals aren’t switched on yet, so this referral wasn’t sent. Please pass it to our recruiting team directly.');
-    if (n) changes.push('employee referral form: no longer opens an email to the careers address; on submit it says referrals aren’t switched on yet');
-  }
 
   // A share title copied from the About page ("Panda Exteriors | About Us") on another
   // page: the page's own title (what the browser tab and search results show).
