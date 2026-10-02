@@ -175,6 +175,18 @@ Most of these problems are on the live site too.
   reviewers' faces, a short quote from a review, **Read the reviews** and **Write a review** buttons and the BBB and GAF
   badges, over a sharp photo of a finished tile roof. The two free-estimate forms on the page show the current Google
   rating instead of the old 4.9 picture. The numbers and the quote come from `custom/reviews/google-reviews.json`.
+- **`/about/` hero and "Our Mission"** (`scripts/lib/about-page.mjs`): the hero said "About Us" and "We make sure our
+  team is the best available…" over a photo of an office ceiling (ceiling tiles and a projector). It now introduces
+  the company: "The team behind 9,900 jobs across the East Coast", a line about what Panda does, the jobs, local
+  offices, states (read from `custom/us-map/areas.json`, so they always match the map) and the Google rating (from
+  `custom/reviews/google-reviews.json`), **Get a free estimate** and call buttons and the GAF, BBB and Inc. 5000
+  credentials, over a photo of a Panda roofer in a Panda hoodie and harness. "Our Mission" was two long paragraphs
+  beside a small photo; it is now a headline ("Every job is only as good as the team behind it"), the first
+  paragraph, what the second one promised as three points (trained, certified and licensed; no sales pressure; no
+  corners cut) and the places it named, beside a photo collage (a Panda truck at a job while the crew roofs the
+  building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
+  copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
+  beside the hero is unchanged.
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text
