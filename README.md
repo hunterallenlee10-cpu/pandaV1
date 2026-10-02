@@ -243,7 +243,8 @@ Most of these problems are on the live site too.
   in the site's own words, for the installation warranty, the 100% satisfaction guarantee and financing (the three
   offer pages the footer's Warranty and Financing links lead to), leaving a Google review (the review wall's link) or
   reading the reviews, referring a friend (the Refer & Earn page) and the FAQs. The estimate block stays below for new
-  customers, headed "Planning a new project?".
+  customers, headed "Planning a new project?", on the charcoal green of the "About Our Team" blocks (white heading,
+  light text, lime "Learn More" button) instead of white.
 - **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
   photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
   truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime

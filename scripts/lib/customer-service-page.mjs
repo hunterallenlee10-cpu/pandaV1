@@ -10,18 +10,22 @@
 //    pages the footer's Warranty and Financing links lead to), leaving a Google review (the
 //    review wall's link) or reading reviews, referring a friend (the Refer & Earn page) and
 //    the FAQs;
-//  - the estimate block, kept for new customers, headed "Planning a new project?".
+//  - the estimate block, kept for new customers, headed "Planning a new project?", on the
+//    charcoal green of the "About Our Team" blocks (pfix-about) instead of white.
 //
 // Applied by site-fixes.mjs; rendered again on every run (found by its own class).
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
-import { hasClass, esc, find, textOf, clean } from './html-edit.mjs';
+import { hasClass, classes, esc, find, textOf, clean } from './html-edit.mjs';
 
 export const CUSTOMER_SERVICE_PATH = '/customer-service/';
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 const EMAIL = 'info@pandaexteriors.com';
 const ESTIMATE_TITLE = 'Planning a new project?';
+// The estimate block's classes: the "About Our Team" blocks' text and button colors
+// (site-fixes.css), and its own for the dark background and heading.
+const ESTIMATE_CLASSES = ['pfix-about', 'pfix-cs-estimate'];
 
 const svg = (body) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
 const line = (d, w = 1.9) => svg(`<path d="${d}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`);
@@ -138,6 +142,16 @@ export function collectCustomerServicePage(doc, html, ed, { pathname = '' } = {}
 
   // The estimate block: for new customers now.
   const estimate = find(doc, (c) => hasClass(c, 'fprm'));
+  const box = estimate && find(estimate, (c) => hasClass(c, 'Request-Container'));
+  if (box && !ESTIMATE_CLASSES.every((c) => hasClass(box, c))) {
+    const l = box.sourceCodeLocation.startTag;
+    if (!ed.overlaps(l.startOffset, l.endOffset)) {
+      const cls = [...new Set([...classes(box), ...ESTIMATE_CLASSES])].join(' ');
+      ed.retag(box, box.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: cls } : a)));
+      changes.push('customer service page: the estimate block on charcoal green (was white)');
+      done = true;
+    }
+  }
   const title = estimate && find(estimate, (c) => c.tagName === 'h2');
   if (title && free(title) && clean(textOf(title)) !== ESTIMATE_TITLE) {
     ed.inner(title, ESTIMATE_TITLE);

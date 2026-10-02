@@ -7319,3 +7319,19 @@ a.bde-social-share-button:hover {
     transform: none;
   }
 }
+
+/* /customer-service/'s estimate block ("Planning a new project?"): on the charcoal green of
+   the "About Our Team" blocks (.pfix-about: paragraphs, links and the lime button) instead
+   of white. !important: Bootstrap's .bg-white and .text-black are !important. */
+.Request-Container.pfix-cs-estimate {
+  background:
+    radial-gradient(circle at 92% 8%, rgba(154, 205, 50, 0.16), transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(242, 105, 36, 0.16), transparent 38%),
+    #1a2418 !important;
+}
+.pfix-cs-estimate .Local-text-col h2.heading {
+  color: #fff !important;
+}
+.pfix-cs-estimate .Local-text-col .local-text {
+  color: #d5dccb !important;
+}
