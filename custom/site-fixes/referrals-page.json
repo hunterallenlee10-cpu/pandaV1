@@ -8,8 +8,12 @@
   "hero": {
     "eyebrow": "Refer & Earn",
     "title": "Share Panda with friends. Get paid when they go with us.",
-    "sub": "Know someone who needs a new roof, siding or solar? Send them our way from the Panda Exteriors app and earn up to $200 for each referral, plus $25 just for downloading the app.",
+    "sub": "Know someone who needs a new roof, siding or solar? Send them our way from the Panda Exteriors app and earn up to $200 for each referral, a $200 bonus for every 3 referrals sold, and $25 just for downloading the app.",
     "note": "Free to join · Roofing, siding and solar referrals"
+  },
+  "qr": {
+    "title": "On a computer?",
+    "sub": "Scan a code with your phone’s camera to get the app."
   },
   "rewards": {
     "eyebrow": "How much you can earn",

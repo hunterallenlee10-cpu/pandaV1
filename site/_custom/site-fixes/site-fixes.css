@@ -2026,6 +2026,99 @@ a.bde-social-share-button:hover {
   font-weight: 800;
 }
 
+.pfix-rf .pfix-rf-phone__note--bonus {
+  background: var(--rf-dark);
+  color: #c4ceb6;
+}
+.pfix-rf .pfix-rf-phone__note--bonus b {
+  color: #fff;
+}
+.pfix-rf .pfix-rf-phone__note--bonus em {
+  color: var(--rf-lime);
+}
+
+/* QR codes for the two stores, shown only on computers (a mouse and a wide screen): on a
+   phone the store buttons are the way in. */
+.pfix-rf .pfix-rf-qr {
+  display: none;
+}
+@media (min-width: 861px) and (hover: hover) and (pointer: fine) {
+  .pfix-rf .pfix-rf-qr {
+    display: flex;
+  }
+}
+.pfix-rf .pfix-rf-qr {
+  align-items: center;
+  gap: 20px;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 20px;
+  padding: 14px 18px 14px 20px;
+  border-radius: 18px;
+}
+.pfix-rf .pfix-rf-qr--hero {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #d3dbc6;
+}
+.pfix-rf .pfix-rf-qr--cta {
+  margin: 22px auto 0;
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--rf-dark);
+  text-align: left;
+}
+.pfix-rf .pfix-rf-qr__text {
+  max-width: 150px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.pfix-rf .pfix-rf-qr__text b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+.pfix-rf .pfix-rf-qr--hero .pfix-rf-qr__text b {
+  color: #fff;
+}
+.pfix-rf .pfix-rf-qr__codes {
+  display: flex;
+  gap: 14px;
+}
+.pfix-rf .pfix-rf-qr__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.pfix-rf svg.pfix-rf-qr__code {
+  width: 112px;
+  height: 112px;
+  border-radius: 10px;
+  background: #fff;
+}
+.pfix-rf .pfix-rf-qr__item figcaption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.pfix-rf .pfix-rf-qr__item figcaption svg {
+  width: 16px;
+  height: 16px;
+}
+.pfix-rf .pfix-rf-qr__item figcaption span {
+  display: flex;
+  flex-direction: column;
+}
+.pfix-rf .pfix-rf-qr__item figcaption b {
+  font-size: 13px;
+}
+.pfix-rf .pfix-rf-qr--hero .pfix-rf-qr__item figcaption b {
+  color: #fff;
+}
+
 /* What you can earn. */
 .pfix-rf .pfix-rf-rewards {
   display: grid;

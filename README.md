@@ -260,11 +260,13 @@ Most of these problems are on the live site too.
   `custom/site-fixes/referrals-page.json`, so they can be edited there and applied with `npm run update:site`): the
   page was Panda's live GetTheReferral sign-up laid over the whole page, so a referral sent from the copy reached
   Panda. Referrals are sent from the Panda Exteriors app, so the page now explains the program and sends people to
-  the app: a hero with **Download on the App Store** and **Get it on Google Play** buttons beside a phone showing the
-  Panda logo and reward notifications (drawn in HTML and CSS), what you can earn ($25 for downloading the app, $50
+  the app: a hero with **Download on the App Store** and **Get it on Google Play** buttons and, on computers (a wide
+  screen and a mouse), a QR code for each store that a phone's camera opens (drawn as SVG when the page is built, with
+  `qrcode-generator`), beside a phone showing the Panda logo and reward notifications, the $200 bonus among them
+  (drawn in HTML and CSS), what you can earn ($25 for downloading the app, $50
   when a referral is qualified, $150 when they buy and a $200 bonus for every three sold, with a worked example),
   how it works in three steps (with the company code, 23844, the live page shows) and a closing band with the store
-  buttons and the phone number. The amounts and store links are the ones on Panda's live GetTheReferral page; the
+  buttons, the QR codes and the phone number. The amounts and store links are the ones on Panda's live GetTheReferral page; the
   $25 for downloading the app was added on request, and bath referrals are left out like Panda Bath. The page's
   description (search results and share cards) says what the program pays.
 - **Employee referral form** (`/referral/`): on submit it opened an email to Panda's careers address with the
