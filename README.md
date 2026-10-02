@@ -235,6 +235,15 @@ Most of these problems are on the live site too.
   ((240) 574-1048), Marlton ((856) 343-4146) and King of Prussia ((484) 224-7623) are the ones on the live city pages;
   the Charlotte and King of Prussia addresses come from Panda's BBB and Yelp listings and the Tampa address from the
   owner. The page's description lists the offices.
+- **`/customer-service/`, redesigned** (`scripts/lib/customer-service-page.mjs`): the page was a thin "Panda
+  Exteriors Customer Service" strip over a cropped photo, then "Call Our Team Today to Get Started" and a sales block
+  about roof replacements beside the estimate form; nothing on it helped someone who already works with Panda. It now
+  opens with a hero: the heading, a line, and the main line (877) 213-8536, info@pandaexteriors.com and "Your local
+  office" (the Contact page's office cards) as large tap targets. Then "How can we help?": six white icon cards, each
+  in the site's own words, for the installation warranty, the 100% satisfaction guarantee and financing (the three
+  offer pages the footer's Warranty and Financing links lead to), leaving a Google review (the review wall's link) or
+  reading the reviews, referring a friend (the Refer & Earn page) and the FAQs. The estimate block stays below for new
+  customers, headed "Planning a new project?".
 - **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
   photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
   truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime
