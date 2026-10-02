@@ -48,17 +48,17 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 - **Position Details**, removed on request. `/position-details/` showed one job listing loaded from WordPress, so in
   the copy it could only say the listing wasn't available; nothing linked to it (it was listed in the sitemap). It is
   left out the same way (its sitemap entry and the 5 files only it used go too), and its old address redirects to
-  `/careers/`.
+  `/careers/`. Its fix (a pointer to `/careers/` in place of "Failed to load job details.") went with it, so a build
+  that keeps it shows the page as the live site does.
 - **Four project pages**, removed on request: `/blog/project/bylt-restoration/`, `/blog/project/enterprise-rent-a-car/`,
   `/blog/project/roof-replacement-3/` and `/blog/project/sbs-siding/`. They are left out the same way (their entries in
   `project-sitemap1.xml` and the 19 files only they used, mostly the photos of the third, go too), and their old
-  addresses redirect to `/past-projects/`. Three of them were case studies on the `/commercial-capabilities/` picture
-  (Baltimore, Manassas, N. Brunswick): those QR codes, which are printed in the picture, are no longer links and are
-  left out of the list under it (`custom/site-fixes/capabilities-map.json` lists the case studies that stay).
+  addresses redirect to `/past-projects/`.
 - **Commercial Capabilities**, removed on request. `/commercial-capabilities/` (titled "Commercial Roofing Services",
   like `/commercial-roofing/`) showed the case-study map picture; nothing linked to it (it was listed in the sitemap).
   It is left out the same way (its sitemap entry and the 19 files only it used, mostly sizes of that picture, go too),
-  and its old address redirects to `/commercial-roofing/`.
+  and its old address redirects to `/commercial-roofing/`. Its fix (links over the picture's QR codes, listed under
+  it) went with it, so a build that keeps it shows the page as the live site does.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -449,13 +449,8 @@ Most of these problems are on the live site too.
   on white). Lists in the article now match its black text.
 - **Missing photos** (missing on the live site too): reviewers without a photo get their initials in the round photo
   spot (the review carousels do the same).
-- **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
-  made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
-  picture. (Only when the page is kept: it is removed on request, above.)
 - **Blog share buttons** (93 posts) did nothing (their script is missing). They are now plain Facebook, Twitter,
   LinkedIn and email share links (with the blog's design on, they are replaced by its share links).
-- **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
-  positions on `/careers/` (only when the page is kept: it is removed on request, above).
 - **`/service-areas/` hero** said only "Our Service Areas" and a tagline, over a 2000×450 strip of roof pinned to
   the screen (`background-attachment: fixed`), so the photo was blown up about 2× and showed only shingles on phones.
   The hero now says where Panda works: a headline and line naming the office states, the jobs, states and offices
