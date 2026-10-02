@@ -230,11 +230,13 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
 // page about them; and Panda does not do roof repairs, so /roofing/repairs/ goes too (the
 // rest of the roof-repair wording is handled by scripts/lib/site-fixes.mjs); and
-// /affirm-payment/ is an empty page (header and footer only, nothing links to it). Removed pages
+// /affirm-payment/ is an empty page (header and footer only, nothing links to it); and
+// /thank-you/ was where the lead forms sent visitors after submitting, which the copy's
+// forms no longer do (they are not connected; nothing links to it). Removed pages
 // are not built, links to them are removed like the sub-site links, their sitemap entries
 // and the files only they used are left out, and their address redirects to the page in
 // REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/'))
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);

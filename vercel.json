@@ -61,6 +61,11 @@
       "source": "/roofing/repairs/",
       "destination": "/roofing/replacement/",
       "statusCode": 301
+    },
+    {
+      "source": "/thank-you/",
+      "destination": "/",
+      "statusCode": 301
     }
   ]
 }

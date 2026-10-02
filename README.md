@@ -18,7 +18,8 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   site in a multisite network, so per the capture rules they count as sub-sites. The build contains the main
   website only: every link to a city site is removed (the Site Map's 16 city entries, the Service Areas city
   carousel, and two in-text links in one blog post, which keep their words), and the lead form's post-submit
-  redirect points at the main site's `/thank-you/` page instead of a city site's. Controlled by
+  redirect points at the main site's `/thank-you/` page instead of a city site's (with the site fixes on, that form
+  script is removed and `/thank-you/` is left out on request: see below). Controlled by
   `REMOVE_SUBSITE_LINKS` in `scripts/lib/config.mjs`; pages changed this way are listed as "edited on purpose"
   in `docs/visual-diff/summary.md`.
 - **Panda Interiors / Panda Bath**, removed on request. `/interiors/` was the only page about them (nothing linked
@@ -40,6 +41,10 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 - **Affirm Payment**, removed on request. `/affirm-payment/` was an empty page (only the header and footer; nothing
   linked to it; it was listed in the sitemap). It is left out the same way (its sitemap entry and the one file only it
   used go too), and its old address redirects to the home page.
+- **Thank You page**, removed on request. `/thank-you/` was where the live site's lead forms sent visitors after
+  they submitted. The copy's forms are not connected and send nobody there, and nothing linked to it (it was listed in
+  the sitemap). It is left out the same way (its sitemap entry and the 5 files only it used go too), and its old
+  address redirects to the home page.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -92,7 +97,7 @@ is built (`scripts/lib/site-map-page.mjs`, `custom/site-map/`, `SITE_MAP_PAGE=0`
 where it sits in the top menu or footer, which blog listing page shows it, or the clicks that lead to it from the home
 page. Pages that can't be reached by clicking are marked. It also shows the pages whose content links to it, whether
 the XML sitemaps list it, and the file it is built from. Below the pages are the old addresses that redirect and the
-addresses the XML sitemaps list that have no page. A search box and filters narrow the list. See
+addresses the XML sitemaps list that have no page. Pages removed on request don't appear on it at all. A search box and filters narrow the list. See
 [`custom/site-map/README.md`](custom/site-map/README.md).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during

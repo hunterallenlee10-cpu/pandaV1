@@ -34,6 +34,11 @@
       "source": "/roofing/repairs",
       "destination": "/roofing/replacement/",
       "type": 301
+    },
+    {
+      "source": "/thank-you",
+      "destination": "/",
+      "type": 301
     }
   ],
   "rewrites": [

@@ -6,7 +6,8 @@
 //  - otherwise that nothing links to it, so it can only be reached by typing its address;
 // with the pages whose content links to it, whether the XML sitemaps list it, and the file
 // it is built from. Below the pages: the old addresses that redirect (site/_redirects) and
-// the addresses the XML sitemaps list that have no page in the copy.
+// the addresses the XML sitemaps list that have no page in the copy. Pages removed on request
+// (REMOVED_PAGES) appear nowhere on it, not even as an old address.
 //
 // The page keeps its header, footer and "Site Map" heading; only the list under the heading
 // (the .site-rich block) is replaced. The links of the Site Map page itself are not counted.
@@ -18,7 +19,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
-import { ROOT, isSiteUrl, REMOVED_PAGES, removedPageTarget, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE } from './config.mjs';
+import { ROOT, isSiteUrl, REMOVED_PAGES, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE } from './config.mjs';
 import { attr, hasClass, classes, esc, textOf, clean, findAll, find, textNodes, makeEditor, headEndOffset } from './html-edit.mjs';
 import { listFiles } from './util.mjs';
 
@@ -162,13 +163,13 @@ function redirects(siteDir) {
     .split('\n')
     .map((l) => l.trim().split(/\s+/))
     .filter(([from, to, status]) => from && !from.startsWith('#') && to && /^3\d\d$/.test(status || '') && !/\.[a-z0-9]+$/i.test(from))
+    // Pages removed on request are gone from the Site Map altogether, old address included.
+    .filter(([from]) => !removed(from))
     .map(([from, to, status]) => ({
       from,
       to,
       status,
-      why: removed(from)
-        ? `Page removed on request; its address leads to ${removedPageTarget(from) === '/' ? 'the home page' : 'the closest page still on the site'}.`
-        : renamed(from)
+      why: renamed(from)
           ? 'Old misspelled address; the page now lives at the corrected one.'
           : 'Redirect the live site had; kept so old links still work.',
     }));
