@@ -76,10 +76,12 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
 const files = [
   ...Object.entries(SITE_FIXES_FILES).map(([name, url]) => [path.join(SITE_FIXES_DIR, name), url]),
   ...Object.entries(REVIEWS_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
-  ...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
+// The review wall and the reviews hero on /reviews/: their stylesheet, script and photos
+// (the photos are in the stylesheet, which the list of linked files above doesn't read).
+if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) files.push(...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]));
 // The favorite projects on /past-projects/: their stylesheet and photos (the photos are in
 // srcset attributes, which the list of linked files above doesn't read).
 if (linked.has(PAST_PROJECTS_FILES['past-projects.css'])) files.push(...pastProjectsFiles());

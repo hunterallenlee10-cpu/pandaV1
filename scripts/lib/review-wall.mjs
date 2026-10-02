@@ -10,12 +10,16 @@
 // custom/reviews/review-wall.js loads to filter, search and show more. Used by site-fixes.mjs.
 import fs from 'node:fs';
 import path from 'node:path';
-import { hasClass, esc, findAll } from './html-edit.mjs';
+import { classes, hasClass, esc, find, findAll, headEndOffset } from './html-edit.mjs';
 import { REVIEWS_DIR, loadReviews } from './reviews.mjs';
 
 export const REVIEW_WALL_FILES = {
   'review-wall.css': '/_custom/reviews/review-wall.css',
   'review-wall.js': '/_custom/reviews/review-wall.js',
+  // The hero photo (a finished tile roof, from the "Spanish Tile Roof" project).
+  'review-hero-1280.webp': '/_custom/reviews/review-hero-1280.webp',
+  'review-hero-1280.jpg': '/_custom/reviews/review-hero-1280.jpg',
+  'review-hero-800.webp': '/_custom/reviews/review-hero-800.webp',
 };
 // The whole list, written by the build (not a file in custom/reviews/).
 export const REVIEW_WALL_DATA = '/_custom/reviews/review-wall.json';
@@ -88,7 +92,8 @@ export function loadReviewWall() {
   const reviews = [...google, ...site].map(({ sort, ...r }) => r);
   if (!reviews.length) throw new Error('custom/reviews/google-reviews.json: no five-star reviews to show');
   const topics = TOPICS.map(([id, label]) => ({ id, label, count: reviews.filter((r) => r.topics.includes(id)).length })).filter((t) => t.count);
-  cached = { place, reviews, topics, hidden, google: google.length };
+  const quote = data.heroQuote?.text && data.heroQuote?.name ? { text: tidy(data.heroQuote.text), name: String(data.heroQuote.name).trim() } : null;
+  cached = { place, reviews, topics, hidden, google: google.length, quote };
   return cached;
 }
 
@@ -212,6 +217,111 @@ export function collectReviewWall(doc, ed, { pathname = '' } = {}, changes = [])
     `reviews page: review wall of ${reviews.length} five-star reviews (${google} from Google), rated ${place.rating} from ${place.count} Google reviews, with "Write a review" links` +
       (hidden.length ? `; ${hidden.length} left off (hideIfMentions)` : '') +
       (hasClass(box, 'prw') ? ' (rendered again)' : '')
+  );
+  return true;
+}
+
+// ---- The hero ---------------------------------------------------------------------------------
+// /reviews/ hero: "Customer Reviews" and one line over a truck photo pinned to the screen
+// (blown up from 1200 px). It now leads with the Google rating, a few reviewers' faces, a
+// short quote, "Read the reviews" and "Write a review" buttons and the BBB and GAF badges,
+// over a sharp photo of a finished tile roof. The free-estimate form beside it showed a
+// picture of an old Google rating (4.9); on this page it shows the current one.
+const ARROW_DOWN = icon('<path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>');
+const CHECK = icon('<path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>');
+
+const fmtCount = (n) => (n >= 1000 ? `${(Math.floor(n / 100) * 100).toLocaleString('en-US')}+` : n.toLocaleString('en-US'));
+
+function ratingStars(rating, cls) {
+  const pct = Math.max(0, Math.min(100, (rating / 5) * 100)).toFixed(1);
+  return `<span class="${cls}" role="img" aria-label="Rated ${esc(String(rating))} out of 5" style="--prw-fill:${pct}%">${starRow('prw-stars prw-stars--base')}${starRow('prw-stars prw-stars--fill')}</span>`;
+}
+
+/** The Google rating in the free-estimate form (in place of the old rating picture). */
+function formBadge() {
+  const { place } = loadReviewWall();
+  const rating = Number(place.rating) || 5;
+  return (
+    `<div class="prh-badge"><span class="prh-badge__g">${GOOGLE_G}</span>` +
+    `<span class="prh-badge__text"><span class="prh-badge__label">Google Rating</span>` +
+    `<span class="prh-badge__row"><b>${esc(rating.toFixed(1))}</b>${ratingStars(rating, 'prh-badge__stars prw-score-stars')}</span></span></div>`
+  );
+}
+
+function heroText() {
+  const { place, reviews, quote } = loadReviewWall();
+  const rating = Number(place.rating) || 5;
+  const count = Number(place.count) || 0;
+  // Faces: reviewers with a photo on the site first (always there), then Google photos.
+  const faces = [...reviews.filter((r) => r.avatar.startsWith('/')), ...reviews.filter((r) => r.avatar && !r.avatar.startsWith('/'))].slice(0, 4);
+  const ext = `href="${esc(place.writeReviewUrl)}" target="_blank" rel="noopener"`;
+  return (
+    `<p class="prh__eyebrow">Customer reviews</p>` +
+    `<h1 class="prh__title">Rated ${esc(rating.toFixed(1))} stars by ${count ? `${esc(fmtCount(count))} homeowners` : 'homeowners'} on Google</h1>` +
+    `<p class="prh__sub">See why East Coast homeowners trust Panda Exteriors for quality and service, in their own words.</p>` +
+    `<div class="prh__proof">` +
+    `<div class="prh__rating">` +
+    `<span class="prh__g">${GOOGLE_G}</span>` +
+    `<span class="prh__num">${esc(rating.toFixed(1))}</span>` +
+    `<span class="prh__rating-side">${ratingStars(rating, 'prh__stars prw-score-stars')}` +
+    (count ? `<span class="prh__count">${count.toLocaleString('en-US')} Google reviews</span>` : '') +
+    `</span>` +
+    (faces.length
+      ? `<span class="prh__faces" aria-hidden="true">` +
+        faces
+          .map((r) => `<span class="prh__face"><span>${esc(initials(r.name))}</span><img src="${esc(r.avatar)}" alt="" width="40" height="40" decoding="async" referrerpolicy="no-referrer"></span>`)
+          .join('') +
+        `</span>`
+      : '') +
+    `</div>` +
+    (quote
+      ? `<figure class="prh__quote"><blockquote><p>“${esc(quote.text)}”</p></blockquote><figcaption>${esc(quote.name)} <span>· Google review</span></figcaption></figure>`
+      : '') +
+    `</div>` +
+    `<div class="prh__ctas">` +
+    `<a class="prh__btn prh__btn--read" href="#google-reviews">${ARROW_DOWN}Read the reviews</a>` +
+    `<a class="prh__btn prh__btn--write" ${ext}>${PEN}Write a review<span class="prw-sr"> (opens Google in a new tab)</span></a>` +
+    `</div>` +
+    `<div class="prh__trust" role="list">` +
+    `<span role="listitem">${CHECK}BBB A-rated business</span>` +
+    `<span role="listitem">${CHECK}GAF Master Elite contractor</span>` +
+    `</div>`
+  );
+}
+
+/**
+ * /reviews/: the hero (.hero-section.reviews) gets the new text column and photo, and the
+ * free-estimate forms on the page show the current Google rating. Gives the same result on
+ * the page as captured and on a page an earlier build already changed.
+ */
+export function collectReviewsHero(doc, html, ed, { pathname = '' } = {}, changes = []) {
+  if (pathname !== REVIEW_WALL_PATH) return false;
+  const hero = find(doc, (c) => hasClass(c, 'hero-section') && hasClass(c, 'reviews'));
+  const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
+  if (!text) return false;
+  const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  if (!free(text)) return false;
+  if (!hasClass(hero, 'prh')) ed.retag(hero, hero.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: [...classes(hero), 'prh'].join(' ') } : a)));
+  ed.inner(text, heroText());
+  // The rating picture in the free-estimate forms (or the badge an earlier build put there).
+  let badges = 0;
+  const inForm = (n) => {
+    for (let a = n.parentNode; a; a = a.parentNode) if (hasClass(a, 'form-card')) return true;
+    return false;
+  };
+  for (const pic of findAll(doc, (c) => ((c.tagName === 'picture' && hasClass(c, 'rating')) || hasClass(c, 'prh-badge')) && inForm(c))) {
+    if (!free(pic)) continue;
+    ed.outer(pic, formBadge());
+    badges++;
+  }
+  // Fetch the photo with the page, not when the stylesheet gets to it.
+  const headEnd = headEndOffset(html);
+  const preload = `<link rel="preload" as="image" type="image/webp" href="${REVIEW_WALL_FILES['review-hero-800.webp']}" imagesrcset="${REVIEW_WALL_FILES['review-hero-800.webp']} 800w, ${REVIEW_WALL_FILES['review-hero-1280.webp']} 1280w" imagesizes="100vw" fetchpriority="high">`;
+  if (headEnd >= 0 && !html.includes(preload)) ed.replace(headEnd, headEnd, preload);
+  const { place } = loadReviewWall();
+  changes.push(
+    `reviews page hero: Google rating (${place.rating} from ${place.count} reviews), reviewers' faces, a quote, "Read the reviews" and "Write a review" buttons and the BBB and GAF badges, over a sharp tile-roof photo (was a blown-up truck photo)` +
+      (badges ? `; current Google rating in ${badges} free-estimate form(s) (was a 4.9 picture)` : '')
   );
   return true;
 }
