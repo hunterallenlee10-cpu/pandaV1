@@ -220,6 +220,12 @@ export const SMOOTH_SCROLL = (process.env.SMOOTH_SCROLL ?? (process.env.SITE_ORI
 // leaves the menu item as captured.
 export const MEDIA_PAGE = (process.env.MEDIA_PAGE ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// The Site Map page (/site-map/) lists every page of the copy and how a visitor gets to it
+// (top menu, footer, the clicks from the home page, or nothing), the old addresses that
+// redirect and the sitemap addresses with no page (scripts/lib/site-map-page.mjs,
+// custom/site-map/). SITE_MAP_PAGE=0 leaves the page's list as captured.
+export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 // Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
 // page about them; and Panda does not do roof repairs, so /roofing/repairs/ goes too (the
