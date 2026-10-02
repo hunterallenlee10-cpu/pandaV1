@@ -126,6 +126,11 @@
 //    map become a hero with the total donated and a photo collage, the recent gifts, the
 //    organizations, a wall of the gallery's community photos, the podcast and a partner
 //    band (charity-page.mjs, custom/site-fixes/charity-page.json).
+//  - /contact-us/: the office cards' Google map pictures never loaded, their numbers
+//    couldn't be tapped and three had no address; a hero with call, email and an office
+//    map and seven cards with drawn state maps, addresses, call and directions buttons
+//    replace them, and the pop-up form that could not send goes (contact-page.mjs,
+//    custom/site-fixes/contact-page.json).
 //  - /gallery/: the page opened on the category tabs with no heading; a hero ("Panda
 //    Exteriors Company Gallery") with the categories, numbers and a collage of the
 //    gallery's own photos now sits above them (gallery-page.mjs,
@@ -148,6 +153,7 @@ import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
+import { collectContactPage } from './contact-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -160,7 +166,7 @@ export const SITE_FIXES_FILES = {
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -646,6 +652,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
     used.gallery = true;
   }
+  // /contact-us/: a hero with an office map and seven office cards with drawn maps, addresses
+  // and call buttons, in place of the broken map pictures (contact-page.mjs). First too.
+  if (collectContactPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {

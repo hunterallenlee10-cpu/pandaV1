@@ -187,6 +187,20 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/contact-us/`, redesigned** (`scripts/lib/contact-page.mjs`; offices, addresses, numbers and words in
+  `custom/site-fixes/contact-page.json`, applied with `npm run update:site`): the seven office cards showed Google
+  static-map pictures that never loaded (they need an API key), their numbers could not be tapped, three had no street
+  address, and "Send Message" opened a pop-up form this copy cannot send; under them a lime band showed the email in
+  orange. The page now opens with a hero: the main line (877) 213-8536 and info@pandaexteriors.com as large
+  tap-to-call and tap-to-email cards, the headquarters' address, and a map of the East Coast with a pulsing pin per
+  office and the office names beside it (each leads to its card). Then the seven offices, Laurel, MD first as
+  headquarters: each card has a small map of its state with the office pinned, its street address, **Get directions**
+  (Google Maps) and its own number as a call button. A closing band repeats the main line and email. The maps are SVG
+  drawn from the US map's state outlines (`custom/us-map/us-states.json`), like the site's other maps: no API key and
+  nothing loaded from elsewhere. The pop-up form and its spinner script are removed. The numbers for Laurel
+  ((240) 574-1048), Marlton ((856) 343-4146) and King of Prussia ((484) 224-7623) are the ones on the live city pages;
+  the Charlotte and King of Prussia addresses come from Panda's BBB and Yelp listings and the Tampa address from the
+  owner. The page's description lists the offices.
 - **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
   photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
   truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime
