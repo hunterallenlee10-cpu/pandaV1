@@ -46,6 +46,9 @@
 //  - /reviews/: the one review under an old picture of the Google rating becomes the review
 //    wall: the Google rating, "Write a review" links and every five-star Google review
 //    (review-wall.mjs, custom/reviews/google-reviews.json).
+//  - /reviews/ hero: the Google rating, reviewers' faces, a quote, "Read the reviews" and
+//    "Write a review" buttons and the BBB and GAF badges over a sharp tile-roof photo (was
+//    a blown-up truck photo); the forms' rating picture shows the current rating.
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
 //    other tiles keep their size).
@@ -115,7 +118,7 @@ import path from 'node:path';
 import { ROOT, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
-import { collectReviewWall } from './review-wall.mjs';
+import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
@@ -627,6 +630,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // (review-wall.mjs, custom/reviews/google-reviews.json). Before the fixes below that edit
   // inside that section (the "Read More Reviews!" button, the review about a roof repair).
   if (collectReviewWall(doc, ed, { pathname }, changes)) used.reviewWall = true;
+  // /reviews/ hero: the Google rating, faces, a quote and buttons over a sharp photo; the
+  // forms' rating picture shows the current rating (review-wall.mjs).
+  if (collectReviewsHero(doc, html, ed, { pathname }, changes)) used.reviewWall = true;
 
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.

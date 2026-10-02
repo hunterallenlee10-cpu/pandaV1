@@ -1,5 +1,5 @@
 {
-  "_help": "The Google reviews on /reviews/ (see README.md in this folder). The page shows every review here rated 5 stars, newest first, then the reviews in reviews.json that are not already in this list. Fill or refresh it with scripts/tools/google-reviews.mjs (from a Google Takeout export, or by reading the reviews off Google Maps), which also updates \"place\" (the rating and review count shown at the top). Reviews that mention a word starting with one of \"hideIfMentions\" (any case) are left off the page. \"date\" is \"YYYY-MM\" or \"YYYY\". Rebuild after editing.",
+  "_help": "The Google reviews on /reviews/ (see README.md in this folder). The page shows every review here rated 5 stars, newest first, then the reviews in reviews.json that are not already in this list. Fill or refresh it with scripts/tools/google-reviews.mjs (from a Google Takeout export, or by reading the reviews off Google Maps), which also updates \"place\" (the rating and review count shown at the top). Reviews that mention a word starting with one of \"hideIfMentions\" (any case) are left off the page. \"date\" is \"YYYY-MM\" or \"YYYY\". \"heroQuote\" is the short quote in the hero at the top of the page (the reviewer's own words, cut from their review). Rebuild after editing.",
   "place": {
     "name": "Panda Exteriors",
     "rating": 4.8,
@@ -11,6 +11,10 @@
   "hideIfMentions": [
     "repair"
   ],
+  "heroQuote": {
+    "text": "Overjoyed with the results! I was listened to and understood!",
+    "name": "Tracey Duval"
+  },
   "reviews": [
     {
       "name": "Tracey Duval",

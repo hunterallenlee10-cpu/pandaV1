@@ -170,6 +170,11 @@ Most of these problems are on the live site too.
   searched and shown 24 at a time, and a closing "Had a great experience with Panda?" band that asks for a review
   again. The reviews are in `custom/reviews/google-reviews.json`; `npm run reviews:google` fills it from a Google
   Takeout export or from Google Maps — see [`custom/reviews/README.md`](custom/reviews/README.md).
+- **`/reviews/` hero**: "Customer Reviews" and one line over a truck photo pinned to the screen and blown up from
+  1200 px. It now leads with "Rated 4.8 stars by 1,000+ homeowners on Google", the rating and review count with four
+  reviewers' faces, a short quote from a review, **Read the reviews** and **Write a review** buttons and the BBB and GAF
+  badges, over a sharp photo of a finished tile roof. The two free-estimate forms on the page show the current Google
+  rating instead of the old 4.9 picture. The numbers and the quote come from `custom/reviews/google-reviews.json`.
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text

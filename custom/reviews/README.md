@@ -72,11 +72,21 @@ The section is rendered by `scripts/lib/review-wall.mjs` (from `scripts/lib/site
 `review-wall.js` style it and make it work, and the build publishes the whole list as
 `/_custom/reviews/review-wall.json`, which the script loads when it needs more than the first 24.
 
+### The hero
+
+The hero at the top of `/reviews/` (also from `review-wall.mjs`) leads with "Rated 4.8 stars by 1,000+ homeowners on
+Google" (the count rounded down to the hundred), the rating and review count, four reviewers' faces (those with a
+photo on the site first), the short quote in `heroQuote`, **Read the reviews** (down to the reviews) and **Write a
+review** (Google's form) buttons, and the BBB and GAF badges. Behind it is a photo of a finished tile roof
+(`review-hero-1280.webp`/`.jpg`, `review-hero-800.webp` for phones, from the "Spanish Tile Roof" project). The
+free-estimate forms on the page show the current rating in place of the old 4.9 picture.
+
 ### `google-reviews.json`
 
 | Field | |
 | --- | --- |
 | `place` | `rating` and `count` (shown at the top), `asOf` (when they were read), `writeReviewUrl` (Google's "write a review" link for the listing), `mapsUrl` (the listing's reviews on Google Maps) |
+| `heroQuote` | the short quote in the hero: `text` (the reviewer's own words, cut from their review) and `name` |
 | `hideIfMentions` | reviews that mention a word starting with one of these are left off the page. It holds `repair`, as Panda doesn't do roof repairs (the one review about a repair is out of the carousels too) |
 | `reviews` | `name`, `rating` (only 5 is shown), `date` (`YYYY-MM`, or `YYYY` when only the year is known), `text`, and optionally `avatar` (the reviewer's Google photo) and `localGuide` |
 
