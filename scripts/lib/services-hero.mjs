@@ -9,6 +9,9 @@
 //  - /gutters/: the heading and line over a close-up of a gutter guard (hero-gutters.jpg,
 //    already small). The chips are gutter installation (the services below the hero) and
 //    gutter guards (their page), each with a line from the cards below.
+//  - /gutters/gutter-guards/: the heading and line over a photo of a gutter system, now a
+//    165 KB WebP copy (gutter-guards-hero.webp) of the 292 KB JPEG. The chips lead to the
+//    benefits below (gutter-guards-page.mjs) and to the Gutters page.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -72,6 +75,22 @@ const HEROES = {
     ],
     note: 'gutter installation and gutter guard chips and estimate and call buttons, with the photo darkened behind the text',
   },
+  '/gutters/gutter-guards/': {
+    key: 'guards',
+    from: 'Gutter-card',
+    photo: '/_custom/site-fixes/gutter-guards-hero.webp',
+    custom: true,
+    oldPreload: '/wp-content/uploads/2025/04/Gutter-System.jpg',
+    eyebrow: 'Gutter guards',
+    title: 'Expert Gutter Guard Installations for Your East Coast Home',
+    sub: 'With best-in-class warranties on all our products, you can feel certain that your gutter protection will last.',
+    // What guards do (the benefits below) and new gutters, with a line from the page.
+    chips: [
+      ['guard', 'Why gutter guards', '#guard-benefits', 'No clogs, no nests, no climbing ladders'],
+      ['gutter', 'New gutters too', '/gutters/', 'Replace worn gutters and add guards'],
+    ],
+    note: 'chips for the benefits and new gutters and estimate and call buttons, over a lighter copy of the photo',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -79,7 +98,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${h.key === 'services' ? 'Our services' : 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${h.key === 'services' ? 'Our services' : h.key === 'guards' ? 'Gutter guards' : 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +

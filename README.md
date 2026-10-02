@@ -193,6 +193,14 @@ Most of these problems are on the live site too.
   page's gutter-guard photo darkened behind the text. "Why Work with Our East Coast Exterior Specialists?" was three
   lime cards with white text (about 1.7:1) and promised "stellar cleaning services", which Panda doesn't offer; it is
   now three white cards with an icon each and dark text, without the cleaning line (`scripts/lib/gutters-page.mjs`).
+- **`/gutters/gutter-guards/`** (`scripts/lib/gutter-guards-page.mjs`, hero in `scripts/lib/services-hero.mjs`): the hero
+  gets the same treatment as `/services/` and `/gutters/` (a "Gutter guards" label, the heading and line, chips for the
+  benefits and for new gutters, estimate and call buttons) over a 165 KB WebP copy of its 292 KB photo
+  (`custom/site-fixes/gutter-guards-hero.webp`). The intro keeps its words, set beside a rounded photo. "Protect Your
+  Home With Quality Gutter Guards" was white on lime over cards with lime headings; it is now the same words as white
+  icon cards on a light band. New sections follow: how a gutter guard project works (three steps), six questions
+  answered from what the site already says (guards go on existing gutters or new ones), a "Need new gutters too?"
+  band leading to `/gutters/`, and, after the testimonials, the offers band the other service pages have.
 - **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/commercial-roofing/`, `/siding/`, `/gutters/`,
   `/thank-you/`; `collectOffersStrip` in `scripts/lib/offers-page.mjs`): three flyer pictures with "Spring Savings" and
   a number that isn't the site's (877 213 1240) baked in, and "Panda Exteriors Internal Promotion" in their text. They
