@@ -12,6 +12,10 @@
 //  - /gutters/gutter-guards/: the heading and line over a photo of a gutter system, now a
 //    165 KB WebP copy (gutter-guards-hero.webp) of the 292 KB JPEG. The chips lead to the
 //    benefits below (gutter-guards-page.mjs) and to the Gutters page.
+//  - /siding/: the heading (a plain block, now the page's h1) and line, with the James Hardie
+//    and CertainTeed logos, over a photo of a sided home, now a 147 KB WebP copy
+//    (siding-hero.webp) of the 262 KB PNG. The chips are the two siding types, leading to
+//    their comparison below (service-pages.mjs); the logos stay under the buttons.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -33,6 +37,7 @@ const ICONS = {
   siding: line('M4 5h16v14H4zM4 9h16M4 13h16M4 17h16'),
   gutter: line('M3 7h18l-2 4H5zM17 11v6.5a2.5 2.5 0 0 0 2.5 2.5'),
   guard: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
+  layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
   arrow: line('M5 12h14M13 6l6 6-6 6', 2.2),
   phone: svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>'),
 };
@@ -91,6 +96,26 @@ const HEROES = {
     ],
     note: 'chips for the benefits and new gutters and estimate and call buttons, over a lighter copy of the photo',
   },
+  '/siding/': {
+    key: 'siding',
+    from: 'siding',
+    photo: '/_custom/site-fixes/siding-hero.webp',
+    custom: true,
+    eyebrow: 'Siding',
+    title: 'Top-Quality Siding Services for Your East Coast Home',
+    sub: 'Breathe new life into your home exterior with custom siding options that look great and can withstand the East Coast weather.',
+    // The two siding types (the comparison below), with a line from it.
+    chips: [
+      ['siding', 'Fiber cement', '#siding-types', 'James Hardie: the look of painted wood'],
+      ['layers', 'Vinyl', '#siding-types', 'CertainTeed: never needs painting'],
+    ],
+    // The brands the hero showed, kept under the buttons.
+    brands: [
+      ['/wp-content/uploads/2025/04/brand-jameshardie.png', 'James Hardie', 418, 84],
+      ['/wp-content/uploads/2025/04/brand-certainteed.png', 'CertainTeed', 296, 70],
+    ],
+    note: 'fiber cement and vinyl chips, estimate and call buttons and the James Hardie and CertainTeed logos, over a lighter copy of the photo (the heading is now the page\'s h1)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -98,7 +123,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${h.key === 'services' ? 'Our services' : h.key === 'guards' ? 'Gutter guards' : 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
@@ -106,7 +131,17 @@ const heroText = (h) =>
   `<div class="pfix-sv-hero__ctas">` +
   `<a class="pfix-sv-hero__btn pfix-sv-hero__btn--primary" href="#${FORM_ID}">Get a free estimate${ICONS.arrow}</a>` +
   `<a class="pfix-sv-hero__btn pfix-sv-hero__btn--ghost" href="${PHONE.href}">${ICONS.phone}Call ${PHONE.text}</a>` +
-  `</div>`;
+  `</div>` +
+  (h.brands
+    ? `<div class="pfix-sv-hero__brands" role="list" aria-label="Brands we install">` +
+      h.brands
+        .map(
+          ([src, alt, w, ht]) =>
+            `<picture role="listitem"><source type="image/webp" srcset="${esc(src)}.webp"><img src="${esc(src)}" alt="${esc(alt)}" width="${w}" height="${ht}" decoding="async"></picture>`
+        )
+        .join('') +
+      `</div>`
+    : '');
 
 const withClass = (n, add) => {
   const has = n.attrs.some((a) => a.name === 'class');

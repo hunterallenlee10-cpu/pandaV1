@@ -184,6 +184,8 @@ export const SITE_FIXES_FILES = {
   'services-hero.webp': '/_custom/site-fixes/services-hero.webp',
   // the photo behind /gutters/gutter-guards/'s hero (services-hero.mjs)
   'gutter-guards-hero.webp': '/_custom/site-fixes/gutter-guards-hero.webp',
+  // the photo behind /siding/'s hero (services-hero.mjs)
+  'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page|gutters page|offers band|gutter guards page|guards page)/;
