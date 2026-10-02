@@ -122,6 +122,10 @@
 //    chips over an aerial photo of a Panda solar roof, and the three question-and-panel
 //    blocks become accordions grouped by topic beside a topic menu and a help card, with
 //    FAQPage structured data (faq-page.mjs, custom/site-fixes/faq-page.json).
+//  - /charity-and-community/: a truck photo under the heading, text-only cards and a broken
+//    map become a hero with the total donated and a photo collage, the recent gifts, the
+//    organizations, a wall of the gallery's community photos, the podcast and a partner
+//    band (charity-page.mjs, custom/site-fixes/charity-page.json).
 //  - /gallery/: the page opened on the category tabs with no heading; a hero ("Panda
 //    Exteriors Company Gallery") with the categories, numbers and a collage of the
 //    gallery's own photos now sits above them (gallery-page.mjs,
@@ -143,6 +147,7 @@ import { collectAboutPage } from './about-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
+import { collectCharityPage } from './charity-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -155,7 +160,7 @@ export const SITE_FIXES_FILES = {
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -634,6 +639,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
+  // /charity-and-community/: the page's sections become the redesigned page (charity-page.mjs);
+  // its photo wall opens in the project gallery's viewer. First, so the fixes below leave
+  // the sections it replaces be.
+  if (collectCharityPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.gallery = true;
+  }
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {

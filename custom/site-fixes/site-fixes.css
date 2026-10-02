@@ -4962,3 +4962,669 @@ a.bde-social-share-button:hover {
     transform: none;
   }
 }
+
+/* /charity-and-community/ (charity-page.mjs): the redesigned page. Roboto; charcoal green,
+   Panda lime and orange from the site's palette, like the other redesigned pages. */
+.pfix-cc {
+  --cc-ink: #14180f;
+  --cc-text: #3f463a;
+  --cc-muted: #5d6656;
+  --cc-line: #e4e8dc;
+  --cc-bg: #f5f7ef;
+  --cc-orange: #f26924;
+  --cc-orange-ink: #c2410c;
+  --cc-lime: #9acd32;
+  --cc-lime-ink: #4d7c0f;
+  --cc-dark: #172015;
+  width: 100%;
+  overflow: hidden;
+  color: var(--cc-text);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-cc *,
+.pfix-cc *::before,
+.pfix-cc *::after {
+  box-sizing: border-box;
+}
+.pfix-cc p,
+.pfix-cc h1,
+.pfix-cc h2,
+.pfix-cc h3,
+.pfix-cc figure {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.pfix-cc svg {
+  display: block;
+  flex: none;
+}
+.pfix-cc img {
+  max-width: 100%;
+}
+.pfix-cc .pfix-cc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.pfix-cc .pfix-cc__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-cc .pfix-cc__sec {
+  padding: clamp(56px, 7vw, 96px) 0;
+  scroll-margin-top: 140px;
+}
+.pfix-cc .pfix-cc__sec--tint {
+  background: var(--cc-bg);
+}
+.pfix-cc .pfix-cc__head {
+  max-width: 720px;
+  margin: 0 auto clamp(30px, 4vw, 48px);
+  text-align: center;
+}
+.pfix-cc .pfix-cc__eyebrow {
+  margin-bottom: 10px;
+  color: var(--cc-orange-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-cc .pfix-cc__eyebrow--light {
+  color: var(--cc-lime);
+}
+.pfix-cc .pfix-cc__title {
+  color: var(--cc-ink);
+  text-wrap: balance;
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pfix-cc .pfix-cc__sub {
+  margin-top: 14px;
+  color: var(--cc-muted);
+  font-size: 17px;
+}
+.pfix-cc .pfix-cc__sub b {
+  color: var(--cc-ink);
+}
+
+/* Buttons. */
+.pfix-cc .pfix-cc-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-cc a.pfix-cc-btn,
+.pfix-cc button.pfix-cc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.pfix-cc .pfix-cc-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.pfix-cc a.pfix-cc-btn--primary {
+  background: var(--cc-orange);
+}
+.pfix-cc a.pfix-cc-btn--primary:hover {
+  background: #e2531a;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.pfix-cc a.pfix-cc-btn--ghost {
+  border-color: rgba(255, 255, 255, 0.7);
+}
+.pfix-cc a.pfix-cc-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.pfix-cc button.pfix-cc-btn--outline {
+  border-color: var(--cc-ink);
+  color: var(--cc-ink);
+}
+.pfix-cc button.pfix-cc-btn--outline:hover {
+  background: var(--cc-ink);
+  color: #fff;
+}
+.pfix-cc a:focus-visible,
+.pfix-cc button:focus-visible {
+  outline: 3px solid var(--cc-orange);
+  outline-offset: 3px;
+}
+
+/* Hero: the text and the total beside a photo collage. */
+.pfix-cc .pfix-cc-hero {
+  position: relative;
+  padding: clamp(48px, 6vw, 88px) 0;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(154, 205, 50, 0.26), transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(242, 105, 36, 0.28), transparent 42%),
+    linear-gradient(160deg, #222f1e 0%, var(--cc-dark) 62%);
+  color: #dfe6d4;
+}
+.pfix-cc .pfix-cc-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
+}
+.pfix-cc .pfix-cc-hero__title {
+  color: #fff;
+  text-wrap: balance;
+  font-size: clamp(36px, 4.6vw, 58px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.pfix-cc .pfix-cc-hero__sub {
+  max-width: 560px;
+  margin: 18px 0 26px;
+  color: #c9d3bc;
+  font-size: clamp(17px, 1.5vw, 19px);
+}
+.pfix-cc .pfix-cc-hero__total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-bottom: 28px;
+  padding: 16px 22px;
+  border-left: 4px solid var(--cc-lime);
+  border-radius: 0 16px 16px 0;
+  background: rgba(255, 255, 255, 0.06);
+}
+.pfix-cc .pfix-cc-hero__total b {
+  color: var(--cc-lime);
+  font-size: clamp(38px, 4.4vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.pfix-cc .pfix-cc-hero__total span {
+  color: #e8eddf;
+  font-size: 17px;
+  font-weight: 500;
+}
+.pfix-cc .pfix-cc-collage {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, clamp(56px, 6vw, 84px));
+  gap: 12px;
+}
+.pfix-cc .pfix-cc-collage__tile {
+  overflow: hidden;
+  border-radius: 18px;
+  background: #2a3526;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  animation: pfix-cc-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.pfix-cc .pfix-cc-collage__tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+}
+.pfix-cc .pfix-cc-collage__tile--1 {
+  grid-column: 1;
+  grid-row: 1 / 4;
+}
+.pfix-cc .pfix-cc-collage__tile--2 {
+  grid-column: 2;
+  grid-row: 1 / 5;
+  animation-delay: 0.1s;
+}
+.pfix-cc .pfix-cc-collage__tile--3 {
+  grid-column: 1;
+  grid-row: 4 / 7;
+  animation-delay: 0.2s;
+}
+.pfix-cc .pfix-cc-collage__tile--4 {
+  grid-column: 2;
+  grid-row: 5 / 7;
+  animation-delay: 0.3s;
+}
+.pfix-cc .pfix-cc-collage__badge {
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px 8px 8px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  color: var(--cc-ink);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: pfix-cc-fade 0.7s 0.45s ease both;
+}
+.pfix-cc .pfix-cc-collage__badge img {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  margin: 0;
+}
+@keyframes pfix-cc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes pfix-cc-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Recent gifts. */
+.pfix-cc .pfix-cc-gifts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.pfix-cc .pfix-cc-gift {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(20, 24, 15, 0.05);
+  text-align: center;
+}
+.pfix-cc .pfix-cc-gift__logo {
+  position: relative;
+  display: block;
+  flex: none;
+  overflow: hidden;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 6px var(--cc-bg), 0 4px 12px rgba(20, 24, 15, 0.12);
+}
+/* !important: a stylesheet of the site's stretches these pictures' height. Each file is a
+   white disc with the logo small in its middle, so it is shown larger than the circle. */
+.pfix-cc .pfix-cc-gift__logo img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 124px !important;
+  height: 124px !important;
+  max-width: none;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+.pfix-cc .pfix-cc-gift__amount {
+  color: var(--cc-orange-ink);
+  font-size: clamp(30px, 3vw, 38px);
+  font-weight: 800;
+  line-height: 1.1;
+}
+.pfix-cc .pfix-cc-gift__name {
+  color: var(--cc-ink);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* The organizations. */
+.pfix-cc .pfix-cc-orgs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+.pfix-cc .pfix-cc-org {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px 26px;
+  border: 1px solid var(--cc-line);
+  border-radius: 20px;
+  background: #fff;
+}
+.pfix-cc .pfix-cc-org__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 6px;
+  border-radius: 14px;
+  background: #eef6dc;
+  color: var(--cc-lime-ink);
+}
+.pfix-cc .pfix-cc-org__icon svg {
+  width: 28px;
+  height: 28px;
+}
+.pfix-cc .pfix-cc-org__name {
+  color: var(--cc-ink);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pfix-cc .pfix-cc-org__text {
+  color: var(--cc-muted);
+  font-size: 15.5px;
+}
+.pfix-cc .pfix-cc-org--featured {
+  border-color: var(--cc-dark);
+  background: var(--cc-dark);
+  color: #c9d3bc;
+}
+.pfix-cc .pfix-cc-org--featured .pfix-cc-org__icon {
+  background: rgba(154, 205, 50, 0.16);
+  color: var(--cc-lime);
+}
+.pfix-cc .pfix-cc-org--featured .pfix-cc-org__name {
+  color: #fff;
+}
+.pfix-cc .pfix-cc-org--featured .pfix-cc-org__text {
+  color: #c4ceb6;
+}
+.pfix-cc a.pfix-cc-org__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+  color: var(--cc-lime);
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-cc a.pfix-cc-org__link svg {
+  width: 16px;
+  height: 16px;
+}
+.pfix-cc a.pfix-cc-org__link:hover {
+  color: #c5ee6e;
+  text-decoration: underline;
+}
+
+/* The photo wall: a grid of the event photos. Tall photos take two rows and the "wide" one
+   runs across, so the first twelve and all of them both fill whole rows. */
+.pfix-cc .pfix-cc-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: clamp(150px, 18vw, 230px);
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+.pfix-cc a.pfix-cc-wall__item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #e8ecdf;
+}
+.pfix-cc a.pfix-cc-wall__item.is-tall {
+  grid-row: span 2;
+}
+.pfix-cc a.pfix-cc-wall__item.is-wide {
+  grid-column: 1 / -1;
+  grid-row: span 2;
+}
+.pfix-cc .pfix-cc-wall.is-collapsed .is-extra {
+  display: none;
+}
+.pfix-cc a.pfix-cc-wall__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pfix-cc .pfix-cc-wall__zoom {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(20, 28, 18, 0.7);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.pfix-cc .pfix-cc-wall__zoom svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-cc a.pfix-cc-wall__item:hover img {
+  transform: scale(1.04);
+}
+.pfix-cc a.pfix-cc-wall__item:hover .pfix-cc-wall__zoom,
+.pfix-cc a.pfix-cc-wall__item:focus-visible .pfix-cc-wall__zoom {
+  opacity: 1;
+}
+.pfix-cc .pfix-cc-wall__more {
+  margin-top: 18px;
+  text-align: center;
+}
+
+/* Tune in: the podcast in a dark card. */
+.pfix-cc .pfix-cc-listen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: center;
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(154, 205, 50, 0.22), transparent 45%),
+    var(--cc-dark);
+  color: #c9d3bc;
+}
+.pfix-cc .pfix-cc-listen__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--cc-lime);
+  color: var(--cc-dark);
+}
+.pfix-cc .pfix-cc-listen__icon svg {
+  width: 26px;
+  height: 26px;
+}
+.pfix-cc .pfix-cc-listen__title {
+  color: #fff;
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+.pfix-cc .pfix-cc-listen__body {
+  margin-top: 12px;
+}
+.pfix-cc .pfix-cc-listen__player {
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 18px;
+  background: #fff;
+}
+.pfix-cc .pfix-cc-listen__player iframe {
+  display: block;
+  width: 100%;
+  height: 150px;
+  border: 0;
+}
+.pfix-cc .pfix-cc-listen__source {
+  padding: 6px 6px 2px;
+  color: var(--cc-muted);
+  font-size: 13px;
+}
+
+/* Closing band. */
+.pfix-cc .pfix-cc-cta {
+  padding: clamp(56px, 6vw, 84px) 0;
+  background: var(--cc-lime);
+  color: var(--cc-dark);
+}
+.pfix-cc .pfix-cc-cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.pfix-cc .pfix-cc-cta__title {
+  max-width: 760px;
+  color: var(--cc-dark);
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pfix-cc .pfix-cc-cta__text {
+  max-width: 680px;
+  margin: 14px 0 28px;
+  font-size: 18px;
+}
+.pfix-cc .pfix-cc-btns--cta {
+  justify-content: center;
+}
+.pfix-cc .pfix-cc-btns--cta a.pfix-cc-btn--primary {
+  background: var(--cc-dark);
+}
+.pfix-cc .pfix-cc-btns--cta a.pfix-cc-btn--primary:hover {
+  background: #000;
+}
+.pfix-cc .pfix-cc-btns--cta a.pfix-cc-btn--ghost {
+  border-color: var(--cc-dark);
+  color: var(--cc-dark);
+}
+.pfix-cc .pfix-cc-btns--cta a.pfix-cc-btn--ghost:hover {
+  background: var(--cc-dark);
+  color: #fff;
+}
+.pfix-cc .pfix-cc-cta a:focus-visible {
+  outline-color: var(--cc-dark);
+}
+.pfix-cc .pfix-cc-cta__call {
+  margin-top: 20px;
+}
+.pfix-cc .pfix-cc-cta__call a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cc-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pfix-cc .pfix-cc-cta__call svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 1024px) {
+  .pfix-cc .pfix-cc-gifts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-cc .pfix-cc-orgs {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 860px) {
+  .pfix-cc .pfix-cc-hero__inner,
+  .pfix-cc .pfix-cc-listen {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-cc .pfix-cc-collage {
+    grid-template-rows: repeat(6, clamp(48px, 13vw, 84px));
+    margin-bottom: 24px;
+  }
+  .pfix-cc .pfix-cc-collage__badge {
+    bottom: -24px;
+  }
+  .pfix-cc .pfix-cc-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(130px, 34vw, 230px);
+    gap: 10px;
+  }
+  .pfix-cc a.pfix-cc-wall__item {
+    border-radius: 12px;
+  }
+  .pfix-cc a.pfix-cc-wall__item.is-wide {
+    grid-row: span 1;
+  }
+}
+@media (max-width: 767px) {
+  /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
+  .pfix-cc .pfix-cc-hero__title {
+    font-size: 36px !important;
+  }
+}
+@media (max-width: 520px) {
+  .pfix-cc .pfix-cc-btns {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pfix-cc .pfix-cc-gifts {
+    gap: 12px;
+  }
+  .pfix-cc .pfix-cc-gift {
+    padding: 22px 12px;
+  }
+  .pfix-cc .pfix-cc-gift__amount {
+    font-size: 26px;
+  }
+  .pfix-cc .pfix-cc-gift__name {
+    font-size: 14px;
+  }
+  .pfix-cc .pfix-cc-collage__badge {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-cc .pfix-cc-collage__tile,
+  .pfix-cc .pfix-cc-collage__badge {
+    animation: none;
+  }
+  .pfix-cc a.pfix-cc-wall__item img,
+  .pfix-cc .pfix-cc-btn {
+    transition: none;
+  }
+  .pfix-cc a.pfix-cc-wall__item:hover img {
+    transform: none;
+  }
+}

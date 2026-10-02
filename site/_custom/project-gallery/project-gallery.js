@@ -7,6 +7,7 @@
    - A photo opens in a viewer (a modal <dialog>): arrows, arrow keys and swiping step
      through the category, Esc or a click beside the photo closes it, and the row follows
      to the last photo seen. Without <dialog> support the link opens the photo itself.
+   - Photo walls ([data-ppg-wall], outside .ppg) open their photos in the same viewer.
    People who prefer reduced motion get instant scrolling. */
 (function () {
   'use strict';
@@ -60,10 +61,12 @@
         img.removeAttribute('width');
         img.removeAttribute('height');
       }
-      img.alt = state.name + ' project photo ' + (state.index + 1) + ' of ' + n;
+      // A photo with its own description (data-caption, the photo walls) shows it.
+      var own = tile.getAttribute('data-caption');
+      img.alt = own || state.name + ' project photo ' + (state.index + 1) + ' of ' + n;
       img.src = tile.getAttribute('href');
       if (img.complete && img.naturalWidth) img.classList.add('is-loaded');
-      caption.textContent = state.name + ' · ' + (state.index + 1) + ' of ' + n;
+      caption.textContent = (own || state.name) + ' · ' + (state.index + 1) + ' of ' + n;
       dialog.classList.toggle('is-single', n < 2);
       // The next and previous photos load in the background.
       [state.index + 1, state.index - 1].forEach(function (j) {
@@ -401,8 +404,39 @@
     root.classList.add('is-ready');
   }
 
+  /* ------------------------------------------------------------ photo walls */
+  // A grid of photo links ([data-ppg-wall], e.g. /charity-and-community/): each opens the
+  // viewer, which steps through the whole wall. Photos marked .is-extra wait behind a
+  // "Show all" button ([data-ppg-wall-more], hidden until this runs).
+  function initWall(wall) {
+    var items = toArray(wall.querySelectorAll('a[href]'));
+    var name = wall.getAttribute('data-ppg-wall') || 'Photo';
+    var more = wall.parentNode.querySelector('[data-ppg-wall-more]');
+    if (more && wall.querySelector('.is-extra')) {
+      wall.classList.add('is-collapsed');
+      more.hidden = false;
+      more.addEventListener('click', function () {
+        wall.classList.remove('is-collapsed');
+        more.parentNode.removeChild(more);
+        var first = wall.querySelector('.is-extra');
+        if (first) first.focus({ preventScroll: true });
+      });
+    }
+    if (!canDialog) return;
+    items.forEach(function (a, i) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+        e.preventDefault();
+        getViewer().open(items, i, name, function (last) {
+          if (items[last] && !items[last].closest('.is-collapsed .is-extra')) items[last].focus({ preventScroll: true });
+        });
+      });
+    });
+  }
+
   function init() {
     toArray(document.querySelectorAll('.ppg')).forEach(initGallery);
+    toArray(document.querySelectorAll('[data-ppg-wall]')).forEach(initWall);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
