@@ -5,12 +5,15 @@
 // note, so the page explained nothing. Referrals are sent from the Panda Exteriors app, so
 // the page now explains the program and sends people to the app:
 //  - hero: a headline and line about the program, "Download on the App Store" and "Get it
-//    on Google Play" buttons, and a phone showing the Panda logo and two reward
-//    notifications (drawn in HTML and CSS around the logo already on the site);
+//    on Google Play" buttons, on computers a QR code for each store (drawn as SVG when the
+//    page is built, so a phone's camera opens the store), and a phone showing the Panda
+//    logo and four reward notifications (drawn in HTML and CSS around the logo already on
+//    the site);
 //  - what you can earn: $25 for downloading the app, $50 when a referral is qualified,
 //    $150 when they buy and a $200 bonus for every three sold, with a worked example;
 //  - how it works, in three steps (the company code the live page shows is in the first);
-//  - a closing band with the store buttons again and the phone number.
+//  - a closing band with the store buttons (and, on computers, the QR codes) again and the
+//    phone number.
 // The amounts and the store links are the ones on Panda's live GetTheReferral page (the
 // $25 for downloading the app was added on request; bath referrals are left out, like
 // Panda Bath). The page's description (search results and share cards) says the same.
@@ -20,6 +23,7 @@
 // (found by its own class on a page an earlier build changed).
 import fs from 'node:fs';
 import path from 'node:path';
+import qrcode from 'qrcode-generator';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll } from './html-edit.mjs';
 
@@ -59,9 +63,39 @@ function storeButtons(where) {
   );
 }
 
+// A QR code as an SVG: one square per dark module, with the 4-module quiet zone scanners need.
+function qrSvg(url, label) {
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  const n = qr.getModuleCount();
+  let d = '';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + 4} ${r + 4}h1v1h-1z`;
+  return (
+    `<svg class="pfix-rf-qr__code" viewBox="0 0 ${n + 8} ${n + 8}" role="img" aria-label="${esc(label)}" shape-rendering="crispEdges">` +
+    `<rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#14180f"/></svg>`
+  );
+}
+
+// The two QR codes, for people on a computer (site-fixes.css shows them only there).
+function qrCodes(where) {
+  const { apps, qr } = referralsPage();
+  const code = (url, icon, store, phone) =>
+    `<figure class="pfix-rf-qr__item">${qrSvg(url, `QR code: the Panda Exteriors app on ${store}`)}` +
+    `<figcaption>${ICONS[icon]}<span><b>${esc(store)}</b>${esc(phone)}</span></figcaption></figure>`;
+  return (
+    `<div class="pfix-rf-qr pfix-rf-qr--${where}">` +
+    `<p class="pfix-rf-qr__text"><b>${esc(qr.title)}</b> ${esc(qr.sub)}</p>` +
+    `<div class="pfix-rf-qr__codes">` +
+    code(apps.ios, 'apple', 'App Store', 'iPhone') +
+    code(apps.android, 'play', 'Google Play', 'Android') +
+    `</div></div>`
+  );
+}
+
 function hero() {
   const { hero: h, rewards } = referralsPage();
-  const [download, qualified, sold] = rewards.items;
+  const [download, qualified, sold, bonus] = rewards.items;
   // The phone is a picture of the idea, so it is hidden from screen readers.
   const phone =
     `<div class="pfix-rf-phone" aria-hidden="true"><div class="pfix-rf-phone__screen">` +
@@ -71,6 +105,7 @@ function hero() {
     `<span class="pfix-rf-phone__note"><i>${ICONS.check}</i><span><b>Welcome bonus</b>App downloaded</span><em>+${money(download.amount)}</em></span>` +
     `<span class="pfix-rf-phone__note"><i>${ICONS.check}</i><span><b>Referral qualified</b>Appointment booked</span><em>+${money(qualified.amount)}</em></span>` +
     `<span class="pfix-rf-phone__note"><i>${ICONS.check}</i><span><b>Referral sold</b>New roof</span><em>+${money(sold.amount)}</em></span>` +
+    `<span class="pfix-rf-phone__note pfix-rf-phone__note--bonus"><i>${ICONS.star}</i><span><b>3 referrals sold</b>Bonus unlocked</span><em>+${money(bonus.amount)}</em></span>` +
     `</div></div>`;
   return (
     `<section class="pfix-rf-hero" aria-labelledby="pfix-rf-title"><div class="pfix-rf__inner pfix-rf-hero__inner">` +
@@ -79,6 +114,7 @@ function hero() {
     `<h1 class="pfix-rf-hero__title" id="pfix-rf-title">${esc(h.title)}</h1>` +
     `<p class="pfix-rf-hero__sub">${esc(h.sub)}</p>` +
     storeButtons('hero') +
+    qrCodes('hero') +
     `<p class="pfix-rf-hero__note">${esc(h.note)}</p>` +
     `</div>` +
     `<div class="pfix-rf-hero__media">${phone}</div>` +
@@ -136,6 +172,7 @@ function ctaSection() {
     `<h2 class="pfix-rf-cta__title" id="pfix-rf-cta-title">${esc(cta.title)}</h2>` +
     `<p class="pfix-rf-cta__sub">${esc(cta.sub)}</p>` +
     storeButtons('cta') +
+    qrCodes('cta') +
     `<p class="pfix-rf-cta__call">Questions about the program? <a href="${PHONE.href}">${ICONS.phone}Call ${PHONE.text}</a></p>` +
     `</div></section>`
   );
