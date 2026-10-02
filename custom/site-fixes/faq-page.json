@@ -1,0 +1,70 @@
+{
+  "hero": {
+    "eyebrow": "Frequently asked questions",
+    "title": "Questions? We’ve got answers.",
+    "sub": "Everything you need to know about Panda Exteriors, your roof and going solar, in one place.",
+    "photo": "/_custom/site-fixes/faq-hero.webp"
+  },
+  "help": {
+    "title": "Still have a question?",
+    "text": "Our team is happy to help. Give us a call, or book a free estimate and ask us in person."
+  },
+  "groups": [
+    {
+      "id": "about-panda",
+      "icon": "panda",
+      "title": "About Panda",
+      "text": "Who we are and how we work.",
+      "link": ["/about/", "More about us"],
+      "items": [
+        ["How long have you been in business?", "While Panda was officially founded in 2020, our roots in the home remodeling industry run much deeper. The ownership team brings together a collective experience spanning 30 years. This extensive knowledge and dedication to the craft have positioned us as trusted experts in the field."],
+        ["Is your company licensed?", "Yes, we are fully licensed and insured."]
+      ]
+    },
+    {
+      "id": "roofing",
+      "icon": "roof",
+      "title": "Roofing",
+      "text": "Replacing your roof, what it costs to run and how to make it last.",
+      "link": ["/roofing/", "Our roofing services"],
+      "items": [
+        ["When is it time to replace my roof?", "The typical roof lasts about 15 years. It's essential to consider replacing your roof if it has sustained any storm damage or as it approaches its expected lifespan."],
+        ["Should I replace my shingles or the entire roofing system?", "We recommend replacing the entire roofing system rather than just the shingles. While it might seem cost-effective to replace only the damaged shingles, roof repairs can be expensive and often provide only a temporary solution. An entire roofing system replacement ensures a longer lasting and more cost-effective outcome in the long run."],
+        ["Will a new roof lower my energy bills?", "A properly installed roof with good attic ventilation can help keep your attic cooler. This means you'll spend less on cooling your home. New shingles also reflect more sunlight and absorb less heat. However, to truly optimize your energy savings, consider installing a solar system on your roof."],
+        ["How do you prepare for a roof installation?", "At Panda, our approach begins with a thorough inspection of your current roof. We then remove outdated materials and assess the decking, ensuring it's ready for the new roof. We prioritize protecting your property during this process, safeguarding landscaping and outdoor items. For a seamless experience, homeowners are encouraged to inform our project manager about special items or concerns in the yard ahead of the installation."],
+        ["How can I tell when my roof needs a repair or replacement?", "Signs include frequent leaks, sagging, noticeable damage, or if it's nearing the end of its expected lifespan."],
+        ["Why is regular roof inspection important?", "Regular inspections can detect and fix issues early, extending the life of your roof and preventing costly damage."],
+        ["Can I really extend the life of my roof?", "While regular maintenance and inspections can help in prolonging the life of your roof to some extent, the most definitive way to ensure longevity and safety is by replacing it when signs of wear and tear emerge. Given the crucial role a roof plays in protecting your home, it's often more cost-effective and reassuring in the long run to invest in a new roofing system when the time comes."]
+      ]
+    },
+    {
+      "id": "commercial-roofing",
+      "icon": "building",
+      "title": "Commercial roofing",
+      "short": "Commercial",
+      "text": "Roofs for businesses, and choosing who builds them.",
+      "link": ["/commercial-roofing/", "Commercial roofing"],
+      "items": [
+        ["What is the most common commercial roof style?", "Flat roofs are the most common style for commercial buildings."],
+        ["What are the components of a commercial roof?", "Common components include the roof membrane, insulation, flashings, and drainage systems."],
+        ["What factors do you need to consider when hiring a commercial roofing contractor?", "You should consider their experience, licensing, insurance, customer reviews, and the quality of materials they use."]
+      ]
+    },
+    {
+      "id": "solar",
+      "icon": "sun",
+      "title": "Solar",
+      "text": "How solar panels work, in every season, and how to pay for them.",
+      "link": ["/solar/", "Our solar services"],
+      "items": [
+        ["How do solar panels work?", "Solar panels convert sunlight into electricity using photovoltaic cells. When sunlight hits these cells, it stimulates electrons, creating an electric current."],
+        ["Why should I go solar?", "Going solar offers a multitude of benefits. Not only can it substantially cut down on your electricity bills, but it's also an eco-friendly choice that contributes to a cleaner environment. By switching to solar, you increase your property's value and gain energy independence, freeing yourself from the unpredictability of utility rates. Furthermore, many government incentives are available to those who choose solar, making it an even more attractive option. Most importantly, by going solar, you own your energy instead of constantly paying an energy company, ensuring a long-term return on investment."],
+        ["What are my solar financing options?", "There are various financing options including solar leases, power purchase agreements, and solar loans. It's best to consult with us directly for the most suitable option for you. Solar has some of the most affordable financing options available in today's market."],
+        ["Do my solar panels produce power when the sun isn't shining?", "Solar panels require sunlight to produce power. They will produce less energy on cloudy days and none at night. However, energy storage solutions can store excess energy for use when the panels aren't producing."],
+        ["Does solar power work at night?", "No, solar panels require sunlight to generate power. However, with battery storage systems, you can use solar energy stored during the day at night."],
+        ["What happens if there is snow on solar panels?", "Snow can reduce the efficiency of solar panels. However, the panels produce heat, which can help melt and shed the snow."],
+        ["What are interesting facts about solar energy?", "Solar energy is the most abundant energy resource on Earth, and one hour of sunlight can meet the world's energy needs for a year."]
+      ]
+    }
+  ]
+}
