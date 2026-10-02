@@ -2629,3 +2629,605 @@ a.bde-social-share-button:hover {
     line-height: 1.5;
   }
 }
+
+/* /about/ (about-page.mjs): the hero and "Our Mission". Roboto like the rest of the page;
+   orange for actions, lime and charcoal green from the site's palette, the same look as the
+   other redesigned heroes (/offers/, /reviews/) and the Inc. 5000 band below.
+
+   Hero: a Panda roofer in a Panda hoodie and harness on a roof, in place of a photo of an
+   office ceiling. It scrolls with the page and is darkened behind the text. */
+.hero-section.pfix-ab-hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #1a2418;
+  background-image: url("/_custom/site-fixes/about-hero.webp");
+  background-size: cover;
+  background-position: 50% 35%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-blend-mode: normal;
+}
+.hero-section.pfix-ab-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(12, 17, 11, 0.92) 0%, rgba(12, 17, 11, 0.8) 40%, rgba(12, 17, 11, 0.38) 68%, rgba(12, 17, 11, 0.2) 100%),
+    linear-gradient(0deg, rgba(12, 17, 11, 0.4) 0%, rgba(12, 17, 11, 0) 45%);
+  pointer-events: none;
+}
+.pfix-ab-hero .text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+}
+.pfix-ab-hero .text-section > * {
+  max-width: 100%;
+  margin: 0;
+}
+.pfix-ab-hero .pfix-ab-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #c3ea79;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pfix-ab-hero .pfix-ab-hero__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.pfix-ab-hero .text-section .pfix-ab-hero__title {
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 50px;
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  text-align: left;
+  text-wrap: balance;
+}
+.pfix-ab-hero .pfix-ab-hero__sub {
+  padding: 0;
+  color: #eef0ea;
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* The numbers, on frosted glass. */
+.pfix-ab-hero .pfix-ab-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: start;
+  width: 100%;
+  max-width: 540px;
+  padding: 16px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.pfix-ab-hero .pfix-ab-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 0 18px;
+}
+.pfix-ab-hero .pfix-ab-hero__stat + .pfix-ab-hero__stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+}
+.pfix-ab-hero .pfix-ab-hero__stat b {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pfix-ab-hero .pfix-ab-hero__star {
+  flex: none;
+  align-self: center;
+  width: 0.72em;
+  height: 0.72em;
+  color: #fbbc04;
+}
+.pfix-ab-hero .pfix-ab-hero__stat span {
+  color: #d4dacb;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* Estimate and call buttons. */
+.pfix-ab-hero .pfix-ab-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn,
+.pfix-ab-hero a.pfix-ab-hero__btn:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 24px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn--primary {
+  background: #f26924;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn--primary:hover {
+  background: #e2531a;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn--ghost {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.pfix-ab-hero .pfix-ab-hero__short {
+  display: none;
+}
+.pfix-ab-hero a.pfix-ab-hero__btn:focus-visible {
+  outline: 3px solid #c3ea79;
+  outline-offset: 2px;
+}
+.pfix-ab-hero .pfix-ab-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+.pfix-ab-hero .pfix-ab-hero__trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #eef0ea;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.pfix-ab-hero .pfix-ab-hero__trust svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #c3ea79;
+}
+@media (min-width: 1200px) {
+  .pfix-ab-hero .text-section {
+    width: 580px;
+  }
+}
+/* Side by side in the narrower container: leave a gap before the form. */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .pfix-ab-hero .text-section {
+    width: 470px;
+  }
+  .pfix-ab-hero .text-section .pfix-ab-hero__title {
+    font-size: 40px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stat {
+    padding: 0 13px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stat b {
+    font-size: 24px;
+  }
+}
+/* Columns stacked: the text above the form, darkened evenly. */
+@media (max-width: 1023.98px) {
+  .hero-section.pfix-ab-hero::before {
+    background: linear-gradient(180deg, rgba(12, 17, 11, 0.86) 0%, rgba(12, 17, 11, 0.7) 55%, rgba(12, 17, 11, 0.58) 100%);
+  }
+  .pfix-ab-hero .hero-text-col {
+    align-self: stretch;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .pfix-ab-hero .text-section {
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .pfix-ab-hero .text-section .pfix-ab-hero__title {
+    font-size: 42px;
+  }
+}
+@media (max-width: 767.98px) {
+  .pfix-ab-hero .text-section {
+    gap: 14px;
+    padding-top: 8px;
+  }
+  /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
+  .pfix-ab-hero .text-section .pfix-ab-hero__title {
+    font-size: 32px !important;
+  }
+  .pfix-ab-hero .pfix-ab-hero__sub {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 0;
+    max-width: none;
+    padding: 14px 4px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stat {
+    padding: 0 16px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stat:nth-child(odd) {
+    border-left: 0;
+  }
+  .pfix-ab-hero .pfix-ab-hero__stat b {
+    font-size: 25px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__ctas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .pfix-ab-hero a.pfix-ab-hero__btn,
+  .pfix-ab-hero a.pfix-ab-hero__btn:hover {
+    padding: 13px 10px;
+    font-size: 15px;
+  }
+  .pfix-ab-hero .pfix-ab-hero__trust span {
+    font-size: 13px;
+  }
+}
+/* Narrow phones: "Call us" on the button (the number is still read out). */
+@media (max-width: 479.98px) {
+  .pfix-ab-hero .pfix-ab-hero__long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pfix-ab-hero .pfix-ab-hero__short {
+    display: inline;
+  }
+}
+
+/* "Our Mission": the text and three points on the left, a photo collage on the right. */
+.pfix-ab-mission {
+  position: relative;
+  padding: 88px 0 96px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #374151;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.pfix-ab-mission *,
+.pfix-ab-mission *::before,
+.pfix-ab-mission *::after {
+  box-sizing: border-box;
+}
+.pfix-ab-mission .pfix-ab-mission__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 64px;
+  align-items: center;
+}
+.pfix-ab-mission .pfix-ab-mission__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.pfix-ab-mission .pfix-ab-mission__eyebrow {
+  margin: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #e1efc4;
+  color: #4a7310;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-ab-mission .pfix-ab-mission__title {
+  margin: 14px 0 18px;
+  padding: 0;
+  color: #111827;
+  font-family: inherit;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: left;
+  text-wrap: balance;
+}
+.pfix-ab-mission .pfix-ab-mission__lead {
+  max-width: 60ch;
+  margin: 0;
+  padding: 0;
+  color: #374151;
+  font-size: 17.5px;
+  line-height: 1.7;
+  text-align: left;
+}
+.pfix-ab-mission .pfix-ab-mission__points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 28px 0 0;
+}
+.pfix-ab-mission .pfix-ab-mission__point {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid #e6eddb;
+  border-radius: 16px;
+  background: #fbfdf7;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.pfix-ab-mission .pfix-ab-mission__point:hover {
+  border-color: #cfe3a8;
+  box-shadow: 0 10px 24px rgba(26, 36, 24, 0.08);
+  transform: translateY(-1px);
+}
+.pfix-ab-mission .pfix-ab-mission__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #1a2418;
+  color: #c3ea79;
+}
+.pfix-ab-mission .pfix-ab-mission__icon svg {
+  width: 22px;
+  height: 22px;
+}
+.pfix-ab-mission .pfix-ab-mission__point-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.pfix-ab-mission .pfix-ab-mission__point-text b {
+  color: #111827;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.pfix-ab-mission .pfix-ab-mission__point-text span {
+  color: #4b5348;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.pfix-ab-mission .pfix-ab-mission__places {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  color: #4b5348;
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: left;
+}
+.pfix-ab-mission .pfix-ab-mission__places svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: #f26924;
+}
+.pfix-ab-mission .pfix-ab-mission__places b {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* The collage: the crew photo, the section's old photo overlapping its lower left corner,
+   and the experience badge on its upper right. */
+.pfix-ab-mission .pfix-ab-mission__media {
+  position: relative;
+  min-width: 0;
+  padding: 0 0 72px 40px;
+}
+.pfix-ab-mission .pfix-ab-mission__media::before {
+  content: "";
+  position: absolute;
+  top: -28px;
+  right: -28px;
+  z-index: 0;
+  width: 62%;
+  height: 70%;
+  border-radius: 28px;
+  background: radial-gradient(#c9e39a 1.6px, transparent 1.8px) 0 0 / 18px 18px;
+  opacity: 0.8;
+}
+.pfix-ab-mission .pfix-ab-mission__photo {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  overflow: hidden;
+  background: #e5eadf;
+}
+.pfix-ab-mission .pfix-ab-mission__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+.pfix-ab-mission .pfix-ab-mission__photo--main {
+  aspect-ratio: 4 / 3.4;
+  border-radius: 24px;
+  box-shadow: 0 24px 50px rgba(26, 36, 24, 0.18);
+}
+.pfix-ab-mission .pfix-ab-mission__photo--main img {
+  object-position: 40% 50%;
+}
+.pfix-ab-mission .pfix-ab-mission__photo--inset {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 52%;
+  aspect-ratio: 534 / 328;
+  border: 6px solid #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(26, 36, 24, 0.22);
+}
+.pfix-ab-mission .pfix-ab-mission__photo--inset picture {
+  display: block;
+  height: 100%;
+}
+.pfix-ab-mission .pfix-ab-mission__badge {
+  position: absolute;
+  right: -12px;
+  bottom: 28px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 230px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #1a2418;
+  box-shadow: 0 16px 34px rgba(26, 36, 24, 0.28);
+}
+.pfix-ab-mission .pfix-ab-mission__badge b {
+  color: #c3ea79;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.pfix-ab-mission .pfix-ab-mission__badge span {
+  color: #eef0ea;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+@media (max-width: 1199.98px) {
+  .pfix-ab-mission .pfix-ab-mission__inner {
+    gap: 48px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__title {
+    font-size: 34px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__badge {
+    right: 0;
+  }
+  .pfix-ab-mission .pfix-ab-mission__photo--inset {
+    width: 46%;
+  }
+}
+@media (max-width: 991.98px) {
+  .pfix-ab-mission {
+    padding: 60px 0 64px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__media {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .pfix-ab-mission .pfix-ab-mission__media::before {
+    right: -12px;
+  }
+}
+@media (max-width: 575.98px) {
+  .pfix-ab-mission {
+    padding: 44px 0 48px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__title {
+    margin: 12px 0 14px;
+    font-size: 27px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__lead {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .pfix-ab-mission .pfix-ab-mission__point {
+    gap: 14px;
+    padding: 14px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__icon {
+    width: 40px;
+    height: 40px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__point-text b {
+    font-size: 16px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__media {
+    padding: 0 0 56px 20px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__media::before {
+    top: -16px;
+    right: -6px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__photo--inset {
+    width: 56%;
+    border-width: 4px;
+    border-radius: 14px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__photo--main {
+    border-radius: 18px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__badge {
+    bottom: 10px;
+    gap: 10px;
+    max-width: 170px;
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__badge b {
+    font-size: 28px;
+  }
+  .pfix-ab-mission .pfix-ab-mission__badge span {
+    font-size: 12.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-ab-mission .pfix-ab-mission__point {
+    transition: none;
+  }
+  .pfix-ab-mission .pfix-ab-mission__point:hover {
+    transform: none;
+  }
+}

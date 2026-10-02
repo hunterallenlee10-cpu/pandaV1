@@ -112,6 +112,9 @@
 //    cards titled "Panda Ext-14098", photos that didn't load) becomes "Some of our favorite
 //    past projects", six hand-picked jobs above the map, and the hero's soft stock photo
 //    becomes a photo of Panda's crew at work (past-projects.mjs, custom/past-projects/).
+//  - /about/: the hero ("About Us" over a photo of an office ceiling) introduces the company
+//    over a photo of a Panda roofer, and "Our Mission" (two long paragraphs) becomes
+//    a headline, three points and a photo collage (about-page.mjs).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -125,11 +128,18 @@ import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
+import { collectAboutPage } from './about-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
-export const SITE_FIXES_FILES = { 'site-fixes.css': '/_custom/site-fixes/site-fixes.css', 'site-fixes.js': '/_custom/site-fixes/site-fixes.js' };
+export const SITE_FIXES_FILES = {
+  'site-fixes.css': '/_custom/site-fixes/site-fixes.css',
+  'site-fixes.js': '/_custom/site-fixes/site-fixes.js',
+  // the photos of /about/'s hero and "Our Mission" (about-page.mjs)
+  'about-hero.webp': '/_custom/site-fixes/about-hero.webp',
+  'about-team.webp': '/_custom/site-fixes/about-team.webp',
+};
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects|reviews page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -991,6 +1001,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       changes.push('job details page: "Failed to load job details." -> pointer to the open positions on /careers/');
     }
   }
+
+  // /about/: the hero introduces the company and "Our Mission" is a headline, three points
+  // and a photo collage (about-page.mjs).
+  if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;
 
   // /service-areas/: the hero says where Panda works and links to the map.
   if (pathname === '/service-areas/' && serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes)) {
