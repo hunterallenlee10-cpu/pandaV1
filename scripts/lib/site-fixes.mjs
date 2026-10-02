@@ -144,6 +144,10 @@
 //    map and seven cards with drawn state maps, addresses, call and directions buttons
 //    replace them, and the pop-up form that could not send goes (contact-page.mjs,
 //    custom/site-fixes/contact-page.json).
+//  - /customer-service/: a title strip over a cropped photo and a sales block; a hero with
+//    the main line, email and local offices and six help topics (warranty, guarantee,
+//    financing, reviews, referrals, FAQs) replace it, and the estimate block is headed
+//    "Planning a new project?" (customer-service-page.mjs).
 //  - /gallery/: the page opened on the category tabs with no heading; a hero ("Panda
 //    Exteriors Company Gallery") with the categories, numbers and a collage of the
 //    gallery's own photos now sits above them (gallery-page.mjs,
@@ -167,6 +171,7 @@ import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
 import { collectContactPage } from './contact-page.mjs';
+import { collectCustomerServicePage } from './customer-service-page.mjs';
 import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
@@ -188,7 +193,7 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page|gutters page|offers band|gutter guards page|guards page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -677,6 +682,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /contact-us/: a hero with an office map and seven office cards with drawn maps, addresses
   // and call buttons, in place of the broken map pictures (contact-page.mjs). First too.
   if (collectContactPage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /customer-service/: a hero with call, email and local offices and six help topics in
+  // place of the title strip (customer-service-page.mjs). First too.
+  if (collectCustomerServicePage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {
