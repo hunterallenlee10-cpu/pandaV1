@@ -19,8 +19,10 @@ its header, footer and "Site Map" heading. Only the list under the heading is re
 The pages are grouped into main pages, blog listing pages, blog articles (newest first), offer pages, project pages
 and other pages (the 404 page). Below them:
 
-- **Old addresses that redirect**: every address in `site/_redirects`, where it leads, and why (a page removed on
-  request, or the old misspelled `/commerical-roofing/` addresses).
+- **Old addresses that redirect**: the addresses in `site/_redirects`, where each leads, and why (today, the old
+  misspelled `/commerical-roofing/` addresses). Pages removed on request (`REMOVED_PAGES` in
+  `scripts/lib/config.mjs`) are left out: once a page is deleted, it is gone from the Site Map entirely, and from
+  the XML sitemaps too.
 - **Addresses in the XML sitemaps with no page**: what the sitemaps list that has no page in the copy, grouped and
   counted (the 5,309 `/blog/project/` posts left out on purpose: see `SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`).
 

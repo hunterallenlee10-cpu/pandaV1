@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//pandaexteriors.com/main-sitemap.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://pandaexteriors.com/blog/project/roof-replacement-3/</loc>
-		<lastmod>2025-07-27T23:05:12+00:00</lastmod>
-	</url>
-	<url>
 		<loc>https://pandaexteriors.com/blog/project/roof-replacement-2/</loc>
 		<lastmod>2025-07-27T22:59:16+00:00</lastmod>
 	</url>
@@ -23,18 +19,6 @@
 	<url>
 		<loc>https://pandaexteriors.com/blog/project/spanish-tile/</loc>
 		<lastmod>2025-07-25T16:43:59+00:00</lastmod>
-	</url>
-	<url>
-		<loc>https://pandaexteriors.com/blog/project/sbs-siding/</loc>
-		<lastmod>2025-07-22T19:29:55+00:00</lastmod>
-	</url>
-	<url>
-		<loc>https://pandaexteriors.com/blog/project/enterprise-rent-a-car/</loc>
-		<lastmod>2025-07-22T19:24:16+00:00</lastmod>
-	</url>
-	<url>
-		<loc>https://pandaexteriors.com/blog/project/bylt-restoration/</loc>
-		<lastmod>2025-07-22T18:56:35+00:00</lastmod>
 	</url>
 	<url>
 		<loc>https://pandaexteriors.com/blog/project/expert-tpo-roofing/</loc>

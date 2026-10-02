@@ -1,25 +1,62 @@
 {
-  "_help": "Link areas for the case-study QR codes on the /commercial-capabilities/ map picture. Boxes are [left, top, right, bottom] in the picture's own pixels (city label + QR code), measured on the image below; the site's original image map had coordinates that did not match this picture. Used by scripts/lib/site-fixes.mjs.",
+  "_help": "Link areas for the case-study QR codes on the /commercial-capabilities/ map picture. Boxes are [left, top, right, bottom] in the picture's own pixels (city label + QR code), measured on the image below; the site's original image map had coordinates that did not match this picture. Used by scripts/lib/site-fixes.mjs. Only the case studies listed under projects get a link: a QR code whose project page was removed from the site (or is missing from this list) stays unlinked.",
   "image": "2025-Capabilties-Statement-1-2.png",
   "width": 1200,
   "height": 836,
   "boxes": {
-    "Baltimore": [173, 126, 254, 211],
-    "Laurel": [295, 126, 372, 211],
-    "Rockville": [415, 126, 492, 211],
-    "Philadelphia": [990, 82, 1095, 168],
-    "N. Brunswick": [1015, 309, 1118, 398],
-    "Leesburg": [96, 433, 176, 521],
-    "Manassas": [213, 433, 301, 521],
-    "Lewes": [923, 545, 1000, 632]
+    "Baltimore": [
+      173,
+      126,
+      254,
+      211
+    ],
+    "Laurel": [
+      295,
+      126,
+      372,
+      211
+    ],
+    "Rockville": [
+      415,
+      126,
+      492,
+      211
+    ],
+    "Philadelphia": [
+      990,
+      82,
+      1095,
+      168
+    ],
+    "N. Brunswick": [
+      1015,
+      309,
+      1118,
+      398
+    ],
+    "Leesburg": [
+      96,
+      433,
+      176,
+      521
+    ],
+    "Manassas": [
+      213,
+      433,
+      301,
+      521
+    ],
+    "Lewes": [
+      923,
+      545,
+      1000,
+      632
+    ]
   },
   "projects": {
-    "/blog/project/bylt-restoration/": "BYLT Restoration",
     "/blog/project/panda-exteriors-hq/": "Panda Exteriors HQ",
     "/blog/project/brookfield-properties/": "Brookfield Properties",
     "/blog/project/chapel-branch-apartments/": "Chapel Branch Apartments",
-    "/blog/project/linear-accelerator-roof-replacement/": "Linear Accelerator Roof Replacement",
-    "/blog/project/enterprise-rent-a-car/": "Enterprise Rent-A-Car",
-    "/blog/project/sbs-siding/": "SBS Siding"
+    "/blog/project/linear-accelerator-roof-replacement/": "Linear Accelerator Roof Replacement"
   }
 }

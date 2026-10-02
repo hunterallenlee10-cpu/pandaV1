@@ -159,7 +159,7 @@
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, renamedPath } from './config.mjs';
+import { ROOT, renamedPath, isRemovedPage } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
@@ -1009,7 +1009,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     const mapEl = find(box, (x) => x.tagName === 'map');
     const spots = (mapEl ? findAll(mapEl, (x) => x.tagName === 'area') : [])
       .map((ar) => ({ city: attr(ar, 'alt'), href: attr(ar, 'href'), box: cap.boxes[attr(ar, 'alt')] }))
-      .filter((s) => s.box && s.href);
+      // Only the case studies in capabilities-map.json, and never a page removed on request (the
+      // build may already have pointed its link somewhere else).
+      .filter((s) => s.box && s.href && cap.projects[s.href] && !isRemovedPage(new URL(s.href, siteOrigin).pathname));
     if (!spots.length) continue;
     if (mapEl) ed.outer(mapEl, '');
     for (const h of findAll(box, (x) => hasClass(x, 'hotspot'))) ed.outer(h, '');
