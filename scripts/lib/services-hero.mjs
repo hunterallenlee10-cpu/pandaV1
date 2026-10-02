@@ -1,24 +1,22 @@
-// The Services page (/services/): its hero, redesigned to match the site's other heroes.
+// Service-page heroes, redesigned to match the site's other heroes (/about/, /offers/): a
+// label, the page's heading and line, chips that lead to the page's services, and "Get a free
+// estimate" (to the form beside it) and call buttons, over the page's photo darkened behind
+// the text. The estimate form beside it is unchanged.
 //
-// As captured it was "Expert Roofing and Exterior Services" and one line ("From roofing and
-// siding to windows and gutters…": Panda has no windows service) over a 678 KB PNG of a
-// Panda roofer installing solar shingles, with a plain dark tint. It now has a label, the
-// same heading, the line without windows, a chip per service linking to its page, and "Get
-// a free estimate" (to the form beside it) and call buttons, over the same photo as a
-// 184 KB WebP copy (services-hero.webp) with a dark fade behind the text. The estimate form
-// beside it is unchanged.
+//  - /services/: the line offered windows (not a Panda service) over a 678 KB PNG of a Panda
+//    roofer installing solar shingles. The line names what Panda does, the chips are the six
+//    services, and the photo is a 184 KB WebP copy (services-hero.webp).
+//  - /gutters/: the heading and line over a close-up of a gutter guard (hero-gutters.jpg,
+//    already small). The chips are gutter installation (the services below the hero) and
+//    gutter guards (their page), each with a line from the cards below.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
-import { attr, hasClass, classes, find, findAll, headEndOffset } from './html-edit.mjs';
+import { attr, hasClass, classes, esc, find, findAll, headEndOffset } from './html-edit.mjs';
 
-export const SERVICES_PATH = '/services/';
-// site-fixes.css sets it as the hero's background; it is preloaded in place of the old PNG.
-export const SERVICES_HERO_PHOTO = '/_custom/site-fixes/services-hero.webp';
-const OLD_PHOTO = '/wp-content/uploads/2025/03/51d2ed67-a432-4105-a85b-e500c856ba9d-2-min.png';
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
@@ -35,22 +33,56 @@ const ICONS = {
   arrow: line('M5 12h14M13 6l6 6-6 6', 2.2),
   phone: svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>'),
 };
-// The services, in the order of the cards below the hero (and the header's menu).
-const SERVICES = [
-  ['roof', 'Roofing', '/roofing/'],
-  ['building', 'Commercial', '/commercial-roofing/'],
-  ['sun', 'Solar', '/solar/'],
-  ['siding', 'Siding', '/siding/'],
-  ['gutter', 'Gutters', '/gutters/'],
-  ['guard', 'Gutter Guards', '/gutters/gutter-guards/'],
-];
 
-const heroText = () =>
-  `<p class="pfix-sv-hero__eyebrow">Our services</p>` +
-  `<h1 class="pfix-sv-hero__title">Expert Roofing and Exterior Services</h1>` +
-  `<p class="pfix-sv-hero__sub">From roofing and siding to solar and gutters, we deliver quality craftsmanship that protects your home and boosts its curb appeal.</p>` +
-  `<nav class="pfix-sv-hero__services" aria-label="Our services">` +
-  SERVICES.map(([icon, name, href]) => `<a class="pfix-sv-hero__service" href="${href}">${ICONS[icon]}<span>${name}</span></a>`).join('') +
+// Per page: the hero's class as captured, its photo (site-fixes.css sets it as the
+// background, by the page's modifier class), the photo it used to preload, and the words.
+export const SERVICES_HERO_PHOTO = '/_custom/site-fixes/services-hero.webp';
+const HEROES = {
+  '/services/': {
+    key: 'services',
+    from: 'hero-section-service',
+    photo: SERVICES_HERO_PHOTO,
+    custom: true,
+    oldPreload: '/wp-content/uploads/2025/03/51d2ed67-a432-4105-a85b-e500c856ba9d-2-min.png',
+    eyebrow: 'Our services',
+    title: 'Expert Roofing and Exterior Services',
+    sub: 'From roofing and siding to solar and gutters, we deliver quality craftsmanship that protects your home and boosts its curb appeal.',
+    // The services, in the order of the cards below the hero (and the header's menu).
+    chips: [
+      ['roof', 'Roofing', '/roofing/'],
+      ['building', 'Commercial', '/commercial-roofing/'],
+      ['sun', 'Solar', '/solar/'],
+      ['siding', 'Siding', '/siding/'],
+      ['gutter', 'Gutters', '/gutters/'],
+      ['guard', 'Gutter Guards', '/gutters/gutter-guards/'],
+    ],
+    note: 'a line without "windows" (not a Panda service), service chips and estimate and call buttons, over a sharper, lighter copy of the photo',
+  },
+  '/gutters/': {
+    key: 'gutters',
+    from: 'Gutter',
+    photo: '/wp-content/uploads/2025/04/hero-gutters.jpg',
+    eyebrow: 'Gutters & gutter guards',
+    title: 'Expert Gutter Replacement Services for Your East Coast Home',
+    sub: 'From gutter guard installations to complete gutter system replacements, our trained and certified team has got you covered.',
+    // The two services, with a line from their cards below the hero.
+    chips: [
+      ['gutter', 'Gutter installation', '#gutter-services', 'Gutters that carry water away from your home'],
+      ['guard', 'Gutter guards', '/gutters/gutter-guards/', 'Keep leaves, debris and pests out'],
+    ],
+    note: 'gutter installation and gutter guard chips and estimate and call buttons, with the photo darkened behind the text',
+  },
+};
+export const HERO_PATHS = Object.keys(HEROES);
+
+const heroText = (h) =>
+  `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
+  `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
+  `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${h.key === 'services' ? 'Our services' : 'Gutter services'}">` +
+  h.chips
+    .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
+    .join('') +
   `</nav>` +
   `<div class="pfix-sv-hero__ctas">` +
   `<a class="pfix-sv-hero__btn pfix-sv-hero__btn--primary" href="#${FORM_ID}">Get a free estimate${ICONS.arrow}</a>` +
@@ -63,25 +95,29 @@ const withClass = (n, add) => {
   return has ? n.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: cls } : a)) : [...n.attrs, { name: 'class', value: cls }];
 };
 
-/** /services/: the hero's text column, background and preload. Returns true if it changed. */
-export function collectServicesHero(doc, html, ed, { pathname = '' } = {}, changes = []) {
-  if (pathname !== SERVICES_PATH) return false;
-  if (!fs.existsSync(path.join(ROOT, 'custom', 'site-fixes', path.basename(SERVICES_HERO_PHOTO)))) {
-    console.warn(`services hero: the photo ${SERVICES_HERO_PHOTO} is missing, hero left as is`);
+/** A service page's hero: its text column, background and preload. Returns true if it changed. */
+export function collectServiceHero(doc, html, ed, { pathname = '', siteDir = '' } = {}, changes = []) {
+  const h = HEROES[pathname];
+  if (!h) return false;
+  const file = h.custom ? path.join(ROOT, 'custom', 'site-fixes', path.basename(h.photo)) : siteDir && path.join(siteDir, h.photo);
+  if (file && !fs.existsSync(file)) {
+    console.warn(`${pathname} hero: the photo ${h.photo} is missing, hero left as is`);
     return false;
   }
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
-  const hero = find(doc, (c) => hasClass(c, 'hero-section') && (hasClass(c, 'hero-section-service') || hasClass(c, 'pfix-sv-hero')));
+  const hero = find(doc, (c) => hasClass(c, 'hero-section') && (hasClass(c, h.from) || hasClass(c, 'pfix-sv-hero')));
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   if (!text || !free(text)) return false;
 
-  if (!hasClass(hero, 'pfix-sv-hero')) ed.retag(hero, withClass(hero, ['pfix-sv-hero']));
-  ed.inner(text, heroText());
-  // Preload the new photo instead of the old one (which the page no longer shows).
-  const preload = `<link rel="preload" as="image" type="image/webp" href="${SERVICES_HERO_PHOTO}" fetchpriority="high">`;
-  for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && attr(c, 'href') === OLD_PHOTO)) if (free(l)) ed.outer(l, '');
+  const mark = ['pfix-sv-hero', `pfix-sv-hero--${h.key}`];
+  if (!mark.every((c) => hasClass(hero, c))) ed.retag(hero, withClass(hero, mark));
+  ed.inner(text, heroText(h));
+  // Preload the photo (instead of the one the page used to preload).
+  const type = h.photo.endsWith('.webp') ? ' type="image/webp"' : '';
+  const preload = `<link rel="preload" as="image"${type} href="${h.photo}" fetchpriority="high">`;
+  if (h.oldPreload) for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && attr(c, 'href') === h.oldPreload)) if (free(l)) ed.outer(l, '');
   const headEnd = headEndOffset(html);
   if (headEnd >= 0 && !html.includes(preload)) ed.replace(headEnd, headEnd, preload);
-  changes.push('services page hero: a label, the heading, a line without "windows" (not a Panda service), service chips and estimate and call buttons, over a sharper, lighter copy of the photo');
+  changes.push(`${h.key} page hero: a label, the heading, ${h.note}`);
   return true;
 }
