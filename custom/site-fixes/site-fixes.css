@@ -4623,3 +4623,342 @@ a.bde-social-share-button:hover {
     transition: none;
   }
 }
+
+/* /gallery/ (gallery-page.mjs): the hero above the photos. Charcoal green with a lime and
+   an orange glow, the text beside a collage of five of the gallery's photos; Roboto, lime
+   and orange from the site's palette. */
+.pfix-gl-hero {
+  --gl-dark: #141c12;
+  --gl-lime: #9acd32;
+  --gl-orange: #f26924;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(48px, 6vw, 88px) 0;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(154, 205, 50, 0.3), transparent 42%),
+    radial-gradient(circle at 4% 100%, rgba(242, 105, 36, 0.22), transparent 38%),
+    linear-gradient(160deg, #1f2b1c 0%, var(--gl-dark) 60%);
+  color: #dfe6d4;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+/* A faint dot grid over the band. */
+.pfix-gl-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 70%);
+  mask-image: linear-gradient(90deg, #000 0%, transparent 70%);
+  pointer-events: none;
+}
+.pfix-gl-hero *,
+.pfix-gl-hero *::before,
+.pfix-gl-hero *::after {
+  box-sizing: border-box;
+}
+.pfix-gl-hero p,
+.pfix-gl-hero h1 {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.pfix-gl-hero svg {
+  display: block;
+  flex: none;
+}
+.pfix-gl-hero .pfix-gl-hero__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-gl-hero .pfix-gl-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid rgba(154, 205, 50, 0.4);
+  border-radius: 999px;
+  background: rgba(154, 205, 50, 0.1);
+  color: var(--gl-lime);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-gl-hero .pfix-gl-hero__eyebrow svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-gl-hero .pfix-gl-hero__title {
+  color: #fff;
+  font-size: clamp(36px, 4.8vw, 62px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+.pfix-gl-hero .pfix-gl-hero__sub {
+  max-width: 540px;
+  margin: 18px 0 24px;
+  color: #c9d3bc;
+  font-size: clamp(17px, 1.5vw, 19px);
+}
+.pfix-gl-hero .pfix-gl-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pfix-gl-hero a.pfix-gl-hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 8px 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.pfix-gl-hero a.pfix-gl-hero__chip span {
+  min-width: 26px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--gl-lime);
+  color: var(--gl-dark);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+.pfix-gl-hero a.pfix-gl-hero__chip:hover {
+  border-color: var(--gl-lime);
+  background: rgba(154, 205, 50, 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.pfix-gl-hero .pfix-gl-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin: 28px 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.pfix-gl-hero .pfix-gl-hero__stat {
+  display: flex;
+  flex-direction: column;
+}
+.pfix-gl-hero .pfix-gl-hero__stat b {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 800;
+  line-height: 1.1;
+}
+.pfix-gl-hero .pfix-gl-hero__stat span {
+  color: #a9b59a;
+  font-size: 14px;
+}
+.pfix-gl-hero svg.pfix-gl-hero__star {
+  width: 22px;
+  height: 22px;
+  color: #fbbc04;
+}
+.pfix-gl-hero .pfix-gl-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-gl-hero a.pfix-gl-hero__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.pfix-gl-hero a.pfix-gl-hero__btn svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-gl-hero a.pfix-gl-hero__btn--primary {
+  background: var(--gl-orange);
+}
+.pfix-gl-hero a.pfix-gl-hero__btn--primary:hover {
+  background: #e2531a;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.pfix-gl-hero a.pfix-gl-hero__btn--ghost {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+}
+.pfix-gl-hero a.pfix-gl-hero__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.pfix-gl-hero a:focus-visible {
+  outline: 3px solid var(--gl-lime);
+  outline-offset: 3px;
+}
+
+/* The collage: a large photo with four around it. */
+.pfix-gl-hero .pfix-gl-mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: clamp(96px, 10.5vw, 150px);
+  grid-template-areas:
+    'a a b'
+    'a a c'
+    'd e e';
+  gap: 12px;
+}
+.pfix-gl-hero a.pfix-gl-mosaic__tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #2a3526;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  animation: pfix-gl-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--1 {
+  grid-area: a;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--2 {
+  grid-area: b;
+  animation-delay: 0.08s;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--3 {
+  grid-area: c;
+  animation-delay: 0.16s;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--4 {
+  grid-area: d;
+  animation-delay: 0.24s;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--5 {
+  grid-area: e;
+  animation-delay: 0.32s;
+}
+.pfix-gl-hero a.pfix-gl-mosaic__tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pfix-gl-hero a.pfix-gl-mosaic__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(10, 14, 9, 0.6));
+  pointer-events: none;
+}
+.pfix-gl-hero a.pfix-gl-mosaic__tile:hover img {
+  transform: scale(1.06);
+}
+.pfix-gl-hero .pfix-gl-mosaic__label {
+  position: absolute;
+  z-index: 1;
+  left: 10px;
+  bottom: 10px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(20, 28, 18, 0.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.pfix-gl-hero .pfix-gl-mosaic__tile--1 .pfix-gl-mosaic__label {
+  left: 14px;
+  bottom: 14px;
+  background: var(--gl-lime);
+  color: var(--gl-dark);
+}
+@keyframes pfix-gl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* The chips and photos lead here, below the fixed header. */
+.pfix-gl-anchor {
+  display: block;
+  scroll-margin-top: 150px;
+}
+
+@media (max-width: 860px) {
+  .pfix-gl-hero .pfix-gl-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-gl-hero .pfix-gl-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(110px, 30vw, 190px);
+    grid-template-areas:
+      'a a'
+      'b c'
+      'd e';
+    gap: 10px;
+  }
+  .pfix-gl-hero .pfix-gl-mosaic__tile--1 {
+    grid-row: span 1;
+  }
+}
+@media (max-width: 767px) {
+  /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
+  .pfix-gl-hero .pfix-gl-hero__title {
+    font-size: 36px !important;
+  }
+}
+@media (max-width: 520px) {
+  .pfix-gl-hero .pfix-gl-hero__ctas {
+    flex-direction: column;
+  }
+  .pfix-gl-hero .pfix-gl-hero__stats {
+    gap: 12px 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-gl-hero a.pfix-gl-mosaic__tile {
+    animation: none;
+  }
+  .pfix-gl-hero a.pfix-gl-mosaic__tile img,
+  .pfix-gl-hero a.pfix-gl-hero__chip,
+  .pfix-gl-hero a.pfix-gl-hero__btn {
+    transition: none;
+  }
+  .pfix-gl-hero a.pfix-gl-mosaic__tile:hover img {
+    transform: none;
+  }
+}

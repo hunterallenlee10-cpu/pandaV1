@@ -8,7 +8,8 @@
    - Service estimate forms: checked on submit, then a "not switched on yet" message.
    - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to.
    - /faqs/: the hero's search narrows the questions as you type, and the topic menu beside
-     the questions shows which topic you are reading. */
+     the questions shows which topic you are reading.
+   - /gallery/: the hero's category chips and photos open their category's tab. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -444,4 +445,27 @@
   }
   window.addEventListener('hashchange', openTarget);
   openTarget();
+})();
+
+/* /gallery/: a hero chip or photo (data-pfix-gallery-tab) opens its category's tab before
+   the link takes the page down to the gallery: the tab button where the tabs show, the
+   dropdown that stands in for them on phones otherwise. */
+(function () {
+  'use strict';
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('[data-pfix-gallery-tab]');
+    if (!link) return;
+    var value = link.getAttribute('data-pfix-gallery-tab');
+    var tab = document.querySelector('.bde-tabs__tab[data-value="' + value + '"]');
+    var select = document.querySelector('.bde-tabs__select');
+    if (tab && tab.offsetParent) {
+      tab.click();
+    } else if (select) {
+      var option = select.querySelector('option[data-value="' + value + '"]');
+      if (option) {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  });
 })();
