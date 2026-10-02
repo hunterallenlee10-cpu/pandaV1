@@ -187,6 +187,19 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/faqs/` hero and questions** (`scripts/lib/faq-page.mjs`, words in `custom/site-fixes/faq-page.json`): the hero said
+  "Frequently Asked Questions" and one line over a photo of bare roof decking mid tear-off. It now says "Questions?
+  We've got answers.", with a **search box** that narrows the questions as you type (every word has to appear in the
+  question or its answer; matches open, with the words marked, and Enter goes down to them), a chip per topic with its
+  number of questions and a call link, over an aerial photo of a Panda solar-shingle roof
+  (`custom/site-fixes/faq-hero.webp`, a smaller copy of a photo already on the site). The questions were three blocks
+  (About Us, Roofing, Solar), each a list beside a pale green panel showing one answer at a time. They are now one
+  section: the 19 questions as accordions grouped by topic (the three commercial roofing questions get their own
+  group), each group with an icon, a line about it and a link to its service page, beside a topic menu that follows
+  you down the page and marks the topic you are reading, and a "Still have a question?" card with call and estimate
+  buttons. A link to one question (`/faqs/#faq-solar-2`) opens it. Without JavaScript the search is hidden and the
+  accordions still work. The page also gets FAQPage structured data for search engines. The questions and answers
+  are the page's own (one missing full stop added); edit them in the JSON and run `npm run update:site`.
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text

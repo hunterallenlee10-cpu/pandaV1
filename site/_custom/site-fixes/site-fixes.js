@@ -6,7 +6,9 @@
      way (.pfix-marquee--cards).
    - /service-areas/ hero: the state chips zoom the map to their state.
    - Service estimate forms: checked on submit, then a "not switched on yet" message.
-   - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to. */
+   - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to.
+   - /faqs/: the hero's search narrows the questions as you type, and the topic menu beside
+     the questions shows which topic you are reading. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -304,4 +306,142 @@
       }
     }
   });
+})();
+
+/* /faqs/ (faq-page.mjs): the search in the hero narrows the questions below as you type
+   (every word has to appear in the question or its answer); matching questions open, with
+   the words marked in the question, and each topic's count in the menu shows its matches.
+   Enter goes down to the questions. The topic menu marks the topic you are reading, and a
+   link to one question (#faq-solar-2) opens it. Without JavaScript the search stays hidden
+   and the questions are plain accordions. */
+(function () {
+  'use strict';
+  var root = document.querySelector('[data-pfix-faq]');
+  if (!root) return;
+  var toArray = function (list) {
+    return Array.prototype.slice.call(list);
+  };
+  var groups = toArray(root.querySelectorAll('[data-pfix-faq-group]'));
+  var items = toArray(root.querySelectorAll('.pfix-fq__item'));
+  var status = root.querySelector('[data-pfix-faq-status]');
+  var empty = root.querySelector('[data-pfix-faq-empty]');
+  var form = document.querySelector('[data-pfix-faq-search]');
+  var input = form && form.querySelector('input');
+  var norm = function (s) {
+    return s.toLowerCase().replace(/[’']/g, "'").replace(/\s+/g, ' ').trim();
+  };
+  var esc = function (s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  };
+  var entries = items.map(function (item) {
+    var q = item.querySelector('.pfix-fq__q');
+    return { item: item, q: q, question: q.textContent, text: norm(item.textContent), open: item.open };
+  });
+
+  function mark(text, words) {
+    if (!words.length) return esc(text);
+    var re = new RegExp('(' + words.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')', 'gi');
+    return text
+      .split(re)
+      .map(function (part, i) {
+        return i % 2 ? '<mark>' + esc(part) + '</mark>' : esc(part);
+      })
+      .join('');
+  }
+
+  var searching = false;
+  function search(value) {
+    var query = norm(value);
+    var words = query ? query.split(' ') : [];
+    if (words.length && !searching) {
+      entries.forEach(function (e) {
+        e.open = e.item.open;
+      });
+    }
+    var total = 0;
+    entries.forEach(function (e) {
+      var hit = words.every(function (w) {
+        return e.text.indexOf(w) >= 0;
+      });
+      e.item.hidden = !hit;
+      e.q.innerHTML = mark(e.question, words);
+      if (words.length) e.item.open = hit;
+      else if (searching) e.item.open = e.open;
+      if (hit) total++;
+    });
+    searching = words.length > 0;
+    groups.forEach(function (g) {
+      var n = g.querySelectorAll('.pfix-fq__item:not([hidden])').length;
+      g.hidden = n === 0;
+      var count = root.querySelector('[data-pfix-faq-count="' + g.id + '"]');
+      if (count) {
+        count.textContent = n;
+        count.parentNode.classList.toggle('is-empty', n === 0);
+      }
+    });
+    root.classList.toggle('is-searching', searching);
+    if (empty) empty.hidden = !searching || total > 0;
+    if (status) {
+      status.textContent = searching ? (total === 1 ? '1 question matches' : total + ' questions match') + ' “' + value.trim() + '”' : '';
+    }
+  }
+
+  if (form && input) {
+    form.hidden = false;
+    input.addEventListener('input', function () {
+      search(input.value);
+    });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      search(input.value);
+      // the result count and the first results, below the fixed header
+      var target = root.querySelector('.pfix-fq__main') || root;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 190;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+    if (input.value) search(input.value);
+  }
+
+  // The topic menu: the topic whose heading last passed the top third of the screen.
+  var links = toArray(root.querySelectorAll('[data-pfix-faq-nav]'));
+  function current() {
+    var line = window.innerHeight * 0.35;
+    var active = null;
+    groups.forEach(function (g) {
+      if (!g.hidden && g.getBoundingClientRect().top <= line) active = g.id;
+    });
+    if (!active) {
+      var first = groups.filter(function (g) { return !g.hidden; })[0];
+      active = first && first.id;
+    }
+    links.forEach(function (a) {
+      var on = a.getAttribute('data-pfix-faq-nav') === active;
+      a.classList.toggle('is-current', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  var ticking = false;
+  window.addEventListener(
+    'scroll',
+    function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        ticking = false;
+        current();
+      });
+    },
+    { passive: true }
+  );
+  current();
+
+  // A link to one question opens it.
+  function openTarget() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var el = id && document.getElementById(id);
+    if (el && el.classList.contains('pfix-fq__item')) el.open = true;
+  }
+  window.addEventListener('hashchange', openTarget);
+  openTarget();
 })();
