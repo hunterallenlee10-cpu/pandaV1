@@ -136,6 +136,10 @@
 //  - /gutters/gutter-guards/: the hero gets chips and estimate and call buttons over a lighter
 //    photo (services-hero.mjs); the benefits (white on lime) become icon cards, with how it
 //    works, questions, a band for new gutters and the offers band (gutter-guards-page.mjs).
+//  - /roofing-costs/: the hero gets chips and estimate and call buttons (services-hero.mjs);
+//    the lime "Quality Roof Replacements" band (white on lime) becomes what affects the cost,
+//    the quality cards as icon cards, insurance roofing (what's covered, how Panda helps with
+//    a claim, Panda's guides) and questions, with the offers band (roofing-costs-page.mjs).
 //  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
 //    now has a label, service chips and estimate and call buttons over a WebP copy of the
 //    photo (services-hero.mjs).
@@ -175,6 +179,7 @@ import { collectCustomerServicePage } from './customer-service-page.mjs';
 import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
+import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -193,7 +198,7 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -685,6 +690,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /customer-service/: a hero with call, email and local offices and six help topics in
   // place of the title strip (customer-service-page.mjs). First too.
   if (collectCustomerServicePage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /roofing-costs/: what affects the cost, the quality cards as icon cards, insurance roofing,
+  // questions and the offers band (roofing-costs-page.mjs). First too, so the fixes below
+  // leave the lime band it replaces be.
+  if (collectRoofingCostsPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {

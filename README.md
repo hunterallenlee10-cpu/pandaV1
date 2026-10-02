@@ -193,6 +193,20 @@ Most of these problems are on the live site too.
   page's gutter-guard photo darkened behind the text. "Why Work with Our East Coast Exterior Specialists?" was three
   lime cards with white text (about 1.7:1) and promised "stellar cleaning services", which Panda doesn't offer; it is
   now three white cards with an icon each and dark text, without the cleaning line (`scripts/lib/gutters-page.mjs`).
+- **`/roofing-costs/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/roofing-costs-page.mjs`): the hero said only "Roofing Costs" and "Partner with our team for your roofing
+  needs."; under the intro, "Quality Roof Replacements" was white text on Panda lime over cards with lime headings, and
+  the page said nothing about what drives the price or about insurance. The hero now has a label, "What Goes Into the
+  Cost of a New Roof", chips for what affects the cost, insurance claims and financing, and estimate and call buttons
+  over a WebP copy of its photo. The intro keeps its words (naming Panda Exteriors, not "Panda Contractors") beside a
+  rounded photo. Then: **What Affects the Cost of a New Roof** (six cards, no prices: size and pitch, material,
+  decking, building code items, who installs it, insurance and financing); **Quality Roof Replacements** (the page's
+  paragraph and three cards, as icon cards, with links to roofing types and financing); **insurance roofing** on
+  charcoal green: what storm-damage insurance usually covers and doesn't, how Panda helps with a claim in four steps
+  (free storm-damage inspection, deciding whether to file, meeting the adjuster, the new roof and supplements), a note
+  that Panda is the homeowner's roofing advocate and not a public adjuster, four of Panda's insurance guides on the
+  blog, and "Get a free storm-damage inspection" and call buttons; six roofing cost questions; and, after the
+  testimonials, the offers band. The words come from the page and from Panda's own insurance posts on the blog.
 - **`/siding/`** (hero in `scripts/lib/services-hero.mjs`, cards in `scripts/lib/gutters-page.mjs`): the hero's heading was
   a plain block (the page had no h1) over a 262 KB PNG. It now has the same treatment as `/services/` and `/gutters/`: a
   "Siding" label, the heading as the page's h1, the line, chips for fiber cement and vinyl (leading to the comparison
