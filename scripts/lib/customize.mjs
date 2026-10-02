@@ -28,6 +28,7 @@ import { REVIEW_WALL_FILES } from './review-wall.mjs';
 import { PROJECT_GALLERY_FILES } from './project-gallery.mjs';
 import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-projects.mjs';
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
+import { BLOG_FILES } from './blog.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -243,6 +244,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixAssets.gallery) assets += css(PROJECT_GALLERY_FILES['project-gallery.css']) + js(PROJECT_GALLERY_FILES['project-gallery.js']);
   if (favorites || fixAssets.pastProjects) assets += css(PAST_PROJECTS_FILES['past-projects.css']);
   if (mediaAssets) assets += css(MEDIA_FILES['media.css']) + js(MEDIA_FILES['media.js']);
+  if (fixAssets.blog) assets += css(BLOG_FILES['blog.css']) + js(BLOG_FILES['blog.js']);
   if (smoothScroll) assets += css(SMOOTH_SCROLL_FILES['smooth-scroll.css']) + js(SMOOTH_SCROLL_FILES['lenis.min.js']) + js(SMOOTH_SCROLL_FILES['smooth-scroll.js']);
   if (assets) {
     const headEnd = headEndOffset(html);

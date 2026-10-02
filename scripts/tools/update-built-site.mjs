@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Applies the site fixes (scripts/lib/site-fixes.mjs), smooth scrolling and the "Media" menu
-// link to the pages already built in site/, (re)builds the Media page (/media/,
-// scripts/lib/media-page.mjs), and copies the custom/ files they use into site/_custom/.
+// Applies the site fixes (scripts/lib/site-fixes.mjs, the blog's design among them), smooth
+// scrolling and the "Media" menu link to the pages already built in site/, (re)builds the
+// Media page (/media/, scripts/lib/media-page.mjs), and copies the custom/ files they use
+// into site/_custom/.
 //
 // 03-build.mjs rebuilds site/ from the capture cache (.cache/, .work/), which is not in
 // the repository; this updates a checkout that only has site/. The fixes are written to
@@ -21,6 +22,7 @@ import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from '../lib/revi
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
+import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
 const opts = args();
@@ -78,6 +80,7 @@ const files = [
   ...Object.entries(REVIEWS_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]),
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
+  ...Object.entries(BLOG_FILES).map(([name, url]) => [path.join(BLOG_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
 // The review wall and the reviews hero on /reviews/: their stylesheet, script and photos
 // (the photos are in the stylesheet, which the list of linked files above doesn't read).

@@ -294,6 +294,24 @@ Most of these problems are on the live site too.
   buttons. A link to one question (`/faqs/#faq-solar-2`) opens it. Without JavaScript the search is hidden and the
   accordions still work. The page also gets FAQPage structured data for search engines. The questions and answers
   are the page's own (one missing full stop added); edit them in the JSON and run `npm run update:site`.
+- **The blog, redesigned** (`/blog/`, its 15 numbered pages and all 93 posts; `scripts/lib/blog.mjs` with
+  `custom/blog/`, see [`custom/blog/README.md`](custom/blog/README.md)). `/blog/` was a heading over a lime "Featured"
+  card that cut its title off ("…What H...") and six cards a page. It now has a hero with a **search box**, the newest
+  post as a large featured card, and every post as a card with its topic, summary, date and read time, 12 at a time
+  with "Load more"; the search and a chip per **topic** narrow the cards as you type or tap, and the address keeps the
+  search. The numbered pages keep their posts in the same design. Each post put its cover picture (which carries the
+  title, the panda and "READ THE BLOG" in it) behind the heading, so the two titles ran over each other, with the lead
+  form filling the rest of the hero (the whole first screen on phones), the article the full width of the page, a
+  hidden copy of the hero (a second `h1` and form) and "Related Posts" showing the same three 2023 posts everywhere.
+  Each post now opens with a title header (breadcrumb, title, the post's summary, author, date, read time) and the
+  cover shown whole below it; the article is set in a readable column beside a sidebar that follows you down the page
+  ("On this page" with the section you're reading, and a free-estimate card whose button opens the estimate form in a
+  dialog); call-and-estimate bands sit partway down and at the end (in place of the "Call Now - Get a Free Estimate"
+  picture 61 posts ended with); share links follow the article; and "Keep reading" shows three posts on the same
+  topic. The posts keep their wording; links in them are a darker orange and words coloured lime a darker green, so
+  they read on white. The six topics (Insurance & Storms, Roof Replacement, Seasonal Care, Solar, Siding & Gutters,
+  Hiring & Costs) replace the WordPress categories, which file 55 posts under "Residential Roofing"; they are set in
+  `custom/blog/blog.json`.
 - **`/service-areas/`**: the "Expert Roofers on the East Coast" section (text and truck photo) and the green
   "Learn More About Our Exterior Remodeling Services" band are removed (on request), so the map follows the hero.
 - **`/service-areas/` services section** ("Our Reliable Exterior Remodeling Services") showed four green boxes of text
@@ -404,7 +422,7 @@ Most of these problems are on the live site too.
   made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
   picture.
 - **Blog share buttons** (93 posts) did nothing (their script is missing). They are now plain Facebook, Twitter,
-  LinkedIn and email share links.
+  LinkedIn and email share links (with the blog's design on, they are replaced by its share links).
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
   positions on `/careers/`.
 - **`/service-areas/` hero** said only "Our Service Areas" and a tagline, over a 2000×450 strip of roof pinned to
@@ -440,6 +458,7 @@ site/                    the website — deploy this folder
   _custom/past-projects/              the favorite projects' stylesheet and photos (copied from custom/past-projects/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
+  _custom/blog/                       the blog's stylesheet and script (copied from custom/blog/)
   media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
@@ -469,6 +488,7 @@ custom/project-gallery/    the "Our Project Gallery" section: styles, script
 custom/past-projects/      "Some of our favorite past projects" and the hero: favorites.json (projects, hero photo), photos, styles
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
+custom/blog/               the blog's design: blog.json (its topics and the listing pages' words), styles, script
 ```
 
 ## View it locally

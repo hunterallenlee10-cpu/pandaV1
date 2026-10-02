@@ -1,0 +1,90 @@
+{
+  "index": {
+    "eyebrow": "The Panda Exteriors Blog",
+    "title": "Straight answers about your roof, your claim and your home",
+    "sub": "Guides from the Panda Exteriors team on roof replacement, insurance claims, solar, siding and gutters, and keeping your home ready for every season.",
+    "pageTitle": "More articles from the Panda Exteriors Blog",
+    "perLoad": 12
+  },
+  "topics": [
+    {
+      "key": "insurance",
+      "label": "Insurance & Storms",
+      "text": "Storm damage, claims, deductibles and what your policy pays for.",
+      "icon": "shield",
+      "match": "insurance|claim|deductible|storm|hail|\\bwind\\b|supplement|lowball|cash-value|noreaster|emergency-tarp",
+      "cta": {
+        "title": "Storm damage? Get a free roof inspection",
+        "text": "Our team documents the damage and gives you a detailed estimate, so you know what your roof needs before you file."
+      }
+    },
+    {
+      "key": "roofing",
+      "label": "Roof Replacement",
+      "text": "Signs it’s time, materials, timelines and what goes into a new roof.",
+      "icon": "roof",
+      "match": "",
+      "cta": {
+        "title": "Is it time for a new roof?",
+        "text": "Get a free inspection and estimate from Panda’s GAF Master Elite crews, and ask about 10% off a roof replacement."
+      }
+    },
+    {
+      "key": "seasonal",
+      "label": "Seasonal Care",
+      "text": "What each season does to your roof, and what to check before the next one.",
+      "icon": "calendar",
+      "match": "winter|spring|summer|\\bfall\\b|autumn|ice-dam|snow|freez|cold|holiday|heat|seasonal|quarterly|first-flake",
+      "cta": {
+        "title": "Get your roof ready for the season",
+        "text": "Book a free inspection and estimate before the weather turns, and fix small problems before they become leaks."
+      }
+    },
+    {
+      "key": "solar",
+      "label": "Solar",
+      "text": "Solar panels, GAF solar shingles, savings and financing.",
+      "icon": "sun",
+      "match": "solar",
+      "cta": {
+        "title": "Thinking about solar?",
+        "text": "Get a free solar estimate from a GAF-certified installer, with financing options and the savings for your home."
+      }
+    },
+    {
+      "key": "siding-gutters",
+      "label": "Siding & Gutters",
+      "text": "New siding, gutter systems, guards and keeping water away from your home.",
+      "icon": "home",
+      "match": "siding|gutter",
+      "cta": {
+        "title": "Time for new siding or gutters?",
+        "text": "Get a free estimate from Panda’s exterior team: James Hardie and CertainTeed siding, seamless gutters and guards."
+      }
+    },
+    {
+      "key": "hiring",
+      "label": "Hiring & Costs",
+      "text": "Choosing a contractor, contracts, warranties, budgets and financing.",
+      "icon": "clipboard",
+      "match": "contractor|hire|hiring|budget|warrant|financ|contract|professional|fastest-growing|inc-5000",
+      "cta": {
+        "title": "Get a clear, no-pressure estimate",
+        "text": "A GAF Master Elite, BBB A-rated team that explains every line of the price, with financing if you need it."
+      }
+    }
+  ],
+  "matchOrder": [
+    "solar",
+    "insurance",
+    "siding-gutters",
+    "hiring",
+    "seasonal"
+  ],
+  "overrides": {
+    "winter-proof-your-home-roof-gutters-and-attic-upgrades-that-stop-ice-dams-and-heat-loss": "seasonal",
+    "spring-exterior-refresh-when-to-replace-siding-roofing-and-gutters-together": "siding-gutters",
+    "best-exterior-upgrades-before-peak-summer-heat-roofing-and-siding-improvements-that-help-protect-your-home": "seasonal",
+    "how-we-were-able-to-rank-50-nationwide-as-the-fastest-growing-company-by-inc-5000": "hiring"
+  }
+}

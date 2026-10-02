@@ -156,6 +156,10 @@
 //    Exteriors Company Gallery") with the categories, numbers and a collage of the
 //    gallery's own photos now sits above them (gallery-page.mjs,
 //    custom/site-fixes/gallery-page.json).
+//  - The blog (/blog/, its numbered pages and every post): a hero with search, topic filters,
+//    a featured post and cards; posts get a title header with the cover shown whole, a
+//    readable column beside a sidebar ("On this page", a free-estimate card), call-and-estimate
+//    bands, share links and "Keep reading" (blog.mjs, custom/blog/).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -180,6 +184,7 @@ import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
+import { collectBlogPages } from './blog.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -198,7 +203,7 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -644,8 +649,12 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false, reviewWall: false, gallery: false, pastProjects: false };
-  const inlineScripts = (re) => findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c)));
+  const used = { css: false, js: false, reviews: false, reviewWall: false, gallery: false, pastProjects: false, blog: false };
+  // (Scripts inside a block another fix replaces, such as a blog post's hero, go with it.)
+  const inlineScripts = (re) =>
+    findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c))).filter(
+      (c) => !ed.overlaps(c.sourceCodeLocation.startOffset, c.sourceCodeLocation.endOffset)
+    );
   const siteHost = siteOrigin ? new URL(siteOrigin).hostname.replace(/^www\./, '') : '';
   const localHref = (href) => {
     try {
@@ -655,6 +664,11 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       return href;
     }
   };
+
+  // The blog (/blog/, /blog/page/N/ and every post): the listing pages and the posts in the
+  // blog's new design (blog.mjs, custom/blog/). First, so the fixes below leave the post hero,
+  // its hidden copy, the share buttons and "Related Posts" it replaces be.
+  if (collectBlogPages(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.blog = true;
 
   // Top bar: weather readout -> free-estimate phone number; no more location prompt.
   const ribbon = find(doc, (c) => hasClass(c, 'xai-weather-ribbon'));
@@ -669,7 +683,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // Lead forms: the review count needs the WordPress API. The second form on a page (the
   // one in "About Our Team") uses total-reviews-1 or -2; the snapshot caught it showing
   // "Unable to load review count" or "Based on 0 reviews!".
-  const counts = findAll(doc, (c) => /^total-reviews(-\d+)?$/.test(attr(c, 'id') || ''));
+  const counts = findAll(doc, (c) => /^total-reviews(-\d+)?$/.test(attr(c, 'id') || '')).filter(
+    (c) => !ed.overlaps(c.sourceCodeLocation.startOffset, c.sourceCodeLocation.endOffset)
+  );
   if (counts.length) {
     for (const el of counts) ed.inner(el, '<a class="pfix-reviews-link" href="/reviews/">Read our customer reviews</a>');
     for (const s of inlineScripts(/fetchReviewCount/)) ed.outer(s, '');
@@ -1057,6 +1073,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     };
     let n = 0;
     for (const b of shares) {
+      // (A blog post's share buttons are replaced by its new share links, blog.mjs.)
+      if (ed.overlaps(b.sourceCodeLocation.startOffset, b.sourceCodeLocation.endOffset)) continue;
       const network = attr(b, 'data-network') || '';
       const native = hasClass(b, 'js-breakdance-share-mobile') || !network;
       const href = native ? urls.Email : urls[network];
@@ -1069,7 +1087,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     }
     // Their start-up script needs a library that is missing (on the live site too).
     for (const s of inlineScripts(/new BreakdanceSocialShareButtons\(/)) ed.outer(s, '');
-    changes.push(`share buttons: ${n} made into working share links`);
+    if (n) changes.push(`share buttons: ${n} made into working share links`);
     used.css = true;
     used.js = true;
   }
