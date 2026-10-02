@@ -113,8 +113,8 @@ Most of these problems are on the live site too.
   came out at different widths with the first one cut off, the row sat off centre under the heading and tabs, and there
   was a dot for every photo of every category. It is now one tidy gallery: centred category tabs with photo counts, a
   row of same-size photos with arrows and dots centred below it, and a full-size photo viewer — see
-  [`custom/project-gallery/README.md`](custom/project-gallery/README.md). `/gallery/` (a full grid, which works) is
-  unchanged.
+  [`custom/project-gallery/README.md`](custom/project-gallery/README.md). `/gallery/` (a full grid, which works) keeps
+  its grid (see below).
 - **`/past-projects/`: "Some of our favorite past projects".** Under the map, a "Featured Projects" grid listed every
   project (16 cards): five near-identical drone shots of the same houses titled "Panda Ext-14098" and the like, three
   cards titled just "Roof Replacement", photos of bare decking mid-tear-off, and three photos that often didn't show.
@@ -187,6 +187,15 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/gallery/` hero and missing photos** (`scripts/lib/gallery-page.mjs`, words and photos in
+  `custom/site-fixes/gallery-page.json`): the page opened straight on the category tabs, with no heading. It now opens
+  with a hero on a charcoal-green band: "Panda Exteriors Company Gallery", a line about the work, a chip per category
+  with its number of photos, the photos, jobs and Google rating as numbers, **Get a free estimate** and call buttons,
+  and a collage of five of the gallery's own photos (one per category). The chips and the collage's photos open their
+  category's tab (`custom/site-fixes/site-fixes.js`; on phones, the dropdown that stands in for the tabs) and go down
+  to the photos. The counts are taken from the page and the numbers from the map's and the reviews' data. Two
+  Commercial photos were missing (on the live site and its staging server too) and showed as empty grey tiles; they
+  are removed from the grid and its photo viewer, and the grid closes up.
 - **`/faqs/` hero and questions** (`scripts/lib/faq-page.mjs`, words in `custom/site-fixes/faq-page.json`): the hero said
   "Frequently Asked Questions" and one line over a photo of bare roof decking mid tear-off. It now says "Questions?
   We've got answers.", with a **search box** that narrows the questions as you type (every word has to appear in the

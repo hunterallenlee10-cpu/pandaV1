@@ -51,7 +51,8 @@
 //    a blown-up truck photo); the forms' rating picture shows the current rating.
 //  - Missing pictures (missing on the live site too): a reviewer photo becomes the
 //    reviewer's initials; an Interiors gallery tile without its photo is removed (the
-//    other tiles keep their size).
+//    other tiles keep their size), and so are the two Commercial tiles on /gallery/ whose
+//    photos are gone (they showed as empty grey boxes).
 //  - A link whose href was swallowed by its style attribute is repaired; placeholder
 //    phone links ("(XXX) XXX-XXXX") get the site's number.
 //  - /commercial-capabilities/: the case-study picture's image map pointed at the
@@ -121,6 +122,10 @@
 //    chips over an aerial photo of a Panda solar roof, and the three question-and-panel
 //    blocks become accordions grouped by topic beside a topic menu and a help card, with
 //    FAQPage structured data (faq-page.mjs, custom/site-fixes/faq-page.json).
+//  - /gallery/: the page opened on the category tabs with no heading; a hero ("Panda
+//    Exteriors Company Gallery") with the categories, numbers and a collage of the
+//    gallery's own photos now sits above them (gallery-page.mjs,
+//    custom/site-fixes/gallery-page.json).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -137,6 +142,7 @@ import { renderPastProjects } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
+import { collectGalleryPage } from './gallery-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -149,7 +155,7 @@ export const SITE_FIXES_FILES = {
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -879,11 +885,14 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
       used.css = true;
       continue;
     }
-    const tile = ancestors(img).find((a) => hasClass(a, 'pi-gallery-item'));
+    // A gallery tile: the Interiors gallery's (pi-gallery-item), /gallery/'s filterable grid
+    // (ee-gallery-item, laid out again by its script) and the thumbnails of the lightbox the
+    // rendered page kept (lg-thumb-item; the script builds its own when the page loads).
+    const tile = ancestors(img).find((a) => hasClass(a, 'pi-gallery-item') || hasClass(a, 'ee-gallery-item') || hasClass(a, 'lg-thumb-item'));
     if (tile) {
       ed.outer(tile, '');
-      galleries.set(tile.parentNode, (galleries.get(tile.parentNode) || 0) + 1);
-      changes.push(`gallery tile with a missing photo removed (${alt || src})`);
+      if (hasClass(tile, 'pi-gallery-item')) galleries.set(tile.parentNode, (galleries.get(tile.parentNode) || 0) + 1);
+      if (!hasClass(tile, 'lg-thumb-item')) changes.push(`gallery tile with a missing photo removed (${alt || src})`);
     }
   }
   // The tiles left keep the size they had in a full row of four (.pfix-gallery).
@@ -1041,6 +1050,14 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // Lead forms: a form for the page's service (or the general one) in each form card, and
   // the old form's scripts removed (service-forms.mjs).
   if (collectServiceForms(doc, html, ed, { pathname }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  // /gallery/: a hero with the page's heading, the categories and a photo collage
+  // (gallery-page.mjs).
+  // (Its category names come from the tabs, so they get the typo fixes too.)
+  const fixTypos = (t) => TYPOS.reduce((x, [re, to]) => x.replace(re, to), t);
+  if (collectGalleryPage(doc, html, ed, { pathname, siteDir, fixText: fixTypos }, changes)) {
     used.css = true;
     used.js = true;
   }

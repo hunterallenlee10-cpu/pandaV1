@@ -1,0 +1,13 @@
+{
+  "eyebrow": "Our work",
+  "title": "Panda Exteriors Company Gallery",
+  "sub": "New roofs, solar, commercial roofing and gutters from Panda crews across the East Coast, plus the community events we’re proud to be part of.",
+  "estimate": ["Get a free estimate", "/contact-us/"],
+  "photos": [
+    { "tab": 1, "label": "Roofing", "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/05263bfc-5259-40c9-9140-2608006392a0", "sizes": [[768, 432], [1024, 576]], "alt": "Aerial view of a home with a new Panda roof" },
+    { "tab": 2, "label": "Solar", "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/e78dfbe4-a4c7-4146-bad1-fc897a3af885", "sizes": [[300, 225], [768, 576]], "alt": "A two-story home with solar panels across its roof" },
+    { "tab": 5, "label": "Community", "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/252b6798-da48-4091-b5db-315994cb8b5f", "sizes": [[300, 225], [768, 576]], "alt": "The Panda Exteriors team together at a community event" },
+    { "tab": 4, "label": "Gutters", "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/e988b397-30cf-46b1-94cf-8afac157f60c", "sizes": [[300, 200], [768, 512]], "alt": "New white gutters and downspout on a home" },
+    { "tab": 3, "label": "Commercial", "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/9fe05eda-d575-45b0-9026-d675d4b6c654", "sizes": [[768, 432], [1024, 576]], "alt": "Aerial view of a new flat roof on a Patient First medical center" }
+  ]
+}
