@@ -1,0 +1,38 @@
+{
+  "description": "Earn $25 for downloading the Panda Exteriors app, then up to $200 for every friend you refer for a new roof, siding or solar, plus a $200 bonus for every 3 referrals sold.",
+  "apps": {
+    "ios": "https://apps.apple.com/us/app/panda-exteriors/id6448297999",
+    "android": "https://play.google.com/store/apps/details?id=com.PandaExteriors.pandaexteriors"
+  },
+  "companyCode": "23844",
+  "hero": {
+    "eyebrow": "Refer & Earn",
+    "title": "Share Panda with friends. Get paid when they go with us.",
+    "sub": "Know someone who needs a new roof, siding or solar? Send them our way from the Panda Exteriors app and earn up to $200 for each referral, plus $25 just for downloading the app.",
+    "note": "Free to join · Roofing, siding and solar referrals"
+  },
+  "rewards": {
+    "eyebrow": "How much you can earn",
+    "title": "Four ways to earn",
+    "sub": "Every reward is tracked in the app, so you always know where each referral stands.",
+    "items": [
+      { "amount": 25, "title": "Download the app", "text": "Earn $25 just for downloading the Panda Exteriors app." },
+      { "amount": 50, "title": "Your referral is qualified", "text": "Once your referral books an appointment with us." },
+      { "amount": 150, "title": "Your referral buys", "text": "Once your referral goes ahead with their project." },
+      { "amount": 200, "title": "Bonus for every 3 sold", "text": "An extra $200 for every three of your referrals who buy.", "bonus": true }
+    ]
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "Start referring in three steps",
+    "items": [
+      { "title": "Download the app", "text": "Get the Panda Exteriors app from the App Store or Google Play and create your account. If it asks for a company code, enter #code." },
+      { "title": "Send your referrals", "text": "Refer friends, family, coworkers and neighbors right from the app, in under a minute." },
+      { "title": "Get paid", "text": "Earn $50 when your referral makes an appointment and $150 when they make a purchase, with a $200 bonus for every three sold." }
+    ]
+  },
+  "cta": {
+    "title": "Start earning today",
+    "sub": "Download the app, send your first referral and pick up your $25."
+  }
+}

@@ -256,9 +256,17 @@ Most of these problems are on the live site too.
   (no longer used), Zapier, AccuLynx and Five9, looked up addresses with Google Maps, and **asked every visitor for
   their location as the page loaded**. That also clears two console errors on most pages. (The careers pages' own
   placeholders, which switch the location prompt off, are left alone.)
-- **Referral sign-up** (`/referrals/`): the page was Panda's live GetTheReferral sign-up laid over the whole page, so
-  a referral sent from the copy reached Panda. Like the estimate forms it is not connected yet: a "Refer a friend"
-  note with the phone number takes its place.
+- **`/referrals/`, the Refer & Earn page** (`scripts/lib/referrals-page.mjs`; the words, amounts and store links are in
+  `custom/site-fixes/referrals-page.json`, so they can be edited there and applied with `npm run update:site`): the
+  page was Panda's live GetTheReferral sign-up laid over the whole page, so a referral sent from the copy reached
+  Panda. Referrals are sent from the Panda Exteriors app, so the page now explains the program and sends people to
+  the app: a hero with **Download on the App Store** and **Get it on Google Play** buttons beside a phone showing the
+  Panda logo and reward notifications (drawn in HTML and CSS), what you can earn ($25 for downloading the app, $50
+  when a referral is qualified, $150 when they buy and a $200 bonus for every three sold, with a worked example),
+  how it works in three steps (with the company code, 23844, the live page shows) and a closing band with the store
+  buttons and the phone number. The amounts and store links are the ones on Panda's live GetTheReferral page; the
+  $25 for downloading the app was added on request, and bath referrals are left out like Panda Bath. The page's
+  description (search results and share cards) says what the program pays.
 - **Employee referral form** (`/referral/`): on submit it opened an email to Panda's careers address with the
   referral in it. It is not connected yet either: the form still checks its fields, then says online referrals
   aren't switched on yet, and nothing is sent.
@@ -431,7 +439,8 @@ would make them. The map sections are the exception: only `03-build.mjs` renders
   Submissions made on the copy go to the static host and fail harmlessly; they never reach the live site.
   The captured free-estimate lead forms posted straight to Salesforce (web-to-lead) and Zapier, and `/referrals/`
   showed the live GetTheReferral sign-up; with the site fixes on (the default) none of them is left: the estimate
-  forms and the referral page say online requests aren't switched on yet and give the phone number, so **no lead
+  forms say online requests aren't switched on yet and give the phone number, and the referral page links to the
+  Panda Exteriors app instead, so **no lead
   form on the copy sends anything to Panda or any lead service**; the employee referral form on `/referral/` no
   longer opens an email to Panda's careers address either. [`docs/forms.md`](docs/forms.md) lists the forms as
   captured, before the site fixes.
