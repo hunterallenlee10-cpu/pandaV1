@@ -16,6 +16,10 @@
 //    and CertainTeed logos, over a photo of a sided home, now a 147 KB WebP copy
 //    (siding-hero.webp) of the 262 KB PNG. The chips are the two siding types, leading to
 //    their comparison below (service-pages.mjs); the logos stay under the buttons.
+//  - /roofing-costs/: "Roofing Costs" and "Partner with our team for your roofing needs." over
+//    an aerial photo of a finished roof (the 187 KB WebP copy beside the 526 KB JPEG). The
+//    chips lead to what affects the cost and to insurance roofing below
+//    (roofing-costs-page.mjs), and to financing.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -38,6 +42,7 @@ const ICONS = {
   gutter: line('M3 7h18l-2 4H5zM17 11v6.5a2.5 2.5 0 0 0 2.5 2.5'),
   guard: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
   layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
+  card: line('M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5zM3 10h18M7 15h4'),
   arrow: line('M5 12h14M13 6l6 6-6 6', 2.2),
   phone: svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>'),
 };
@@ -116,6 +121,21 @@ const HEROES = {
     ],
     note: 'fiber cement and vinyl chips, estimate and call buttons and the James Hardie and CertainTeed logos, over a lighter copy of the photo (the heading is now the page\'s h1)',
   },
+  '/roofing-costs/': {
+    key: 'costs',
+    from: 'customer',
+    photo: '/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp',
+    eyebrow: 'Roofing costs',
+    title: 'What Goes Into the Cost of a New Roof',
+    sub: 'A new roof is a big investment. See what shapes the price, how insurance can help after storm damage, and how financing makes it more affordable.',
+    // The sections below the hero (roofing-costs-page.mjs) and financing.
+    chips: [
+      ['roof', 'What affects cost', '#roof-cost', 'Size, material, decking and code'],
+      ['guard', 'Insurance claims', '#insurance-claims', 'Storm damage may be covered'],
+      ['card', 'Financing', '/blog/offer/find-out-about-our-no-interest-financial-options/', 'Delayed payments, no-interest loans'],
+    ],
+    note: 'chips for what affects the cost, insurance claims and financing and estimate and call buttons, over a WebP copy of the photo',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -123,7 +143,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
