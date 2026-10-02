@@ -233,18 +233,27 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // /affirm-payment/ is an empty page (header and footer only, nothing links to it); and
 // /thank-you/ was where the lead forms sent visitors after submitting, which the copy's
 // forms no longer do (they are not connected; nothing links to it); and /position-details/
-// loaded one job listing from WordPress, which a static copy can't (nothing links to it).
-// Removed pages
+// loaded one job listing from WordPress, which a static copy can't (nothing links to it);
+// and four project pages the owner doesn't want (BYLT Restoration, Enterprise Rent-A-Car,
+// Roof Replacement 3, SBS Siding; their case-study links on /commercial-capabilities/ go
+// too). Removed pages
 // are not built, links to them are removed like the sub-site links, their sitemap entries
 // and the files only they used are left out, and their address redirects to the page in
 // REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/'))
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 // Where a removed page's address leads: the closest page that is still on the site.
-export const REMOVED_PAGE_TARGETS = { '/roofing/repairs/': '/roofing/replacement/', '/position-details/': '/careers/' };
+export const REMOVED_PAGE_TARGETS = {
+  '/roofing/repairs/': '/roofing/replacement/',
+  '/position-details/': '/careers/',
+  '/blog/project/bylt-restoration/': '/past-projects/',
+  '/blog/project/enterprise-rent-a-car/': '/past-projects/',
+  '/blog/project/roof-replacement-3/': '/past-projects/',
+  '/blog/project/sbs-siding/': '/past-projects/',
+};
 
 // Pages moved to a corrected address (path prefixes, old -> new). The live site spells the
 // commercial roofing pages "commerical"; the copy serves them at /commercial-roofing/ and

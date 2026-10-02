@@ -49,6 +49,12 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   the copy it could only say the listing wasn't available; nothing linked to it (it was listed in the sitemap). It is
   left out the same way (its sitemap entry and the 5 files only it used go too), and its old address redirects to
   `/careers/`.
+- **Four project pages**, removed on request: `/blog/project/bylt-restoration/`, `/blog/project/enterprise-rent-a-car/`,
+  `/blog/project/roof-replacement-3/` and `/blog/project/sbs-siding/`. They are left out the same way (their entries in
+  `project-sitemap1.xml` and the 19 files only they used, mostly the photos of the third, go too), and their old
+  addresses redirect to `/past-projects/`. Three of them were case studies on the `/commercial-capabilities/` picture
+  (Baltimore, Manassas, N. Brunswick): those QR codes, which are printed in the picture, are no longer links and are
+  left out of the list under it (`custom/site-fixes/capabilities-map.json` lists the case studies that stay).
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
