@@ -28,6 +28,11 @@
   ],
   "redirects": [
     {
+      "source": "/affirm-payment/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
       "source": "/commerical-roofing/",
       "destination": "/commercial-roofing/",
       "statusCode": 301

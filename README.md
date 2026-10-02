@@ -37,6 +37,9 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   page's structured data) now says what Panda does (`REPAIR_COPY`). The FAQ answer that recommends a full replacement
   over repairs is kept. Blog posts keep their wording (on request); links in them to the removed page
   became plain words.
+- **Affirm Payment**, removed on request. `/affirm-payment/` was an empty page (only the header and footer; nothing
+  linked to it; it was listed in the sitemap). It is left out the same way (its sitemap entry and the one file only it
+  used go too), and its old address redirects to the home page.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
