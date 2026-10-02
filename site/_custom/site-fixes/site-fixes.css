@@ -6224,6 +6224,10 @@ a.bde-social-share-button:hover {
   background-image: url("/_custom/site-fixes/gutter-guards-hero.webp");
   background-position: 50% 50%;
 }
+.hero-section.pfix-sv-hero--siding {
+  background-image: url("/_custom/site-fixes/siding-hero.webp");
+  background-position: 50% 40%;
+}
 .hero-section.pfix-sv-hero::before {
   content: "";
   position: absolute;
@@ -6356,8 +6360,27 @@ a.bde-social-share-button:hover {
 }
 /* A longer heading. */
 .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
   font-size: 46px;
+}
+/* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
+.pfix-sv-hero .pfix-sv-hero__brands {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 32px;
+  padding-top: 6px;
+}
+/* !important: the hero's own stylesheet sizes every picture in it. */
+.pfix-sv-hero .pfix-sv-hero__brands img {
+  display: block;
+  width: auto !important;
+  max-width: 100%;
+  height: 34px !important;
+  margin: 0;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
 }
 
 /* Estimate and call buttons. */
@@ -6485,15 +6508,20 @@ a.bde-social-share-button:hover {
 
 @media (max-width: 1199.98px) {
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
 @media (max-width: 767.98px) {
   /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
+  }
+  .pfix-sv-hero .pfix-sv-hero__brands img {
+    height: 28px !important;
   }
 }
 
@@ -6975,4 +7003,19 @@ a.bde-social-share-button:hover {
   .pfix-gg a.pfix-gg-btn {
     transition: none;
   }
+}
+/* /siding/'s heading there is an h3 in a block, set white (!important: Bootstrap's
+   .text-white is). */
+.roofers-section:has(.pfix-why) .heading-2,
+.roofers-section:has(.pfix-why) .heading-2 h3 {
+  color: #14180f !important;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: clamp(28px, 3.3vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+/* The light band also where the section is lime by class (/siding/'s .primary-bg). */
+.roofers-section.primary-bg:has(.pfix-why) {
+  background: #f5f7ef !important;
 }
