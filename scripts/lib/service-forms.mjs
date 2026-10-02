@@ -90,7 +90,10 @@ export function collectServiceForms(doc, html, ed, { pathname }, changes) {
   const f = serviceForm(pathname);
   if (!f) return false;
   const oldForm = (x) => x.tagName === 'form' && /^lead-form/.test(attr(x, 'id') || '');
-  const cards = findAll(doc, (c) => hasClass(c, 'form-card') && find(c, (x) => oldForm(x) || x.attrs?.some((a) => a.name === 'data-pfix-lead')));
+  // (Cards in a block another fix replaces, such as a blog post's hero, are left to it.)
+  const cards = findAll(doc, (c) => hasClass(c, 'form-card') && find(c, (x) => oldForm(x) || x.attrs?.some((a) => a.name === 'data-pfix-lead'))).filter(
+    (c) => !ed.overlaps(c.sourceCodeLocation.startTag.startOffset, c.sourceCodeLocation.startTag.endOffset)
+  );
   let replaced = 0;
   cards.forEach((card, i) => {
     const n = i + 1;

@@ -20,6 +20,7 @@ import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from './lib/revie
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
+import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
@@ -137,6 +138,17 @@ for (const [key, a] of assetIndex) {
 
 // 2. Pages (+ the raw HTML as delivered, for reference)
 const pages = inv.rows.filter((r) => (r.type === 'page' && Number(r.http_status) === 200) || r.type === '404-page');
+// The blog's listing pages and every post's "Keep reading" need all the posts (blog.mjs),
+// which are only written to site/ one page at a time below: they come from the cache.
+if (SITE_FIXES) {
+  primeBlogPosts(
+    pages.flatMap((row) => {
+      const pathname = new URL(row.url).pathname;
+      const raw = postSlug(pathname) ? fetcher.readCache(row.url) : null;
+      return raw ? [{ pathname, html: raw.body.toString('utf8') }] : [];
+    })
+  );
+}
 
 // Links into excluded sub-sites (the city sections) are removed from the copy
 // when REMOVE_SUBSITE_LINKS is on; a sub-site URL inside a form value (e.g. the
@@ -277,6 +289,10 @@ if (galleryPages.length) {
 // The favorite projects and hero on /past-projects/ (custom/past-projects/: stylesheet and photos).
 if (fixPages.some((c) => c.siteFixes.some((f) => /^favorite projects( hero)?:/.test(f)))) {
   for (const [from, url] of pastProjectsFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/past-projects/${path.relative(PAST_PROJECTS_DIR, from).split(path.sep).join('/')}`);
+}
+// The blog's stylesheet and script (custom/blog/).
+if (fixPages.some((c) => c.siteFixes.some((f) => /^blog (listing|post):/.test(f)))) {
+  for (const [name, url] of Object.entries(BLOG_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(BLOG_DIR, name)), `custom/blog/${name}`);
 }
 if (SMOOTH_SCROLL) {
   for (const [name, url] of Object.entries(SMOOTH_SCROLL_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(SMOOTH_SCROLL_DIR, name)), `custom/smooth-scroll/${name}`);
