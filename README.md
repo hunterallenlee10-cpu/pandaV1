@@ -187,6 +187,13 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/services/` hero** (`scripts/lib/services-hero.mjs`): "Expert Roofing and Exterior Services" and one line that
+  offered windows (not a Panda service) over a 678 KB PNG of a Panda roofer installing solar shingles. It now has an
+  "Our services" label, the same heading, the line without windows ("From roofing and siding to solar and gutters…"),
+  a chip per service (Roofing, Commercial, Solar, Siding, Gutters, Gutter Guards) linking to its page, and **Get a free
+  estimate** (to the form beside it) and call buttons, over the same photo as a 184 KB WebP copy
+  (`custom/site-fixes/services-hero.webp`) darkened behind the text, like the other redesigned heroes. The estimate
+  form is unchanged.
 - **`/contact-us/`, redesigned** (`scripts/lib/contact-page.mjs`; offices, addresses, numbers and words in
   `custom/site-fixes/contact-page.json`, applied with `npm run update:site`): the seven office cards showed Google
   static-map pictures that never loaded (they need an API key), their numbers could not be tapped, three had no street

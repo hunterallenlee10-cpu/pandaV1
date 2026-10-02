@@ -126,6 +126,9 @@
 //    map become a hero with the total donated and a photo collage, the recent gifts, the
 //    organizations, a wall of the gallery's community photos, the podcast and a partner
 //    band (charity-page.mjs, custom/site-fixes/charity-page.json).
+//  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
+//    now has a label, service chips and estimate and call buttons over a WebP copy of the
+//    photo (services-hero.mjs).
 //  - /contact-us/: the office cards' Google map pictures never loaded, their numbers
 //    couldn't be tapped and three had no address; a hero with call, email and an office
 //    map and seven cards with drawn state maps, addresses, call and directions buttons
@@ -154,6 +157,7 @@ import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
 import { collectContactPage } from './contact-page.mjs';
+import { collectServicesHero } from './services-hero.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -164,9 +168,11 @@ export const SITE_FIXES_FILES = {
   'about-team.webp': '/_custom/site-fixes/about-team.webp',
   // the photo behind /faqs/'s hero (faq-page.mjs)
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
+  // the photo behind /services/'s hero (services-hero.mjs)
+  'services-hero.webp': '/_custom/site-fixes/services-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -1042,6 +1048,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     }
   }
 
+  // /services/: the hero gets service chips and estimate and call buttons (services-hero.mjs).
+  if (collectServicesHero(doc, html, ed, { pathname }, changes)) used.css = true;
   // /about/: the hero introduces the company and "Our Mission" is a headline, three points
   // and a photo collage (about-page.mjs).
   if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;
