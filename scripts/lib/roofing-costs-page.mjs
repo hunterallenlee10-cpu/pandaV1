@@ -7,7 +7,8 @@
 //  - the intro keeps its words (with Panda Exteriors' name, not "Panda Contractors"), set as a
 //    label, heading and paragraphs beside a rounded photo (a class for site-fixes.css);
 //  - "What affects the cost of a new roof": six cards, no prices (every roof is different);
-//  - "Quality Roof Replacements": the page's own paragraph and three cards, as icon cards;
+//  - "Quality Roof Replacements": the page’s own paragraph and three cards, as icon cards, on
+//    Panda orange;
 //  - insurance roofing, on charcoal green: what storm damage insurance usually covers and
 //    doesn't, how Panda helps from the inspection to the supplements (in four steps), that
 //    Panda is the homeowner's roofing advocate and not a public adjuster, Panda's guides on
@@ -114,7 +115,7 @@ function sectionsHtml() {
     FACTORS.map(([icon, title, text]) => `<div class="pfix-rc-card" role="listitem"><span class="pfix-rc-card__icon">${ICONS[icon]}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`).join('') +
     `</div></div></section>`;
   const quality =
-    `<section class="pfix-rc__sec pfix-rc__sec--light" aria-labelledby="pfix-rc-quality"><div class="pfix-rc__inner">` +
+    `<section class="pfix-rc__sec pfix-rc__sec--orange" aria-labelledby="pfix-rc-quality"><div class="pfix-rc__inner">` +
     head('pfix-rc-quality', 'You pay for quality', QUALITY.title, QUALITY.text) +
     `<div class="pfix-rc-cards" role="list">` +
     QUALITY.items
