@@ -167,10 +167,23 @@ export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes
   if (pathname === OFFERS_PATH) return false;
   const band = find(doc, (c) => attr(c, 'data-pfix-offers-strip') !== undefined) || find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Offers-Section'));
   if (!band || ed.overlaps(band.sourceCodeLocation.startOffset, band.sourceCodeLocation.endOffset)) return false;
+  const block = offersStripHtml(doc, { siteDir });
+  const { startOffset, endOffset } = band.sourceCodeLocation;
+  if (html.slice(startOffset, endOffset) === block) return true;
+  ed.outer(band, block);
+  changes.push('offers band: the flyer pictures ("Spring Savings", a number that isn\'t the site\'s) -> the two offers as coupon cards, with financing and a link to all offers');
+  return true;
+}
+
+/**
+ * The offers band's markup for a page (also added where a page had none, e.g.
+ * /gutters/gutter-guards/). "Claim" picks the offer's project in the page's estimate form
+ * when the form has it (the gutter and siding forms list only their own projects);
+ * otherwise it opens the offer's page.
+ */
+export function offersStripHtml(doc, { siteDir } = {}) {
   const page = offersPage();
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
-  // "Claim" picks the offer's project in the page's form when the form has it (the gutter
-  // and siding forms list only their own projects); otherwise it opens the offer's page.
   const form = find(doc, (c) => attr(c, 'id') === FORM_ID);
   const formId = form ? FORM_ID : null;
   const select = form && find(form, (c) => c.tagName === 'select' && attr(c, 'name') === 'project');
@@ -183,12 +196,7 @@ export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes
     (finance ? `<span>${ICONS.card}Ask about no-interest financing. <a class="pfix-of-link" href="${esc(finance.href)}">${esc(finance.link)}${ARROW}</a></span>` : '') +
     `<a class="pfix-of-btn pfix-of-btn--ghost" href="${OFFERS_PATH}">See all offers${ARROW}</a></p>`;
   const top = { eyebrow: 'Offers', title: 'Limited-Time Offers', intro: page.offers.intro };
-  const block = `<div class="pfix-of pfix-of--strip" data-pfix-offers-strip>${renderOffers(page.offers, exists, { formId, pick, top, after })}</div>`;
-  const { startOffset, endOffset } = band.sourceCodeLocation;
-  if (html.slice(startOffset, endOffset) === block) return true;
-  ed.outer(band, block);
-  changes.push('offers band: the flyer pictures ("Spring Savings", a number that isn\'t the site\'s) -> the two offers as coupon cards, with financing and a link to all offers');
-  return true;
+  return `<div class="pfix-of pfix-of--strip" data-pfix-offers-strip>${renderOffers(page.offers, exists, { formId, pick, top, after })}</div>`;
 }
 
 /**

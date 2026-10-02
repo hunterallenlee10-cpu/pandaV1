@@ -133,6 +133,9 @@
 //  - /gutters/: the hero gets gutter chips and estimate and call buttons (services-hero.mjs);
 //    "Why Work with Our East Coast Exterior Specialists?" (white on lime, and promising
 //    cleaning services Panda doesn't offer) becomes three icon cards (gutters-page.mjs).
+//  - /gutters/gutter-guards/: the hero gets chips and estimate and call buttons over a lighter
+//    photo (services-hero.mjs); the benefits (white on lime) become icon cards, with how it
+//    works, questions, a band for new gutters and the offers band (gutter-guards-page.mjs).
 //  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
 //    now has a label, service chips and estimate and call buttons over a WebP copy of the
 //    photo (services-hero.mjs).
@@ -166,6 +169,7 @@ import { collectCharityPage } from './charity-page.mjs';
 import { collectContactPage } from './contact-page.mjs';
 import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
+import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -178,9 +182,11 @@ export const SITE_FIXES_FILES = {
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
   // the photo behind /services/'s hero (services-hero.mjs)
   'services-hero.webp': '/_custom/site-fixes/services-hero.webp',
+  // the photo behind /gutters/gutter-guards/'s hero (services-hero.mjs)
+  'gutter-guards-hero.webp': '/_custom/site-fixes/gutter-guards-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page|gutters page|offers band)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page|gutters page|offers band|gutter guards page|guards page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -1067,6 +1073,12 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /gutters/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
   if (collectGuttersPage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /gutters/gutter-guards/: the benefits as icon cards, how it works, questions, a band for
+  // new gutters and the offers band (gutter-guards-page.mjs).
+  if (collectGutterGuardsPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
   // /about/: the hero introduces the company and "Our Mission" is a headline, three points
   // and a photo collage (about-page.mjs).
   if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;

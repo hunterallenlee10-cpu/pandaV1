@@ -6220,6 +6220,10 @@ a.bde-social-share-button:hover {
   background-image: url("/wp-content/uploads/2025/04/hero-gutters.jpg");
   background-position: 50% 50%;
 }
+.hero-section.pfix-sv-hero--guards {
+  background-image: url("/_custom/site-fixes/gutter-guards-hero.webp");
+  background-position: 50% 50%;
+}
 .hero-section.pfix-sv-hero::before {
   content: "";
   position: absolute;
@@ -6351,7 +6355,8 @@ a.bde-social-share-button:hover {
   line-height: 1.35;
 }
 /* A longer heading. */
-.pfix-sv-hero--gutters .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 
@@ -6479,13 +6484,15 @@ a.bde-social-share-button:hover {
 }
 
 @media (max-width: 1199.98px) {
-  .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
 @media (max-width: 767.98px) {
   /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
-  .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--guards .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
 }
@@ -6597,4 +6604,375 @@ a.bde-social-share-button:hover {
 .pfix-of--strip .pfix-of-strip__more a.pfix-of-btn--ghost:hover {
   background: var(--of-ink, #14180f);
   color: #ffffff;
+}
+
+/* /gutters/gutter-guards/ (gutter-guards-page.mjs). Roboto; charcoal green, Panda lime and
+   orange from the site's palette.
+
+   The intro: its words, as a heading and two paragraphs beside a rounded photo. */
+.Service-container.pfix-gg-intro {
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  padding-top: clamp(48px, 6vw, 88px) !important;
+  padding-bottom: clamp(48px, 6vw, 88px) !important;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.pfix-gg-intro .flext-head {
+  color: #14180f;
+  font-family: inherit;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.pfix-gg-intro .flext-head::before {
+  content: "Gutter guards";
+  display: block;
+  margin-bottom: 10px;
+  color: #c2410c;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-gg-intro .flex-para {
+  color: #3f463a;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.pfix-gg-intro .flex-para a {
+  font-weight: 600;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+.pfix-gg-intro .Flex-image img {
+  border-radius: 22px;
+  box-shadow: 0 20px 44px rgba(20, 24, 15, 0.16);
+}
+
+/* The sections under the intro. */
+.pfix-gg {
+  --gg-ink: #14180f;
+  --gg-text: #3f463a;
+  --gg-muted: #5d6656;
+  --gg-line: #e4e8dc;
+  --gg-bg: #f5f7ef;
+  --gg-orange: #f26924;
+  --gg-orange-ink: #c2410c;
+  --gg-lime: #9acd32;
+  --gg-lime-ink: #4d7c0f;
+  --gg-dark: #172015;
+  color: var(--gg-text);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-gg *,
+.pfix-gg *::before,
+.pfix-gg *::after {
+  box-sizing: border-box;
+}
+.pfix-gg p,
+.pfix-gg h2,
+.pfix-gg h3 {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.pfix-gg svg {
+  display: block;
+  flex: none;
+}
+.pfix-gg .pfix-gg-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.pfix-gg .pfix-gg__sec {
+  padding: clamp(56px, 7vw, 92px) 0;
+  scroll-margin-top: 140px;
+}
+.pfix-gg .pfix-gg__sec:first-child {
+  background: var(--gg-bg);
+}
+.pfix-gg .pfix-gg__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-gg .pfix-gg__inner--narrow {
+  max-width: 880px;
+}
+.pfix-gg .pfix-gg__head {
+  max-width: 760px;
+  margin: 0 auto clamp(30px, 4vw, 46px);
+  text-align: center;
+}
+.pfix-gg .pfix-gg__eyebrow {
+  margin-bottom: 10px;
+  color: var(--gg-orange-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-gg .pfix-gg__title {
+  color: var(--gg-ink);
+  font-size: clamp(28px, 3.3vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.pfix-gg .pfix-gg__sub {
+  margin-top: 14px;
+  color: var(--gg-muted);
+  font-size: 17px;
+}
+
+/* Benefits. */
+.pfix-gg .pfix-gg-benefits {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.pfix-gg .pfix-gg-benefit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 24px;
+  border: 1px solid var(--gg-line);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(20, 24, 15, 0.05);
+}
+.pfix-gg .pfix-gg-benefit__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 14px;
+  background: #eef6dc;
+  color: var(--gg-lime-ink);
+}
+.pfix-gg .pfix-gg-benefit__icon svg {
+  width: 28px;
+  height: 28px;
+}
+.pfix-gg .pfix-gg-benefit h3 {
+  color: var(--gg-ink);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pfix-gg .pfix-gg-benefit p {
+  color: var(--gg-muted);
+  font-size: 15.5px;
+}
+
+/* How it works. */
+.pfix-gg .pfix-gg__sec--steps {
+  background: var(--gg-dark);
+}
+.pfix-gg .pfix-gg__sec--steps .pfix-gg__title {
+  color: #ffffff;
+}
+.pfix-gg .pfix-gg__sec--steps .pfix-gg__eyebrow {
+  color: var(--gg-lime);
+}
+.pfix-gg .pfix-gg-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  counter-reset: none;
+}
+.pfix-gg .pfix-gg-step {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.pfix-gg .pfix-gg-step__n {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--gg-lime);
+  color: var(--gg-dark);
+  font-size: 18px;
+  font-weight: 800;
+}
+.pfix-gg .pfix-gg-step h3 {
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.pfix-gg .pfix-gg-step p {
+  color: #c4ceb6;
+  font-size: 15.5px;
+}
+
+/* Questions (<details>, so they work without JavaScript). */
+.pfix-gg .pfix-gg-faq {
+  display: grid;
+  gap: 12px;
+}
+.pfix-gg .pfix-gg-faq__item {
+  border: 1px solid var(--gg-line);
+  border-radius: 16px;
+  background: #ffffff;
+  transition: box-shadow 0.2s ease;
+}
+.pfix-gg .pfix-gg-faq__item[open] {
+  box-shadow: 0 10px 26px rgba(20, 24, 15, 0.08);
+}
+.pfix-gg .pfix-gg-faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  color: var(--gg-ink);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
+  cursor: pointer;
+}
+.pfix-gg .pfix-gg-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+.pfix-gg .pfix-gg-faq__item summary:focus-visible {
+  outline: 3px solid var(--gg-orange);
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+.pfix-gg .pfix-gg-faq__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eef6dc;
+  color: var(--gg-lime-ink);
+  transition: transform 0.2s ease;
+}
+.pfix-gg .pfix-gg-faq__icon svg {
+  width: 16px;
+  height: 16px;
+}
+.pfix-gg .pfix-gg-faq__item[open] .pfix-gg-faq__icon {
+  transform: rotate(45deg);
+}
+.pfix-gg .pfix-gg-faq__item p {
+  padding: 0 22px 20px;
+  color: var(--gg-muted);
+  font-size: 16px;
+}
+
+/* "Need new gutters too?" */
+.pfix-gg .pfix-gg-band {
+  padding: clamp(40px, 5vw, 60px) 0;
+  background: var(--gg-lime);
+  color: var(--gg-dark);
+}
+.pfix-gg .pfix-gg-band__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 40px;
+}
+.pfix-gg .pfix-gg-band__title {
+  color: var(--gg-dark);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pfix-gg .pfix-gg-band__text {
+  max-width: 620px;
+  margin-top: 6px;
+  font-size: 17px;
+}
+.pfix-gg .pfix-gg-band__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pfix-gg a.pfix-gg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 12px 22px;
+  border: 2px solid var(--gg-dark);
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.pfix-gg a.pfix-gg-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-gg a.pfix-gg-btn--light {
+  background: var(--gg-dark);
+  color: #ffffff;
+}
+.pfix-gg a.pfix-gg-btn--light:hover {
+  background: #000000;
+  color: #ffffff;
+}
+.pfix-gg a.pfix-gg-btn--outline {
+  background: transparent;
+  color: var(--gg-dark);
+}
+.pfix-gg a.pfix-gg-btn--outline:hover {
+  background: var(--gg-dark);
+  color: #ffffff;
+}
+.pfix-gg a.pfix-gg-btn:focus-visible {
+  outline: 3px solid var(--gg-dark);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1024px) {
+  .pfix-gg .pfix-gg-benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 860px) {
+  .pfix-gg .pfix-gg-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .pfix-gg .pfix-gg-benefits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-gg .pfix-gg-band__btns,
+  .pfix-gg .pfix-gg-band__btns a.pfix-gg-btn {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-gg .pfix-gg-faq__icon,
+  .pfix-gg .pfix-gg-faq__item,
+  .pfix-gg a.pfix-gg-btn {
+    transition: none;
+  }
 }
