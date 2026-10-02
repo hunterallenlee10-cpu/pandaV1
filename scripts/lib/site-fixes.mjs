@@ -55,14 +55,8 @@
 //    photos are gone (they showed as empty grey boxes).
 //  - A link whose href was swallowed by its style attribute is repaired; placeholder
 //    phone links ("(XXX) XXX-XXXX") get the site's number.
-//  - /commercial-capabilities/: the case-study picture's image map pointed at the
-//    wrong places and its pin markers (placed in desktop pixels) made the page twice
-//    as wide as a phone screen. Links are now placed over the QR codes in % and listed
-//    under the picture.
 //  - Blog share buttons did nothing (their script is missing on the live site too);
 //    they are now plain share links.
-//  - /position-details/ can only show "Failed to load job details." in a static copy;
-//    it now points to the open positions on /careers/.
 //  - /service-areas/ hero: it said only "Our Service Areas" and a tagline over a blurry,
 //    stretched strip of roof (a 2000x450 picture pinned to the screen). It now says where
 //    Panda works, with the numbers from the US map's areas.json (jobs, states, offices),
@@ -163,7 +157,7 @@
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, renamedPath, isRemovedPage } from './config.mjs';
+import { ROOT, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
@@ -203,7 +197,7 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -318,7 +312,7 @@ const REPAIR_COPY = [
   // home page, and the company description in every page's structured data
   [/Whether you need expert roof repairs, a full commercial roof replacement/g, 'Whether you need a new roof for your home, a full commercial roof replacement'],
   [/From repairs to complete roof replacements, Panda Exteriors/g, 'From free roof inspections to complete roof replacements, Panda Exteriors'],
-  // /commercial-roofing/, /commercial-capabilities/
+  // /commercial-roofing/
   [/delivers expert roof repairs, replacements, and solar shingle installations/g, 'delivers expert roof replacements and solar shingle installations'],
   // /roofing/, /commercial-roofing/
   [/comprehensive repair and replacement services/g, 'comprehensive replacement and installation services'],
@@ -351,9 +345,6 @@ const nextElement = (n) => {
   return null;
 };
 const withClass = (n, add, remove = []) => n.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: [...classes(n).filter((c) => !remove.includes(c)), ...add].join(' ') } : a));
-
-let capabilities;
-const capabilitiesMap = () => (capabilities ??= JSON.parse(fs.readFileSync(path.join(SITE_FIXES_DIR, 'capabilities-map.json'), 'utf8')));
 
 const fmt = (n) => n.toLocaleString('en-US');
 const andList = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs.join(''));
@@ -1014,52 +1005,6 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push(`placeholder phone link -> ${PHONE.text} ("${clean(textOf(a)).replace(/\(XXX\) XXX-XXXX/, PHONE.text)}")`);
   }
 
-  // /commercial-capabilities/: image map with the wrong coordinates + desktop-pixel pins.
-  for (const box of findAll(doc, (c) => hasClass(c, 'map-container') && find(c, (x) => x.tagName === 'img' && attr(x, 'usemap')))) {
-    const cap = capabilitiesMap();
-    const img = find(box, (x) => x.tagName === 'img' && attr(x, 'usemap'));
-    if ((attr(img, 'src') || attr(img, 'data-lazy-src') || '').split('/').pop() !== cap.image) {
-      console.warn(`site-fixes: ${pathname}: unexpected picture in the capabilities map, left as is`);
-      continue;
-    }
-    const mapEl = find(box, (x) => x.tagName === 'map');
-    const spots = (mapEl ? findAll(mapEl, (x) => x.tagName === 'area') : [])
-      .map((ar) => ({ city: attr(ar, 'alt'), href: attr(ar, 'href'), box: cap.boxes[attr(ar, 'alt')] }))
-      // Only the case studies in capabilities-map.json, and never a page removed on request (the
-      // build may already have pointed its link somewhere else).
-      .filter((s) => s.box && s.href && cap.projects[s.href] && !isRemovedPage(new URL(s.href, siteOrigin).pathname));
-    if (!spots.length) continue;
-    if (mapEl) ed.outer(mapEl, '');
-    for (const h of findAll(box, (x) => hasClass(x, 'hotspot'))) ed.outer(h, '');
-    ed.retag(img, img.attrs.filter((a) => a.name !== 'usemap'));
-    ed.retag(box, withClass(box, ['pfix-imgmap']));
-    const pct = (v, total) => `${((v / total) * 100).toFixed(2)}%`;
-    const name = (s) => cap.projects[s.href] || s.href.split('/').filter(Boolean).pop();
-    // A frame the exact size of the picture (the container can be wider than the
-    // picture), so the links, placed in % of the picture, stay on their QR codes.
-    const pic = img.parentNode?.tagName === 'picture' ? img.parentNode : img;
-    ed.replace(pic.sourceCodeLocation.startOffset, pic.sourceCodeLocation.startOffset, '<div class="pfix-imgmap__frame">');
-    ed.replace(
-      pic.sourceCodeLocation.endOffset,
-      pic.sourceCodeLocation.endOffset,
-      spots
-        .map(({ city, href, box: [x0, y0, x1, y1] }, i) => {
-          const pad = 6;
-          const pos = `left:${pct(x0 - pad, cap.width)};top:${pct(y0 - pad, cap.height)};width:${pct(x1 - x0 + 2 * pad, cap.width)};height:${pct(y1 - y0 + 2 * pad, cap.height)}`;
-          return `<a class="pfix-imgmap__spot" href="${esc(href)}" style="${pos}" aria-label="${esc(`${city}: ${name(spots[i])}`)}"></a>`;
-        })
-        .join('') + '</div>'
-    );
-    const list =
-      `<div class="pfix-imgmap-list"><p class="pfix-imgmap-list__title">Commercial project case studies</p>` +
-      `<div class="pfix-imgmap-list__items" role="list">` +
-      spots.map((s) => `<a role="listitem" href="${esc(s.href)}"><strong>${esc(s.city)}</strong> ${esc(name(s))}</a>`).join('') +
-      `</div></div>`;
-    ed.replace(box.sourceCodeLocation.endOffset, box.sourceCodeLocation.endOffset, list);
-    changes.push(`case-study picture: ${spots.length} links placed over its QR codes and listed below it (the old image map missed them; its pins widened the page on phones)`);
-    used.css = true;
-  }
-
   // Blog share buttons -> plain share links.
   const shares = findAll(doc, (c) => c.tagName === 'div' && (hasClass(c, 'js-breakdance-share-button') || hasClass(c, 'js-breakdance-share-mobile')));
   if (shares.length) {
@@ -1092,22 +1037,6 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     if (n) changes.push(`share buttons: ${n} made into working share links`);
     used.css = true;
     used.js = true;
-  }
-
-  // /position-details/: the job is loaded from the WordPress API, which a static copy lacks.
-  if (pathname === '/position-details/') {
-    const box = find(doc, (c) => hasClass(c, 'job-container'));
-    const t = box && textNodes(box).find((x) => /Failed to load job details/.test(x.value));
-    if (t) {
-      editText(ed, html, t, (s) => s.replace('Failed to load job details.', 'This job listing isn’t available right now. You can see all open positions on our Careers page.'));
-      const apply = find(doc, (c) => attr(c, 'id') === 'apply-button-2');
-      if (apply) {
-        ed.retag(apply, apply.attrs.filter((a) => a.name !== 'target').map((a) => (a.name === 'href' ? { name: 'href', value: '/careers/' } : a)));
-        for (const x of textNodes(apply)) editText(ed, html, x, (s) => s.replace('Apply Now', 'See open positions'));
-      }
-      for (const s of inlineScripts(/fetchJobDetails/)) ed.outer(s, '');
-      changes.push('job details page: "Failed to load job details." -> pointer to the open positions on /careers/');
-    }
   }
 
   // /services/, /gutters/: the hero gets service chips and estimate and call buttons
