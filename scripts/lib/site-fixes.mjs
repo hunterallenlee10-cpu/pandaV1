@@ -91,7 +91,9 @@
 //    offer on roofing pages, or a general one), not connected to anything yet, and the old
 //    scripts are gone from every page (service-forms.mjs, custom/site-fixes/service-forms.json).
 //  - /referrals/: the referral sign-up (Panda's live GetTheReferral page, laid over the
-//    whole page) is not connected yet either: a note with the phone number takes its place.
+//    whole page) becomes a page that explains the referral program and links to the Panda
+//    Exteriors app on the App Store and Google Play (referrals-page.mjs,
+//    custom/site-fixes/referrals-page.json).
 //  - /referral/: the employee referral form opened an email to the careers address; it now
 //    says on submit that online referrals aren't switched on yet, and sends nothing.
 //  - Share titles (og:title, twitter:title) copied from the About page: /podcast/ and
@@ -134,6 +136,7 @@ import { collectOffersPage, collectOfferDetailPage } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
+import { collectReferralsPage } from './referrals-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -146,7 +149,7 @@ export const SITE_FIXES_FILES = {
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referral sign-up|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -1042,24 +1045,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   // /referrals/: the referral sign-up was Panda's live GetTheReferral page laid over the
-  // whole page, so a referral sent from this copy reached Panda. Like the estimate forms it
-  // is not connected yet: a note with the phone number takes its place.
-  if (pathname === '/referrals/') {
-    const gtr = (x) => x.tagName === 'iframe' && /getthereferral\.com/.test(`${attr(x, 'src') || ''} ${attr(x, 'data-lazy-src') || ''}`);
-    const block = find(doc, (c) => hasClass(c, 'oxy-html-code') && find(c, gtr));
-    if (block) {
-      ed.inner(
-        block,
-        `<div class="pfix-referral-off" role="status">` +
-          `<p class="pfix-referral-off__title">Refer a friend</p>` +
-          `<p>Online referrals aren’t switched on yet, so a referral can’t be sent from this page. Please give us a call and we’ll take it from there.</p>` +
-          `<a class="pfix-referral-off__call" href="${PHONE.href}">Call ${PHONE.text}</a>` +
-          `</div>`
-      );
-      changes.push('referral sign-up: the live GetTheReferral form -> a note with the phone number (not connected yet)');
-    }
-    if (block || find(doc, (c) => hasClass(c, 'pfix-referral-off'))) used.css = true;
-  }
+  // whole page, so a referral sent from this copy reached Panda. The page now explains the
+  // program and links to the Panda Exteriors app, which is where referrals are sent
+  // (referrals-page.mjs).
+  if (collectReferralsPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /referral/: the employee referral form opened an email to the careers address with the
   // referral in it. It is not connected yet either: on submit the form says so and sends
   // nothing (its script no longer builds the email).
