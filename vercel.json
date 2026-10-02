@@ -88,6 +88,11 @@
       "statusCode": 301
     },
     {
+      "source": "/referral/",
+      "destination": "/referrals/",
+      "statusCode": 301
+    },
+    {
       "source": "/roofing/repairs/",
       "destination": "/roofing/replacement/",
       "statusCode": 301

@@ -236,11 +236,14 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // loaded one job listing from WordPress, which a static copy can't (nothing links to it);
 // and four project pages the owner doesn't want (BYLT Restoration, Enterprise Rent-A-Car,
 // Roof Replacement 3, SBS Siding; their case-study links on /commercial-capabilities/ go
-// too); and /commercial-capabilities/ itself (nothing links to it). Removed pages
-// are not built, links to them are removed like the sub-site links, their sitemap entries
-// and the files only they used are left out, and their address redirects to the page in
-// REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/'))
+// too); and /commercial-capabilities/ itself (nothing links to it); and /referral/, the
+// employee referral form ("Refer a Future Panda"), since "Refer & Earn" should lead to the
+// Refer & Earn page about the Panda Exteriors app (/referrals/). Removed pages
+// are not built, links to them are removed like the sub-site links (except RELINKED_PAGES),
+// their sitemap entries and the files only they used are left out, and their address
+// redirects to the page in REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs).
+// REMOVE_PAGES='' keeps them.
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);
@@ -254,7 +257,13 @@ export const REMOVED_PAGE_TARGETS = {
   '/blog/project/roof-replacement-3/': '/past-projects/',
   '/blog/project/sbs-siding/': '/past-projects/',
   '/commercial-capabilities/': '/commercial-roofing/',
+  '/referral/': '/referrals/',
 };
+// Removed pages whose links stay, pointed at their REMOVED_PAGE_TARGETS page instead of
+// being taken out: the "Refer & Earn" menu link and the careers page's "Refer a Friend"
+// led to /referral/ and now lead to /referrals/.
+const RELINKED_PAGES = REMOVED_PAGES.filter((p) => ['/referral/'].includes(p));
+export const isRelinkedPage = (pathname) => RELINKED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 
 // Pages moved to a corrected address (path prefixes, old -> new). The live site spells the
 // commercial roofing pages "commerical"; the copy serves them at /commercial-roofing/ and
