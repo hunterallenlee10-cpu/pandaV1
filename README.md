@@ -55,6 +55,10 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   addresses redirect to `/past-projects/`. Three of them were case studies on the `/commercial-capabilities/` picture
   (Baltimore, Manassas, N. Brunswick): those QR codes, which are printed in the picture, are no longer links and are
   left out of the list under it (`custom/site-fixes/capabilities-map.json` lists the case studies that stay).
+- **Commercial Capabilities**, removed on request. `/commercial-capabilities/` (titled "Commercial Roofing Services",
+  like `/commercial-roofing/`) showed the case-study map picture; nothing linked to it (it was listed in the sitemap).
+  It is left out the same way (its sitemap entry and the 19 files only it used, mostly sizes of that picture, go too),
+  and its old address redirects to `/commercial-roofing/`.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -447,7 +451,7 @@ Most of these problems are on the live site too.
   spot (the review carousels do the same).
 - **`/commercial-capabilities/`**: the case-study picture's clickable areas missed its QR codes, and its pin markers
   made the page twice as wide as a phone screen. The links now sit on the QR codes and are also listed under the
-  picture.
+  picture. (Only when the page is kept: it is removed on request, above.)
 - **Blog share buttons** (93 posts) did nothing (their script is missing). They are now plain Facebook, Twitter,
   LinkedIn and email share links (with the blog's design on, they are replaced by its share links).
 - **`/position-details/`** can only say "Failed to load job details." without WordPress. It now points to the open
