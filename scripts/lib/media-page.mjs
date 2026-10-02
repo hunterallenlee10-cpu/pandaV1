@@ -38,11 +38,17 @@ const WORDS_PER_MINUTE = 238;
 // The phone-only first entry of the menu's dropdown, which leads to the page itself
 // (like "About Us" under About). It said "Blog", the same as the entry below it.
 const PHONE_LABEL = 'Media Hub';
+// Added to the dropdown after Podcast.
+const GALLERY_ENTRY = { href: '/gallery/', label: 'Gallery' };
 
 // ------------------------------------------------------------ the menu item
-/** Points the header's "Media" menu item (and its phone-only first entry) at /media/. */
+/**
+ * Points the header's "Media" menu item (and its phone-only first entry) at /media/, and
+ * adds the Gallery page to its dropdown.
+ */
 export function collectMediaNav(doc, html, ed, changes, { current = false } = {}) {
   let n = 0;
+  let gallery = 0;
   for (const item of findAll(doc, (c) => hasClass(c, 'has_dropdown'))) {
     const link = (item.childNodes || []).find((c) => c.tagName === 'a');
     if (!link || clean(textOf(link)) !== 'Media') continue;
@@ -62,9 +68,20 @@ export function collectMediaNav(doc, html, ed, changes, { current = false } = {}
       ed.retag(phoneLink, phoneLink.attrs.map((a) => (a.name === 'href' ? { name: 'href', value: MEDIA_PATH } : a)));
       for (const t of textNodes(phoneLink)) editText(ed, html, t, (s) => s.replace('Blog', PHONE_LABEL));
     }
+    // The Gallery page joins the dropdown, after Podcast (a copy of the Podcast entry).
+    const entries = menu ? (menu.childNodes || []).filter((c) => c.tagName) : [];
+    const linkTo = (li, href) => !!find(li, (c) => c.tagName === 'a' && attr(c, 'href') === href);
+    const podcast = entries.find((li) => linkTo(li, '/podcast/'));
+    if (podcast && !entries.some((li) => linkTo(li, GALLERY_ENTRY.href))) {
+      const { startOffset, endOffset } = podcast.sourceCodeLocation;
+      const copy = html.slice(startOffset, endOffset).replace('href="/podcast/"', `href="${GALLERY_ENTRY.href}"`).replace(/>(\s*)Podcast(\s*)</, `>$1${GALLERY_ENTRY.label}$2<`);
+      ed.replace(endOffset, endOffset, `\n${copy}`);
+      gallery++;
+    }
   }
   if (n) changes.push(`header menu: "Media" -> ${MEDIA_PATH} (it went nowhere)`);
-  return n > 0;
+  if (gallery) changes.push(`header menu: "${GALLERY_ENTRY.label}" added to the Media dropdown`);
+  return n + gallery > 0;
 }
 
 // --------------------------------------------------------------- the posts
