@@ -187,6 +187,19 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
+  photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
+  truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime
+  band of three text-only cards and a contact block whose card showed a broken Google map, with no photos of the
+  events. It now has a hero with the headline, the **$179,691** donated to date, **Donate to So Kids Soar** (the
+  charity's site, as before) and **Partner with Panda** (the contact page) buttons beside a collage of four event
+  photos with a "Proud partner of So Kids Soar" badge; the four gifts the page listed, largest first, as cards with
+  the organizations' logos, labelled as recent gifts (part of the total, not all of it); the three organizations
+  Panda works with, each with an icon and its line; a grid of the gallery's 22 Community and Charity photos (12 at
+  first, **Show all** for the rest; tall photos take two rows, in an order that fills every row), each opening in
+  the project gallery's photo viewer (`custom/project-gallery/project-gallery.js`, with the photo's own
+  description); the Community DC episode in its iHeart player; and a closing "Running a charity event?" band with
+  partner, donate and call buttons. The "About Our Team" form block below is unchanged.
 - **`/gallery/` hero and missing photos** (`scripts/lib/gallery-page.mjs`, words and photos in
   `custom/site-fixes/gallery-page.json`): the page opened straight on the category tabs, with no heading. It now opens
   with a hero on a charcoal-green band: "Panda Exteriors Company Gallery", a line about the work, a chip per category

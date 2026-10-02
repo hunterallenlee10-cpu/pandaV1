@@ -1,0 +1,182 @@
+{
+  "hero": {
+    "eyebrow": "Charity & Community",
+    "title": "Giving back to the communities we build in",
+    "sub": "Known for quality work and friendly service, we’re just as committed to our community, on the job and through our ongoing charity work. When you choose Panda for your project, you’re supporting a team that values craftsmanship and giving back.",
+    "total": 179691,
+    "totalLabel": "donated to local charities to date",
+    "photos": [
+      21,
+      2,
+      1,
+      0
+    ],
+    "badge": "Proud partner of So Kids Soar"
+  },
+  "donate": [
+    "Donate to So Kids Soar",
+    "https://www.sokidssoar.org/"
+  ],
+  "partner": [
+    "Partner with Panda",
+    "/contact-us/"
+  ],
+  "gifts": {
+    "eyebrow": "Recent gifts",
+    "title": "Where our donations go",
+    "sub": "A few of our recent gifts, part of the #total we’ve donated to date.",
+    "items": [
+      {
+        "name": "So Kids Soar",
+        "amount": 13356,
+        "logo": "/wp-content/uploads/2025/03/Frame-1000007303.png"
+      },
+      {
+        "name": "Eapen Open Charity Golf Event for SKS & LLS",
+        "amount": 2000,
+        "logo": "/wp-content/uploads/2025/03/Frame-1000007305.png"
+      },
+      {
+        "name": "24 Foundation",
+        "amount": 500,
+        "logo": "/wp-content/uploads/2025/03/Frame-1000007304.png"
+      },
+      {
+        "name": "Zeta Tau Alpha Foundation",
+        "amount": 200,
+        "logo": "/wp-content/uploads/2025/03/Frame-1000007300.png"
+      }
+    ]
+  },
+  "orgs": {
+    "eyebrow": "Who we support",
+    "title": "Charitable organizations we work with",
+    "sub": "We know the importance of giving back. Our contributions largely focus on helping children, and these are some of the largest non-profits, fundraisers and charities we support.",
+    "items": [
+      {
+        "icon": "trophy",
+        "name": "Fight for Children",
+        "text": "This admirable organization’s mission is to help improve the lives of underserved and underrepresented youth through sports programs."
+      },
+      {
+        "icon": "star",
+        "name": "So Kids Soar",
+        "text": "Through partnerships, donations and funding, So Kids Soar gives physically and developmentally disabled children the chance to reach their full potential, with adaptive clinics, holiday gatherings where they learn new sports and activities, and a mentorship program.",
+        "donate": true
+      },
+      {
+        "icon": "heart",
+        "name": "Children’s National Hospital Foundation",
+        "text": "Our contributions help this non-profit serve over 246,000 children every year and get them the medical care they need to live happy, healthy lives."
+      }
+    ]
+  },
+  "photos": {
+    "eyebrow": "Panda in the community",
+    "title": "Out there with our neighbors",
+    "sub": "Game days, golf outings, galas, TV spots and volunteer days with So Kids Soar and our other partners.",
+    "shown": 12,
+    "items": [
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/1505f568-dcc9-4600-ae82-44665ba3dbeb.jpg",
+        "alt": "A So Kids Soar baseball player with a Panda Exteriors team member at the ballfield"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/8f83a4de-05d8-4b66-8018-048c6fcf5e23.jpg",
+        "alt": "Superheroes on the red carpet at a So Kids Soar event"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/c4fdac8c-7b94-47ac-b801-b3dc71247d41.jpg",
+        "alt": "A young skater with a walker on the ice beside a hockey player in a Panda jersey"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/34343482-10f4-4a4f-8c20-94cbb65d6772.jpg",
+        "alt": "The Panda Exteriors team with the hosts of a TV show on set"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/89b14d92-0b22-40d1-b2c1-86ccecb3a5b3.jpg",
+        "alt": "Three guests in tuxedos on the red carpet at an honors gala"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/99257f53-4e11-4316-b6df-9a1855279dbc.jpg",
+        "alt": "The Eapen Open banner with Panda Exteriors and the event’s sponsors"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/380ec1c0-be12-438a-b776-9c1fd236947d.jpg",
+        "alt": "A TV interview about So Kids Soar, three guests on set"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/cac58c45-5a64-4b41-b7a3-d2863c178226.jpg",
+        "alt": "Students in superhero masks and capes on the So Kids Soar red carpet"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/de34dc54-d561-4919-b652-0720a324bf92.jpg",
+        "alt": "A volunteer pressure-washing a black granite memorial wall"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/252b6798-da48-4091-b5db-315994cb8b5f.jpg",
+        "alt": "The Panda Exteriors team in front of a black granite memorial wall"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/fa96fc36-78d6-40ef-a80b-446855c379da.jpg",
+        "alt": "A Panda Exteriors panel talking to students in a lecture hall"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/e31c1bff-e79c-430f-9fa9-6278b88d7661.jpg",
+        "alt": "Kids in Panda shirts playing mini golf"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/565bece1-3fef-45a0-b8df-f83ce503b0d6.jpg",
+        "alt": "A volunteer group in the woods"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/6ec0d121-3df5-463d-98a0-d86cc9700f33.jpg",
+        "alt": "Hockey players in Panda jerseys heading out to the ice past young fans"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/fb04fcac-9a54-45a7-8530-a3e13d544aae.jpg",
+        "alt": "A talk to a full lecture hall"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/0ab5d18e-6118-4d8e-99bb-951688be2e56.jpg",
+        "alt": "Eapen Open flags lined up beside the golf carts on the course"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/5d8d06d8-968e-4274-8b2c-9b782525b113.jpg",
+        "alt": "A Panda plush beside an event sign on the lawn"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/fc3a098a-11f6-4473-99ac-3b7d50df663e.jpg",
+        "alt": "Guests under a pavilion at a Panda-sponsored cookout"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/0fbe406d-69c4-4315-8332-a6c947b5102a.jpg",
+        "alt": "Volunteers in So Kids Soar visors at a baseball event"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/82873f1c-75bb-4e61-86c9-db1daa79be5f.jpg",
+        "alt": "Two So Kids Soar baseball volunteers at the stadium"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/3e96e3e8-1e29-46d9-9e99-6a7ecf40fea6.jpg",
+        "alt": "So Kids Soar volunteers taking a selfie at the baseball event"
+      },
+      {
+        "src": "/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/2a27faa7-1079-4a32-8748-df75617d4874.jpg",
+        "alt": "A big group with the So Kids Soar banner on the field",
+        "wide": true
+      }
+    ]
+  },
+  "listen": {
+    "eyebrow": "Tune in",
+    "title": "Community DC spotlights Panda Exteriors",
+    "text": "Community DC sits down with Jason Daniel of Panda Exteriors to talk about how the company supports So Kids Soar and gives back through charity-driven events and partnerships.",
+    "embed": "https://www.iheart.com/podcast/800-community-dc-28487500/episode/community-dc-glenda-fu-smith-so-276425697/?embed=true",
+    "source": "800 Community DC on iHeart"
+  },
+  "cta": {
+    "title": "Running a charity event? Let’s team up.",
+    "text": "Our charitable contributions show our commitment to people of all backgrounds, and we bring the same ethics to every roof, solar, siding and gutter project. Reach out to partner with us, or to get a free estimate."
+  }
+}
