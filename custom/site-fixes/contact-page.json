@@ -1,0 +1,32 @@
+{
+  "description": "Contact Panda Exteriors: call (877) 213-8536 for a free estimate, email info@pandaexteriors.com, or reach our offices in Laurel, MD, Dover, DE, Tampa, FL, Marlton, NJ, Charlotte, NC, King of Prussia, PA and Reston, VA.",
+  "hero": {
+    "eyebrow": "Contact us",
+    "title": "Talk to your local Panda team",
+    "sub": "Free estimates, questions about a project or help with a job we’ve done: call our main line, email us, or reach the office nearest you."
+  },
+  "main": {
+    "phone": ["(877) 213-8536", "tel:+18772138536"],
+    "phoneNote": "Free estimates and general questions",
+    "email": "info@pandaexteriors.com",
+    "emailNote": "We reply as soon as we can"
+  },
+  "offices": {
+    "eyebrow": "Our offices",
+    "title": "Seven local offices on the East Coast",
+    "sub": "Call the office nearest you, or get directions to stop by.",
+    "items": [
+      { "id": "maryland", "state": "MD", "name": "Maryland", "city": "Laurel", "hq": true, "street": "14409 Greenview Dr Suite 202", "locality": "Laurel, MD 20708", "phone": "(240) 574-1048", "at": [39.0993, -76.8483], "label": 276 },
+      { "id": "delaware", "state": "DE", "name": "Delaware", "city": "Dover", "street": "8 The Green", "locality": "Dover, DE 19901", "phone": "(302) 358-2444", "at": [39.1567, -75.5268], "label": 254 },
+      { "id": "florida", "state": "FL", "name": "Florida", "city": "Tampa", "street": "4406 W Linebaugh Ave Ste 4", "locality": "Tampa, FL 33624", "phone": "(656) 216-0521", "at": [28.0396, -82.5175], "label": 529 },
+      { "id": "new-jersey", "state": "NJ", "name": "New Jersey", "city": "Marlton", "street": "1 Holtec Dr Suite 201", "locality": "Marlton, NJ 08053", "phone": "(856) 343-4146", "at": [39.9019, -74.9395], "label": 232 },
+      { "id": "north-carolina", "state": "NC", "name": "North Carolina", "city": "Charlotte", "street": "1120 S Tryon St Ste 200", "locality": "Charlotte, NC 28203", "phone": "(980) 223-5623", "at": [35.2196, -80.853], "label": 362 },
+      { "id": "pennsylvania", "state": "PA", "name": "Pennsylvania", "city": "King of Prussia", "street": "660 American Ave Ste 205", "locality": "King of Prussia, PA 19406", "phone": "(484) 224-7623", "at": [40.0944, -75.3941], "label": 210 },
+      { "id": "virginia", "state": "VA", "name": "Virginia", "city": "Reston", "street": "11260 Roger Bacon Dr", "locality": "Reston, VA 20190", "phone": "(571) 451-2773", "at": [38.9521, -77.3372], "label": 298 }
+    ]
+  },
+  "cta": {
+    "title": "Not sure which office to call?",
+    "text": "Call our main line for a free estimate and we’ll connect you with your local team."
+  }
+}
