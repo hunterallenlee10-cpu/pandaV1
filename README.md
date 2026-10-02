@@ -201,7 +201,7 @@ Most of these problems are on the live site too.
   over a WebP copy of its photo. The intro keeps its words (naming Panda Exteriors, not "Panda Contractors") beside a
   rounded photo. Then: **What Affects the Cost of a New Roof** (six cards, no prices: size and pitch, material,
   decking, building code items, who installs it, insurance and financing); **Quality Roof Replacements** (the page's
-  paragraph and three cards, as icon cards, with links to roofing types and financing); **insurance roofing** on
+  paragraph and three cards, as white icon cards on Panda orange, with links to roofing types and financing); **insurance roofing** on
   charcoal green: what storm-damage insurance usually covers and doesn't, how Panda helps with a claim in four steps
   (free storm-damage inspection, deciding whether to file, meeting the adjuster, the new roof and supplements), a note
   that Panda is the homeowner's roofing advocate and not a public adjuster, four of Panda's insurance guides on the

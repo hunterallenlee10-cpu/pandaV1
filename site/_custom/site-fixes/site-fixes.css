@@ -7496,9 +7496,26 @@ a.bde-social-share-button:hover {
   background: #ffffff;
   box-shadow: 0 6px 18px rgba(20, 24, 15, 0.05);
 }
-.pfix-rc .pfix-rc__sec--light .pfix-rc-card {
-  background: var(--rc-bg);
-  box-shadow: none;
+/* "Quality Roof Replacements", on Panda orange (the offers' and solar's band), with the
+   cards in white. */
+.pfix-rc .pfix-rc__sec--orange {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.14), transparent 38%),
+    linear-gradient(120deg, #f26924 0%, #e2531a 100%);
+}
+.pfix-rc .pfix-rc__sec--orange .pfix-rc__eyebrow {
+  color: #ffe6d6;
+}
+.pfix-rc .pfix-rc__sec--orange .pfix-rc__title {
+  color: #ffffff;
+}
+.pfix-rc .pfix-rc__sec--orange .pfix-rc__sub {
+  color: #fff6ef;
+  font-weight: 500;
+}
+.pfix-rc .pfix-rc__sec--orange .pfix-rc-card {
+  border-color: transparent;
+  box-shadow: 0 16px 36px rgba(120, 40, 5, 0.22);
 }
 .pfix-rc .pfix-rc-card__icon {
   display: grid;
@@ -7510,8 +7527,9 @@ a.bde-social-share-button:hover {
   background: #eef6dc;
   color: var(--rc-lime-ink);
 }
-.pfix-rc .pfix-rc__sec--light .pfix-rc-card__icon {
-  background: #ffffff;
+.pfix-rc .pfix-rc__sec--orange .pfix-rc-card__icon {
+  background: #fff1e8;
+  color: var(--rc-orange-ink);
 }
 .pfix-rc .pfix-rc-card__icon svg {
   width: 28px;
