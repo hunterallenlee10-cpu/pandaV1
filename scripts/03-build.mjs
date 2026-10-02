@@ -9,7 +9,7 @@
 // overrides can be listed in .work/page-source-overrides.json ({ "<url>": "raw" }).
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, RENAMED_PATHS, renamedPath, renamePaths, HERO_VIDEO_ID, MEDIA_PAGE } from './lib/config.mjs';
+import { PATHS, SITE_ORIGIN, isSiteUrl, isLocalizableHost, isOriginAlias, REMOVE_SUBSITE_LINKS, CUSTOM_US_MAP, SITE_FIXES, SMOOTH_SCROLL, REMOVED_PAGES, isRemovedPage, removedPageTarget, RENAMED_PATHS, renamedPath, renamePaths, HERO_VIDEO_ID, MEDIA_PAGE, SITE_MAP_PAGE } from './lib/config.mjs';
 import { fetcher } from './lib/fetcher.mjs';
 import { transformHtml, transformCss, transformText } from './lib/transform.mjs';
 import { applyCustomizations, applyHeroVideo, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from './lib/customize.mjs';
@@ -21,6 +21,7 @@ import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-galler
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -478,6 +479,18 @@ writeJson(path.join(OUT, 'serve.json'), {
 });
 writeFile(path.join(OUT, '.nojekyll'), '');
 
+// 4a. The Site Map's list of every page (SITE_MAP_PAGE): from the built pages, the sitemaps
+// and the redirects just written (scripts/lib/site-map-page.mjs).
+let siteMapPage = null;
+if (SITE_MAP_PAGE) {
+  siteMapPage = buildSiteMapPage({ siteDir: OUT, siteOrigin: SITE_ORIGIN });
+  if (siteMapPage) {
+    const rel = path.posix.join(SITE_MAP_PATH.replace(/^\/|\/$/g, ''), 'index.html');
+    put(rel, siteMapPage.html, written.get(rel) || 'custom/site-map');
+    for (const [from, url] of siteMapFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/site-map/${path.basename(from)}`);
+  }
+}
+
 // Vercel reads neither _redirects/_headers nor serve.json, so write vercel.json
 // next to site/ (the repo root): a Git-connected Vercel project then serves the
 // folder as plain static files — no install, no build — with the same rules.
@@ -704,6 +717,7 @@ writeJson(path.join(PATHS.work, 'build-report.json'), {
   jsErrorsLive: jsErrors.length,
   intentionalChanges,
   mediaPage: mediaPage ? { path: MEDIA_PATH, latestPost: mediaPage.post?.href || null, episodes: mediaPage.episodes } : null,
+  siteMapPage: siteMapPage ? { path: SITE_MAP_PATH, pages: siteMapPage.pages, notLinked: siteMapPage.orphans } : null,
   removedPages: removedPages.map((p) => p.url),
   removedPageFiles: [...leftOut].sort(),
   sitemapsEdited,
@@ -743,6 +757,13 @@ if (MEDIA_PAGE) {
       ? `  media page: ${MEDIA_PATH} (latest post ${mediaPage.post?.href || 'none'}; ${mediaPage.episodes} podcast episode(s)); "Media" menu item linked to it on ${menuPages} page(s); ` +
         `podcast player on ${intentionalChanges.filter((c) => c.mediaSections?.length).map((c) => new URL(c.url).pathname).join(', ') || 'no page (no old player found)'}`
       : '  media page: not built (see the warning above)',
+  );
+}
+if (SITE_MAP_PAGE) {
+  console.log(
+    siteMapPage
+      ? `  site map: ${SITE_MAP_PATH} lists ${siteMapPage.pages} page(s); not reachable by clicking: ${siteMapPage.orphans.join(', ') || 'none'}`
+      : '  site map: list not rebuilt (see the warning above)',
   );
 }
 if (removedPages.length) {

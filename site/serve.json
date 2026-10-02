@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/affirm-payment",
+      "destination": "/",
+      "type": 301
+    },
+    {
       "source": "/commerical-roofing",
       "destination": "/commercial-roofing/",
       "type": 301

@@ -37,6 +37,9 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   page's structured data) now says what Panda does (`REPAIR_COPY`). The FAQ answer that recommends a full replacement
   over repairs is kept. Blog posts keep their wording (on request); links in them to the removed page
   became plain words.
+- **Affirm Payment**, removed on request. `/affirm-payment/` was an empty page (only the header and footer; nothing
+  linked to it; it was listed in the sitemap). It is left out the same way (its sitemap entry and the one file only it
+  used go too), and its old address redirects to the home page.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
   page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
 - Admin, login and API URLs, which are never requested.
@@ -82,6 +85,15 @@ no longer works and showed an empty space, its "Listen on Apple Podcasts" badge 
 listing (the old one is gone), and its intro, which described a show about "technology, innovation, and the future",
 is the show's own description from its feed. The episodes are refreshed with `npm run media:podcast` — see
 [`custom/media/README.md`](custom/media/README.md).
+
+**The Site Map lists every page and how to get to it.** The captured `/site-map/` was a hand-kept list that had
+fallen behind (city sub-sites, a removed page, no blog). Its list is now generated from the built site every time it
+is built (`scripts/lib/site-map-page.mjs`, `custom/site-map/`, `SITE_MAP_PAGE=0` to turn off). For each page it shows
+where it sits in the top menu or footer, which blog listing page shows it, or the clicks that lead to it from the home
+page. Pages that can't be reached by clicking are marked. It also shows the pages whose content links to it, whether
+the XML sitemaps list it, and the file it is built from. Below the pages are the old addresses that redirect and the
+addresses the XML sitemaps list that have no page. A search box and filters narrow the list. See
+[`custom/site-map/README.md`](custom/site-map/README.md).
 
 **Problems found in a site audit are fixed** (`scripts/lib/site-fixes.mjs` with `custom/site-fixes/`, applied during
 the build, `SITE_FIXES=0` to turn off). Each fix is a small, targeted edit and the rest of the page stays as captured.
@@ -298,8 +310,8 @@ Most of these problems are on the live site too.
   `custom/blog/`, see [`custom/blog/README.md`](custom/blog/README.md)). `/blog/` was a heading over a lime "Featured"
   card that cut its title off ("…What H...") and six cards a page. It now has a hero with a **search box**, the newest
   post as a large featured card, and every post as a card with its topic, summary, date and read time, 12 at a time
-  with "Load more"; the search and a chip per **topic** narrow the cards as you type or tap, and the address keeps the
-  search. The numbered pages keep their posts in the same design. Each post put its cover picture (which carries the
+  with "Load more" (and a row of links to the numbered pages); the search and a chip per **topic** narrow the cards as
+  you type or tap, and the address keeps the search. The numbered pages keep their posts in the same design. Each post put its cover picture (which carries the
   title, the panda and "READ THE BLOG" in it) behind the heading, so the two titles ran over each other, with the lead
   form filling the rest of the hero (the whole first screen on phones), the article the full width of the page, a
   hidden copy of the hero (a second `h1` and form) and "Related Posts" showing the same three 2023 posts everywhere.
@@ -460,6 +472,8 @@ site/                    the website — deploy this folder
   _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
   _custom/blog/                       the blog's stylesheet and script (copied from custom/blog/)
   media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
+  _custom/site-map/                   the Site Map's stylesheet and script (copied from custom/site-map/)
+  site-map/index.html                 the Site Map; its list of every page is generated (scripts/lib/site-map-page.mjs)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
   robots.txt, sitemap*.xml, feed/     kept verbatim
@@ -489,6 +503,7 @@ custom/past-projects/      "Some of our favorite past projects" and the hero: fa
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 custom/blog/               the blog's design: blog.json (its topics and the listing pages' words), styles, script
+custom/site-map/           the Site Map's list of every page: styles, script (search and filters)
 ```
 
 ## View it locally
@@ -545,7 +560,8 @@ REFRESH=1 bash scripts/capture-all.sh   # fresh capture of the live site
 `.cache/` and `.work/` are not in the repository, so a fresh clone cannot run `03-build.mjs`. After changing
 `custom/` or the site fixes, `npm run update:site` (`node scripts/tools/update-built-site.mjs`, add `--dry-run` to
 preview) applies the site fixes (review carousels and project gallery included), smooth scrolling and the Media menu
-link to the pages already in `site/`, rebuilds the Media page and copies the custom files.
+link to the pages already in `site/`, rebuilds the Media page and the Site Map's list of pages, and copies the custom
+files.
 Each fix gives the same result on a built page as on the page as captured, so the pages come out as a full rebuild
 would make them. The map sections are the exception: only `03-build.mjs` renders them.
 

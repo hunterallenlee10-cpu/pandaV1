@@ -220,14 +220,21 @@ export const SMOOTH_SCROLL = (process.env.SMOOTH_SCROLL ?? (process.env.SITE_ORI
 // leaves the menu item as captured.
 export const MEDIA_PAGE = (process.env.MEDIA_PAGE ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 
+// The Site Map page (/site-map/) lists every page of the copy and how a visitor gets to it
+// (top menu, footer, the clicks from the home page, or nothing), the old addresses that
+// redirect and the sitemap addresses with no page (scripts/lib/site-map-page.mjs,
+// custom/site-map/). SITE_MAP_PAGE=0 leaves the page's list as captured.
+export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
+
 // Pages taken off the copy on request (path prefixes, comma-separated). The owner wants
 // nothing about Panda Interiors / Panda Bath on the site, and /interiors/ is the only
 // page about them; and Panda does not do roof repairs, so /roofing/repairs/ goes too (the
-// rest of the roof-repair wording is handled by scripts/lib/site-fixes.mjs). Removed pages
+// rest of the roof-repair wording is handled by scripts/lib/site-fixes.mjs); and
+// /affirm-payment/ is an empty page (header and footer only, nothing links to it). Removed pages
 // are not built, links to them are removed like the sub-site links, their sitemap entries
 // and the files only they used are left out, and their address redirects to the page in
 // REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs). REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/'))
+export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/'))
   .split(',')
   .map((p) => p.trim())
   .filter(Boolean);

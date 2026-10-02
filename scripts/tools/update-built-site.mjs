@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Applies the site fixes (scripts/lib/site-fixes.mjs, the blog's design among them), smooth
 // scrolling and the "Media" menu link to the pages already built in site/, (re)builds the
-// Media page (/media/, scripts/lib/media-page.mjs), and copies the custom/ files they use
-// into site/_custom/.
+// Media page (/media/, scripts/lib/media-page.mjs) and the Site Map's list of pages
+// (/site-map/, scripts/lib/site-map-page.mjs), and copies the custom/ files they use into
+// site/_custom/.
 //
 // 03-build.mjs rebuilds site/ from the capture cache (.cache/, .work/), which is not in
 // the repository; this updates a checkout that only has site/. The fixes are written to
@@ -14,7 +15,7 @@
 //   node scripts/tools/update-built-site.mjs [--only=/,/roofing/] [--dry-run]
 import fs from 'node:fs';
 import path from 'node:path';
-import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE } from '../lib/config.mjs';
+import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE, SITE_MAP_PAGE } from '../lib/config.mjs';
 import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../lib/customize.mjs';
 import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
@@ -23,6 +24,7 @@ import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-galle
 import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
 import { listFiles, args, writeFile } from '../lib/util.mjs';
 
 const opts = args();
@@ -74,6 +76,19 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
   }
 }
 
+// The Site Map's list of every page, from the pages as they are now (in a dry run, as they
+// were: nothing was written). Rebuilt whenever a page changed, since its links may have.
+let siteMap = null;
+const siteMapFile = path.join(SITE, SITE_MAP_PATH, 'index.html');
+if (SITE_MAP_PAGE && fs.existsSync(siteMapFile)) {
+  siteMap = buildSiteMapPage({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  if (siteMap && fs.readFileSync(siteMapFile, 'utf8') !== siteMap.html) {
+    changed++;
+    if (!dryRun) writeFile(siteMapFile, siteMap.html);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, siteMapFile)} (${siteMap.pages} page(s); not reachable by clicking: ${siteMap.orphans.join(', ') || 'none'})`);
+  }
+}
+
 // The stylesheets and scripts the pages link.
 const files = [
   ...Object.entries(SITE_FIXES_FILES).map(([name, url]) => [path.join(SITE_FIXES_DIR, name), url]),
@@ -82,6 +97,7 @@ const files = [
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
   ...Object.entries(BLOG_FILES).map(([name, url]) => [path.join(BLOG_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
+if (siteMap) files.push(...siteMapFiles());
 // The review wall and the reviews hero on /reviews/: their stylesheet, script and photos
 // (the photos are in the stylesheet, which the list of linked files above doesn't read).
 if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) files.push(...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]));

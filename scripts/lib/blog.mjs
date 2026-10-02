@@ -352,7 +352,14 @@ function listing(posts, page) {
       ? `<div class="pfix-blog-empty" data-pfix-blog-empty hidden><p class="pfix-blog-empty__title">No articles match your search.</p>` +
         `<p>Try another word or topic, or call us at <a href="${PHONE.href}">${PHONE.text}</a> and we’ll answer your question.</p>` +
         `<button type="button" class="pfix-blog-btn pfix-blog-btn--ghost" data-pfix-blog-reset>Show all articles</button></div>` +
-        `<div class="pfix-blog-more"><button type="button" class="pfix-blog-btn" data-pfix-blog-more hidden>Load more articles</button></div>`
+        `<div class="pfix-blog-more"><button type="button" class="pfix-blog-btn" data-pfix-blog-more hidden>Load more articles</button></div>` +
+        // The numbered pages stay one click away (for people who like pages, and so they are
+        // still linked from the blog).
+        `<nav class="pfix-blog-bypage" aria-label="Blog pages"><span class="pfix-blog-bypage__label">Or browse page by page</span><ol>` +
+        Array.from({ length: pages }, (_, i) => i + 1)
+          .map((n) => (n === 1 ? `<li><span class="is-current" aria-current="page">1</span></li>` : `<li><a href="${pageHref(n)}" aria-label="Page ${n}">${n}</a></li>`))
+          .join('') +
+        `</ol></nav>`
       : pager(page, pages) + `<p class="pfix-blog-all"><a href="${BLOG_PATH}#articles">See every article on one page${ICONS.arrow}</a></p>`);
 
   return (

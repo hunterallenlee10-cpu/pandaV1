@@ -21,7 +21,7 @@ page") and the "Call Now" picture, which becomes a real call-and-estimate band.
 - **`/blog/`.** A charcoal-green hero with a search box, the newest post as a large featured card over the hero's lower
   edge, then every post as a card (cover, topic, title, summary, date, read time) under "All articles" with a chip per
   topic and its count. The search and the chips narrow the cards as you type or tap; 12 cards show at a time with
-  "Load more"; the address keeps the search (`/blog/?q=ice+dams&topic=seasonal`), so a search can be shared or reloaded.
+  "Load more", with a row of links to the numbered pages below it; the address keeps the search (`/blog/?q=ice+dams&topic=seasonal`), so a search can be shared or reloaded.
   Without JavaScript every card shows (and the search box, which needs it, is hidden).
 - **`/blog/page/N/`.** The same design with that page's six posts (the same ones WordPress listed there), Newer / Older
   and page links, and a link to every article on one page. Its search box opens `/blog/` with the words typed; its

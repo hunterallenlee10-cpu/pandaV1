@@ -755,6 +755,63 @@ a.pfix-blog-topic.is-active .pfix-blog-topic__n {
   margin-top: 12px;
 }
 
+/* /blog/: every numbered page, under "Load more". */
+.pfix-blog-bypage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-top: 28px;
+}
+.pfix-blog-bypage__label {
+  color: var(--pb-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.pfix-blog .pfix-blog-bypage ol {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.pfix-blog .pfix-blog-bypage li {
+  margin: 0;
+  padding: 0;
+  color: var(--pb-muted) !important;
+  line-height: 1 !important;
+  list-style: none;
+}
+.pfix-blog .pfix-blog-bypage li::marker {
+  content: none;
+}
+.pfix-blog-bypage a,
+.pfix-blog-bypage span.is-current {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border-radius: 999px;
+  color: #4b5348;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.pfix-blog-bypage a:hover {
+  background: #eef1e8;
+  color: var(--pb-ink);
+}
+.pfix-blog-bypage span.is-current {
+  background: var(--pb-dark);
+  color: #ffffff;
+}
+
 /* Page links (/blog/page/N/). */
 .pfix-blog-pager {
   display: flex;
