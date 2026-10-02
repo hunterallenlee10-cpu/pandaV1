@@ -126,6 +126,13 @@
 //    map become a hero with the total donated and a photo collage, the recent gifts, the
 //    organizations, a wall of the gallery's community photos, the podcast and a partner
 //    band (charity-page.mjs, custom/site-fixes/charity-page.json).
+//  - "Limited Time Offers" (the home page, /roofing/, /solar/, /commercial-roofing/,
+//    /siding/, /gutters/, /thank-you/): the flyer pictures ("Spring Savings", a number that
+//    isn't the site's, "Internal Promotion" in the text) become the two offers as the
+//    /offers/ page's coupon cards (offers-page.mjs).
+//  - /gutters/: the hero gets gutter chips and estimate and call buttons (services-hero.mjs);
+//    "Why Work with Our East Coast Exterior Specialists?" (white on lime, and promising
+//    cleaning services Panda doesn't offer) becomes three icon cards (gutters-page.mjs).
 //  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
 //    now has a label, service chips and estimate and call buttons over a WebP copy of the
 //    photo (services-hero.mjs).
@@ -149,7 +156,7 @@ import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
-import { collectOffersPage, collectOfferDetailPage } from './offers-page.mjs';
+import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
@@ -157,7 +164,8 @@ import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
 import { collectContactPage } from './contact-page.mjs';
-import { collectServicesHero } from './services-hero.mjs';
+import { collectServiceHero } from './services-hero.mjs';
+import { collectGuttersPage } from './gutters-page.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -172,7 +180,7 @@ export const SITE_FIXES_FILES = {
   'services-hero.webp': '/_custom/site-fixes/services-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|case-study picture|gallery tile|job details page|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|services page|gutters page|offers band)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -667,6 +675,12 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
     used.js = true;
   }
+  // The "Limited Time Offers" band on seven pages: flyer pictures -> the offers as the
+  // /offers/ page's coupon cards (offers-page.mjs).
+  if (collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
   // /blog/offer/…/: a sharp hero photo and a readable line under the heading (offers-page.mjs).
   if (collectOfferDetailPage(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
 
@@ -1048,8 +1062,11 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     }
   }
 
-  // /services/: the hero gets service chips and estimate and call buttons (services-hero.mjs).
-  if (collectServicesHero(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /services/, /gutters/: the hero gets service chips and estimate and call buttons
+  // (services-hero.mjs).
+  if (collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  // /gutters/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
+  if (collectGuttersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /about/: the hero introduces the company and "Our Mission" is a headline, three points
   // and a photo collage (about-page.mjs).
   if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;

@@ -187,6 +187,19 @@ Most of these problems are on the live site too.
   building, the section's old photo and a "30+ years of combined experience" badge). The two photos are smaller
   copies of photos already on the site (`custom/site-fixes/about-hero.webp`, `about-team.webp`). The lead form
   beside the hero is unchanged.
+- **`/gutters/`**: the hero gets the same treatment as `/services/` (`scripts/lib/services-hero.mjs`): a "Gutters & gutter
+  guards" label, the heading and line, two chips (gutter installation, leading to the services below the hero, and
+  gutter guards, leading to their page) each with a line from the cards below, and estimate and call buttons, over the
+  page's gutter-guard photo darkened behind the text. "Why Work with Our East Coast Exterior Specialists?" was three
+  lime cards with white text (about 1.7:1) and promised "stellar cleaning services", which Panda doesn't offer; it is
+  now three white cards with an icon each and dark text, without the cleaning line (`scripts/lib/gutters-page.mjs`).
+- **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/commercial-roofing/`, `/siding/`, `/gutters/`,
+  `/thank-you/`; `collectOffersStrip` in `scripts/lib/offers-page.mjs`): three flyer pictures with "Spring Savings" and
+  a number that isn't the site's (877 213 1240) baked in, and "Panda Exteriors Internal Promotion" in their text. They
+  are now the two offers as the `/offers/` page's coupon cards (from `custom/site-fixes/offers-page.json`), with a line
+  about no-interest financing and a **See all offers** button. **Claim** picks the offer in the page's estimate form
+  when that form lists the project (on `/solar/` the solar offer picks "Solar panels"); otherwise, and on
+  `/thank-you/`, it opens the offer's page.
 - **`/services/` hero** (`scripts/lib/services-hero.mjs`): "Expert Roofing and Exterior Services" and one line that
   offered windows (not a Panda service) over a 678 KB PNG of a Panda roofer installing solar shingles. It now has an
   "Our services" label, the same heading, the line without windows ("From roofing and siding to solar and gutters…"),

@@ -35,12 +35,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
-import { attr, classes, hasClass, esc, find, headEndOffset } from './html-edit.mjs';
+import { attr, classes, hasClass, esc, find, findAll, textOf, clean, headEndOffset } from './html-edit.mjs';
 
 export const OFFERS_PATH = '/offers/';
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
+// Other names a page's form gives an offer's project (/solar/'s form: "Solar panels").
+const PROJECT_ALIASES = { Solar: ['Solar panels'] };
 
 let data;
 const offersPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'offers-page.json'), 'utf8')));
@@ -88,7 +90,7 @@ function renderHero(page) {
   );
 }
 
-function renderOffers(o, exists) {
+function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, after = '' } = {}) {
   const deal = (d) => {
     const [src, w, h, alt] = d.img;
     return (
@@ -100,14 +102,17 @@ function renderOffers(o, exists) {
       `<p class="pfix-of-deal__text">${esc(d.text)}</p>` +
       `<div class="pfix-of-list" role="list">${d.points.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
       `<div class="pfix-of-deal__actions">` +
-      `<a class="pfix-of-btn pfix-of-btn--primary" href="#${FORM_ID}" data-pfix-project="${esc(d.project)}">${esc(d.cta)}</a>` +
+      (formId && (!pick || pick(d.project))
+        ? `<a class="pfix-of-btn pfix-of-btn--primary" href="#${formId}" data-pfix-project="${esc(pick ? pick(d.project) : d.project)}">${esc(d.cta)}</a>`
+        : `<a class="pfix-of-btn pfix-of-btn--primary" href="${esc(d.href)}">${esc(d.cta)}</a>`) +
       `<a class="pfix-of-link" href="${esc(d.href)}">Offer details${ARROW}</a>` +
       `</div>` +
       `<p class="pfix-of-deal__fine">${esc(d.fine)}</p>` +
       `</div></article>`
     );
   };
-  return section('offers', head('offers', o.eyebrow, o.title, o.intro) + `<div class="pfix-of-deals" role="list">${o.items.map(deal).join('')}</div>`, o.id);
+  const h = top || o;
+  return section('offers', head('offers', h.eyebrow, h.title, h.intro) + `<div class="pfix-of-deals" role="list">${o.items.map(deal).join('')}</div>` + after, top ? '' : o.id);
 }
 
 const renderPromises = (p) =>
@@ -147,6 +152,43 @@ export function renderOffersPage({ siteDir } = {}) {
   const page = offersPage();
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
   return `<div class="pfix-of" data-pfix-of>${renderOffers(page.offers, exists)}${renderPromises(page.promises)}${renderSteps(page.steps, page.cta)}</div>`;
+}
+
+/**
+ * The "Limited Time Offers" band on other pages (the home page, /roofing/, /solar/,
+ * /commercial-roofing/, /siding/, /gutters/, /thank-you/): three flyer pictures with
+ * "Spring Savings" and a number that isn't the site's (877 213 1240) baked in, and "Panda
+ * Exteriors Internal Promotion" in their text. It becomes the two offers as the /offers/
+ * page's coupon cards, with a line about financing and a link to all the offers. "Claim"
+ * picks the offer in the page's estimate form, or opens the offer's page where the form
+ * doesn't list it (or there is none). Rendered again on every run (found by data-pfix-offers-strip).
+ */
+export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes) {
+  if (pathname === OFFERS_PATH) return false;
+  const band = find(doc, (c) => attr(c, 'data-pfix-offers-strip') !== undefined) || find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Offers-Section'));
+  if (!band || ed.overlaps(band.sourceCodeLocation.startOffset, band.sourceCodeLocation.endOffset)) return false;
+  const page = offersPage();
+  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+  // "Claim" picks the offer's project in the page's form when the form has it (the gutter
+  // and siding forms list only their own projects); otherwise it opens the offer's page.
+  const form = find(doc, (c) => attr(c, 'id') === FORM_ID);
+  const formId = form ? FORM_ID : null;
+  const select = form && find(form, (c) => c.tagName === 'select' && attr(c, 'name') === 'project');
+  const projects = new Set(select ? findAll(select, (c) => c.tagName === 'option').map((o) => clean(textOf(o))) : []);
+  // The offer's project, or the name a page's own form gives it.
+  const pick = (project) => [project, ...(PROJECT_ALIASES[project] || [])].find((p) => projects.has(p)) || null;
+  const finance = page.promises.items.find((x) => x.icon === 'card');
+  const after =
+    `<p class="pfix-of-strip__more">` +
+    (finance ? `<span>${ICONS.card}Ask about no-interest financing. <a class="pfix-of-link" href="${esc(finance.href)}">${esc(finance.link)}${ARROW}</a></span>` : '') +
+    `<a class="pfix-of-btn pfix-of-btn--ghost" href="${OFFERS_PATH}">See all offers${ARROW}</a></p>`;
+  const top = { eyebrow: 'Offers', title: 'Limited-Time Offers', intro: page.offers.intro };
+  const block = `<div class="pfix-of pfix-of--strip" data-pfix-offers-strip>${renderOffers(page.offers, exists, { formId, pick, top, after })}</div>`;
+  const { startOffset, endOffset } = band.sourceCodeLocation;
+  if (html.slice(startOffset, endOffset) === block) return true;
+  ed.outer(band, block);
+  changes.push('offers band: the flyer pictures ("Spring Savings", a number that isn\'t the site\'s) -> the two offers as coupon cards, with financing and a link to all offers');
+  return true;
 }
 
 /**
