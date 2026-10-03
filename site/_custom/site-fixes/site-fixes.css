@@ -7830,3 +7830,305 @@ a.bde-social-share-button:hover {
     transition: none;
   }
 }
+
+/* 404.html (not-found-page.mjs): the customer service page's dark hero with the message, a
+   way home and a call button beside a big "4 (house) 4", then links to the main pages as
+   white cards on a light band. */
+.pfix-404 {
+  --nf-ink: #14180f;
+  --nf-muted: #5d6656;
+  --nf-line: #e4e8dc;
+  --nf-bg: #f5f7ef;
+  --nf-orange: #f26924;
+  --nf-lime: #9acd32;
+  --nf-lime-ink: #4d7c0f;
+  --nf-dark: #172015;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: var(--nf-muted);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-404 *,
+.pfix-404 *::before,
+.pfix-404 *::after {
+  box-sizing: border-box;
+}
+.pfix-404 p,
+.pfix-404 h1,
+.pfix-404 h2,
+.pfix-404 ul {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.pfix-404 svg {
+  display: block;
+  flex: none;
+}
+.pfix-404 a:focus-visible {
+  outline: 3px solid var(--nf-orange);
+  outline-offset: 3px;
+}
+.pfix-404 .pfix-404__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero: the message and buttons, the "4 (house) 4" beside them (above them on phones). */
+.pfix-404 .pfix-404__hero {
+  padding: clamp(56px, 8vw, 120px) 0 clamp(56px, 7vw, 104px);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(154, 205, 50, 0.22), transparent 42%),
+    radial-gradient(circle at 0% 100%, rgba(242, 105, 36, 0.24), transparent 40%),
+    linear-gradient(160deg, #222f1e 0%, var(--nf-dark) 62%);
+  color: #c9d3bc;
+}
+.pfix-404 .pfix-404__hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+}
+.pfix-404 .pfix-404__eyebrow {
+  margin-bottom: 14px;
+  color: var(--nf-lime);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-404 .pfix-404__title {
+  color: #fff;
+  /* (!important: the site sets every h1 in .breakdance to 22px on phones) */
+  font-size: clamp(38px, 5.2vw, 66px) !important;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.pfix-404 .pfix-404__sub {
+  max-width: 540px;
+  margin: 20px 0 clamp(28px, 4vw, 40px);
+  font-size: clamp(17px, 1.5vw, 19px);
+}
+.pfix-404 .pfix-404__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.pfix-404 a.pfix-404__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 26px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.pfix-404 a.pfix-404__btn svg {
+  width: 20px;
+  height: 20px;
+}
+.pfix-404 a.pfix-404__btn:hover {
+  transform: translateY(-1px);
+}
+.pfix-404 a.pfix-404__btn--home,
+.pfix-404 a.pfix-404__btn--home:visited {
+  background: var(--nf-lime);
+  color: var(--nf-ink);
+}
+.pfix-404 a.pfix-404__btn--home:hover {
+  background: #b0dc55;
+  color: var(--nf-ink);
+}
+.pfix-404 a.pfix-404__btn--call,
+.pfix-404 a.pfix-404__btn--call:visited {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.pfix-404 a.pfix-404__btn--call:hover {
+  border-color: var(--nf-orange);
+  background: var(--nf-orange);
+  color: #fff;
+}
+
+/* "4 (house) 4": the 0 is a lime disc with a house whose roof lost a shingle. */
+.pfix-404 .pfix-404__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 16px);
+  color: #fff;
+  font-size: clamp(120px, 17vw, 230px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  user-select: none;
+}
+.pfix-404 .pfix-404__code > span:not(.pfix-404__house) {
+  background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.55));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.pfix-404 .pfix-404__house {
+  display: grid;
+  place-items: center;
+  width: 0.78em;
+  height: 0.78em;
+  flex: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #b4e05a, var(--nf-lime) 55%, #7fae22);
+  box-shadow: 0 24px 60px -20px rgba(154, 205, 50, 0.6), inset 0 -6px 0 rgba(0, 0, 0, 0.08);
+}
+.pfix-404 .pfix-404__house-art {
+  width: 74%;
+  height: 74%;
+  overflow: visible;
+}
+.pfix-404 .pfix-404__shingle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pfix-404-shingle 3.2s ease-in-out infinite;
+}
+@keyframes pfix-404-shingle {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-28deg);
+  }
+  50% {
+    transform: translate(-3px, 7px) rotate(-12deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-404 .pfix-404__shingle {
+    animation: none;
+    transform: rotate(-28deg);
+  }
+  .pfix-404 a.pfix-404__btn,
+  .pfix-404 a.pfix-404__link {
+    transition: none;
+  }
+}
+
+/* "Looking for something else?": the main pages as white cards on a light band. */
+.pfix-404 .pfix-404__more {
+  padding: clamp(48px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
+  background: var(--nf-bg);
+}
+.pfix-404 .pfix-404__more-title {
+  margin-bottom: clamp(24px, 3vw, 36px);
+  color: var(--nf-ink);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+}
+.pfix-404 ul.pfix-404__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 20px);
+  /* (!important: the site's list styles indent lists and give them bullets) */
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.pfix-404 ul.pfix-404__links > li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.pfix-404 a.pfix-404__link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  padding: 20px 22px;
+  border: 1px solid var(--nf-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20, 24, 15, 0.04), 0 12px 32px -18px rgba(20, 24, 15, 0.22);
+  color: var(--nf-ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.pfix-404 a.pfix-404__link:hover {
+  border-color: #cfe3a6;
+  box-shadow: 0 1px 2px rgba(20, 24, 15, 0.04), 0 18px 40px -18px rgba(20, 24, 15, 0.3);
+  color: var(--nf-ink);
+  transform: translateY(-2px);
+}
+.pfix-404 .pfix-404__link-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 14px;
+  background: #eef6dc;
+  color: var(--nf-lime-ink);
+}
+.pfix-404 .pfix-404__link-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.pfix-404 .pfix-404__link-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+.pfix-404 .pfix-404__link-text b {
+  font-size: 18px;
+  font-weight: 700;
+}
+.pfix-404 .pfix-404__link-text small {
+  margin-top: 2px;
+  color: var(--nf-muted);
+  font-size: 14.5px;
+}
+.pfix-404 .pfix-404__link-arrow {
+  color: var(--nf-lime-ink);
+  transition: transform 0.2s ease;
+}
+.pfix-404 .pfix-404__link-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+.pfix-404 a.pfix-404__link:hover .pfix-404__link-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 991px) {
+  .pfix-404 .pfix-404__hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-404 .pfix-404__code {
+    order: -1;
+    justify-content: flex-start;
+    font-size: clamp(88px, 24vw, 160px);
+  }
+  .pfix-404 ul.pfix-404__links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .pfix-404 ul.pfix-404__links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-404 a.pfix-404__btn {
+    width: 100%;
+  }
+}

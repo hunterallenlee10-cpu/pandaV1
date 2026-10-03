@@ -296,6 +296,11 @@ Most of these problems are on the live site too.
   reading the reviews, referring a friend (the Refer & Earn page) and the FAQs. The estimate block stays below for new
   customers, headed "Planning a new project?", on the charcoal green of the "About Our Team" blocks (white heading,
   light text, lime "Learn More" button) instead of white.
+- **The 404 page, redesigned** (`scripts/lib/not-found-page.mjs`): `404.html` (what the host shows for an address that
+  doesn't exist) was the header and nothing under it. It now has a dark hero with "Oops! That page doesn't exist.", a
+  line, a lime "Back to the home page" button and a call button for (877) 213-8536, beside a big "4 (house) 4" whose
+  roof has lost a shingle. Under it, "Looking for something else?" links to Roofing, Siding, Gutters, Solar, Past
+  projects and Contact us as white cards.
 - **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
   photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
   truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime
