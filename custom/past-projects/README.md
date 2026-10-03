@@ -21,6 +21,9 @@ didn't show. The page now opens with six of the best-looking jobs instead, then 
 - Six photo cards: each project's type (Residential, Solar, Commercial, Multi-family), its name, a line taken from its
   project page and "View project", which opens the project page. On computers the first project is a large tile with
   the others around it; tablets show two columns and phones one. The photo zooms in a little on hover.
+- "Browse all of our projects": every project page as a card, with Homes / Commercial & multi-family / Solar
+  filters (written by `scripts/lib/project-pages.mjs` from `custom/projects/projects.json`; see
+  [`custom/projects/README.md`](../projects/README.md)).
 - A band with "Get a free estimate" (`/contact-us/`) and a link to the full photo gallery (`/gallery/`).
 - Accessible: the cards are a labelled list of links, each photo has a description, and people who prefer reduced
   motion get no zoom or lift.

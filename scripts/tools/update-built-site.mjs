@@ -22,6 +22,7 @@ import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
 import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from '../lib/review-wall.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs';
+import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
@@ -104,6 +105,9 @@ if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) files.push(...Object.entrie
 // The favorite projects on /past-projects/: their stylesheet and photos (the photos are in
 // srcset attributes, which the list of linked files above doesn't read).
 if (linked.has(PAST_PROJECTS_FILES['past-projects.css'])) files.push(...pastProjectsFiles());
+// The project pages, their rows and the list of every project: stylesheet, script and photos
+// (in srcset attributes too).
+if (linked.has(PROJECTS_FILES['projects.css'])) files.push(...projectsFiles());
 // Everything the Media page and the Podcast page's player use (their pictures are in
 // src/srcset/poster attributes).
 const mediaUsed = media || linked.has(MEDIA_FILES['media.js']);

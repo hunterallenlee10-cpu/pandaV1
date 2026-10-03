@@ -26,6 +26,7 @@ import { collectSiteFixes, SITE_FIXES_FILES } from './site-fixes.mjs';
 import { REVIEWS_FILES } from './reviews.mjs';
 import { REVIEW_WALL_FILES } from './review-wall.mjs';
 import { PROJECT_GALLERY_FILES } from './project-gallery.mjs';
+import { PROJECTS_FILES } from './project-pages.mjs';
 import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-projects.mjs';
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
 import { BLOG_FILES } from './blog.mjs';
@@ -194,7 +195,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
     if (widget) {
       const list = find(doc, (c) => attr(c, 'id') === 'projectsListData');
       // With the site fixes: the favorite projects above the map, not the list of all of them.
-      ed.outer(widget, (fixes ? renderFavorites() : '') + explorerBlock(uid()));
+      ed.outer(widget, (fixes ? renderFavorites(siteDir) : '') + explorerBlock(uid()));
       changes.map.push('Google Maps projects widget -> interactive US map');
       const cards = list ? projectCards(list) : [];
       if (fixes) {
@@ -243,6 +244,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixAssets.reviewWall) assets += css(REVIEW_WALL_FILES['review-wall.css']) + js(REVIEW_WALL_FILES['review-wall.js']);
   if (fixAssets.gallery) assets += css(PROJECT_GALLERY_FILES['project-gallery.css']) + js(PROJECT_GALLERY_FILES['project-gallery.js']);
   if (favorites || fixAssets.pastProjects) assets += css(PAST_PROJECTS_FILES['past-projects.css']);
+  if (favorites || fixAssets.projects) assets += css(PROJECTS_FILES['projects.css']) + js(PROJECTS_FILES['projects.js']);
   if (mediaAssets) assets += css(MEDIA_FILES['media.css']) + js(MEDIA_FILES['media.js']);
   if (fixAssets.blog) assets += css(BLOG_FILES['blog.css']) + js(BLOG_FILES['blog.js']);
   if (smoothScroll) assets += css(SMOOTH_SCROLL_FILES['smooth-scroll.css']) + js(SMOOTH_SCROLL_FILES['lenis.min.js']) + js(SMOOTH_SCROLL_FILES['smooth-scroll.js']);
