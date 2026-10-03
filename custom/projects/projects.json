@@ -1,0 +1,769 @@
+{
+  "archive": {
+    "id": "all-projects",
+    "eyebrow": "Every project",
+    "title": "Browse all of our projects",
+    "intro": "Homes, businesses, apartment communities and solar roofs: pick a type, or open any project for its story and photos.",
+    "filters": [
+      [
+        "all",
+        "All"
+      ],
+      [
+        "homes",
+        "Homes"
+      ],
+      [
+        "commercial",
+        "Commercial & multi-family"
+      ],
+      [
+        "solar",
+        "Solar"
+      ]
+    ]
+  },
+  "related": {
+    "eyebrow": "Keep exploring",
+    "title": "More projects you might like",
+    "more": [
+      "See all past projects",
+      "/past-projects/#all-projects"
+    ]
+  },
+  "cta": {
+    "title": "Want results like these on your home or building?",
+    "text": "Tell us about your project and we’ll come out for a free, no-pressure estimate.",
+    "button": [
+      "Get a free estimate",
+      "/contact-us/"
+    ]
+  },
+  "strips": {
+    "/roofing/residential/": {
+      "title": "Recent residential roofing projects",
+      "intro": "A few of the homes our crews have re-roofed lately. Open one to see the photos.",
+      "projects": [
+        "panda-ext-11425",
+        "panda-ext-14513",
+        "panda-ext-14098",
+        "panda-ext-14532"
+      ]
+    },
+    "/roofing/replacement/": {
+      "title": "Recent roof replacements",
+      "intro": "From tear-off to the last ridge cap: see how our crews replace a roof, start to finish.",
+      "projects": [
+        "roof-replacement",
+        "roof-replacement-2",
+        "roof-replacement-gutter-guards",
+        "panda-ext-11531"
+      ]
+    },
+    "/roofing/types/": {
+      "title": "See these roofs on real homes",
+      "intro": "Tile, architectural shingles and solar shingles, as our crews installed them.",
+      "projects": [
+        "spanish-tile",
+        "roof-replacement",
+        "panda-ext-15321"
+      ]
+    },
+    "/commercial-roofing/": {
+      "title": "Recent commercial roofing projects",
+      "intro": "Medical facilities, apartment communities, rooftop terraces and our own headquarters.",
+      "projects": [
+        "linear-accelerator-roof-replacement",
+        "brookfield-properties",
+        "expert-tpo-roofing",
+        "chapel-branch-apartments"
+      ]
+    },
+    "/commercial-roofing/roof-replacement/": {
+      "title": "Commercial roof replacements we’ve completed",
+      "intro": "See how our GAF Presidential Master Elite team replaces roofs on working buildings.",
+      "projects": [
+        "linear-accelerator-roof-replacement",
+        "panda-exteriors-hq",
+        "chapel-branch-apartments"
+      ]
+    },
+    "/commercial-roofing/roof-types/": {
+      "title": "These roof systems on real buildings",
+      "intro": "TPO, SBS torch-down and more, installed by our commercial crews.",
+      "projects": [
+        "expert-tpo-roofing",
+        "brookfield-properties",
+        "linear-accelerator-roof-replacement"
+      ]
+    },
+    "/solar/": {
+      "title": "See a GAF solar roof we installed",
+      "intro": "Solar shingles that protect the home and power it, installed in under three days.",
+      "projects": [
+        "panda-ext-15321"
+      ]
+    },
+    "/solar/gaf-solar-roof/": {
+      "title": "A GAF Timberline Solar roof we installed",
+      "intro": "About 7 kW of clean power from shingles you can hardly tell apart from the rest of the roof.",
+      "projects": [
+        "panda-ext-15321"
+      ]
+    },
+    "/gutters/gutter-guards/": {
+      "title": "Gutter guards on a real home",
+      "intro": "A full roof replacement, finished with gutter guards to keep the leaves out.",
+      "projects": [
+        "roof-replacement-gutter-guards"
+      ]
+    }
+  },
+  "projects": [
+    {
+      "slug": "linear-accelerator-roof-replacement",
+      "title": "Linear Accelerator Roof Replacement",
+      "tag": "Commercial",
+      "group": "commercial",
+      "summary": "A new roof for a hospital’s second linear accelerator facility, where precision matters.",
+      "body": [
+        "Panda Exteriors proudly completed the roof replacement for a state-of-the-art second Linear Accelerator facility.",
+        "Our GAF Presidential Master Elite team installed a high-performance roofing system, ensuring durability and precision for this critical medical infrastructure, and worked carefully around the rooftop equipment, piping and walkways the building depends on.",
+        "You can trust Panda for top-tier commercial roofing solutions across the East Coast."
+      ],
+      "facts": [
+        [
+          "Building",
+          "Medical treatment facility"
+        ],
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Crew",
+          "GAF Presidential Master Elite team"
+        ]
+      ],
+      "service": [
+        "Commercial roof replacement",
+        "/commercial-roofing/roof-replacement/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/19-Dec-12-2024-03_02am-7DWo.jpg",
+      "position": "50% 40%",
+      "alt": "Panda crew in high-visibility vests working on the facility’s roof",
+      "photos": [
+        "/wp-content/uploads/2025/07/19-Dec-12-2024-03_02am-7DWo.jpg",
+        "/wp-content/uploads/2025/07/14-Dec-12-2024-01_55am-e6rD.jpg",
+        "/wp-content/uploads/2025/07/45-Apr-10-2025-09_37pm-i8Ke.jpg",
+        "/wp-content/uploads/2025/07/47-Apr-10-2025-09_37pm-pbjr.jpg",
+        "/wp-content/uploads/2025/07/42-Apr-10-2025-09_27pm-D9j1.jpg",
+        "/wp-content/uploads/2025/07/39-Apr-10-2025-09_26pm-bh1J.jpg",
+        "/wp-content/uploads/2025/07/34-Apr-10-2025-09_24pm-XCnn.jpg",
+        "/wp-content/uploads/2025/07/33-Apr-10-2025-09_23pm-XVai.jpg",
+        "/wp-content/uploads/2025/07/31-Apr-10-2025-09_23pm-PQ5H.jpg",
+        "/wp-content/uploads/2025/07/23-Mar-07-2025-12_46am-bdWn.jpg"
+      ]
+    },
+    {
+      "slug": "brookfield-properties",
+      "title": "Brookfield Properties",
+      "tag": "Commercial",
+      "group": "commercial",
+      "summary": "A 2-ply SBS torch-down roof installed under a paver terrace, with the pavers set back in place.",
+      "body": [
+        "Our team replaced this building’s roofing system with a durable 2-ply SBS torch-down membrane.",
+        "We carefully removed the existing pavers, installed the new roofing system across the entire elevation, and reinstalled the pavers. The worksite was kept clean with daily debris removal, and the work is backed by a two-year contractor warranty.",
+        "Any pavers damaged along the way were replaced from the existing stock on the main roof."
+      ],
+      "facts": [
+        [
+          "System",
+          "2-ply SBS torch-down membrane"
+        ],
+        [
+          "Scope",
+          "Pavers removed and reinstalled"
+        ],
+        [
+          "Cleanup",
+          "Daily debris removal"
+        ],
+        [
+          "Warranty",
+          "2-year contractor warranty"
+        ]
+      ],
+      "service": [
+        "Commercial roof types",
+        "/commercial-roofing/roof-types/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/22-Aug-09-2024-03_14am-FUCJ-1-scaled.jpg",
+      "position": "50% 60%",
+      "alt": "Finished paver terrace on the building’s roof after the new SBS membrane went in",
+      "photos": [
+        "/wp-content/uploads/2025/07/45-Aug-28-2024-04_15am-Qv1Q-scaled.jpg",
+        "/wp-content/uploads/2025/07/51-Aug-28-2024-05_32am-qkFt-scaled.jpg",
+        "/wp-content/uploads/2025/07/28-Aug-26-2024-12_21am-UcHY-scaled.jpg",
+        "/wp-content/uploads/2025/07/36-Aug-27-2024-04_02am-kn5V-scaled.jpg",
+        "/wp-content/uploads/2025/07/22-Aug-09-2024-03_14am-FUCJ-1-scaled.jpg",
+        "/wp-content/uploads/2025/07/1-Aug-09-2024-02_22am-io94-scaled.jpg",
+        "/wp-content/uploads/2025/07/6-Aug-09-2024-02_23am-4HwG-scaled.jpg"
+      ]
+    },
+    {
+      "slug": "expert-tpo-roofing",
+      "title": "Expert TPO Roofing",
+      "tag": "Commercial",
+      "group": "commercial",
+      "summary": "A bright white TPO system over tapered insulation, finished in just two days.",
+      "body": [
+        "Transform your commercial property with Panda Exteriors’ cutting-edge TPO roofing solution. For this project, our GAF Presidential Master Elite team installed a premium .060 white TPO roofing system, featuring tapered Q Panels insulation, R-10 Polyiso insulation and Den-deck cover board for optimal drainage and durability.",
+        "We included flashing for the parapet walls and scuppers, walkway pads at the entrance, and daily debris removal. Backed by a one-year contractor warranty and a 20-year manufacturer warranty, this project ensures long-lasting protection.",
+        "Completed in just two days: trust Panda Exteriors for seamless, high-quality roofing."
+      ],
+      "facts": [
+        [
+          "System",
+          ".060 white TPO"
+        ],
+        [
+          "Insulation",
+          "Tapered Q Panels, R-10 Polyiso, Den-deck cover board"
+        ],
+        [
+          "Time on site",
+          "2 days"
+        ],
+        [
+          "Warranty",
+          "1-year contractor, 20-year manufacturer"
+        ]
+      ],
+      "service": [
+        "Commercial roofing",
+        "/commercial-roofing/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/down-net_http20250709-96-yidm03-scaled.jpg",
+      "position": "50% 45%",
+      "alt": "New white TPO rooftop with a city skyline and a cathedral in the background",
+      "photos": [
+        "/wp-content/uploads/2025/07/down-net_http20250709-70-rpl92v-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-122-gisi51-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-108-6rl95u-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-96-yidm03-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-138-e3gu1x-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-93-nmqqfk-scaled.jpg",
+        "/wp-content/uploads/2025/07/down-net_http20250709-85-ozg25g-scaled.jpg"
+      ]
+    },
+    {
+      "slug": "panda-exteriors-hq",
+      "title": "Panda Exteriors HQ",
+      "tag": "Commercial",
+      "group": "commercial",
+      "summary": "Our own Maryland headquarters, re-roofed by the only team we trust: ours.",
+      "body": [
+        "When it was time to replace the roof on our Maryland HQ, we turned to the only team we trust — our own!",
+        "From inspection to installation, our crew brought the same care and craftsmanship we give every homeowner. Check out the transformation in the video and see our team in action."
+      ],
+      "facts": [
+        [
+          "Building",
+          "Our headquarters"
+        ],
+        [
+          "Location",
+          "Maryland"
+        ],
+        [
+          "Work",
+          "Full roof replacement"
+        ]
+      ],
+      "service": [
+        "Commercial roof replacement",
+        "/commercial-roofing/roof-replacement/"
+      ],
+      "video": {
+        "id": "B8HSoz6pnM0",
+        "title": "Panda Exteriors Headquarters Roof Replacement"
+      },
+      "cover": "/wp-content/uploads/2025/07/DJI_20250722134618_0999_D.jpg",
+      "position": "50% 60%",
+      "alt": "Drone view of the Panda Exteriors headquarters building with its new roof",
+      "photos": [
+        "/wp-content/uploads/2025/07/DJI_20250722134707_0004_D.jpg",
+        "/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg",
+        "/wp-content/uploads/2025/07/DJI_20250722134549_0997_D.jpg",
+        "/wp-content/uploads/2025/07/DJI_20250722134618_0999_D.jpg"
+      ]
+    },
+    {
+      "slug": "chapel-branch-apartments",
+      "title": "Chapel Branch Apartments",
+      "tag": "Multi-family",
+      "group": "commercial",
+      "summary": "A multi-building apartment community, roofed by our GAF Presidential Master Elite team.",
+      "body": [
+        "Panda Exteriors is thrilled to contribute to the Chapel Branch Apartments, a multi-building roofing project.",
+        "Building One is complete, and Buildings Two and Three followed, with our GAF Presidential Master Elite team ensuring top-quality craftsmanship and durability on every roof.",
+        "Trust Panda Exteriors for exceptional roofing solutions across the East Coast."
+      ],
+      "facts": [
+        [
+          "Property",
+          "Apartment community"
+        ],
+        [
+          "Scope",
+          "Three buildings, new construction"
+        ],
+        [
+          "Crew",
+          "GAF Presidential Master Elite team"
+        ]
+      ],
+      "service": [
+        "Commercial roofing",
+        "/commercial-roofing/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/10-Jul-14-2025-03_23pm-Qrvs.jpg",
+      "position": "50% 30%",
+      "alt": "New three-story apartment building at Chapel Branch, seen from a freshly shingled roof",
+      "photos": [
+        "/wp-content/uploads/2025/07/1-Jun-24-2025-09_32am-Qg47-scaled.jpg",
+        "/wp-content/uploads/2025/07/2-Jul-12-2025-02_36pm-yUzG.jpg",
+        "/wp-content/uploads/2025/07/3-Jul-14-2025-07_57am-5LCD.jpg",
+        "/wp-content/uploads/2025/07/4-Jul-14-2025-08_58am-pm3u-scaled.jpg",
+        "/wp-content/uploads/2025/07/5-Jul-14-2025-09_45am-7WgH.jpg",
+        "/wp-content/uploads/2025/07/6-Jul-14-2025-02_51pm-n5g1-scaled.jpg",
+        "/wp-content/uploads/2025/07/7-Jul-14-2025-02_54pm-SsVL-scaled.jpg",
+        "/wp-content/uploads/2025/07/8-Jul-14-2025-02_59pm-CVeg-scaled.jpg",
+        "/wp-content/uploads/2025/07/9-Jul-14-2025-03_21pm-z5uh-scaled.jpg",
+        "/wp-content/uploads/2025/07/10-Jul-14-2025-03_23pm-Qrvs.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-15321",
+      "title": "GAF Timberline Solar Roof",
+      "tag": "Solar",
+      "group": "solar",
+      "ref": "Project 15321",
+      "summary": "Solar shingles that protect the home and make about 7 kW of clean power.",
+      "body": [
+        "Step into the future of home improvement with this transformative solar roofing project. Our team at Panda Exteriors expertly installed GAF Timberline Solar shingles, combining superior roof protection with power generation.",
+        "This system, featuring the world’s first nailable solar shingles, was completed in under three days. Each shingle works double duty, as both a protective roofing element and a power generator, so the solar blends into the roof instead of sitting on top of it.",
+        "Designed for a 2,000–2,500 square foot home, the system delivers approximately 7 kW of clean energy, significantly reducing the homeowner’s energy costs while keeping the home’s architecture intact. It is more than a roof replacement: an investment in sustainable living, backed by comprehensive warranty coverage."
+      ],
+      "facts": [
+        [
+          "Product",
+          "GAF Timberline Solar shingles"
+        ],
+        [
+          "System size",
+          "About 7 kW"
+        ],
+        [
+          "Home size",
+          "2,000–2,500 sq ft"
+        ],
+        [
+          "Time on site",
+          "Under 3 days"
+        ]
+      ],
+      "service": [
+        "GAF solar roofs",
+        "/solar/gaf-solar-roof/"
+      ],
+      "video": {
+        "id": "vnYnJAHZRp8",
+        "title": "GAF Solar Shingles Installation"
+      },
+      "cover": "/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg",
+      "position": "50% 45%",
+      "alt": "Home with three dormers and a dark GAF Timberline Solar shingle roof",
+      "photos": [
+        "/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg",
+        "/wp-content/uploads/2025/05/item_5cfe91f4-9b37-4055-bd93-fb8229cdb085.jpg",
+        "/wp-content/uploads/2025/05/item_19ea236e-ea45-4c67-b09d-85ae2170d35c.jpg",
+        "/wp-content/uploads/2025/05/item_621dce2d-ce84-412c-bef7-cb7f2eed6540.jpg",
+        "/wp-content/uploads/2025/05/item_47b6199e-9677-4d0d-a9b2-eb0474d32c28.jpg",
+        "/wp-content/uploads/2025/05/item_6c34585c-b132-422f-a83f-3833ff8c2599.jpg",
+        "/wp-content/uploads/2025/05/item_365962e8-638f-4055-b621-fa8b23f83e8f.jpg",
+        "/wp-content/uploads/2025/05/item_888a096a-fda6-4f8b-888d-ce6121b0b245.jpg"
+      ]
+    },
+    {
+      "slug": "spanish-tile",
+      "title": "Spanish Tile Roof",
+      "tag": "Residential",
+      "group": "homes",
+      "summary": "A classic red tile roof that gives this two-story home its warm, timeless look.",
+      "body": [
+        "Spanish tile gives a home a warm, timeless look, and it takes a careful crew to install it well. On this two-story home our team laid the classic red tile around every hip, valley and skylight.",
+        "The photos follow the job from the old roof and bare decking to the finished tile."
+      ],
+      "facts": [
+        [
+          "Home",
+          "Two-story single-family"
+        ],
+        [
+          "Roof",
+          "Red Spanish tile"
+        ],
+        [
+          "Work",
+          "Full roof replacement"
+        ]
+      ],
+      "service": [
+        "Roof types and materials",
+        "/roofing/types/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/Website-Map-7-May-22-2025-05_46am-iYjP.jpg",
+      "position": "50% 55%",
+      "alt": "Aerial view of a two-story home with a new red Spanish tile roof, surrounded by autumn trees",
+      "photos": [
+        "/wp-content/uploads/2025/07/Website-Map-6-May-22-2025-04_22am-tg7o.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-5-May-22-2025-04_21am-NpDB.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-7-May-22-2025-05_46am-iYjP.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-8-May-22-2025-05_46am-TbSZ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-1-Sep-29-2024-08_59pm-HMXJ-scaled.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-2-Sep-30-2024-01_50am-UdHa-scaled.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-3-Sep-30-2024-01_50am-XnUc-scaled.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-4-Sep-30-2024-01_51am-nrmi-scaled.jpg"
+      ]
+    },
+    {
+      "slug": "roof-replacement-gutter-guards",
+      "title": "Roof Replacement & Gutter Guards",
+      "tag": "Residential",
+      "group": "homes",
+      "summary": "New architectural shingles, plus gutter guards to keep leaves and debris out.",
+      "body": [
+        "This hillside home got a complete roof replacement. Our crew tore the old shingles off down to the decking, laid new underlayment and installed GAF Timberline architectural shingles, with new pipe boots and flashing at every vent and chimney.",
+        "To finish, we added gutter guards, so the leaves from the surrounding trees stay out of the gutters and the rain keeps flowing."
+      ],
+      "facts": [
+        [
+          "Home",
+          "Single-family, hillside lot"
+        ],
+        [
+          "Roof",
+          "GAF Timberline architectural shingles"
+        ],
+        [
+          "Extras",
+          "Gutter guards, new pipe boots and flashing"
+        ]
+      ],
+      "service": [
+        "Gutter guards",
+        "/gutters/gutter-guards/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/Website-Map-12-Jul-08-2025-09_15am-BcLM.jpg",
+      "position": "50% 35%",
+      "alt": "Freshly installed gray shingle roof overlooking a green hillside neighborhood",
+      "photos": [
+        "/wp-content/uploads/2025/07/Website-Map-1-May-19-2025-09_59am-g9NW.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-2-May-19-2025-09_59am-pnJn.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-3-May-19-2025-10_03am-p2QQ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-4-Jul-04-2025-02_06pm-TVfN.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-5-Jul-04-2025-02_06pm-Kytj.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-6-Jul-04-2025-02_20pm-z3oQ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-12-Jul-08-2025-09_15am-BcLM.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-13-Jul-08-2025-09_15am-8n3a.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-11-Jul-08-2025-09_15am-KuFX.jpg"
+      ]
+    },
+    {
+      "slug": "roof-replacement",
+      "title": "Colonial Home Roof Replacement",
+      "tag": "Residential",
+      "group": "homes",
+      "summary": "Worn shingles off, new architectural shingles on, with the landscaping protected throughout.",
+      "body": [
+        "The shingles on this two-story colonial had reached the end of their life. Our crew stripped the roof down to the decking, covered the shrubs and garden beds with tarps to protect them, and installed new architectural shingles over fresh underlayment.",
+        "The new roof covers every slope, from the main ridges to the bay window over the front door, with clean, straight lines."
+      ],
+      "facts": [
+        [
+          "Home",
+          "Two-story colonial"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Work",
+          "Tear-off and full replacement"
+        ]
+      ],
+      "service": [
+        "Roof replacement",
+        "/roofing/replacement/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/Website-Map-10-Jul-01-2025-06_20am-QHvN.jpg",
+      "position": "50% 50%",
+      "alt": "New gray architectural shingle roof on a colonial home, with the neighborhood behind it",
+      "photos": [
+        "/wp-content/uploads/2025/07/Website-Map-1-May-27-2025-07_35am-F1Db.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-2-May-27-2025-07_45am-jMJF.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-3-May-27-2025-07_46am-ndqJ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-4-May-27-2025-07_51am-CzYQ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-5-Jun-25-2025-09_20pm-qoLB.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-6-Jun-25-2025-09_21pm-1eyG.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-7-Jul-01-2025-06_20am-YKqL.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-8-Jul-01-2025-06_20am-7KcJ.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-10-Jul-01-2025-06_20am-QHvN.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-11-Jul-01-2025-06_20am-HVdN.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-12-Jul-01-2025-06_21am-BY7w.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-9-Jul-01-2025-06_20am-8MoR.jpg"
+      ]
+    },
+    {
+      "slug": "roof-replacement-2",
+      "title": "Ranch Home Roof Replacement",
+      "tag": "Residential",
+      "group": "homes",
+      "summary": "Faded, worn shingles and tired decking replaced with a fresh new roof.",
+      "body": [
+        "The old shingles on this ranch home were faded and worn, and once they came off, some of the decking underneath showed its age too.",
+        "Our crew replaced the damaged decking and installed a brand-new shingle roof, giving the home a clean, refreshed look from the street."
+      ],
+      "facts": [
+        [
+          "Home",
+          "Single-story ranch"
+        ],
+        [
+          "Roof",
+          "Asphalt shingles"
+        ],
+        [
+          "Work",
+          "Tear-off, decking repairs and full replacement"
+        ]
+      ],
+      "service": [
+        "Roof replacement",
+        "/roofing/replacement/"
+      ],
+      "cover": "/wp-content/uploads/2025/07/Website-Map-6-Jun-04-2025-05_14pm-5SYS.jpg",
+      "position": "50% 60%",
+      "alt": "Ranch home with a new tan shingle roof, a garage and a wooded lot",
+      "photos": [
+        "/wp-content/uploads/2025/07/Website-Map-1-May-24-2025-11_34am-TyCg.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-2-May-24-2025-11_36am-ibu6.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-3-Jun-04-2025-09_19am-XQuX.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-4-Jun-04-2025-09_19am-5HjX.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-5-Jun-04-2025-05_14pm-bHXV.jpg",
+        "/wp-content/uploads/2025/07/Website-Map-6-Jun-04-2025-05_14pm-5SYS.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-11425",
+      "title": "Roof Replacement",
+      "ref": "Project 11425",
+      "tag": "Roof replacement",
+      "group": "homes",
+      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
+      "body": [
+        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
+        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
+      ],
+      "facts": [
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Photos",
+          "Drone views of finished roofs"
+        ]
+      ],
+      "service": [
+        "Residential roofing",
+        "/roofing/residential/"
+      ],
+      "cover": "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
+      "position": "50% 50%",
+      "alt": "Drone view of townhomes with new gray shingle roofs",
+      "photos": [
+        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
+        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
+        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-11531",
+      "title": "Roof Replacement",
+      "ref": "Project 11531",
+      "tag": "Roof replacement",
+      "group": "homes",
+      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
+      "body": [
+        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
+        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
+      ],
+      "facts": [
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Photos",
+          "Drone views of finished roofs"
+        ]
+      ],
+      "service": [
+        "Residential roofing",
+        "/roofing/residential/"
+      ],
+      "cover": "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
+      "position": "50% 50%",
+      "alt": "Drone view of a white multi-story building and the neighborhood around it",
+      "photos": [
+        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
+        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
+        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-14098",
+      "title": "Roof Replacement",
+      "ref": "Project 14098",
+      "tag": "Roof replacement",
+      "group": "homes",
+      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
+      "body": [
+        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
+        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
+      ],
+      "facts": [
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Photos",
+          "Drone views of finished roofs"
+        ]
+      ],
+      "service": [
+        "Residential roofing",
+        "/roofing/residential/"
+      ],
+      "cover": "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+      "position": "50% 50%",
+      "alt": "Drone view of a white home with a new dark shingle roof and a backyard patio",
+      "photos": [
+        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
+        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-14513",
+      "title": "Roof Replacement",
+      "ref": "Project 14513",
+      "tag": "Roof replacement",
+      "group": "homes",
+      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
+      "body": [
+        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
+        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
+      ],
+      "facts": [
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Photos",
+          "Drone views of finished roofs"
+        ]
+      ],
+      "service": [
+        "Residential roofing",
+        "/roofing/residential/"
+      ],
+      "cover": "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+      "position": "50% 50%",
+      "alt": "Drone view from above of a home with a new gray shingle roof and a back deck",
+      "photos": [
+        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
+        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
+        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg"
+      ]
+    },
+    {
+      "slug": "panda-ext-14532",
+      "title": "Roof Replacement",
+      "ref": "Project 14532",
+      "tag": "Roof replacement",
+      "group": "homes",
+      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
+      "body": [
+        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
+        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
+      ],
+      "facts": [
+        [
+          "Work",
+          "Full roof replacement"
+        ],
+        [
+          "Roof",
+          "Architectural asphalt shingles"
+        ],
+        [
+          "Photos",
+          "Drone views of finished roofs"
+        ]
+      ],
+      "service": [
+        "Residential roofing",
+        "/roofing/residential/"
+      ],
+      "cover": "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
+      "position": "50% 50%",
+      "alt": "Drone view of a home with a new dark shingle roof and a fenced backyard",
+      "photos": [
+        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
+        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
+        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
+        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg"
+      ]
+    }
+  ]
+}

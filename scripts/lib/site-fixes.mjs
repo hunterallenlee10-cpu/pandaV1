@@ -157,6 +157,11 @@
 //    a featured post and cards; posts get a title header with the cover shown whole, a
 //    readable column beside a sidebar ("On this page", a free-estimate card), call-and-estimate
 //    bands, share links and "Keep reading" (blog.mjs, custom/blog/).
+//  - The project pages (/blog/project/…/): a title strip over full-size photos, seven with
+//    no words, nine linked from nowhere but the Site Map; a hero, the story beside "At a
+//    glance", a photo grid with a viewer and more projects, plus a "Recent projects" row on
+//    the service pages each belongs to and every project listed on /past-projects/
+//    (project-pages.mjs, custom/projects/).
 //  - Typos in headings and labels.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -184,6 +189,7 @@ import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
 import { collectBlogPages } from './blog.mjs';
+import { collectProjectPage, collectProjectStrip } from './project-pages.mjs';
 
 export const SITE_FIXES_DIR = path.join(ROOT, 'custom', 'site-fixes');
 export const SITE_FIXES_FILES = {
@@ -202,7 +208,7 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post|not found page|legal page)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -645,7 +651,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
-  const used = { css: false, js: false, reviews: false, reviewWall: false, gallery: false, pastProjects: false, blog: false };
+  const used = { css: false, js: false, reviews: false, reviewWall: false, gallery: false, pastProjects: false, blog: false, projects: false };
   // (Scripts inside a block another fix replaces, such as a blog post's hero, go with it.)
   const inlineScripts = (re) =>
     findAll(doc, (c) => c.tagName === 'script' && !attr(c, 'src') && re.test(rawText(c))).filter(
@@ -708,6 +714,16 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /terms-and-conditions/, /privacy-policy/: full-width text with white-on-white lists; a hero
   // and numbered sections beside a menu (legal-page.mjs, custom/site-fixes/legal-pages.json).
   if (collectLegalPage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /blog/project/…/: a hero, the story beside "At a glance", a photo grid that opens the
+  // project gallery's viewer and more projects, in place of a title strip over full-size
+  // photos (project-pages.mjs, custom/projects/). First too.
+  if (collectProjectPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.projects = true;
+    used.gallery = true;
+  }
+  // Service pages: a "Recent projects" row above the testimonials, so every project page is
+  // linked where it belongs (project-pages.mjs).
+  if (collectProjectStrip(doc, html, ed, { pathname, siteDir }, changes)) used.projects = true;
   // /roofing-costs/: what affects the cost, the quality cards as icon cards, insurance roofing,
   // questions and the offers band (roofing-costs-page.mjs). First too, so the fixes below
   // leave the lime band it replaces be.
@@ -757,7 +773,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // /past-projects/: the grid of every project -> six favorites above the map
   // (past-projects.mjs; a full build puts them there while it adds the map, customize.mjs).
-  if (renderPastProjects(doc, html, ed, { pathname }, changes)) used.pastProjects = true;
+  if (renderPastProjects(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.pastProjects = true;
+    used.projects = true;
+  }
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
   // every .swiper, stepping every 2.5 s) -> a gliding row. Its class names change so that

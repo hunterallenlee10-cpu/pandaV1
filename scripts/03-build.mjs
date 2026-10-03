@@ -19,6 +19,7 @@ import { REVIEWS_DIR, REVIEWS_FILES } from './lib/reviews.mjs';
 import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from './lib/review-wall.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-gallery.mjs';
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
+import { projectsFiles, PROJECTS_DIR } from './lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
@@ -286,12 +287,19 @@ if (fixPages.some((c) => c.siteFixes.some((f) => /^reviews page:/.test(f)))) {
   put(REVIEW_WALL_DATA.replace(/^\//, ''), reviewWallJson(), 'custom/reviews/google-reviews.json');
 }
 const galleryPages = fixPages.filter((c) => c.siteFixes.some((f) => /^project gallery:/.test(f)));
-if (galleryPages.length) {
+// (The project pages open their photos in the gallery's viewer too.)
+const projectPages = fixPages.filter((c) => c.siteFixes.some((f) => /^(project page|project row|favorite projects):/.test(f)));
+if (galleryPages.length || projectPages.length) {
   for (const [name, url] of Object.entries(PROJECT_GALLERY_FILES)) put(url.replace(/^\//, ''), fs.readFileSync(path.join(PROJECT_GALLERY_DIR, name)), `custom/project-gallery/${name}`);
 }
 // The favorite projects and hero on /past-projects/ (custom/past-projects/: stylesheet and photos).
 if (fixPages.some((c) => c.siteFixes.some((f) => /^favorite projects( hero)?:/.test(f)))) {
   for (const [from, url] of pastProjectsFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/past-projects/${path.relative(PAST_PROJECTS_DIR, from).split(path.sep).join('/')}`);
+}
+// The project pages, their rows on the service pages and the list on /past-projects/
+// (custom/projects/: stylesheet, script and photos).
+if (projectPages.length) {
+  for (const [from, url] of projectsFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/projects/${path.relative(PROJECTS_DIR, from).split(path.sep).join('/')}`);
 }
 // The blog's stylesheet and script (custom/blog/).
 if (fixPages.some((c) => c.siteFixes.some((f) => /^blog (listing|post):/.test(f)))) {

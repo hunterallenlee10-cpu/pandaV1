@@ -349,6 +349,25 @@ Most of these problems are on the live site too.
   buttons. A link to one question (`/faqs/#faq-solar-2`) opens it. Without JavaScript the search is hidden and the
   accordions still work. The page also gets FAQPage structured data for search engines. The questions and answers
   are the page's own (one missing full stop added); edit them in the JSON and run `npm run update:site`.
+- **The project pages, redesigned and linked where they belong** (the 15 pages under `/blog/project/`;
+  `scripts/lib/project-pages.mjs` with `custom/projects/`, see [`custom/projects/README.md`](custom/projects/README.md)).
+  Each was a title strip ("Projects - Panda Ext-11425") over a blurred photo, then the project's photos at full size
+  one under another (some 2,560 px and half a megabyte each); seven had no words at all, and nine (Brookfield
+  Properties, Linear Accelerator Roof Replacement, the five "Panda Ext-…" pages and two of the three titled just "Roof
+  Replacement") were linked from nowhere but the Site Map. Each page now has a hero on the site's dark green
+  (breadcrumb, the project's type, its name, a line about it, an estimate button and a button down to the photos,
+  beside its best photo), the project's story beside an "At a glance" card (what was done, materials, warranty, time on
+  site, the related service page, estimate and call buttons), its video where it has one, the photos as a grid (resized
+  copies, a tenth of the weight) that opens the project gallery's photo viewer, three more projects and a closing
+  estimate band. Pages that had only a job number or "Roof Replacement" get a clearer name (in the tab and share
+  previews too: "Roof Replacement (Project 11425)", "Colonial Home Roof Replacement", "Ranch Home Roof Replacement");
+  pages with words keep them (Brookfield's proposal wording is now in the past tense, and the solar page no longer
+  promises the 30% federal tax credit). Every project is now reachable in context: `/past-projects/` lists all of them
+  under the favorites ("Browse all of our projects", with Homes / Commercial & multi-family / Solar filters), and the
+  service pages each belongs to show it in a "Recent projects" row above their testimonials (`/roofing/residential/`,
+  `/roofing/replacement/`, `/roofing/types/`, the three commercial pages, `/solar/`, `/solar/gaf-solar-roof/`,
+  `/gutters/gutter-guards/`). The Site Map now finds no page that can't be reached by clicking. The five "Panda Ext-…"
+  pages share the same four or five drone photos (as on the live site), so each shows a different one as its cover.
 - **The blog, redesigned** (`/blog/`, its 15 numbered pages and all 93 posts; `scripts/lib/blog.mjs` with
   `custom/blog/`, see [`custom/blog/README.md`](custom/blog/README.md)). `/blog/` was a heading over a lime "Featured"
   card that cut its title off ("…What H...") and six cards a page. It now has a hero with a **search box**, the newest
@@ -503,6 +522,7 @@ site/                    the website — deploy this folder
                                       custom/reviews/), and review-wall.json, the reviews the wall loads
   _custom/project-gallery/            the project gallery's stylesheet and script (copied from custom/project-gallery/)
   _custom/past-projects/              the favorite projects' stylesheet and photos (copied from custom/past-projects/)
+  _custom/projects/                   the project pages' stylesheet, script and photos (copied from custom/projects/)
   _custom/smooth-scroll/              Lenis and its setup, for smooth scrolling (copied from custom/smooth-scroll/)
   _custom/media/                      the Media page's stylesheet, script and podcast pictures (copied from custom/media/)
   _custom/blog/                       the blog's stylesheet and script (copied from custom/blog/)
@@ -535,6 +555,7 @@ custom/reviews/            the review carousel (reviews.json: the reviews it sho
                            (google-reviews.json: the Google reviews and rating), styles, scripts
 custom/project-gallery/    the "Our Project Gallery" section: styles, script
 custom/past-projects/      "Some of our favorite past projects" and the hero: favorites.json (projects, hero photo), photos, styles
+custom/projects/           the project pages, their rows on service pages and the list of every project: projects.json, photos, styles, script
 custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet and the site's setup
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 custom/blog/               the blog's design: blog.json (its topics and the listing pages' words), styles, script

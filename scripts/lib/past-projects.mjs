@@ -16,6 +16,10 @@
 // custom/past-projects/favorites.json. The photos are resized copies (custom/past-projects/photos/, made by
 // scripts/tools/past-projects-photos.mjs), about a tenth of the originals' weight.
 //
+// Under the favorites, "Browse all of our projects" lists every project page with type
+// filters (renderArchive in project-pages.mjs, custom/projects/), so none is left linked
+// from the Site Map alone.
+//
 // Applied in two places, so a full build and an update of a built page agree:
 //  - customize.mjs, while it turns the page's Google Maps widget into the US map (full
 //    build, with SITE_FIXES on): the showcase goes above the map, the hidden project
@@ -27,6 +31,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { hasClass, esc, find, findAll, attr, classes, startTag, headEndOffset } from './html-edit.mjs';
+import { renderArchive } from './project-pages.mjs';
 
 export const PAST_PROJECTS_DIR = path.join(ROOT, 'custom', 'past-projects');
 export const PAST_PROJECTS_FILES = { 'past-projects.css': '/_custom/past-projects/past-projects.css' };
@@ -84,8 +89,8 @@ function card(p, i) {
   );
 }
 
-/** The showcase section. */
-export function renderFavorites() {
+/** The showcase section, with every project listed under the favorites (project-pages.mjs). */
+export function renderFavorites(siteDir) {
   const f = favorites();
   const cta = f.cta;
   return (
@@ -95,6 +100,7 @@ export function renderFavorites() {
     `${f.intro ? `<p class="ppx__intro">${esc(f.intro)}</p>` : ''}</div>` +
     // divs with list roles: the site's stylesheet forces bullets and colours on every ul/li.
     `<div class="ppx__grid" role="list">${f.projects.map(card).join('')}</div>` +
+    renderArchive(siteDir) +
     (cta
       ? `<div class="ppx__cta"><div class="ppx__cta-text"><p class="ppx__cta-title">${esc(cta.title)}</p>${cta.text ? `<p>${esc(cta.text)}</p>` : ''}</div>` +
         `<div class="ppx__cta-actions"><a class="ppx__btn" href="${esc(cta.button[1])}">${esc(cta.button[0])}</a>` +
@@ -104,7 +110,7 @@ export function renderFavorites() {
     `</section>`
   );
 }
-export const favoritesNote = () => `favorite projects: ${favorites().projects.length} hand-picked projects above the map (was a grid of every project)`;
+export const favoritesNote = () => `favorite projects: ${favorites().projects.length} hand-picked projects and every project under them, above the map (was a grid of every project)`;
 
 // ----------------------------------------------------------------- hero
 // The photo goes in custom properties on the hero (read by past-projects.css), so it is
@@ -158,13 +164,13 @@ function renderHero(doc, html, ed, changes) {
  * -> the showcase, above the map (or a showcase already there rendered again). Returns
  * true when the page has either.
  */
-export function renderPastProjects(doc, html, ed, { pathname }, changes) {
+export function renderPastProjects(doc, html, ed, { pathname, siteDir }, changes) {
   if (pathname !== PAST_PROJECTS_PATH) return false;
   const hero = renderHero(doc, html, ed, changes);
-  return renderShowcase(doc, html, ed, changes) || hero;
+  return renderShowcase(doc, html, ed, changes, siteDir) || hero;
 }
-function renderShowcase(doc, html, ed, changes) {
-  const html2 = renderFavorites();
+function renderShowcase(doc, html, ed, changes, siteDir) {
+  const html2 = renderFavorites(siteDir);
   const current = find(doc, (c) => c.tagName === 'section' && hasClass(c, 'ppx'));
   if (current) {
     if (html.slice(current.sourceCodeLocation.startOffset, current.sourceCodeLocation.endOffset) !== html2) {
