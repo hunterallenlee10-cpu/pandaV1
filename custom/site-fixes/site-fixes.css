@@ -8132,3 +8132,524 @@ a.bde-social-share-button:hover {
     width: 100%;
   }
 }
+
+/* /terms-and-conditions/ (legal-page.mjs): the customer service page's dark hero with three
+   cards (STOP, HELP, rates), then the terms in a white card on a light band beside an
+   "On this page" menu that follows you down the page. */
+.pfix-legal {
+  --lg-ink: #14180f;
+  --lg-text: #3f463a;
+  --lg-muted: #5d6656;
+  --lg-line: #e4e8dc;
+  --lg-bg: #f5f7ef;
+  --lg-orange: #f26924;
+  --lg-orange-ink: #c2410c;
+  --lg-lime: #9acd32;
+  --lg-lime-ink: #4d7c0f;
+  --lg-dark: #172015;
+  display: block;
+  width: 100%;
+  color: var(--lg-text);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.pfix-legal *,
+.pfix-legal *::before,
+.pfix-legal *::after {
+  box-sizing: border-box;
+}
+.pfix-legal p,
+.pfix-legal h1,
+.pfix-legal h2 {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+.pfix-legal ul,
+.pfix-legal ol {
+  /* (!important: the site's list styles indent lists and give them bullets) */
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+.pfix-legal li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  /* (!important: the site makes every list item white, 2-line-high and a plain list item:
+     what hid the terms' lists, white on white) */
+  color: inherit !important;
+  line-height: inherit !important;
+}
+.pfix-legal svg {
+  display: block;
+  flex: none;
+}
+.pfix-legal a:focus-visible {
+  outline: 3px solid var(--lg-orange);
+  outline-offset: 3px;
+}
+.pfix-legal .pfix-legal__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero */
+.pfix-legal .pfix-legal__hero {
+  padding: clamp(52px, 7vw, 96px) 0 clamp(48px, 6vw, 80px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(154, 205, 50, 0.22), transparent 42%),
+    radial-gradient(circle at 0% 100%, rgba(242, 105, 36, 0.24), transparent 40%),
+    linear-gradient(160deg, #222f1e 0%, var(--lg-dark) 62%);
+  color: #c9d3bc;
+}
+.pfix-legal .pfix-legal__eyebrow {
+  margin-bottom: 12px;
+  color: var(--lg-lime);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-legal .pfix-legal__title {
+  color: #fff;
+  /* (!important: the site sets every h1 in .breakdance to 22px on phones) */
+  font-size: clamp(36px, 4.8vw, 60px) !important;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.pfix-legal .pfix-legal__sub {
+  max-width: 620px;
+  margin: 18px 0 clamp(28px, 4vw, 40px);
+  font-size: clamp(17px, 1.5vw, 19px);
+}
+.pfix-legal ul.pfix-legal__glance {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.pfix-legal .pfix-legal__glance li {
+  display: flex !important;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 16px 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.pfix-legal .pfix-legal__glance-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(154, 205, 50, 0.16);
+  color: var(--lg-lime);
+}
+.pfix-legal .pfix-legal__glance li:first-child .pfix-legal__glance-icon {
+  background: rgba(242, 105, 36, 0.2);
+  color: #ff8a4c;
+}
+.pfix-legal .pfix-legal__glance-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.pfix-legal .pfix-legal__glance li > span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+.pfix-legal .pfix-legal__glance b {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.pfix-legal .pfix-legal__glance small {
+  color: #b7c2a9;
+  font-size: 14.5px;
+}
+
+/* The terms beside the menu */
+.pfix-legal .pfix-legal__body {
+  padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
+  background: var(--lg-bg);
+}
+.pfix-legal .pfix-legal__layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.pfix-legal .pfix-legal__side {
+  position: sticky;
+  /* below the fixed header (top bar and menu, 152 px) */
+  top: 176px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (max-height: 759.98px) {
+  .pfix-legal .pfix-legal__side {
+    position: static;
+  }
+}
+.pfix-legal .pfix-legal__toc {
+  padding: 20px 12px 12px;
+  border: 1px solid var(--lg-line);
+  border-radius: 20px;
+  background: #fff;
+}
+.pfix-legal .pfix-legal__toc-title {
+  margin: 0 12px 10px;
+  color: var(--lg-muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-legal .pfix-legal__toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  color: var(--lg-ink);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.pfix-legal .pfix-legal__toc a span {
+  flex: none;
+  color: var(--lg-lime-ink);
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.pfix-legal .pfix-legal__toc a:hover {
+  background: #eef6dc;
+  color: var(--lg-ink);
+}
+.pfix-legal .pfix-legal__help {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #222f1e 0%, var(--lg-dark) 70%);
+  color: #c9d3bc;
+}
+.pfix-legal .pfix-legal__help-title {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.pfix-legal .pfix-legal__help-text {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+.pfix-legal a.pfix-legal__help-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.pfix-legal a.pfix-legal__help-link span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.pfix-legal a.pfix-legal__help-link svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-legal a.pfix-legal__help-link:hover {
+  border-color: var(--lg-lime);
+  background: rgba(154, 205, 50, 0.12);
+  color: #fff;
+}
+.pfix-legal a.pfix-legal__help-link--call {
+  border-color: var(--lg-orange);
+  background: var(--lg-orange);
+}
+.pfix-legal a.pfix-legal__help-link--call:hover {
+  border-color: #e2531a;
+  background: #e2531a;
+}
+
+/* The document */
+.pfix-legal .pfix-legal__doc {
+  min-width: 0;
+  padding: clamp(24px, 4vw, 52px);
+  border: 1px solid var(--lg-line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20, 24, 15, 0.04), 0 18px 48px -28px rgba(20, 24, 15, 0.25);
+}
+.pfix-legal .pfix-legal__notice {
+  display: flex;
+  gap: 16px;
+  margin-bottom: clamp(32px, 4vw, 44px);
+  padding: 20px 22px;
+  border: 1px solid #fbd5bf;
+  border-left: 4px solid var(--lg-orange);
+  border-radius: 14px;
+  background: #fff6f0;
+}
+.pfix-legal .pfix-legal__notice-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  background: #ffe4d3;
+  color: var(--lg-orange-ink);
+}
+.pfix-legal .pfix-legal__notice-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.pfix-legal .pfix-legal__notice-title {
+  margin-bottom: 4px;
+  color: var(--lg-orange-ink);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-legal .pfix-legal__notice p:last-child {
+  color: #4a3a30;
+  font-size: 16px;
+}
+.pfix-legal .pfix-legal__sec {
+  scroll-margin-top: 176px;
+  padding: clamp(26px, 3vw, 34px) 0;
+  border-top: 1px solid var(--lg-line);
+}
+.pfix-legal .pfix-legal__sec:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+.pfix-legal .pfix-legal__sec-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: var(--lg-ink);
+  font-size: clamp(22px, 2.3vw, 27px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+.pfix-legal .pfix-legal__num {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 12px;
+  background: #eef6dc;
+  color: var(--lg-lime-ink);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.pfix-legal .pfix-legal__sec-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 54px;
+  font-size: 16.5px;
+  line-height: 1.7;
+}
+.pfix-legal .pfix-legal__sec-body a {
+  color: var(--lg-lime-ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.pfix-legal .pfix-legal__sec-body a:hover {
+  color: var(--lg-ink);
+}
+.pfix-legal kbd {
+  display: inline-block;
+  padding: 1px 9px;
+  border: 1px solid #d6dccb;
+  border-bottom-width: 3px;
+  border-radius: 8px;
+  background: #f8faf4;
+  color: var(--lg-ink);
+  font-family: inherit;
+  font-size: 0.9em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  box-shadow: none;
+}
+.pfix-legal ul.pfix-legal__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px !important;
+  border-radius: 16px;
+  background: var(--lg-bg);
+}
+.pfix-legal .pfix-legal__list li {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--lg-ink) !important;
+}
+.pfix-legal .pfix-legal__check {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--lg-lime);
+  color: #fff;
+}
+.pfix-legal .pfix-legal__check svg {
+  width: 14px;
+  height: 14px;
+}
+.pfix-legal a.pfix-legal__related {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(8px, 1vw, 12px);
+  padding: 20px 22px;
+  border: 1px solid var(--lg-line);
+  border-radius: 18px;
+  background: var(--lg-bg);
+  color: var(--lg-ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.pfix-legal a.pfix-legal__related:hover {
+  border-color: #cfe3a6;
+  background: #eef6dc;
+  color: var(--lg-ink);
+}
+.pfix-legal .pfix-legal__related-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--lg-lime-ink);
+}
+.pfix-legal .pfix-legal__related-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.pfix-legal .pfix-legal__related-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+.pfix-legal .pfix-legal__related-text small {
+  color: var(--lg-muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-legal .pfix-legal__related-text b {
+  font-size: 18px;
+  font-weight: 800;
+}
+.pfix-legal .pfix-legal__related-text > span {
+  color: var(--lg-muted);
+  font-size: 15px;
+}
+.pfix-legal .pfix-legal__related-arrow {
+  color: var(--lg-lime-ink);
+  transition: transform 0.2s ease;
+}
+.pfix-legal .pfix-legal__related-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+.pfix-legal a.pfix-legal__related:hover .pfix-legal__related-arrow {
+  transform: translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-legal a,
+  .pfix-legal .pfix-legal__related-arrow {
+    transition: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .pfix-legal .pfix-legal__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-legal .pfix-legal__side {
+    position: static;
+  }
+  /* The menu above the terms; the questions card after them. */
+  .pfix-legal .pfix-legal__side {
+    display: contents;
+  }
+  .pfix-legal .pfix-legal__help {
+    order: 2;
+  }
+  .pfix-legal .pfix-legal__toc ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .pfix-legal ul.pfix-legal__glance {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-legal .pfix-legal__toc ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-legal .pfix-legal__sec-body {
+    padding-left: 0;
+  }
+  .pfix-legal .pfix-legal__notice {
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .pfix-legal .pfix-legal__doc {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+  .pfix-legal ul.pfix-legal__list {
+    padding: 16px !important;
+  }
+}
