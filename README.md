@@ -296,6 +296,20 @@ Most of these problems are on the live site too.
   reading the reviews, referring a friend (the Refer & Earn page) and the FAQs. The estimate block stays below for new
   customers, headed "Planning a new project?", on the charcoal green of the "About Our Team" blocks (white heading,
   light text, lime "Learn More" button) instead of white.
+- **The 404 page, redesigned** (`scripts/lib/not-found-page.mjs`): `404.html` (what the host shows for an address that
+  doesn't exist) was the header and nothing under it. It now has a dark hero with "Oops! That page doesn't exist.", a
+  line, a lime "Back to the home page" button and a call button for (877) 213-8536, beside a big "4 (house) 4" whose
+  roof has lost a shingle. Under it, "Looking for something else?" links to Roofing, Siding, Gutters, Solar, Past
+  projects and Contact us as white cards.
+- **`/terms-and-conditions/`, redesigned** (`scripts/lib/legal-page.mjs`; the words are in
+  `custom/site-fixes/legal-pages.json`, applied with `npm run update:site`): the page used the Site Map's layout, so the
+  terms ran the full width of the screen over a stray lime glow, and its two lists ("To participate, you must:" and "By
+  signing up, you confirm that you are:") were white on white (a site-wide rule makes every list item white), showing
+  as blank space. It now opens with a dark hero: the heading, a line and three cards for what most people come for
+  (reply STOP, reply HELP, message and data rates may apply). The terms follow in a white card on a light band, beside an
+  "On this page" menu that stays in view and a "Questions about these terms?" card (call, email): the opening paragraph
+  as a "Please read carefully" notice, the seven sections numbered, the lists with check marks, STOP and HELP shown as
+  keys, and a link to the Privacy Policy at the end. The wording of the terms is unchanged.
 - **`/charity-and-community/`, redesigned** (`scripts/lib/charity-page.mjs`; the words, gifts, organizations and
   photos are in `custom/site-fixes/charity-page.json`, applied with `npm run update:site`): the page was a blown-up
   truck photo with the heading over the truck's own logo, two short paragraphs beside a list of four gifts, a lime

@@ -1,0 +1,84 @@
+{
+  "/terms-and-conditions/": {
+    "eyebrow": "Legal · Text message service",
+    "title": "Terms and Conditions",
+    "sub": "The terms of use for the text message (SMS) service provided by Panda Exteriors.",
+    "glance": [
+      ["stop", "STOP", "Reply STOP to any message to opt out at any time."],
+      ["help", "HELP", "Reply HELP to any message for assistance."],
+      ["rates", "Rates", "Message and data rates may apply."]
+    ],
+    "notice": {
+      "title": "Please read carefully",
+      "html": "The following Terms and Conditions of use govern your participation in the text message service / SMS provided by Panda Exteriors. These Terms and Conditions incorporate the terms and conditions of use for / and contain an arbitration clause, a class action waiver, and other important information about your rights and obligations, as well as limitations and exclusions that may apply to you."
+    },
+    "sections": [
+      {
+        "id": "how-it-works",
+        "title": "How It Works",
+        "blocks": [
+          "All new and existing subscribers will receive text messages (SMS/MMS) to their mobile number. These messages may include questions about your request or service, special offers, coupons, or other relevant information. After signing up, you may be asked to reply to confirm your mobile phone number. Messages are sent using automated technology to the number provided at the time of enrollment.",
+          "Participation is not required to purchase any goods or services from Panda Exteriors. Message and data rates may apply based on your wireless carrier plan.",
+          "Panda Exteriors provides this service on an \"as-is\" basis. The service may not be available in all areas or at all times, especially in the event of product, software, or carrier changes beyond our control."
+        ]
+      },
+      {
+        "id": "participant-requirements",
+        "title": "Participant Requirements",
+        "blocks": [
+          "To participate, you must:",
+          [
+            "Own a mobile device capable of sending and receiving text messages;",
+            "Use a participating wireless (cellular) carrier;",
+            "Be a wireless service subscriber with active text messaging services."
+          ],
+          "Not all carriers support the service. Check with your carrier to confirm compatibility."
+        ]
+      },
+      {
+        "id": "user-eligibility",
+        "title": "User Eligibility",
+        "blocks": [
+          "By signing up, you confirm that you are:",
+          [
+            "At least 18 years of age;",
+            "Authorized to enroll the mobile phone number submitted;",
+            "Responsible for any mobile message or data charges incurred as a result of participation."
+          ],
+          "Submitting your enrollment or replying to confirm participation affirms your compliance with the above criteria."
+        ]
+      },
+      {
+        "id": "opt-out-and-help",
+        "title": "Opt-Out & Help",
+        "blocks": [
+          "You may opt out of receiving text messages at any time by replying <kbd>STOP</kbd> to any message you receive. For assistance, reply <kbd>HELP</kbd>."
+        ]
+      },
+      {
+        "id": "message-costs",
+        "title": "Message Costs",
+        "blocks": [
+          "Standard messaging and data rates may apply for each message sent or received, based on your mobile subscription agreement. Panda Exteriors is not responsible for any messaging charges or applicable taxes."
+        ]
+      },
+      {
+        "id": "privacy-policy",
+        "title": "Review our Privacy Policy",
+        "blocks": [
+          "All data collected via the messaging service is subject to our <a href=\"/privacy-policy/\">Privacy Policy</a>. By participating, you agree to the terms outlined therein."
+        ]
+      },
+      {
+        "id": "release-of-claims",
+        "title": "Release of Claims & No Warranties",
+        "blocks": [
+          "By participating in the text message program, you agree to release and hold harmless Panda Exteriors, its SMS vendor, participating wireless carriers, and all their respective agents, employees, and affiliates (“Released Parties”) from any and all liability, loss, or damages arising from your use of the service.",
+          "Released Parties make no warranties regarding the performance or reliability of the service. All services are provided “as-is” without warranties of any kind, including implied warranties of merchantability or fitness for a particular purpose.",
+          "Released Parties are not responsible for technical issues including, but not limited to, transmission errors, delays, service interruptions, unauthorized access, or damage to user devices resulting from participation in this service."
+        ]
+      }
+    ],
+    "related": ["Privacy Policy", "How we collect, use and protect your information.", "/privacy-policy/"]
+  }
+}
