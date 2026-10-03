@@ -138,7 +138,7 @@
 //    charcoal green it has on other pages (roofing-page.mjs); signs it's time for a new roof,
 //    what goes into every new roof and questions go under the services (service-pages.mjs);
 //    "What Makes Our Roofers Stand Out?" (lime headings on lime) becomes icon cards on Panda
-//    orange (gutters-page.mjs).
+//    orange (gutters-page.mjs). /commercial-roofing/ gets the same "Our Process".
 //  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
 //    now has a label, service chips and estimate and call buttons over a WebP copy of the
 //    photo (services-hero.mjs).
@@ -218,7 +218,7 @@ export const SITE_FIXES_FILES = {
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|roofing page|commercial roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -741,8 +741,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
     used.js = true;
   }
-  // /roofing/: "Our Process" as a numbered timeline and "About Our Team" on charcoal green
-  // (roofing-page.mjs). First too, so the typo fixes below leave the process section be.
+  // /roofing/, /commercial-roofing/: "Our Process" as a numbered timeline; /roofing/: "About
+  // Our Team" on charcoal green (roofing-page.mjs). First too, so the typo fixes below leave the process section be.
   if (collectRoofingPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
@@ -934,6 +934,26 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push(`about section colors: charcoal green background, lime button (white on lime was hard to read) (${about.length})`);
     used.css = true;
   }
+
+  // The white version of "About Our Team" (/roofing/, /roofing/types/, /reviews/, /faqs/): its
+  // styled h2 was empty, with the words in a bare h2 inside it (in the page as captured; a
+  // browser shows them as a second, unstyled h2 in the system font). The words go into the
+  // styled h2, and the bare one (and the stray end tag) go.
+  let aboutHeadings = 0;
+  for (const col of findAll(doc, (c) => hasClass(c, 'Local-text-col') && ancestors(c).some((a) => hasClass(a, 'Request-Container')))) {
+    const styled = col.childNodes.find((c) => c.tagName === 'h2' && hasClass(c, 'heading'));
+    const bare = styled && col.childNodes.find((c) => c.tagName === 'h2' && !c.attrs.length && clean(textOf(c)));
+    if (!bare || clean(textOf(styled))) continue;
+    const from = styled.sourceCodeLocation.startOffset;
+    let to = bare.sourceCodeLocation.endOffset;
+    const stray = /^\s*<\/h2>/.exec(html.slice(to));
+    if (stray) to += stray[0].length;
+    if (ed.overlaps(from, to)) continue;
+    const tag = html.slice(styled.sourceCodeLocation.startTag.startOffset, styled.sourceCodeLocation.startTag.endOffset);
+    ed.replace(from, to, `${tag}${esc(clean(textOf(bare)))}</h2>`);
+    aboutHeadings++;
+  }
+  if (aboutHeadings) changes.push(`about heading: "About Our Team" in the block's styled heading (was in a second, unstyled h2) (${aboutHeadings})`);
 
   // "Request an Appointment" (the "About Our Team" block's version on /offers/): its paragraph
   // was printed twice, one copy under the other -> once.

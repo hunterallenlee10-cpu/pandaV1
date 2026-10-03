@@ -260,6 +260,16 @@ Most of these problems are on the live site too.
   a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
   the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
   charcoal green it has on the other pages, with the heading in the styled h2.
+- **`/commercial-roofing/`'s "Our Process"** (the same section and words as `/roofing/`'s) gets the same numbered
+  timeline on charcoal green (`scripts/lib/roofing-page.mjs`).
+- **"About Our Team" headings** (the block's white version on `/roofing/`, `/roofing/types/`, `/reviews/` and `/faqs/`):
+  the styled heading was empty and the words sat in a second, bare h2 in the browser's system font; they now go in the
+  styled heading (`site-fixes.mjs`, "about heading").
+- **Section headings of "Testimonials" (17 pages) and "Our Project Gallery" (7 pages)**: both were in the browser's
+  system font at medium weight, unlike every other section heading, and the gallery's heading and line were white on
+  Panda lime (about 1.9:1). Both now use the site's section heading (Roboto, extra bold, dark ink) under a small label
+  ("Customer reviews", "Our work"), the testimonials heading centred at every width, and the gallery's line is dark
+  without its text shadow (`custom/site-fixes/site-fixes.css`; the lime band, tabs and photos are unchanged).
 - **`/siding/`** (hero in `scripts/lib/services-hero.mjs`, cards in `scripts/lib/gutters-page.mjs`): the hero's heading was
   a plain block (the page had no h1) over a 262 KB PNG. It now has the same treatment as `/services/` and `/gutters/`: a
   "Siding" label, the heading as the page's h1, the line, chips for fiber cement and vinyl (leading to the comparison

@@ -1,24 +1,26 @@
-// The Roofing page (/roofing/): the sections its other modules don't cover.
+// The Roofing page (/roofing/): the sections its other modules don't cover, and "Our Process"
+// on /commercial-roofing/ too.
 //
-//  - "Our Process": three blue boxes with centred white text beside the heading and
+//  - "Our Process" (/roofing/, /commercial-roofing/, the same section and words): three blue boxes with centred white text beside the heading and
 //    paragraph, over a faded Panda mascot (the section's background picture), with no way to
 //    act on it. It becomes a charcoal-green band like the other redesigned pages' "how it
 //    works": the heading, paragraph and estimate and call buttons on the left, the three
 //    steps as a numbered timeline on the right. The words are the section's own; it keeps
 //    its id (process-section).
 //  - "About Our Team" (the lead form above the footer) was the white version of the block,
-//    with a navy button and its heading in a second, unstyled h2 (the styled one was empty):
-//    it gets the charcoal green the block has on the other pages (the classes
-//    /customer-service/'s estimate block uses, site-fixes.css), and the heading goes into
-//    the styled h2.
+//    with a navy button: it gets the charcoal green the block has on the other pages (the
+//    classes /customer-service/'s estimate block uses, site-fixes.css). Its heading, in a
+//    second, unstyled h2, is fixed with the other pages' (site-fixes.mjs, "about heading").
 //
 // The hero is services-hero.mjs's; the "Signs it's time", "What goes into every new roof"
 // and questions sections are service-pages.mjs's; "What Makes Our Roofers Stand Out?" is
 // gutters-page.mjs's. Applied by site-fixes.mjs; rendered again on every run (found by its
 // own class).
-import { hasClass, classes, esc, find, textOf, clean } from './html-edit.mjs';
+import { hasClass, classes, esc, find } from './html-edit.mjs';
 
 export const ROOFING_PATH = '/roofing/';
+// The pages with "Our Process".
+const PROCESS_PATHS = [ROOFING_PATH, '/commercial-roofing/'];
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
@@ -26,7 +28,6 @@ const PROCESS_ID = 'process-section';
 // The "About Our Team" block's classes: the dark version's text and button colors, and the
 // dark background and heading (site-fixes.css).
 const ABOUT_CLASSES = ['pfix-about', 'pfix-cs-estimate'];
-const ABOUT_TITLE = 'About Our Team';
 
 const svg = (body) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
 const line = (d, w = 1.9) => svg(`<path d="${d}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`);
@@ -80,9 +81,9 @@ function processHtml() {
   );
 }
 
-/** /roofing/: "Our Process" and the "About Our Team" block's colors. */
+/** /roofing/, /commercial-roofing/: "Our Process"; /roofing/: the "About Our Team" block's colors. */
 export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
-  if (pathname !== ROOFING_PATH) return false;
+  if (!PROCESS_PATHS.includes(pathname)) return false;
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
   let done = false;
 
@@ -93,12 +94,13 @@ export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, change
     const { startOffset, endOffset } = process.sourceCodeLocation;
     if (html.slice(startOffset, endOffset) !== block) {
       ed.outer(process, block);
-      changes.push('roofing page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)');
+      changes.push(`${pathname === ROOFING_PATH ? 'roofing' : 'commercial roofing'} page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)`);
     }
     done = true;
   }
 
   // "About Our Team": the white version of the block, on charcoal green.
+  if (pathname !== ROOFING_PATH) return done;
   const about = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Request-Container') && !hasClass(c, 'primary-bg'));
   if (about && !ABOUT_CLASSES.every((c) => hasClass(about, c))) {
     const l = about.sourceCodeLocation.startTag;
@@ -109,23 +111,5 @@ export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, change
       done = true;
     }
   } else if (about) done = true;
-  // Its heading: the styled h2 was empty, with "About Our Team" in a bare h2 inside it (in
-  // the page as captured; a browser shows it as a second, unstyled h2 after the empty one).
-  // The words go into the styled h2, and the bare one (and the stray end tag) go.
-  const col = about && find(about, (c) => hasClass(c, 'Local-text-col'));
-  const styled = col && col.childNodes.find((c) => c.tagName === 'h2' && hasClass(c, 'heading'));
-  const bare = styled && col.childNodes.find((c) => c.tagName === 'h2' && !c.attrs.length && clean(textOf(c)) === ABOUT_TITLE);
-  if (styled && bare && !clean(textOf(styled))) {
-    const from = styled.sourceCodeLocation.startOffset;
-    let to = bare.sourceCodeLocation.endOffset;
-    const stray = /^\s*<\/h2>/.exec(html.slice(to));
-    if (stray) to += stray[0].length;
-    if (!ed.overlaps(from, to)) {
-      const tag = html.slice(styled.sourceCodeLocation.startTag.startOffset, styled.sourceCodeLocation.startTag.endOffset);
-      ed.replace(from, to, `${tag}${esc(ABOUT_TITLE)}</h2>`);
-      changes.push(`roofing page about heading: "${ABOUT_TITLE}" in the block's styled heading (was in a second, unstyled h2)`);
-      done = true;
-    }
-  }
   return done;
 }

@@ -8700,7 +8700,7 @@ a.bde-social-share-button:hover {
   }
 }
 
-/* /roofing/ (roofing-page.mjs). "Our Process": the heading, paragraph, facts and estimate and
+/* /roofing/ and /commercial-roofing/ (roofing-page.mjs). "Our Process": the heading, paragraph, facts and estimate and
    call buttons beside the three steps as a numbered timeline, on the charcoal green of the
    other pages' "how it works" bands. Roboto; lime and orange from the site's palette. */
 .pfix-rp-process {
@@ -8971,4 +8971,65 @@ a.bde-social-share-button:hover {
   .pfix-sp--roofing .pfix-sp-check__media {
     aspect-ratio: 16 / 9;
   }
+}
+
+/* "Testimonials" (the review carousel's section, 17 pages): its heading was the browser's
+   system font at medium weight, unlike every other section heading. It gets the site's
+   section heading (Roboto, extra bold, dark ink), centred at every width, under an orange
+   label. */
+.Client-Logo-section:has(.Testimonial-container) > .heading-2 {
+  padding-right: 16px !important;
+  padding-left: 16px !important;
+  text-align: center !important;
+}
+.Client-Logo-section:has(.Testimonial-container) > .heading-2::before {
+  content: "Customer reviews";
+  display: block;
+  margin-bottom: 10px;
+  color: #c2410c;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.Client-Logo-section:has(.Testimonial-container) > .heading-2 h2 {
+  color: #14180f;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: clamp(28px, 3.3vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+}
+
+/* "Our Project Gallery" (the photo gallery's section, 7 pages): a thin system-font heading
+   and a shadowed line in white on Panda lime (about 1.9:1, hard to read). Both go dark
+   (about 10:1 and 8:1) in the site's section heading style, under a label, with the
+   lime band, tabs and photos as they were. */
+.Slideer-section:has(.ppg) h2.remodeler-padd {
+  color: #14180f !important;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: clamp(28px, 3.3vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.Slideer-section:has(.ppg) h2.remodeler-padd::before {
+  content: "Our work";
+  display: block;
+  margin-bottom: 10px;
+  color: #2f4a10;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.Slideer-section:has(.ppg) h2.remodeler-padd + p {
+  color: #23301a !important;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  text-shadow: none !important;
 }
