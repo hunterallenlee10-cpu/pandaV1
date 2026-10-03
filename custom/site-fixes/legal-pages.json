@@ -4,14 +4,27 @@
     "title": "Terms and Conditions",
     "sub": "The terms of use for the text message (SMS) service provided by Panda Exteriors.",
     "glance": [
-      ["stop", "STOP", "Reply STOP to any message to opt out at any time."],
-      ["help", "HELP", "Reply HELP to any message for assistance."],
-      ["rates", "Rates", "Message and data rates may apply."]
+      [
+        "stop",
+        "STOP",
+        "Reply STOP to any message to opt out at any time."
+      ],
+      [
+        "help",
+        "HELP",
+        "Reply HELP to any message for assistance."
+      ],
+      [
+        "rates",
+        "Rates",
+        "Message and data rates may apply."
+      ]
     ],
     "notice": {
       "title": "Please read carefully",
       "html": "The following Terms and Conditions of use govern your participation in the text message service / SMS provided by Panda Exteriors. These Terms and Conditions incorporate the terms and conditions of use for / and contain an arbitration clause, a class action waiver, and other important information about your rights and obligations, as well as limitations and exclusions that may apply to you."
     },
+    "helpTitle": "Questions about these terms?",
     "sections": [
       {
         "id": "how-it-works",
@@ -79,6 +92,140 @@
         ]
       }
     ],
-    "related": ["Privacy Policy", "How we collect, use and protect your information.", "/privacy-policy/"]
+    "related": [
+      "Privacy Policy",
+      "How we collect, use and protect your information.",
+      "/privacy-policy/"
+    ]
+  },
+  "/privacy-policy/": {
+    "eyebrow": "Legal · Your privacy",
+    "title": "Privacy Policy",
+    "sub": "How Panda Exteriors collects, uses and protects the information you share through our website.",
+    "glance": [
+      [
+        "lock",
+        "Never sold",
+        "We won’t sell, share, trade or give away your information without your consent."
+      ],
+      [
+        "chat",
+        "Texts stay private",
+        "Your text message opt-in and consent are never shared with third parties."
+      ],
+      [
+        "cookie",
+        "Cookies",
+        "You can set your browser to warn you about cookies or block them."
+      ]
+    ],
+    "notice": {
+      "tone": "info",
+      "title": "Our commitment",
+      "html": "Panda Exteriors is committed to protecting online user privacy. In order to ensure your privacy, information Panda Exteriors collects through our web site at www.pandaexteriors.com (\"Site\") is used only in the manner and for the purposes described in this Panda Exteriors Privacy Policy (\"Privacy Policy.\")"
+    },
+    "helpTitle": "Questions about your privacy?",
+    "sections": [
+      {
+        "id": "user-consent",
+        "title": "User Consent to Privacy Policy",
+        "blocks": [
+          "Any person accessing, browsing, or otherwise using the Site, either manually or via an automated device or program, shall be considered a \"User.\" All Users are bound by the terms of this Privacy Policy. Users consent to the collection, use, and disclosure of personally identifiable User information (\"Information\") pursuant to the terms of this Privacy Policy."
+        ]
+      },
+      {
+        "id": "information-collected",
+        "title": "Information Collected from Users",
+        "blocks": [
+          "Panda Exteriors collects the email address of Users that email a question or comment to Panda Exteriors or submit a customer review.",
+          "Panda Exteriors collects the billing and shipping addresses, including relevant e-mail, phone and credit card numbers and expiration dates of Users who purchase a product from Panda Exteriors through the Site. This includes Users who register to become Panda Exteriors members or enter any Panda Exteriors contests or other promotional features available on the Site.",
+          "Through the use of \"cookies\" (For more information regarding Cookies, see <a href=\"#cookies\">below</a>), Panda Exteriors may collect and store anonymous information relating to Users' browsing patterns, including, for instance, the User's browser version, site referral information, IP address, operating system, and other technical Site use information."
+        ]
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies",
+        "blocks": [
+          "The Site uses a feature of Internet Web browsers called a Cookie, which is a file that a User's Web browser places on a User's computer's hard drive, to assign an identification code to the computer and to collect anonymous browsing information. On this Site, cookies are used in conjunction with session variables to track a User's shopping cart and expire as soon as an order is completed or if a shopping cart sits idle for a lengthy period without being checked-out.",
+          "Panda Exteriors does not use Cookies to retrieve Information about Users from a User's computer unless the User knowingly and willingly provided such Information.",
+          "You may set your Internet Web browser to notify you when you receive a cookie or to prevent cookies from being sent. If you prevent a cookie from being sent, you may limit the functionality Panda Exteriors can provide you when you visit the Site, especially when purchasing an item on the Site."
+        ]
+      },
+      {
+        "id": "use-of-information",
+        "title": "Use of Information",
+        "blocks": [
+          "Panda Exteriors uses the Information collected from its Users to:",
+          [
+            "Respond to Users' questions or comments;",
+            "Administer a User's contest entry or entry in other promotional feature;",
+            "Fulfill a User's purchase request and notify Users of their order status; and",
+            "Provide Users with important functionality changes to the Site, new Panda Exteriors services and special offers we think you will find valuable."
+          ]
+        ]
+      },
+      {
+        "id": "disclosure",
+        "title": "Disclosure of Information to Third Parties",
+        "blocks": [
+          "Unless we have your consent or except as required or permitted by law, Panda Exteriors will not sell, share, trade or give away any Information that it collects or receives regarding its Users.",
+          "Panda Exteriors may disclose information about our Users to others if we have a good faith belief that we are required to do so by law or legal process, to respond to claims, or to protect the rights, property or safety of Panda Exteriors or others. Panda Exteriors may disclose Information to third party in the event that a third party acquires Panda Exteriors or its assets. (See, <a href=\"#sale-or-acquisition\">Sale or Acquisition</a> section below.)"
+        ]
+      },
+      {
+        "id": "linked-websites",
+        "title": "Linked Internet Web Sites",
+        "blocks": [
+          "The Site may provide hyperlinks, which are highlighted words or pictures within a hypertext document that, when clicked, take you to another place within the document, to another document altogether, or may take you to a third party website not controlled by Panda Exteriors. These hyperlinked third party websites may collect and disclose Information different than this Site. Panda Exteriors is not responsible for the collection, use, or disclosure of information collected through these web sites, and Panda Exteriors expressly disclaims any and all liability related to such collection, use, or disclosure."
+        ]
+      },
+      {
+        "id": "children",
+        "title": "Children",
+        "blocks": [
+          "The Panda Exteriors Site is not directed towards children under 18 years of age and Panda Exteriors does not knowingly collect any information from children under 18 years of age through the Site."
+        ]
+      },
+      {
+        "id": "security",
+        "title": "Security",
+        "blocks": [
+          "Panda Exteriors has security measures to protect against the loss, misuse, and alteration of the Information under our control, including credit card information that is submitted to Panda Exteriors When Users place orders or access their account information, the Site uses secure server software (SSL), which encrypts all information Users' input before it is sent to us. Thus, we have taken steps to protect the Information we collect from you from unauthorized access. Unfortunately, no system is perfect; therefore, Panda Exteriors makes no representations or warranties with regard to the sufficiency of these security measures. Panda Exteriors shall not be responsible for any actual or consequential damages that result from a lapse in compliance with this Privacy Policy because of a security breach or technical malfunction."
+        ]
+      },
+      {
+        "id": "sale-or-acquisition",
+        "title": "Sale or Acquisition",
+        "blocks": [
+          "In the event that another company acquires Panda Exteriors or all or part of its assets, we reserve the right to include Information among the assets transferred to the acquiring company."
+        ]
+      },
+      {
+        "id": "applicable-law",
+        "title": "Applicable Law/International Issues",
+        "blocks": [
+          "Information that is submitted to this Site will be collected, processed, stored, disclosed and disposed of in accordance with applicable U.S. law. If you are a non-U.S. User, you acknowledge and agree that we may collect and use your Information, as discussed above, outside your resident jurisdiction. In addition, such Information may be stored on servers located outside your resident jurisdiction. U.S. law may not provide the degree of protection for Information that is available in other countries. By providing us with your Information, you acknowledge that you have read this Privacy Policy, understand it, agree to its terms and consent to the transfer of such Information outside your resident jurisdiction. If you do not consent to the terms of this Policy, please do not use this Site, but if you have already provided us with Information, please <a href=\"/contact-us/\">contact us</a> and let us know how you would like us to handle such information."
+        ]
+      },
+      {
+        "id": "amendments",
+        "title": "Amendments to Privacy Policy",
+        "blocks": [
+          "Panda Exteriors reserves the right to amend this Privacy Policy periodically."
+        ]
+      },
+      {
+        "id": "sms-text-messages",
+        "title": "SMS/Text Messages",
+        "blocks": [
+          "All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties."
+        ]
+      }
+    ],
+    "related": [
+      "Terms and Conditions",
+      "The terms of use for our text message (SMS) service.",
+      "/terms-and-conditions/"
+    ]
   }
 }

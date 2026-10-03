@@ -8290,20 +8290,23 @@ a.bde-social-share-button:hover {
   gap: clamp(28px, 4vw, 56px);
   align-items: start;
 }
+/* The questions card scrolls away; the menu under it follows you down the page (the side
+   column runs the card's full height so it can). */
 .pfix-legal .pfix-legal__side {
-  position: sticky;
-  /* below the fixed header (top bar and menu, 152 px) */
-  top: 176px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-@media (max-height: 759.98px) {
-  .pfix-legal .pfix-legal__side {
-    position: static;
-  }
+  align-self: stretch;
 }
 .pfix-legal .pfix-legal__toc {
+  position: sticky;
+  /* below the fixed header (top bar and menu, 152 px) */
+  top: 176px;
+  /* a long menu (the policy's twelve sections) scrolls on short screens */
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   padding: 20px 12px 12px;
   border: 1px solid var(--lg-line);
   border-radius: 20px;
@@ -8440,6 +8443,22 @@ a.bde-social-share-button:hover {
 .pfix-legal .pfix-legal__notice p:last-child {
   color: #4a3a30;
   font-size: 16px;
+}
+/* The policy's opening paragraph: a commitment, not a warning, so lime. */
+.pfix-legal .pfix-legal__notice--info {
+  border-color: #d5e8ae;
+  border-left-color: var(--lg-lime);
+  background: #f6fbec;
+}
+.pfix-legal .pfix-legal__notice--info .pfix-legal__notice-icon {
+  background: #e3f1c4;
+  color: var(--lg-lime-ink);
+}
+.pfix-legal .pfix-legal__notice--info .pfix-legal__notice-title {
+  color: var(--lg-lime-ink);
+}
+.pfix-legal .pfix-legal__notice--info p:last-child {
+  color: var(--lg-text);
 }
 .pfix-legal .pfix-legal__sec {
   scroll-margin-top: 176px;
@@ -8613,10 +8632,11 @@ a.bde-social-share-button:hover {
   .pfix-legal .pfix-legal__layout {
     grid-template-columns: minmax(0, 1fr);
   }
-  .pfix-legal .pfix-legal__side {
+  .pfix-legal .pfix-legal__toc {
     position: static;
+    max-height: none;
   }
-  /* The menu above the terms; the questions card after them. */
+  /* The menu above the text; the questions card after it. */
   .pfix-legal .pfix-legal__side {
     display: contents;
   }
