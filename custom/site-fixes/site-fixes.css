@@ -1066,7 +1066,7 @@ a.bde-social-share-button:hover {
   }
 }
 
-/* /siding/, /gutters/: the sections under the service cards (service-pages.mjs): siding
+/* /siding/, /gutters/, /roofing/: the sections under the service cards (service-pages.mjs): siding
    types, signs it's time, what we check, how it works, questions and a call/estimate band.
    Roboto like the rest of the page; orange for actions, lime and charcoal green from the
    site's palette. */
@@ -6175,6 +6175,10 @@ a.bde-social-share-button:hover {
   background-image: url("/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp");
   background-position: 50% 45%;
 }
+.hero-section.pfix-sv-hero--roofing {
+  background-image: url("/wp-content/uploads/2025/04/hero-roofing.jpg");
+  background-position: 50% 55%;
+}
 .hero-section.pfix-sv-hero::before {
   content: "";
   position: absolute;
@@ -6308,7 +6312,8 @@ a.bde-social-share-button:hover {
 /* A longer heading. */
 .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 /* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
@@ -6456,7 +6461,8 @@ a.bde-social-share-button:hover {
 @media (max-width: 1199.98px) {
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
@@ -6464,7 +6470,8 @@ a.bde-social-share-button:hover {
   /* !important: the site's stylesheet sets every h1 on phones to 22px !important */
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
+  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
   .pfix-sv-hero .pfix-sv-hero__brands img {
@@ -6966,6 +6973,24 @@ a.bde-social-share-button:hover {
 .roofers-section.primary-bg:has(.pfix-why) {
   background: #f5f7ef !important;
 }
+/* /roofing/: on Panda orange (the light offers band is above it, the white testimonials
+   below), like /roofing-costs/' "Quality Roof Replacements", with the heading in white. */
+.roofers-section.primary-bg.pfix-why-band--orange:has(.pfix-why) {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.14), transparent 38%),
+    linear-gradient(120deg, #f26924 0%, #e2531a 100%) !important;
+}
+.roofers-section.pfix-why-band--orange:has(.pfix-why) .heading-2 {
+  color: #ffffff !important;
+}
+.pfix-why-band--orange .pfix-why .pfix-why__card {
+  border-color: transparent;
+  box-shadow: 0 16px 36px rgba(120, 40, 5, 0.22);
+}
+.pfix-why-band--orange .pfix-why .pfix-why__icon {
+  background: #fff1e8;
+  color: #c2410c;
+}
 
 /* /customer-service/ (customer-service-page.mjs): a help page. The Contact page's hero and
    quick contacts, then the help topics as white icon cards on a light band. */
@@ -7267,7 +7292,8 @@ a.bde-social-share-button:hover {
   }
 }
 
-/* /customer-service/'s estimate block ("Planning a new project?"): on the charcoal green of
+/* /customer-service/'s estimate block ("Planning a new project?") and /roofing/'s "About Our
+   Team" (roofing-page.mjs), the white version of the block: on the charcoal green of
    the "About Our Team" blocks (.pfix-about: paragraphs, links and the lime button) instead
    of white. !important: Bootstrap's .bg-white and .text-black are !important. */
 .Request-Container.pfix-cs-estimate {
@@ -8671,5 +8697,278 @@ a.bde-social-share-button:hover {
   }
   .pfix-legal ul.pfix-legal__list {
     padding: 16px !important;
+  }
+}
+
+/* /roofing/ (roofing-page.mjs). "Our Process": the heading, paragraph, facts and estimate and
+   call buttons beside the three steps as a numbered timeline, on the charcoal green of the
+   other pages' "how it works" bands. Roboto; lime and orange from the site's palette. */
+.pfix-rp-process {
+  padding: clamp(56px, 7vw, 96px) 0;
+  background:
+    radial-gradient(circle at 96% 6%, rgba(154, 205, 50, 0.14), transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(242, 105, 36, 0.14), transparent 38%),
+    #1a2418;
+  color: #d5dccb;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  scroll-margin-top: 140px;
+}
+/* The site's stylesheet laid a 90% white veil over the old section (#process-section::before),
+   to fade its mascot picture. */
+#process-section.pfix-rp-process::before {
+  content: none;
+}
+.pfix-rp-process *,
+.pfix-rp-process *::before,
+.pfix-rp-process *::after {
+  box-sizing: border-box;
+}
+.pfix-rp-process .pfix-rp__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.pfix-rp-process .pfix-rp-process__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.pfix-rp-process .pfix-rp-process__intro > * {
+  margin: 0;
+}
+.pfix-rp-process .pfix-rp__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #c3ea79;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pfix-rp-process .pfix-rp__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.pfix-rp-process h2.pfix-rp__title {
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: clamp(32px, 3.6vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+.pfix-rp-process p.pfix-rp__text {
+  padding: 0;
+  color: #d5dccb;
+  font-size: 17.5px;
+  line-height: 1.7;
+  text-align: left;
+}
+.pfix-rp-process .pfix-rp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pfix-rp-process .pfix-rp-facts > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(195, 234, 121, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eef0ea;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pfix-rp-process .pfix-rp-facts svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: #c3ea79;
+}
+.pfix-rp-process .pfix-rp-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 6px;
+}
+.pfix-rp-process a.pfix-rp-btn,
+.pfix-rp-process a.pfix-rp-btn:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 24px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+.pfix-rp-process a.pfix-rp-btn svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.pfix-rp-process a.pfix-rp-btn--primary {
+  background: #f26924;
+}
+.pfix-rp-process a.pfix-rp-btn--primary:hover {
+  background: #e2531a;
+}
+.pfix-rp-process a.pfix-rp-btn--ghost {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+}
+.pfix-rp-process a.pfix-rp-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.pfix-rp-process a.pfix-rp-btn:focus-visible {
+  outline: 3px solid #c3ea79;
+  outline-offset: 2px;
+}
+
+/* The steps: numbered circles joined by a line, each beside a card. */
+.pfix-rp-process .pfix-rp-steps {
+  display: grid;
+  gap: 18px;
+}
+.pfix-rp-process .pfix-rp-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 20px;
+}
+.pfix-rp-process .pfix-rp-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 56px;
+  bottom: -14px;
+  left: 23px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(195, 234, 121, 0.55), rgba(195, 234, 121, 0.12));
+}
+.pfix-rp-process .pfix-rp-step__n {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #9acd32;
+  box-shadow: 0 0 0 6px rgba(154, 205, 50, 0.16);
+  color: #111827;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+.pfix-rp-process .pfix-rp-step__body {
+  padding: 22px 24px;
+  border: 1px solid rgba(195, 234, 121, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pfix-rp-process .pfix-rp-step h3 {
+  margin: 0 0 8px;
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+}
+.pfix-rp-process .pfix-rp-step p {
+  margin: 0;
+  padding: 0;
+  color: #d5dccb;
+  font-size: 16px;
+  line-height: 1.65;
+  text-align: left;
+}
+.pfix-rp-process .pfix-rp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media (max-width: 991.98px) {
+  .pfix-rp-process .pfix-rp__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-rp-process .pfix-rp-process__intro {
+    max-width: 680px;
+  }
+}
+@media (max-width: 575.98px) {
+  .pfix-rp-process .pfix-rp__inner {
+    padding: 0 16px;
+  }
+  .pfix-rp-process p.pfix-rp__text {
+    font-size: 16.5px;
+  }
+  .pfix-rp-process .pfix-rp-ctas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .pfix-rp-process .pfix-rp-step {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .pfix-rp-process .pfix-rp-step:not(:last-child)::before {
+    top: 48px;
+    left: 19px;
+  }
+  .pfix-rp-process .pfix-rp-step__n {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  .pfix-rp-process .pfix-rp-step__body {
+    padding: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-rp-process a.pfix-rp-btn {
+    transition: none;
+  }
+}
+
+/* /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs): a photo of a new ridge,
+   framed square (taller than the gutters photo) so it sits beside the six-item list. */
+.pfix-sp--roofing .pfix-sp-check__media {
+  aspect-ratio: 1 / 1;
+}
+.pfix-sp--roofing .pfix-sp-check__media img {
+  object-position: 50% 65%;
+}
+@media (max-width: 991.98px) {
+  .pfix-sp--roofing .pfix-sp-check__media {
+    aspect-ratio: 16 / 9;
   }
 }

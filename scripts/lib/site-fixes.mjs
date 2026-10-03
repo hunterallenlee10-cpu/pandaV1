@@ -132,6 +132,13 @@
 //    the lime "Quality Roof Replacements" band (white on lime) becomes what affects the cost,
 //    the quality cards as icon cards, insurance roofing (what's covered, how Panda helps with
 //    a claim, Panda's guides) and questions, with the offers band (roofing-costs-page.mjs).
+//  - /roofing/: the hero gets chips for the four roofing pages and estimate and call buttons
+//    (services-hero.mjs); "Our Process" (blue boxes over a faded mascot) becomes a numbered
+//    timeline with estimate and call buttons on charcoal green, and "About Our Team" gets the
+//    charcoal green it has on other pages (roofing-page.mjs); signs it's time for a new roof,
+//    what goes into every new roof and questions go under the services (service-pages.mjs);
+//    "What Makes Our Roofers Stand Out?" (lime headings on lime) becomes icon cards on Panda
+//    orange (gutters-page.mjs).
 //  - /services/: the hero's line named windows (not a Panda service) over a 678 KB PNG; it
 //    now has a label, service chips and estimate and call buttons over a WebP copy of the
 //    photo (services-hero.mjs).
@@ -188,6 +195,7 @@ import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
+import { collectRoofingPage } from './roofing-page.mjs';
 import { collectBlogPages } from './blog.mjs';
 import { collectProjectPage, collectProjectStrip } from './project-pages.mjs';
 
@@ -206,9 +214,11 @@ export const SITE_FIXES_FILES = {
   'gutter-guards-hero.webp': '/_custom/site-fixes/gutter-guards-hero.webp',
   // the photo behind /siding/'s hero (services-hero.mjs)
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
+  // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
+  'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -731,6 +741,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
     used.js = true;
   }
+  // /roofing/: "Our Process" as a numbered timeline and "About Our Team" on charcoal green
+  // (roofing-page.mjs). First too, so the typo fixes below leave the process section be.
+  if (collectRoofingPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /offers/: a new hero and new sections in place of the five flyer bands (offers-page.mjs).
   // Before the fixes below that edit inside those bands (column fit), which then leave them be.
   if (collectOffersPage(doc, html, ed, { pathname, siteDir }, changes)) {
@@ -1069,10 +1082,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
 
-  // /services/, /gutters/: the hero gets service chips and estimate and call buttons
+  // /services/, /gutters/, /siding/, /roofing-costs/, /roofing/: the hero gets service chips and estimate and call buttons
   // (services-hero.mjs).
   if (collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
-  // /gutters/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
+  // /gutters/, /siding/, /roofing/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
   if (collectGuttersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /gutters/gutter-guards/: the benefits as icon cards, how it works, questions, a band for
   // new gutters and the offers band (gutter-guards-page.mjs).
@@ -1104,7 +1117,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
-  // /siding/, /gutters/: what the job involves, signs it's time, how it works, questions.
+  // /siding/, /gutters/, /roofing/: what the job involves, signs it's time, how it works,
+  // questions.
   if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;
   // Lead forms: a form for the page's service (or the general one) in each form card, and
   // the old form's scripts removed (service-forms.mjs).

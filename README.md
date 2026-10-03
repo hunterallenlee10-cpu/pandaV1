@@ -244,6 +244,22 @@ Most of these problems are on the live site too.
   that Panda is the homeowner's roofing advocate and not a public adjuster, four of Panda's insurance guides on the
   blog, and "Get a free storm-damage inspection" and call buttons; six roofing cost questions; and, after the
   testimonials, the offers band. The words come from the page and from Panda's own insurance posts on the blog.
+- **`/roofing/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, "Our Process" and "About Our Team" in
+  `scripts/lib/roofing-page.mjs`, new sections in `scripts/lib/service-pages.mjs` and
+  `custom/site-fixes/service-pages.json`, cards in `scripts/lib/gutters-page.mjs`): the hero was a heading and one
+  line on the bare photo; it now has the same treatment as `/services/` and `/gutters/` (a "Roofing" label, the
+  heading, the line about GAF Master Elite contractors, chips for the four roofing pages each with a line from its
+  card, estimate and call buttons, the photo darkened behind the text). **Our Process** was three blue boxes of
+  centred white text over a faded Panda mascot; it is now a charcoal-green band with the heading, paragraph, GAF
+  Master Elite / BBB A-rated / financing facts and estimate and call buttons beside the three steps (the section's own
+  words) as a numbered timeline. Under the roofing cards come **signs it's time for a new roof** (six, from Panda's
+  blog posts, linked), **what goes into every new roof** (tear-off and decking, ice and water barrier, underlayment,
+  nailing, flashing, ridge caps and ventilation) beside a photo of a ridge Panda re-roofed
+  (`custom/site-fixes/roofing-ridge.webp`, a 120 KB crop of a 540 KB project photo), seven **roofing questions**
+  (with FAQPage structured data) and a call and estimate band. **What Makes Our Roofers Stand Out?** (lime headings on
+  a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
+  the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
+  charcoal green it has on the other pages, with the heading in the styled h2.
 - **`/siding/`** (hero in `scripts/lib/services-hero.mjs`, cards in `scripts/lib/gutters-page.mjs`): the hero's heading was
   a plain block (the page had no h1) over a 262 KB PNG. It now has the same treatment as `/services/` and `/gutters/`: a
   "Siding" label, the heading as the page's h1, the line, chips for fiber cement and vinyl (leading to the comparison
@@ -414,9 +430,10 @@ Most of these problems are on the live site too.
   "Siding Types" to the siding types section further down `/siding/` ("Compare siding types"; `GRID_CARD_FIXES`). On
   `/services/` the two empty headings around "Our Services" are removed and the heading gets the site's
   section-heading style. The office cards on `/contact-us/` are unchanged.
-- **`/siding/` and `/gutters/`: one strong page per service.** Under the service cards each page now explains the job
-  (`scripts/lib/service-pages.mjs`; the words are in `custom/site-fixes/service-pages.json`, written only from what
-  the site and its blog already say, so they can be edited there and applied with `npm run update:site`):
+- **`/siding/` and `/gutters/` (and `/roofing/`, above): one strong page per service.** Under the service cards each
+  page now explains the job (`scripts/lib/service-pages.mjs`; the words are in `custom/site-fixes/service-pages.json`,
+  written only from what the site and its blog already say, so they can be edited there and applied with
+  `npm run update:site`):
   - `/siding/`: **siding types**, James Hardie fiber cement and CertainTeed vinyl side by side (what each is, its
     strengths, what it's best for), which the "Siding Types" card scrolls to;
   - **signs it's time** for new siding or gutters, with links to the blog posts they come from;
