@@ -1,4 +1,5 @@
-// The Siding and Gutters pages (/siding/, /gutters/), made into one strong page per service.
+// The Siding, Gutters and Roofing pages (/siding/, /gutters/, /roofing/), made into one strong
+// page per service.
 // Each had a hero with the lead form, two cards and then sections shared with every other
 // page: nothing on what the job involves, how to tell it's time, or common questions, and
 // /siding/ said nothing about the two siding types it offers (only their logos in the hero).
@@ -8,13 +9,16 @@
 //  - /siding/: the two siding types side by side (James Hardie fiber cement, CertainTeed
 //    vinyl), with an id the "Siding Types" card links to;
 //  - signs it's time to replace, with links to the blog posts they come from;
-//  - /gutters/: what is checked on every gutter job;
+//  - /gutters/: what is checked on every gutter job; /roofing/: what goes into every new roof,
+//    beside a photo of a roof Panda replaced;
 //  - how the project works, in three steps;
 // (Lists are divs with list roles: the site's stylesheet forces white text and bullets on
 // every ul and li.)
 //  - common questions (and FAQPage structured data), then a call and estimate band whose
 //    estimate button leads to the hero's lead form.
 // /gutters/ also opens its project gallery on the Gutters photos (project-gallery.mjs).
+// /roofing/ has no "how it works" (its own "Our Process" is redesigned by roofing-page.mjs);
+// its sections go under its services carousel ("after": the section's class as captured).
 //
 // Applied by site-fixes.mjs. The block is rendered again on every run, so editing the
 // JSON and running `npm run update:site` updates the pages.
@@ -43,6 +47,11 @@ const ICONS = {
   window: line('M5 3h14v18H5zM5 12h14M12 3v18'),
   rain: line('M7 15a5 5 0 1 1 1.6-9.7A6 6 0 0 1 20 9a4 4 0 0 1-1 7.9M8 19l-1 2M12 18l-1 3M16 19l-1 2'),
   down: line('M8 3v9a4 4 0 0 0 4 4h6M15 13l3 3-3 3M5 21h4'),
+  calendar: line('M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM4 10h16M8.5 3v4M15.5 3v4M8 14h3'),
+  shingle: line('M3 17l9-9 9 9M6 14v6h12v-6M9.5 11.5l2 2M14 9.5l1.5-3'),
+  granules: line('M3 9h18l-2 4H5zM8 17.5v.1M12 19v.1M16 17.5v.1M10 21v.1M14 21v.1'),
+  sag: line('M3 7c3 0 6 6 9 6s6-6 9-6M5 17h14M8 13.5V17M16 13.5V17'),
+  bolt: line('M13 2.5L5 13.5h6l-1 8 8-11h-6z'),
 };
 const CHECK = line('M5 12.5l4.2 4.2L19 7');
 const PHONE_ICON = svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>');
@@ -101,7 +110,7 @@ function renderCheck(c, exists) {
     'check',
     'check',
     `<div class="pfix-sp-check">` +
-      `<div class="pfix-sp-check__media">${picture(src, w, h, '', exists)}</div>` +
+      `<div class="pfix-sp-check__media">${picture(src, w, h, c.alt || '', exists)}</div>` +
       `<div class="pfix-sp-check__body">${head('check', '', c.title, c.intro)}` +
       `<div class="pfix-sp-list pfix-sp-list--big" role="list">${c.items.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
       (c.link ? `<a class="pfix-sp-link" href="${esc(c.link[0])}">${esc(c.link[1])}${ARROW}</a>` : '') +
@@ -170,8 +179,11 @@ export function collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigi
       changes.push('service page: sections rendered again');
     }
   } else {
-    // Under the section with the service cards (its grid, or the cards as captured).
-    const cards = find(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'pfix-svc-grid') || hasClass(x, 'Service-cards')));
+    // Under the section with the service cards (its grid, or the cards as captured), or the
+    // section the page names.
+    const cards =
+      find(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'pfix-svc-grid') || hasClass(x, 'Service-cards'))) ||
+      (page.after && find(doc, (c) => c.tagName === 'div' && hasClass(c, page.after)));
     if (!cards) {
       console.warn(`site-fixes: ${pathname}: no service cards section, service page sections not added`);
       return false;

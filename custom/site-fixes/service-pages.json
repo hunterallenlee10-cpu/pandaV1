@@ -134,5 +134,57 @@
       "title": "Ready for new gutters?",
       "text": "Get a free, no-pressure estimate from our local team."
     }
+  },
+  "/roofing/": {
+    "service": "roofing",
+    "after": "Team-section",
+    "signs": {
+      "title": "Signs It’s Time for a New Roof",
+      "intro": "Waiting too long to replace a roof can lead to costly problems, from water damage to higher energy bills. Watch for these:",
+      "items": [
+        ["calendar", "Your roof is 20+ years old", "Most asphalt shingle roofs last 20 to 25 years. Past that, problems can form out of sight, even before you see a leak."],
+        ["shingle", "Curled, cracked or missing shingles", "Damaged shingles can’t shed water the way they should, and just one missing shingle can turn into a leak."],
+        ["granules", "Granules in your gutters", "Bald spots on the shingles and granules collecting in your gutters mean the shingles are breaking down."],
+        ["drop", "Leaks, stains or musty smells", "Water stains on ceilings, peeling paint or mold in the attic often mean water is getting past worn shingles or flashing."],
+        ["sag", "Sagging spots or daylight in the attic", "Dips, soft spots or sunlight peeking through the roof boards can mean the decking underneath is damaged."],
+        ["bolt", "Climbing energy bills", "An aging roof lets heat escape in winter and traps it in summer, so your heating and cooling work overtime."]
+      ],
+      "footer": "Seeing more than one of these, or damage across the whole roof? A full replacement usually makes more sense than patching. We recommend a roof inspection every 2–3 years, or after any major storm.",
+      "reads": [
+        ["/blog/5-signs-its-time-to-replace-your-roof-before-it-costs-you-more/", "5 signs it’s time to replace your roof"],
+        ["/blog/how-long-does-a-roof-really-last/", "How long does a roof really last?"]
+      ]
+    },
+    "check": {
+      "title": "What Goes Into Every New Roof",
+      "intro": "A roof is a system, not just shingles. On every roof replacement, our GAF Master Elite crews:",
+      "img": ["/_custom/site-fixes/roofing-ridge.webp", 720, 708],
+      "alt": "New gray architectural shingles and ridge caps on a home Panda Exteriors re-roofed",
+      "items": [
+        "Tear off the old roof and replace any rotten or damaged decking underneath",
+        "Seal the eaves and valleys with ice and water barrier",
+        "Lay synthetic underlayment across the entire roof",
+        "Nail every shingle in a precise pattern for wind resistance",
+        "Flash chimneys, skylights, valleys and roof penetrations",
+        "Finish with ridge caps and proper attic ventilation, then clean up"
+      ],
+      "link": ["/blog/roof-replacement-timeline/", "What to expect on install day"]
+    },
+    "faq": {
+      "title": "Roofing Questions, Answered",
+      "items": [
+        ["How do I know it’s time to replace my roof?", "Watch for curled, cracked or missing shingles, granules in your gutters, leaks or water stains, sagging spots and climbing energy bills. Age matters too: most asphalt shingle roofs last 20 to 25 years, and storm damage can shorten that. We’ll inspect your roof and tell you honestly what it needs."],
+        ["Should I replace my shingles or the entire roofing system?", "We recommend replacing the entire roofing system rather than just the shingles. While it might seem cost-effective to replace only the damaged shingles, repairs often provide only a temporary solution. An entire roofing system replacement ensures a longer lasting and more cost-effective outcome in the long run."],
+        ["How long does a roof replacement take?", "Our roofers can have your new roof installed in as little as one day, so you’re not dealing with construction around your home for a long period of time. The exact timing depends on the size of your roof, the material and the weather."],
+        ["What roofing materials do you install?", "We offer a variety of roofing options from GAF, from asphalt shingles to metal roofing, as well as flat roofs. Traditional shingles cost less; metal roofing is designed to last up to twice as long. We’ll help you choose the best option for your home and budget."],
+        ["What does being a GAF Master Elite contractor mean for me?", "GAF Master Elite is a status held by less than 2% of roofing companies. Certified installers follow strict guidelines and complete ongoing training, and GAF’s upgraded warranties, like the Golden Pledge, are available only through Master Elite contractors like us."],
+        ["Will my insurance pay for a new roof?", "Often, when the damage is sudden and storm-related: wind, hail, falling limbs or the weight of snow and ice. Old age and wear and tear usually aren’t covered. We offer free storm-damage inspections and can meet your adjuster on the roof."],
+        ["Do you offer financing?", "Yes. Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans."]
+      ]
+    },
+    "cta": {
+      "title": "Ready for a new roof?",
+      "text": "Get a free roof inspection and estimate, and ask about 10% off a roof replacement."
+    }
   }
 }

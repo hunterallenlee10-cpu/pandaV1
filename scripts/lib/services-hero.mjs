@@ -20,6 +20,10 @@
 //    an aerial photo of a finished roof (the 187 KB WebP copy beside the 526 KB JPEG). The
 //    chips lead to what affects the cost and to insurance roofing below
 //    (roofing-costs-page.mjs), and to financing.
+//  - /roofing/: "Expert Roofing Services for Your East Coast Home" and its line about GAF
+//    Master Elite contractors over a roofed home (hero-roofing.jpg, already a 250 KB JPEG: a
+//    WebP copy saved little). The chips are the four roofing pages, each with a line from
+//    the page's cards.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -42,6 +46,8 @@ const ICONS = {
   gutter: line('M3 7h18l-2 4H5zM17 11v6.5a2.5 2.5 0 0 0 2.5 2.5'),
   guard: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
   layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
+  swap: line('M4 9h13l-3.5-3.5M20 15H7l3.5 3.5'),
+  thermo: line('M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0zM12 9v7.5'),
   card: line('M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5zM3 10h18M7 15h4'),
   arrow: line('M5 12h14M13 6l6 6-6 6', 2.2),
   phone: svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>'),
@@ -136,6 +142,22 @@ const HEROES = {
     ],
     note: 'chips for what affects the cost, insurance claims and financing and estimate and call buttons, over a WebP copy of the photo',
   },
+  '/roofing/': {
+    key: 'roofing',
+    from: 'roofing-hero',
+    photo: '/wp-content/uploads/2025/04/hero-roofing.jpg',
+    eyebrow: 'Roofing',
+    title: 'Expert Roofing Services for Your East Coast Home',
+    sub: 'Leave your roofing project in the hands of our GAF Master Elite Contractors: quality GAF products, certified crews and the best warranties to protect your investment.',
+    // The four roofing pages (the cards below), with a line from each card.
+    chips: [
+      ['swap', 'Roof replacement', '/roofing/replacement/', 'Installed in as little as one day'],
+      ['layers', 'Roof types', '/roofing/types/', 'Asphalt shingles, metal and flat roofs'],
+      ['roof', 'Residential roofing', '/roofing/residential/', 'The style you want, from an A-rated roofer'],
+      ['thermo', 'Attic insulation', '/roofing/attic-insulation/', 'Keeps your home comfortable all year'],
+    ],
+    note: 'chips for the four roofing pages and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -143,7 +165,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
@@ -191,7 +213,9 @@ export function collectServiceHero(doc, html, ed, { pathname = '', siteDir = '' 
   const preload = `<link rel="preload" as="image"${type} href="${h.photo}" fetchpriority="high">`;
   if (h.oldPreload) for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && attr(c, 'href') === h.oldPreload)) if (free(l)) ed.outer(l, '');
   const headEnd = headEndOffset(html);
-  if (headEnd >= 0 && !html.includes(preload)) ed.replace(headEnd, headEnd, preload);
+  // (Not when the page already preloads it: /roofing/ did, as captured.)
+  const preloaded = findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'preload' && attr(c, 'href') === h.photo).length > 0;
+  if (headEnd >= 0 && !preloaded && !html.includes(preload)) ed.replace(headEnd, headEnd, preload);
   changes.push(`${h.key} page hero: a label, the heading, ${h.note}`);
   return true;
 }

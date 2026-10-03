@@ -1,4 +1,5 @@
-// The Gutters and Siding pages (/gutters/, /siding/): the parts their other modules don't cover.
+// The Gutters, Siding and Roofing pages (/gutters/, /siding/, /roofing/): the parts their other
+// modules don't cover.
 //
 //  - /gutters/ "Why Work with Our East Coast Exterior Specialists?": three lime cards with
 //    white text (about 1.7:1, hard to read), the first promising "stellar cleaning services"
@@ -6,6 +7,9 @@
 //    cleaning sentence is dropped, the rest of each card's words are kept.
 //  - /siding/ "What Makes Our Siding Team the Best?": the same lime band, with lime headings on
 //    white cards (about 1.9:1). The same white icon cards, with the cards' own words.
+//  - /roofing/ "What Makes Our Roofers Stand Out?": the same lime band and lime headings. The
+//    same white icon cards, with the cards' own words, on Panda orange (the band class): the
+//    light offers band is above it and the white testimonials below.
 //  - A spot to jump to above the gutter services (the "Gutter installation" chip in the
 //    hero, services-hero.mjs, leads there).
 //
@@ -25,8 +29,9 @@ const ICON = {
   check: line('M5 12.5l4.2 4.2L19 7M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z'),
   star: line('M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z'),
   card: line('M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5zM3 10h18M7 15h4'),
+  clock: line('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.2 2'),
 };
-// Per page: the cards (icon, title, text) and the change note.
+// Per page: the cards (icon, title, text), the change note and a class for the band.
 const WHY = {
   '/gutters/': {
     note: 'gutters page why cards: white icon cards with dark text (was white on lime), without the cleaning services Panda doesn\'t offer',
@@ -44,6 +49,15 @@ const WHY = {
       [ICON.card, 'Affordable Services & Flexible Financing', 'We take pride in offering affordable services to our customers, so we can help as many people as possible. To top it off, we provide great financing options, such as no payments and no interest loan options.'],
     ],
   },
+  '/roofing/': {
+    note: 'roofing page why cards: white icon cards with dark text on Panda orange (was lime headings on a lime band)',
+    band: 'pfix-why-band--orange',
+    cards: [
+      [ICON.star, 'Quality Roofing Products', 'Our team offers a variety of roofing options from GAF, allowing you the opportunity to customize the perfect roof system for your East Coast home.'],
+      [ICON.badge, 'GAF Master Elite Roofing Contractors', 'In addition to providing quality GAF products, we are a certified GAF Master Elite contractor. That said, you can count on us to provide stellar services, too.'],
+      [ICON.clock, 'One-Day Installations', 'Our roofers can have your new roof installed in as little as one day, so you’re not dealing with construction around your home for a long period of time.'],
+    ],
+  },
 };
 
 const whyCards = (cards) =>
@@ -55,7 +69,7 @@ const whyCards = (cards) =>
     )
     .join('');
 
-/** /gutters/, /siding/: the "Why work with us" cards (and /gutters/' services anchor). */
+/** /gutters/, /siding/, /roofing/: the "Why work with us" cards (and /gutters/' services anchor). */
 export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
   const why = WHY[pathname];
   if (!why) return false;
@@ -77,6 +91,14 @@ export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, change
       changes.push(why.note);
     }
     done = true;
+  }
+  // The band's class.
+  if (why.band && section && !hasClass(section, why.band)) {
+    const l = section.sourceCodeLocation.startTag;
+    if (!ed.overlaps(l.startOffset, l.endOffset)) {
+      ed.retag(section, section.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: `${a.value} ${why.band}` } : a)));
+      done = true;
+    }
   }
 
   // A spot just above the gutter services, for the hero's chip.
