@@ -146,9 +146,9 @@
 //    "Planning a new project?" (customer-service-page.mjs).
 //  - 404.html: the header and nothing under it; "Oops! That page doesn't exist.", a link
 //    home, a call button and links to the main pages now sit under it (not-found-page.mjs).
-//  - /terms-and-conditions/: the terms ran the full width of the screen and its two lists were
-//    white on white; a hero with STOP, HELP and rates, and the terms in numbered sections
-//    beside an "On this page" menu (legal-page.mjs, custom/site-fixes/legal-pages.json).
+//  - /terms-and-conditions/, /privacy-policy/: the text ran the full width of the screen and
+//    the lists were white on white; a hero with three key points, and the text in numbered
+//    sections beside an "On this page" menu (legal-page.mjs, custom/site-fixes/legal-pages.json).
 //  - /gallery/: the page opened on the category tabs with no heading; a hero ("Panda
 //    Exteriors Company Gallery") with the categories, numbers and a collage of the
 //    gallery's own photos now sits above them (gallery-page.mjs,
@@ -705,8 +705,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // 404.html: the header alone; a hero with "Oops! That page doesn't exist.", a link home and
   // a call button, and links to the main pages (not-found-page.mjs).
   if (collectNotFoundPage(doc, html, ed, changes)) used.css = true;
-  // /terms-and-conditions/: full-width text with two invisible lists; a hero and the terms in
-  // numbered sections beside a menu (legal-page.mjs, custom/site-fixes/legal-pages.json).
+  // /terms-and-conditions/, /privacy-policy/: full-width text with white-on-white lists; a hero
+  // and numbered sections beside a menu (legal-page.mjs, custom/site-fixes/legal-pages.json).
   if (collectLegalPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /roofing-costs/: what affects the cost, the quality cards as icon cards, insurance roofing,
   // questions and the offers band (roofing-costs-page.mjs). First too, so the fixes below
