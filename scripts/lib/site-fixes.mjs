@@ -332,6 +332,15 @@ const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.pag
 // not panels), as the header's menu does.
 const GRID_CARD_TITLES = { '/solar/': { 'GAF Solar Roof Solutions': 'GAF Solar Shingles' } };
 const gridCardTitle = (pathname, title) => GRID_CARD_TITLES[pathname]?.[title] || title;
+// Card text that changes, by page: /commercial-roofing/'s "Roofing Options" offered GAF
+// shingles, solar panels and solar shingles (the residential roofing card's words) on a page
+// about flat roofs; it names the flat roof systems the page compares below.
+const GRID_CARD_TEXTS = {
+  '/commercial-roofing/': {
+    'Roofing Options': 'As a GAF Master Elite contractor, we install TPO, EPDM, Mod Bit and PVC flat roof systems. Whether you want something affordable or the top of the range, there is a flat roof system for your building and budget.',
+  },
+};
+const gridCardText = (pathname, title, text) => GRID_CARD_TEXTS[pathname]?.[title] || text;
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -678,6 +687,13 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       changes.push(`services grid: card renamed: "${title}" -> "${gridCardTitle(pathname, title)}"`);
       done = true;
     }
+    const textEl = find(a, (c) => hasClass(c, 'pfix-svc__text'));
+    const text = clean(textOf(textEl || { childNodes: [] }));
+    if (textEl && gridCardText(pathname, title, text) !== text) {
+      ed.inner(textEl, esc(gridCardText(pathname, title, text)));
+      changes.push(`services grid: card text: "${title}"`);
+      done = true;
+    }
     const fix = gridCardFix(pathname, title, href);
     if (!fix || fix.href === href) continue;
     ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
@@ -697,7 +713,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
-      return { title: gridCardTitle(pathname, title), text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+      return { title: gridCardTitle(pathname, title), text: gridCardText(pathname, title, text), href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
     const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
     if (missing.length) {
@@ -842,7 +858,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   // The "Limited Time Offers" band on seven pages: flyer pictures -> the offers as the
-  // /offers/ page's coupon cards (offers-page.mjs).
+  // /offers/ page's coupon cards (offers-page.mjs); removed on /commercial-roofing/, where
+  // both offers are for homes.
   if (collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
