@@ -217,11 +217,13 @@ export const SITE_FIXES_FILES = {
   'gutter-guards-hero.webp': '/_custom/site-fixes/gutter-guards-hero.webp',
   // the photo behind /siding/'s hero (services-hero.mjs)
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
+  // the photo behind /commercial-roofing/'s hero (services-hero.mjs)
+  'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -328,6 +330,15 @@ const GRID_CARD_FIXES = [
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
+// Card text that changes, by page: /commercial-roofing/'s "Roofing Options" offered GAF
+// shingles, solar panels and solar shingles (the residential roofing card's words) on a page
+// about flat roofs; it names the flat roof systems the page compares below.
+const GRID_CARD_TEXTS = {
+  '/commercial-roofing/': {
+    'Roofing Options': 'As a GAF Master Elite contractor, we install TPO, EPDM, Mod Bit and PVC flat roof systems. Whether you want something affordable or the top of the range, there is a flat roof system for your building and budget.',
+  },
+};
+const gridCardText = (pathname, title, text) => GRID_CARD_TEXTS[pathname]?.[title] || text;
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -670,6 +681,13 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
     if (ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
     const title = clean(textOf(find(a, (c) => hasClass(c, 'pfix-svc__title')) || { childNodes: [] }));
     const href = attr(a, 'href') || '';
+    const textEl = find(a, (c) => hasClass(c, 'pfix-svc__text'));
+    const text = clean(textOf(textEl || { childNodes: [] }));
+    if (textEl && gridCardText(pathname, title, text) !== text) {
+      ed.inner(textEl, esc(gridCardText(pathname, title, text)));
+      changes.push(`services grid: card text: "${title}"`);
+      done = true;
+    }
     const fix = gridCardFix(pathname, title, href);
     if (!fix || fix.href === href) continue;
     ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
@@ -690,7 +708,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
-      return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+      return { title, text: gridCardText(pathname, title, text), href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
     const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
     if (missing.length) {
@@ -835,7 +853,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   // The "Limited Time Offers" band on seven pages: flyer pictures -> the offers as the
-  // /offers/ page's coupon cards (offers-page.mjs).
+  // /offers/ page's coupon cards (offers-page.mjs); removed on /commercial-roofing/, where
+  // both offers are for homes.
   if (collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;

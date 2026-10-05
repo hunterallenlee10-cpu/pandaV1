@@ -232,6 +232,7 @@
 ,
   "/commercial-roofing/": {
     "service": "commercial",
+    "gallery": "Commercial",
     "cards": [
       {
         "id": "commercial-roof-systems",
@@ -246,6 +247,20 @@
         ],
         "footer": "Every commercial roof comes with best-in-class product warranties and an efficient installation. We are A-rated by the Better Business Bureau and dedicated to your satisfaction.",
         "reads": [["/blog/project/expert-tpo-roofing/", "TPO on a real building"], ["/blog/project/brookfield-properties/", "Brookfield Properties"]]
+      },
+      {
+        "id": "commercial-buildings",
+        "afterCheck": true,
+        "eyebrow": "Who we work with",
+        "title": "Buildings We Roof",
+        "intro": "From medical centers to apartment communities, our GAF Presidential Master Elite crews have roofed buildings across the East Coast that businesses and residents depend on every day:",
+        "items": [
+          ["medical", "Medical facilities", "A new flat roof for a Patient First medical center, and a roof replacement for a hospital’s linear accelerator facility, worked carefully around the rooftop equipment, piping and walkways it depends on.", ["/blog/project/linear-accelerator-roof-replacement/", "See the project"]],
+          ["apartments", "Apartment communities", "Multi-building projects like Chapel Branch Apartments, where our team roofed Building One, then Buildings Two and Three, with the same quality on every roof.", ["/blog/project/chapel-branch-apartments/", "See the project"]],
+          ["terrace", "Rooftop terraces", "For Brookfield Properties we lifted the terrace pavers, installed a 2-ply SBS torch-down roof underneath and set the pavers back in place.", ["/blog/project/brookfield-properties/", "See the project"]],
+          ["office", "Offices & headquarters", "When our own Maryland headquarters needed a new roof, we turned to the only team we trust: ours, with the same care we bring to every building.", ["/blog/project/panda-exteriors-hq/", "See the project"]]
+        ],
+        "footer": "Every job ends with a clean site and a walk of the finished roof with you, and is backed by best-in-class product warranties. Whatever your building, we’ll recommend the right roof for it at your free estimate."
       }
     ],
     "check": {

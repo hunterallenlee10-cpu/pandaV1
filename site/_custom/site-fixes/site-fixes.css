@@ -1419,6 +1419,31 @@ a.bde-social-share-button:hover {
   color: var(--sp-muted);
   font-size: 15.5px;
 }
+/* A card with a link (/commercial-roofing/'s buildings, to their projects): the links line
+   up along the bottom of a row. */
+.pfix-sp .pfix-sp-sign:has(> .pfix-sp-link) {
+  display: flex;
+  flex-direction: column;
+}
+.pfix-sp .pfix-sp-sign:has(> .pfix-sp-link) p {
+  flex: 1;
+}
+.pfix-sp .pfix-sp-sign > .pfix-sp-link {
+  margin-top: 16px;
+  font-size: 15px;
+}
+/* /commercial-roofing/: the intro under "Commercial Roofing Installations" is three long
+   sentences; in a readable column rather than the full width of the page. */
+.pfix-sv-hero--commercial + .pfix-services .Team-text-container {
+  max-width: 820px;
+  margin-right: auto;
+  margin-left: auto;
+}
+/* The buildings, in Panda lime, after the roof systems in orange. */
+.pfix-sp #commercial-buildings .pfix-sp-sign__icon {
+  background: #f1f8e3;
+  color: #4a7310;
+}
 .pfix-sp .pfix-sp-signs__foot {
   max-width: 820px;
   margin: 32px auto 0;
@@ -6303,6 +6328,11 @@ a.bde-social-share-button:hover {
   background-image: url("/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp");
   background-position: 50% 45%;
 }
+/* /commercial-roofing/: the white TPO roof from Panda's "Expert TPO Roofing" project. */
+.hero-section.pfix-sv-hero--commercial {
+  background-image: url("/_custom/site-fixes/commercial-hero.webp");
+  background-position: 50% 60%;
+}
 .hero-section.pfix-sv-hero::before {
   content: "";
   position: absolute;
@@ -6439,7 +6469,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--commercial .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 /* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
@@ -6590,7 +6621,8 @@ a.bde-social-share-button:hover {
   .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--commercial .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
@@ -6601,7 +6633,8 @@ a.bde-social-share-button:hover {
   .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--commercial .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
   .pfix-sv-hero .pfix-sv-hero__brands img {

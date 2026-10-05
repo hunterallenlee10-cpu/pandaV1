@@ -275,8 +275,23 @@ Most of these problems are on the live site too.
   a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
   the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
   charcoal green it has on the other pages, with the heading in the styled h2.
-- **`/commercial-roofing/`'s "Our Process"** (the same section and words as `/roofing/`'s) gets the same numbered
-  timeline on charcoal green (`scripts/lib/roofing-page.mjs`).
+- **`/commercial-roofing/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `custom/site-fixes/service-pages.json` and `scripts/lib/service-pages.mjs`, "Our Process" in
+  `scripts/lib/roofing-page.mjs`, cards in `scripts/lib/gutters-page.mjs`): the hero was the heading and "No matter
+  what type of business you have…" over a stock photo of an apartment building. It now has the same treatment as
+  `/roofing/` and `/solar/`: a "Commercial roofing" label, the heading, a line on what Panda does for businesses
+  (flat roof replacements for offices, medical facilities and apartment communities, most done in one day), chips for
+  the roof systems, replacements, buildings and recent projects below, each with a line, and estimate and call
+  buttons, over a 161 KB WebP crop (`custom/site-fixes/commercial-hero.webp`) of the white TPO roof from Panda's
+  "Expert TPO Roofing" project. The intro paragraph sits in a readable column. A new **Buildings We Roof** section
+  follows "Commercial Roof Replacements": medical facilities, apartment communities, rooftop terraces and offices,
+  each in the words of the project page it links to. **Our Process** (the same section and words as `/roofing/`'s)
+  gets the same numbered timeline on charcoal green. "What Makes Our Roofers Stand Out?" (white on lime, about homes,
+  in an h3) is white icon cards under "Why Building Owners Choose Panda" (an h2), with the roofing page's words told
+  for a building. The project gallery opens on its Commercial photos. The "Roofing Options" card offered GAF shingles,
+  solar panels and solar shingles (residential roofing words); it names the flat roof systems instead
+  (`GRID_CARD_TEXTS` in `scripts/lib/site-fixes.mjs`). The "Limited-Time Offers" band (10% off a home roof
+  replacement, $1,500 off solar) is removed from the page.
 - **"About Our Team" headings** (the block's white version on `/roofing/`, `/roofing/types/`, `/reviews/` and `/faqs/`):
   the styled heading was empty and the words sat in a second, bare h2 in the browser's system font; they now go in the
   styled heading (`site-fixes.mjs`, "about heading").
@@ -320,13 +335,14 @@ Most of these problems are on the live site too.
   panels side by side (linking to `/solar/`, with a button to Solar Options), how a solar roof project works (three
   steps), six questions answered from what the site and its blog already say (with FAQPage structured data), a "Not
   sure which is right for your home?" band (its second button leads to Solar Options), and, after the testimonials, the offers band, whose solar **Claim** picks "GAF solar roof (solar shingles)".
-- **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/commercial-roofing/`, `/siding/`, `/gutters/`,
+- **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/siding/`, `/gutters/`,
   `/thank-you/`; `collectOffersStrip` in `scripts/lib/offers-page.mjs`): three flyer pictures with "Spring Savings" and
   a number that isn't the site's (877 213 1240) baked in, and "Panda Exteriors Internal Promotion" in their text. They
   are now the two offers as the `/offers/` page's coupon cards (from `custom/site-fixes/offers-page.json`), with a line
   about no-interest financing and a **See all offers** button. **Claim** picks the offer in the page's estimate form
   when that form lists the project (on `/solar/` the solar offer picks "Solar panels"); otherwise, and on
-  `/thank-you/`, it opens the offer's page.
+  `/thank-you/`, it opens the offer's page. On `/commercial-roofing/` the band is removed: both offers are for homes
+  (`NO_OFFERS_PATHS`).
 - **`/services/` hero** (`scripts/lib/services-hero.mjs`): "Expert Roofing and Exterior Services" and one line that
   offered windows (not a Panda service) over a 678 KB PNG of a Panda roofer installing solar shingles. It now has an
   "Our services" label, the same heading, the line without windows ("From roofing and siding to solar and gutters…"),
