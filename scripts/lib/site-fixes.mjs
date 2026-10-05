@@ -258,8 +258,11 @@ const SOLAR_MENU_ITEMS = [
   ['Solar Panels', '/solar/', 'Mounted on your existing roof'],
   ['GAF Solar Shingles', '/solar/gaf-solar-roof/', 'The roof itself makes power'],
 ];
-// Where "Solar" itself leads: the page that shows both (new-pages.mjs).
+// Where "Solar" itself leads: the page that shows both (new-pages.mjs), and its label there.
 const SOLAR_OPTIONS_PATH = '/solar-options/';
+const SOLAR_OPTIONS_LABEL = 'Solar Options';
+// The "Solar" entry's label: as captured, and once renamed.
+const SOLAR_LABELS = ['Solar', SOLAR_OPTIONS_LABEL];
 // The Google rating in the lead form's rating picture (admin-ajax-2.png).
 const GOOGLE_RATING = '4.9';
 
@@ -324,14 +327,9 @@ const GRID_CARD_FIXES = [
   // in config.mjs): they lead to the sections that took in what those pages said.
   { page: '/commercial-roofing/', title: 'Roofing Replacement', from: ['/commercial-roofing/roof-replacement/', '/commerical-roofing/roof-replacement/', '/commercial-roofing/'], href: '#commercial-roof-replacement', cta: 'How we replace commercial roofs', img: GRID_PHOTOS['/commercial-roofing/roof-replacement/'] },
   { page: '/commercial-roofing/', title: 'Roofing Options', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/commercial-roofing/'], href: '#commercial-roof-systems', cta: 'Compare roof systems', img: GRID_PHOTOS['/commercial-roofing/roof-types/'] },
-  { page: '/solar/', title: 'Solar Panel Installations', from: ['/solar/solar-panel-installations/', '/solar/'], href: '#solar-panels', cta: 'Why go solar', img: photoFor('/solar/') },
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
-// Card titles that change, by page: /solar/'s second card names the product (solar shingles,
-// not panels), as the header's menu does.
-const GRID_CARD_TITLES = { '/solar/': { 'GAF Solar Roof Solutions': 'GAF Solar Shingles' } };
-const gridCardTitle = (pathname, title) => GRID_CARD_TITLES[pathname]?.[title] || title;
 // Card text that changes, by page: /commercial-roofing/'s "Roofing Options" offered GAF
 // shingles, solar panels and solar shingles (the residential roofing card's words) on a page
 // about flat roofs; it names the flat roof systems the page compares below.
@@ -679,14 +677,10 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   let done = false;
   // A grid an earlier build already made: its cards' links mended since then.
   for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'pfix-svc') && c.parentNode && hasClass(c.parentNode, 'pfix-svc-grid__item'))) {
-    const titleEl = find(a, (c) => hasClass(c, 'pfix-svc__title'));
-    const title = clean(textOf(titleEl || { childNodes: [] }));
+    // (not in a section another fix replaces: /solar/'s cards, solar-pages.mjs)
+    if (ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
+    const title = clean(textOf(find(a, (c) => hasClass(c, 'pfix-svc__title')) || { childNodes: [] }));
     const href = attr(a, 'href') || '';
-    if (titleEl && gridCardTitle(pathname, title) !== title) {
-      ed.inner(titleEl, esc(gridCardTitle(pathname, title)));
-      changes.push(`services grid: card renamed: "${title}" -> "${gridCardTitle(pathname, title)}"`);
-      done = true;
-    }
     const textEl = find(a, (c) => hasClass(c, 'pfix-svc__text'));
     const text = clean(textOf(textEl || { childNodes: [] }));
     if (textEl && gridCardText(pathname, title, text) !== text) {
@@ -705,6 +699,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   for (const grid of findAll(doc, (c) => hasClass(c, 'Service-cards'))) {
     const kids = (grid.childNodes || []).filter((c) => c.tagName);
     if (!kids.length || !kids.every((c) => c.tagName === 'a' && hasClass(c, 'service-link-card'))) continue;
+    if (ed.overlaps(grid.sourceCodeLocation.startOffset, grid.sourceCodeLocation.endOffset)) continue;
     const fixed = [];
     const cards = kids.map((a) => {
       const title = clean(textOf(find(a, (c) => hasClass(c, 'team-heading')) || { childNodes: [] }));
@@ -713,7 +708,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
-      return { title: gridCardTitle(pathname, title), text: gridCardText(pathname, title, text), href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+      return { title, text: gridCardText(pathname, title, text), href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
     const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
     if (missing.length) {
@@ -1007,7 +1002,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
     const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
     const ownA = (n) => (n.childNodes || []).find((a) => a.tagName === 'a');
-    const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && clean(textOf(ownA(k))) === 'Solar');
+    const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && SOLAR_LABELS.includes(clean(textOf(ownA(k)))));
     const sub = solar && (solar.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
     if (!sub || find(sub, (c) => hasClass(c, 'pfix-nav-hint'))) continue;
     const sample = find(list, (c) => c.tagName === 'a' && hasClass(c, 'Nav-Link-Hover') && hasClass(c.parentNode, 'li') && !hasClass(c.parentNode, 'mobile-show'));
@@ -1035,17 +1030,21 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
-  // Header "Services" ▸ "Solar" itself led to /solar/, the solar panels page -> the Solar
-  // Options page, which shows both products (new-pages.mjs). Phones open the list rather than
-  // follow the entry, so the list starts with a phone-only "Solar Options" entry, as Roofing's
-  // starts with "Roofing".
+  // Header "Services" ▸ "Solar" itself led to /solar/, the solar panels page -> "Solar
+  // Options", leading to the Solar Options page, which shows both products (new-pages.mjs).
+  // Behind the menu button (phones and tablets), the site's script made a tap on it open its
+  // list instead; site-fixes.js makes the entry open the page and its arrow open the list.
   if (NEW_PAGES_ON) {
     for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
       const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
       const ownA = (n) => (n.childNodes || []).find((a) => a.tagName === 'a');
-      const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && clean(textOf(ownA(k))) === 'Solar');
+      const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && SOLAR_LABELS.includes(clean(textOf(ownA(k)))));
       const sub = solar && (solar.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
       if (!sub) continue;
+      // Behind the menu button, tapping the entry opens its page and its arrow opens its list
+      // (site-fixes.js); the arrow gets a bigger tap area (site-fixes.css).
+      used.js = true;
+      used.css = true;
       const sitePath = (a) => {
         try {
           return new URL(attr(a, 'href') || '', SITE_ORIGIN).pathname;
@@ -1060,17 +1059,19 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
         ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: SOLAR_OPTIONS_PATH } : x)));
         done = true;
       }
-      const has = (sub.childNodes || []).some((k) => k.tagName && hasClass(k, 'li') && ownA(k) && sitePath(ownA(k)) === SOLAR_OPTIONS_PATH);
-      const at = sub.sourceCodeLocation.startTag.endOffset;
-      if (!has && !ed.overlaps(at, at)) {
-        // A copy of another phone-only entry (Roofing's), so it shows and hides as those do.
-        const sample = find(list, (c) => c.tagName === 'a' && c.parentNode && hasClass(c.parentNode, 'mobile-show') && c.parentNode.parentNode !== list);
-        const liClass = sample ? attr(sample.parentNode, 'class') : 'oxy-container li mobile-show';
-        const aClass = sample ? attr(sample, 'class') : 'oxy-text-link Nav-Link Nav-Link-Hover';
-        ed.replace(at, at, `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${SOLAR_OPTIONS_PATH}" target="_self"> Solar Options </a></div>`);
+      const label = find(a, (c) => hasClass(c, 'oxy-text'));
+      if (label && clean(textOf(label)) !== SOLAR_OPTIONS_LABEL && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
+        ed.inner(label, `\n${SOLAR_OPTIONS_LABEL}\n`);
         done = true;
       }
-      if (done) changes.push('services menu: Solar leads to the Solar Options page (was the solar panels page), and its list starts with "Solar Options" on phones');
+      // The phone-only "Solar Options" entry an earlier build put at the top of the list: the
+      // entry itself opens the page now, so it only repeated it.
+      for (const li of (sub.childNodes || []).filter((k) => k.tagName && hasClass(k, 'mobile-show') && ownA(k) && sitePath(ownA(k)) === SOLAR_OPTIONS_PATH)) {
+        if (ed.overlaps(li.sourceCodeLocation.startOffset, li.sourceCodeLocation.endOffset)) continue;
+        ed.outer(li, '');
+        done = true;
+      }
+      if (done) changes.push('services menu: "Solar" -> "Solar Options", leading to the Solar Options page (was the solar panels page)');
     }
   }
 

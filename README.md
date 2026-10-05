@@ -140,10 +140,15 @@ Most of these problems are on the live site too.
   and "GAF Solar Roof", so nothing said the Solar page is about panels or that solar panels and GAF solar shingles are
   two different products. It now has **Solar Panels** ("Mounted on your existing roof") and **GAF Solar Shingles**
   ("The roof itself makes power") at every screen size, each with that line in smaller gray type under its label. The
-  `/services/` card and the `/solar/` card for the shingles page say "GAF Solar Shingles" too. "Solar" itself (the
-  entry you hover to open the flyout) leads to the **Solar Options** page (`/solar-options/`, one of the
-  [new pages](#site-restructure)) rather than the solar panels page, and on phones, where tapping "Solar" opens the
-  flyout, the flyout starts with a "Solar Options" entry, as Roofing's starts with "Roofing".
+  `/services/` card for the shingles page says "GAF Solar Shingles" too. "Solar" itself (the
+  entry you hover to open the flyout) is now **Solar Options** and leads to the Solar Options page (`/solar-options/`,
+  one of the [new pages](#site-restructure)) rather than the solar panels page. Where the menu folds behind the menu
+  button (up to 1024 px), the site's script made a tap on it open its flyout instead, so it never reached the page:
+  now the label opens the page and its arrow (a 44 px tap area) opens the flyout (`custom/site-fixes/site-fixes.js`).
+  Two older faults in the folded menu went with it: from 768 to 1024 px no dropdown could be opened (tapping
+  "Services" left for `/services/`, and the lists were styled to open on hover inside a menu that hides them), and
+  now a tap opens each in place, as on phones; and on phones a second-level list (Roofing's, Solar Options') covered
+  the entries under it, and now it opens in place and pushes them down.
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
   count" or "Based on 0 reviews!".
@@ -312,19 +317,24 @@ Most of these problems are on the live site too.
 - **`/solar/`** (solar panels; heroes in `scripts/lib/services-hero.mjs`, sections in `custom/site-fixes/service-pages.json`,
   `scripts/lib/roofing-page.mjs`, `scripts/lib/gutters-page.mjs` and `scripts/lib/solar-pages.mjs`): the hero said "Expert
   Solar Roofing Services" over a fixed 280 KB PNG. It now has a "Solar panels" label, the heading "Solar Panel
-  Installation for Your East Coast Home", chips for solar panels and GAF solar shingles (each with a line saying how
-  they differ), and estimate and call buttons, over the WebP copy of its solar panel photo. The cards' heading is "Two
-  Ways to Go Solar", and a new **Solar Panels or GAF Solar Shingles?** section compares the two side by side (what
-  each is, its points, who it suits, and a link to each). "Our Process" is the charcoal timeline the Roofing page has,
-  with the solar steps' own words; "What Makes Our Roofers Stand Out?" (white on lime) is white icon cards under "Why
-  Choose Panda for Solar?"; the project gallery opens on its Solar photos.
+  Installation for Your East Coast Home", chips for solar panels, GAF solar shingles and Solar Options (each with a
+  line saying what it is), and estimate and call buttons, over the WebP copy of its solar panel photo. It is the solar
+  panels page, so it is about panels: its title is "Solar Panel Installation" (it was "Solar Roofing Services") with
+  its own description, its form picks "Solar panels", and its two cards (one per product: Solar Options shows both)
+  are gone. It opens with **Solar Panel Installations** (the panels card's words and a checklist beside a photo of
+  panels from its solar gallery), then a short **Solar Panels or GAF Solar Shingles?** (the panels marked as this page,
+  the shingles linking to theirs, and a button to the full comparison on Solar Options), the benefits of solar panels
+  with three panel guides from the blog, and six solar panel questions. "Our Process" is the charcoal timeline the
+  Roofing page has, with the solar steps' own words; "What Makes Our Roofers Stand Out?" (white on lime) is white icon
+  cards under "Why Choose Panda for Solar?"; the project gallery opens on its Solar photos. It has no project row: the
+  site's one solar project is a GAF solar shingle roof, which the shingles page shows.
 - **`/solar/gaf-solar-roof/`** (GAF solar shingles; `scripts/lib/solar-pages.mjs`, with the Gutter Guards page's styles):
-  the same hero treatment ("GAF Timberline Solar Shingles for Your East Coast Home", the two chips) over the aerial
-  photo of a GAF solar roof Panda installed. The intro keeps its words beside a rounded photo; "Why Use GAF Solar
+  the same hero treatment ("GAF Timberline Solar Shingles for Your East Coast Home", the three chips) over the aerial
+  photo of a GAF solar roof Panda installed, and its own title ("GAF Timberline Solar Shingles") and description. The intro keeps its words beside a rounded photo; "Why Use GAF Solar
   Shingles?" (white on lime) is the same words as white icon cards. New sections follow: solar shingles and solar
-  panels side by side (linking to `/solar/`), how a solar roof project works (three steps), six questions answered from
-  what the site and its blog already say (with FAQPage structured data), a "Not sure which is right for your home?"
-  band, and, after the testimonials, the offers band, whose solar **Claim** picks "GAF solar roof (solar shingles)".
+  panels side by side (linking to `/solar/`, with a button to Solar Options), how a solar roof project works (three
+  steps), six questions answered from what the site and its blog already say (with FAQPage structured data), a "Not
+  sure which is right for your home?" band (its second button leads to Solar Options), and, after the testimonials, the offers band, whose solar **Claim** picks "GAF solar roof (solar shingles)".
 - **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/siding/`, `/gutters/`,
   `/thank-you/`; `collectOffersStrip` in `scripts/lib/offers-page.mjs`): three flyer pictures with "Spring Savings" and
   a number that isn't the site's (877 213 1240) baked in, and "Panda Exteriors Internal Promotion" in their text. They
@@ -433,7 +443,7 @@ Most of these problems are on the live site too.
   promises the 30% federal tax credit). Every project is now reachable in context: `/past-projects/` lists all of them
   under the favorites ("Browse all of our projects", with Homes / Commercial & multi-family / Solar filters), and the
   service pages each belongs to show it in a "Recent projects" row above their testimonials (`/roofing/residential/`,
-  `/roofing/replacement/`, `/roofing/types/`, the three commercial pages, `/solar/`, `/solar/gaf-solar-roof/`,
+  `/roofing/replacement/`, `/roofing/types/`, the three commercial pages, `/solar/gaf-solar-roof/`,
   `/gutters/gutter-guards/`). The Site Map now finds no page that can't be reached by clicking. The five "Panda Ext-…"
   pages share the same four or five drone photos (as on the live site), so each shows a different one as its cover.
 - **The blog, redesigned** (`/blog/`, its 15 numbered pages and all 93 posts; `scripts/lib/blog.mjs` with
@@ -626,7 +636,9 @@ blog already say.
   warranties (GAF and the Golden Pledge, siding).
 - `/storm-damage/`: what to do in the first 24 hours, what insurance usually covers (shared with Roofing Costs), how
   Panda helps with the claim, questions, and every storm and insurance guide on the blog.
-- `/solar-options/`: the two ways to go solar side by side. Solar panels and GAF solar shingles each get a photo
+- `/solar-options/`: the two ways to go solar side by side, over a photo of solar homes from the solar gallery (the
+  solar panels page, `/solar/`, and the solar shingles page, `/solar/gaf-solar-roof/`, are each about their product
+  and link here for the comparison). Solar panels and GAF solar shingles each get a photo
   card (what it is, four points, who it suits and a button to its own page), then a comparison table (installation,
   look, the roof deck, upfront cost, power, warranty, best for; on phones each row stacks), how going solar with
   Panda works, why Panda, questions and the blog's solar guides. Its estimate form is the solar one. The words are
@@ -635,7 +647,7 @@ blog already say.
   state, the jobs completed there (`custom/us-map/areas.json`), the services and the other offices.
 
 The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), and Services ▸ Solar
-leads to Solar Options; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
+became "Solar Options", leading to that page; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
 too, the service cards across the site link Storm Damage where Residential
 Roofing was, Contact Us links each office's page, and Service Areas shows the seven offices where it had the
 services row every other page has too (`serviceAreaOffices` in `scripts/lib/site-fixes.mjs`).

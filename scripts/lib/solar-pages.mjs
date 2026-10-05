@@ -1,10 +1,14 @@
-// The two solar pages: /solar/ (solar panels) and /solar/gaf-solar-roof/ (GAF solar shingles),
-// the parts their other modules don't cover. Solar panels and solar shingles are different
-// products, and the pages didn't say so: both heroes said "solar roofing", and the menu's
-// only entry under Solar was "GAF Solar Roof".
+// The two solar product pages: /solar/ (solar panels) and /solar/gaf-solar-roof/ (GAF solar
+// shingles), the parts their other modules don't cover. Solar panels and solar shingles are
+// different products, and the pages didn't say so: both heroes said "solar roofing", and the
+// menu's only entry under Solar was "GAF Solar Roof". The page that shows both side by side
+// is Solar Options (/solar-options/, new-pages.mjs); each product page is about its product.
 //
-//  - /solar/: the heading over its two cards, "Roof Solar Panel Installations", named one of
-//    the two -> "Two Ways to Go Solar" (the line under it already names both).
+//  - Both: their own title and description (as captured, /solar/ was "Solar Roofing Services"
+//    and both had the same description), in the head, the social tags and the page's data.
+//  - /solar/: its two cards, "Roof Solar Panel Installations" (one for panels, one for GAF
+//    solar shingles), go: what solar panels are, beside a photo, opens its sections instead
+//    (service-pages.mjs).
 //  - /solar/gaf-solar-roof/: as captured, under the intro (text beside a photo) came "Why Use
 //    GAF Solar Shingles?": white text on Panda lime over four white cards (hard to read), then
 //    the project row and the testimonials, and nothing else. Now, built like the Gutter
@@ -13,13 +17,13 @@
 //       rounded photo;
 //     - the benefits (the section's own heading, words and four cards) as white cards with
 //       an icon each and dark text, on a light band;
-//     - solar shingles and solar panels side by side: what each one is, and a link to the
-//       panels page;
+//     - solar shingles and solar panels side by side: what each one is, a link to the
+//       panels page and a button to Solar Options for the full comparison;
 //     - how a solar shingle project works, in three steps;
 //     - questions about solar shingles, answered from what the site says (this page, the
 //       Solar page and the blog's "Solar Shingles vs. Traditional Solar Panels"), as
 //       accordions, with FAQPage structured data;
-//     - a "Not sure which is right for your home?" band;
+//     - a "Not sure which is right for your home?" band, its second button to Solar Options;
 //     - after the testimonials, the offers band the other service pages have
 //       (offers-page.mjs; "Claim" picks the solar shingles in the page's form).
 // The heroes are services-hero.mjs's; /solar/'s other sections are service-pages.mjs's,
@@ -31,12 +35,23 @@ import { offersStripHtml } from './offers-page.mjs';
 
 export const SOLAR_PATH = '/solar/';
 export const SOLAR_SHINGLES_PATH = '/solar/gaf-solar-roof/';
+// The page with both products and the full comparison (new-pages.mjs).
+const SOLAR_OPTIONS_COMPARE = '/solar-options/#compare';
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
 // Where the hero's "GAF solar shingles" chip leads (services-hero.mjs).
 const BENEFITS_ID = 'solar-shingles';
-// /solar/'s heading over its two cards: as captured, and now.
-const SOLAR_CARDS_HEADING = ['Roof Solar Panel Installations', 'Two Ways to Go Solar'];
+// Each page's own title and description.
+const HEADS = {
+  [SOLAR_PATH]: {
+    title: 'Solar Panel Installation | Panda Exteriors',
+    description: 'Solar panels mounted on the roof you already have, designed around your energy use and budget. Get a free, no-obligation solar panel estimate from Panda Exteriors.',
+  },
+  [SOLAR_SHINGLES_PATH]: {
+    title: 'GAF Timberline Solar Shingles | Panda Exteriors',
+    description: 'GAF Timberline Solar shingles: a new roof that makes its own power, flush with the rest of the roof and with no panels on top. Installed by GAF Master Elite certified crews.',
+  },
+};
 
 const svg = (body) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
 const line = (d, w = 1.9) => svg(`<path d="${d}" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`);
@@ -120,7 +135,7 @@ function sectionsHtml() {
         (o.here ? `<p class="pfix-ss-option__here">You’re on this page</p>` : `<a class="pfix-ss-option__link" href="${esc(o.link[0])}">${esc(o.link[1])}${ICONS.arrow}</a>`) +
         `</div>`
     ).join('') +
-    `</div></div></section>`;
+    `</div><p class="pfix-ss-more"><a class="pfix-gg-btn pfix-gg-btn--outline" href="${SOLAR_OPTIONS_COMPARE}">Compare all solar options${ICONS.arrow}</a></p></div></section>`;
   const steps =
     `<section class="pfix-gg__sec pfix-gg__sec--steps" aria-labelledby="pfix-ss-steps"><div class="pfix-gg__inner">` +
     head('pfix-ss-steps', 'How it works', 'How Your Solar Roof Project Works') +
@@ -142,7 +157,7 @@ function sectionsHtml() {
     `<div><h2 class="pfix-gg-band__title" id="pfix-ss-band">Not sure which is right for your home?</h2>` +
     `<p class="pfix-gg-band__text">At your free solar estimate we’ll look at your roof and your energy use, and help you choose between GAF solar shingles and solar panels.</p></div>` +
     `<div class="pfix-gg-band__btns"><a class="pfix-gg-btn pfix-gg-btn--light" href="#${FORM_ID}">Get a free estimate${ICONS.arrow}</a>` +
-    `<a class="pfix-gg-btn pfix-gg-btn--outline" href="/solar/#solar-options">Compare with solar panels</a></div>` +
+    `<a class="pfix-gg-btn pfix-gg-btn--outline" href="${SOLAR_OPTIONS_COMPARE}">Compare solar options</a></div>` +
     `</div></section>`;
   return `<div class="pfix-gg pfix-gg--solar">${benefits}${compare}${steps}${faq}${band}</div>`;
 }
@@ -155,17 +170,67 @@ const faqLd = (url) =>
     mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
   }).replace(/</g, '\\u003c')}</script>`;
 
-/** /solar/: its cards' heading; /solar/gaf-solar-roof/: the intro's class, the sections, the offers band. */
+// The page's title and description: the title, its social and structured-data copies, and the
+// descriptions.
+function solarHead(doc, html, ed, pathname, changes) {
+  const want = HEADS[pathname];
+  if (!want) return false;
+  let n = 0;
+  const set = (node, value) => {
+    const l = node.sourceCodeLocation;
+    if (attr(node, 'content') === value || ed.overlaps(l.startOffset, l.endOffset)) return;
+    ed.retag(node, node.attrs.map((a) => (a.name === 'content' ? { name: 'content', value } : a)));
+    n++;
+  };
+  const title = find(doc, (c) => c.tagName === 'title');
+  if (title && clean(textOf(title)) !== want.title && !ed.overlaps(title.sourceCodeLocation.startOffset, title.sourceCodeLocation.endOffset)) {
+    ed.inner(title, esc(want.title));
+    n++;
+  }
+  for (const m of findAll(doc, (c) => c.tagName === 'meta')) {
+    const key = attr(m, 'property') || attr(m, 'name');
+    if (key === 'og:title' || key === 'twitter:title') set(m, want.title);
+    else if (key === 'description' || key === 'og:description' || key === 'twitter:description') set(m, want.description);
+  }
+  // The page's own entry in its structured data (name and description).
+  for (const script of findAll(doc, (c) => c.tagName === 'script' && attr(c, 'type') === 'application/ld+json' && hasClass(c, 'rank-math-schema-pro'))) {
+    const text = (script.childNodes || []).map((t) => t.value || '').join('');
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      continue;
+    }
+    let edited = false;
+    for (const item of data['@graph'] || []) {
+      const types = [].concat(item['@type'] || []);
+      if (!types.includes('WebPage') && !types.includes('Article')) continue;
+      if (item.name !== undefined && item.name !== want.title) (item.name = want.title), (edited = true);
+      if (item.headline !== undefined && item.headline !== want.title) (item.headline = want.title), (edited = true);
+      if (item.description !== undefined && item.description !== want.description) (item.description = want.description), (edited = true);
+    }
+    const l = script.sourceCodeLocation;
+    if (edited && !ed.overlaps(l.startTag.endOffset, l.endTag.startOffset)) {
+      ed.inner(script, JSON.stringify(data).replace(/</g, '\\u003c'));
+      n++;
+    }
+  }
+  if (n) changes.push(`solar page head: title "${want.title}" and its own description`);
+  return n > 0;
+}
+
+/** Both: the title and description; /solar/: its cards go; /solar/gaf-solar-roof/: the intro's class, the sections, the offers band. */
 export function collectSolarPages(doc, html, ed, { pathname = '', siteDir = '', siteOrigin = '' } = {}, changes = []) {
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
 
+  solarHead(doc, html, ed, pathname, changes);
   if (pathname === SOLAR_PATH) {
-    const [from, to] = SOLAR_CARDS_HEADING;
-    const cards = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Team-section'));
-    const h = cards && find(cards, (c) => c.tagName === 'h2' && clean(textOf(c)) === from);
-    if (!h || !free(h)) return !!(cards && find(cards, (c) => c.tagName === 'h2' && clean(textOf(c)) === to));
-    ed.inner(h, esc(to));
-    changes.push(`solar page cards: the heading "${from}" -> "${to}" (the cards are solar panels and GAF solar shingles)`);
+    // Its two cards (one per product), as captured or as the services grid made them.
+    const cards = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Team-section') && !!find(c, (x) => hasClass(x, 'pfix-svc-grid') || hasClass(x, 'Service-cards')));
+    if (cards && free(cards)) {
+      ed.outer(cards, '');
+      changes.push('solar page: the cards for both products go (the Solar Options page shows both); what solar panels are opens its sections instead');
+    }
     return true;
   }
   if (pathname !== SOLAR_SHINGLES_PATH) return false;

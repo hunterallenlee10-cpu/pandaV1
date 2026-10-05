@@ -297,6 +297,21 @@
   "/solar/": {
     "service": "solar",
     "gallery": "Solar",
+    "intro": {
+      "id": "about-solar-panels",
+      "eyebrow": "Solar panels",
+      "title": "Solar Panel Installations",
+      "intro": "Want to lower your energy bills and make the planet a healthier place? A solar panel installation may be the perfect option for you! At Panda Exteriors, we work with top brands to offer quality solar panels that will harness energy from the sun to power your home throughout the year.",
+      "items": [
+        "Added to the roof you already have",
+        "Placed to catch the most sunlight, and can be angled toward the sun",
+        "A system designed around your energy use and budget",
+        "Easier to upgrade or expand later"
+      ],
+      "img": ["/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/e78dfbe4-a4c7-4146-bad1-fc897a3af885-1024x768.jpg", 1024, 768],
+      "alt": "Black solar panels across the roof of a two-story home",
+      "link": ["#solar-panels", "Benefits of solar panels"]
+    },
     "types": {
       "id": "solar-options",
       "eyebrow": "Know the difference",
@@ -311,11 +326,10 @@
           "points": [
             "Added to the roof you already have",
             "Generally a lower cost per watt installed",
-            "The most power per square foot, and can be angled toward the sun",
-            "Easier to upgrade or expand later"
+            "The most power per square foot"
           ],
           "best": "A roof in good shape, a smaller or partly shaded roof, or the lowest upfront cost",
-          "link": ["#solar-panels", "Why go solar with panels"]
+          "here": true
         },
         {
           "name": "GAF solar shingles",
@@ -325,19 +339,18 @@
           "points": [
             "Installed as part of a new roof, with no racks on top",
             "A low profile, barely noticeable from the street",
-            "No mounts drilled through the roof deck",
-            "One manufacturer, GAF, for both the roof and the solar"
+            "No mounts drilled through the roof deck"
           ],
           "best": "A roof that needs replacing soon, or a seamless look",
           "link": ["/solar/gaf-solar-roof/", "Explore GAF solar shingles"]
         }
       ],
-      "note": "Not sure which suits your home? We’ll look at your roof and your energy use at your free solar estimate."
+      "more": ["/solar-options/#compare", "Compare all solar options"]
     },
     "cards": [
       {
         "id": "solar-panels",
-        "eyebrow": "Solar panels",
+        "eyebrow": "Why solar panels",
         "title": "Benefits of Solar Panels for Your Home",
         "intro": "Solar is a gift that keeps on giving: there is no better way to save on your energy costs. Installations have come down in price in recent years, and with government rebate programs, nearly anyone can afford them. Still on the fence? Consider these benefits:",
         "items": [
@@ -346,22 +359,27 @@
           ["bolt", "Reduced utility costs", "The impact is often underestimated: with a complete system, you can often enjoy $0 a month electric bills."],
           ["sparkle", "An expression of style", "From traditional panels to high-end, technologically advanced systems, solar can make your home stand out in the neighborhood."]
         ],
-        "footer": "Want a solar roof without panels? GAF solar shingles work as regular roofing shingles, protecting your home from the weather, and generate electricity too.",
-        "reads": [["/solar/gaf-solar-roof/", "GAF solar shingles"], ["/blog/solar-shingles-vs-traditional-solar-panels/", "Solar shingles vs. traditional panels"]]
+        "reads": [
+          ["/blog/the-top-5-benefits-of-solar-panels-for-homeowners/", "Top 5 benefits of solar panels"],
+          ["/blog/the-role-of-solar-panels-in-reducing-peak-electricity-demand/", "Solar panels and peak electricity demand"],
+          ["/blog/how-to-clean-solar-panels-and-shingles/", "How to clean solar panels"]
+        ]
       }
     ],
     "faq": {
-      "title": "Solar Questions, Answered",
+      "title": "Solar Panel Questions, Answered",
       "items": [
         ["How do solar panels work?", "Solar panels convert sunlight into electricity using photovoltaic cells. When sunlight hits these cells, it stimulates electrons, creating an electric current."],
         ["Do solar panels work at night or on cloudy days?", "Solar panels need sunlight to produce power. They produce less on cloudy days and none at night, but battery storage lets you use solar energy stored during the day."],
-        ["Panels or GAF solar shingles: which should I choose?", "Panels go on your existing roof; GAF solar shingles are your roof and your power source in one install, with a low profile many homeowners prefer. We install both and will help you choose."],
+        ["Do I need a new roof to get solar panels?", "No. Solar panels are mounted on top of the roof you already have, which suits a roof in good shape. If your roof is nearing the end of its life, GAF solar shingles let you take care of your roof and solar in one project."],
+        ["Can I add more panels later?", "Yes. Panel systems are easier to upgrade or expand in the future than a solar roof, so you can start with the system that fits your budget today."],
+        ["What warranty comes with solar panels?", "Solar panels typically come with 25 to 30 year performance warranties, and our installation is backed by our own warranty and 100% satisfaction guarantee."],
         ["What are my solar financing options?", "There are various options, including solar loans, leases and power purchase agreements. Talk to us about the best option for you, and ask about $1,500 off your solar project."]
       ]
     },
     "cta": {
-      "title": "Ready to go solar?",
-      "text": "Get a free solar estimate for panels or GAF solar shingles, and ask about $1,500 off."
+      "title": "Ready for solar panels?",
+      "text": "Get a free solar panel estimate for your home, and ask about $1,500 off."
     }
   }
 }
