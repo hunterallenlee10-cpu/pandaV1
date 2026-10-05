@@ -1,5 +1,5 @@
 {
-  "_help": "The pages added in the site restructure (scripts/lib/new-pages.mjs; README, \"Site restructure\"). Each page has its head (title, description), a hero beside the estimate form and its sections, in order. Section types: cards ([icon, title, text, [link label, href]?]), split (paragraphs, a checklist and a photo), covered (two lists), steps, links (articles), note, faq. The words come from what the site and its blog already say. Edit and run `npm run update:site`. The office pages (/locations/…/) are made from custom/site-fixes/contact-page.json and custom/us-map/areas.json, with the words under \"offices\" below.",
+  "_help": "The pages added in the site restructure (scripts/lib/new-pages.mjs; README, \"Site restructure\"). Each page has its head (title, description), a hero beside the estimate form and its sections, in order. Section types: cards ([icon, title, text, [link label, href]?]), split (paragraphs, a checklist and a photo), covered (two lists), steps, links (articles), note, faq, showcase (products side by side, each with a photo, points and a link) and compare (a table: [row label, one cell per column]). The words come from what the site and its blog already say. Edit and run `npm run update:site`. The office pages (/locations/…/) are made from custom/site-fixes/contact-page.json and custom/us-map/areas.json, with the words under \"offices\" below.",
   "pages": {
     "/financing/": {
       "title": "Roof And Solar Financing | Panda Exteriors",
@@ -232,6 +232,134 @@
         }
       ],
       "cta": { "title": "Think your roof took a hit?", "text": "Book a free storm-damage inspection. We’ll tell you honestly whether it looks cosmetic or claim-worthy." }
+    },
+    "/solar-options/": {
+      "title": "Solar Options: Solar Panels Or GAF Solar Shingles | Panda Exteriors",
+      "description": "Two ways to go solar with Panda Exteriors: solar panels mounted on the roof you already have, or GAF Timberline Solar shingles that make the roof itself your power source. Compare them side by side.",
+      "breadcrumb": "Solar Options",
+      "hero": {
+        "eyebrow": "Solar options",
+        "title": "Two Ways to Power Your Home with the Sun",
+        "sub": "Solar panels mounted on the roof you already have, or GAF solar shingles that make the roof itself your power source. They are two different products: we install both, and we’ll help you choose.",
+        "chips": [
+          ["sun", "Solar panels", "#solar-panels"],
+          ["roof", "GAF solar shingles", "#solar-shingles"],
+          ["layers", "Compare them side by side", "#compare"]
+        ]
+      },
+      "form": { "title": "Free Solar Estimate", "text": "Solar panels or GAF solar shingles: we’ll help you choose." },
+      "sections": [
+        {
+          "type": "showcase",
+          "id": "options",
+          "eyebrow": "Your solar options",
+          "title": "Choose How You Go Solar",
+          "intro": "Solar panels are mounted on top of the roof you already have; GAF solar shingles are the roof itself, installed as part of a new roof. Both lower your energy bills.",
+          "items": [
+            {
+              "id": "solar-panels",
+              "icon": "sun",
+              "name": "Solar Panels",
+              "tag": "Mounted on your existing roof",
+              "img": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg", 1000, 667],
+              "alt": "Rows of solar panels mounted on a home’s tiled roof",
+              "text": "Panels on racks, mounted on top of your current roof and placed to catch the most sunlight.",
+              "points": [
+                "Added to the roof you already have",
+                "Generally a lower cost per watt installed",
+                "The most power per square foot, and can be angled toward the sun",
+                "Easier to upgrade or expand later"
+              ],
+              "best": "A roof in good shape, a smaller or partly shaded roof, or the lowest upfront cost",
+              "link": ["Explore solar panels", "/solar/"]
+            },
+            {
+              "id": "solar-shingles",
+              "icon": "roof",
+              "name": "GAF Solar Shingles",
+              "tag": "The roof itself makes power",
+              "img": ["/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-1024x576.jpg", 1024, 576],
+              "alt": "Aerial view of a GAF Timberline Solar roof Panda Exteriors installed",
+              "text": "GAF Timberline Solar shingles that lie flush with the rest of the roof: your roof and your power source in one install.",
+              "points": [
+                "Installed as part of a new roof, with no racks on top",
+                "A low profile, barely noticeable from the street",
+                "No mounts drilled through the roof deck",
+                "One manufacturer, GAF, for both the roof and the solar"
+              ],
+              "best": "A roof that needs replacing soon, or a seamless look",
+              "link": ["Explore GAF solar shingles", "/solar/gaf-solar-roof/"]
+            }
+          ]
+        },
+        {
+          "type": "compare",
+          "id": "compare",
+          "eyebrow": "Side by side",
+          "title": "Solar Panels vs. GAF Solar Shingles",
+          "intro": "Each system has its advantages: the right choice comes down to your roof, your energy goals and how you want your home to look.",
+          "columns": [["sun", "Solar panels"], ["roof", "GAF solar shingles"]],
+          "rows": [
+            ["Installation", "Mounted on racks on top of the roof you already have", "Installed as part of a full roof replacement, as the roof itself"],
+            ["Look", "Mounted above the roof, standing several inches off the roofline", "Lie flush with the rest of the roof, barely noticeable from the street"],
+            ["Your roof deck", "Brackets and mounts that need holes drilled into the roof", "No racks, and no mounts drilled into the roof deck"],
+            ["Upfront cost", "Generally a lower cost per watt installed", "Higher, as it combines roofing and solar; cost-effective when you need a new roof anyway"],
+            ["Power", "The most power per square foot, and can be angled toward the sun", "Need more roof area for the same output: suit medium to large roofs with open sun"],
+            ["Warranty", "Performance warranties of 25 to 30 years; the roof and the solar may need separate warranties", "One manufacturer for the roof and the solar, with a 25-year warranty on power production"],
+            ["Best for", "A roof in good shape, a smaller or partly shaded roof, or the lowest upfront cost", "A roof that needs replacing soon, or a seamless look"]
+          ],
+          "note": "Not sure which suits your home? We’ll look at your roof and your energy use at your free solar estimate and help you choose."
+        },
+        {
+          "type": "steps",
+          "eyebrow": "How it works",
+          "title": "Going Solar with Panda",
+          "intro": "Whichever you choose, one local team handles your project from the first visit to the day your roof starts making power.",
+          "items": [
+            ["Free solar evaluation", "Our solar team looks at your roof, how much sun it gets and how much energy you use, and gives you a free, no-obligation quote."],
+            ["Choose your system", "We go over panels and solar shingles for your home, the expected savings and your financing options, so you can decide with confidence."],
+            ["Expert installation", "Our GAF Master Elite certified crews mount panels on your roof, or install solar shingles as part of your new GAF roof."],
+            ["Clean power, protected", "Your system is backed by our warranties and the manufacturer’s, and by local experts who are a phone call away."]
+          ],
+          "link": ["Get a free solar estimate", "#pfix-lead-1"]
+        },
+        {
+          "type": "cards",
+          "eyebrow": "Why Panda",
+          "title": "Why Choose Panda for Solar?",
+          "items": [
+            ["badge", "30+ years of experience", "Our experts come to every job with over three decades of combined experience handling solar roofing projects."],
+            ["home", "Local expertise", "We serve homes and businesses throughout the East Coast, so we know how best to protect your home year round."],
+            ["shield", "Top-rated warranties", "Best-in-class warranties and great manufacturer warranties keep your investment protected for many years to come."]
+          ]
+        },
+        {
+          "type": "faq",
+          "eyebrow": "Questions",
+          "title": "Solar Options, Answered",
+          "items": [
+            ["What’s the difference between solar panels and solar shingles?", "Solar panels are mounted on racks on top of your existing roof. GAF solar shingles are the roof itself: they lie flush with the rest of the roof and make power, installed as part of a new roof. We install both and will help you choose."],
+            ["Do I need a new roof to go solar?", "Not for solar panels: they are added to the roof you already have. GAF Timberline Solar shingles are installed as part of a full roof replacement, which makes them a cost-effective choice when your roof is nearing the end of its life."],
+            ["Which makes more power?", "Panels make a little more power per square foot and can be angled toward the sun, which helps on smaller or partly shaded roofs. Solar shingles need more roof area for the same output, so they suit medium to large roofs with open sun."],
+            ["Which costs less?", "Solar panels generally have a lower upfront cost per watt installed. Solar shingles cost more at first because they are a new roof and solar in one, and offer greater long-term value when you are replacing an aging roof anyway."],
+            ["How do they hold up in storms?", "Both are built to withstand the elements. GAF solar shingles are designed to handle wind, rain, hail and snow, and can withstand winds up to 130 MPH."],
+            ["Can I finance my solar project?", "Yes. There are various options, including solar loans, leases and power purchase agreements. Talk to us about the best option for you at your free estimate, and ask about $1,500 off your solar project."]
+          ]
+        },
+        {
+          "type": "links",
+          "title": "Solar guides from our blog",
+          "items": [
+            ["GAF Timberline Solar shingles vs. traditional solar panels", "/blog/solar-shingles-vs-traditional-solar-panels/"],
+            ["What to know about installing a solar roof", "/blog/adding-solar-to-your-mid-atlantic-home-what-to-know/"],
+            ["Top 5 benefits of solar panels for homeowners", "/blog/the-top-5-benefits-of-solar-panels-for-homeowners/"],
+            ["Replacing your roof with GAF Timberline Solar shingles", "/blog/replacing-your-roof-with-gaf-timberline-solar-shingles/"],
+            ["How GAF solar shingles handle severe weather", "/blog/storm-proofing-how-gaf-solar-shingles-handle-severe-weather/"],
+            ["Solar financing for GAF solar shingles", "/blog/solar-financing-gaf-solar-shingles/"]
+          ]
+        }
+      ],
+      "cta": { "title": "Ready to go solar?", "text": "Get a free solar estimate for panels or GAF solar shingles, and ask about $1,500 off." }
     }
   },
   "offices": {

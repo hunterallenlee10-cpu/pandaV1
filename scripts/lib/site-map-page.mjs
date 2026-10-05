@@ -495,7 +495,7 @@ export function renderSiteMap({ rows, redirects: moves, missing }) {
 // "More pages"; the error page, the blog's numbered listing pages and the site check don't show.
 const PUBLIC_GROUPS = [
   ['Roofing', (p) => /^\/(roofing\/|storm-damage\/|roofing-costs\/)/.test(p)],
-  ['Commercial, solar and exteriors', (p) => /^\/(services|commercial-roofing|solar|siding|gutters)\//.test(p)],
+  ['Commercial, solar and exteriors', (p) => /^\/(services|commercial-roofing|solar|solar-options|siding|gutters)\//.test(p)],
   ['Savings and support', (p) => /^\/(offers|financing|warranty|faqs|contact-us|referrals)\/$/.test(p)],
   ['Our company', (p) => /^\/(about|careers|charity-and-community|reviews|past-projects|service-areas)\/$/.test(p)],
   ['Local offices', (p) => p.startsWith('/locations/')],

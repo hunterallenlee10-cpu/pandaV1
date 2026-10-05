@@ -1,5 +1,5 @@
-/* The pages added in the site restructure: /financing/, /warranty/, /storm-damage/ and the
-   office pages (/locations/…/), rendered by scripts/lib/new-pages.mjs. Roboto and the site's
+/* The pages added in the site restructure: /financing/, /warranty/, /storm-damage/,
+   /solar-options/ and the office pages (/locations/…/), rendered by scripts/lib/new-pages.mjs. Roboto and the site's
    palette: Panda orange, lime and the charcoal green of the "About Our Team" blocks. Every
    rule is scoped to .pnp. (Lists are divs with list roles: the site's stylesheet forces
    white text and bullets on every ul and li.) */
@@ -814,6 +814,173 @@
   color: var(--pnp-orange-ink);
 }
 
+/* Products side by side (/solar-options/) */
+.pnp .pnp-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 32px);
+}
+.pnp .pnp-option {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--pnp-line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20, 24, 15, 0.04), 0 24px 48px -28px rgba(20, 24, 15, 0.35);
+  scroll-margin-top: 110px;
+}
+.pnp .pnp-option__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--pnp-dark);
+}
+.pnp .pnp-option__media picture {
+  position: absolute;
+  inset: 0;
+}
+.pnp .pnp-option__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pnp .pnp-option__tag {
+  position: absolute;
+  z-index: 1;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  max-width: calc(100% - 28px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(14, 20, 12, 0.82);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  backdrop-filter: blur(4px);
+}
+.pnp .pnp-option__tag svg {
+  width: 18px;
+  height: 18px;
+  color: var(--pnp-lime);
+}
+.pnp .pnp-option__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(22px, 2.6vw, 32px);
+}
+.pnp .pnp-option__name {
+  color: var(--pnp-ink);
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pnp .pnp-option__text {
+  margin: 10px 0 16px;
+  font-size: 16.5px;
+}
+.pnp .pnp-option__best {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 4px solid var(--pnp-lime);
+  border-radius: 12px;
+  background: var(--pnp-bg);
+  color: var(--pnp-ink);
+  font-size: 15.5px;
+}
+/* The buttons line up at the bottom of the two cards. */
+.pnp .pnp-option__body > :nth-last-child(2) {
+  margin-bottom: 22px;
+}
+.pnp .pnp-option__btn {
+  margin-top: auto;
+}
+
+/* Comparison table (/solar-options/) */
+.pnp .pnp-compare {
+  max-width: 1040px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--pnp-line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(20, 24, 15, 0.04), 0 12px 32px -18px rgba(20, 24, 15, 0.22);
+}
+.pnp .pnp-compare__table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: none;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+.pnp .pnp-compare__table th,
+.pnp .pnp-compare__table td {
+  padding: 16px 20px;
+  border: 0;
+  border-top: 1px solid var(--pnp-line);
+  background: none;
+  color: var(--pnp-text);
+  text-align: left;
+  vertical-align: top;
+}
+.pnp .pnp-compare__table thead th,
+.pnp .pnp-compare__table thead td {
+  border-top: 0;
+  background: var(--pnp-dark);
+  color: #fff;
+}
+.pnp .pnp-compare__table thead tr > :first-child {
+  width: 22%;
+}
+.pnp .pnp-compare__col {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 800;
+}
+.pnp .pnp-compare__col svg {
+  color: var(--pnp-lime);
+}
+.pnp .pnp-compare__table tbody th {
+  color: var(--pnp-ink);
+  font-weight: 700;
+}
+.pnp .pnp-compare__table tbody tr:nth-child(even) > * {
+  background: #fafbf7;
+}
+.pnp .pnp-compare__table tbody tr:last-child > * {
+  background: #f3f9e6;
+  color: var(--pnp-ink);
+  font-weight: 600;
+}
+.pnp .pnp-compare__note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 760px;
+  margin: 22px auto 0;
+  color: var(--pnp-muted);
+  font-size: 15.5px;
+  text-align: left;
+}
+.pnp .pnp-compare__note svg {
+  margin-top: 2px;
+  color: var(--pnp-orange-ink);
+}
+
 /* Closing band */
 .pnp .pnp-cta-band {
   padding: clamp(40px, 6vw, 72px) 0;
@@ -866,6 +1033,11 @@
   .pnp .pnp-others {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .pnp .pnp-options {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 680px;
+    margin: 0 auto;
+  }
 }
 @media (max-width: 640px) {
   .pnp .pnp-inner {
@@ -883,6 +1055,47 @@
   }
   .pnp .pnp-office-card {
     grid-template-columns: minmax(0, 1fr);
+  }
+  /* The comparison: a card per row, each cell under its column's name. */
+  .pnp .pnp-compare__table,
+  .pnp .pnp-compare__table tbody,
+  .pnp .pnp-compare__table tr,
+  .pnp .pnp-compare__table th,
+  .pnp .pnp-compare__table td {
+    display: block;
+    width: 100%;
+  }
+  .pnp .pnp-compare__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .pnp .pnp-compare__table tbody tr + tr {
+    border-top: 1px solid var(--pnp-line);
+  }
+  .pnp .pnp-compare__table tbody th {
+    padding: 14px 16px 4px;
+    border: 0;
+    color: var(--pnp-orange-ink);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .pnp .pnp-compare__table td {
+    padding: 6px 16px;
+    border: 0;
+  }
+  .pnp .pnp-compare__table td:last-child {
+    padding-bottom: 14px;
+  }
+  .pnp .pnp-compare__table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--pnp-ink);
+    font-size: 13.5px;
+    font-weight: 800;
   }
   .pnp .pnp-form-card .name-row {
     flex-direction: column;
