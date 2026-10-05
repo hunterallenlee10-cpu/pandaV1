@@ -552,6 +552,50 @@ a.bde-social-share-button:hover {
     width: 250px;
   }
 }
+/* Behind the menu button (up to 1024 px), "Solar Options" opens its page and its arrow opens
+   the list of the two products (site-fixes.js): the arrow gets a 44 px tap area, set apart
+   by a thin line. */
+@media (max-width: 1024.98px) {
+  .main_menu .has_dropdown > a[href="/solar-options/"] {
+    align-items: stretch;
+  }
+  .main_menu .has_dropdown > a[href="/solar-options/"] > .oxy-html-code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    margin: -10px -25px -10px 12px;
+    border-left: 1px solid #e5e9df;
+    cursor: pointer;
+  }
+}
+/* On phones every list floats over what comes after it: a second-level list (Roofing's,
+   Solar Options') covered the entries under its own (Gutters, Gutter Guards, Siding). It
+   opens in place instead, pushing them down, set in a little on a pale tint. */
+@media (max-width: 767.98px) {
+  .main_menu .ul .li .ul .li > .ul {
+    position: static;
+    padding-left: 12px !important;
+    background: #f7f9f2;
+    box-shadow: none;
+  }
+}
+/* From 768 to 1024 px the menu folds behind the menu button, but its lists keep the
+   desktop styles (hidden until hovered, floating beside their entry) inside a menu that hides
+   them, so none could be opened. A tapped entry's list (.pfix-open, site-fixes.js) shows in
+   place under it, as on phones. */
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  .main_menu .ul .li.pfix-open > .ul {
+    display: block !important;
+    position: static;
+    width: 100%;
+    margin-top: 0;
+    padding-left: 15px;
+    visibility: visible;
+    opacity: 1;
+    box-shadow: none;
+  }
+}
 
 /* The header on phones (up to 768 px): a rule in every page stacked the header's row
    (.oxy-container-974-102 { display: block !important }), so the menu button sat under the

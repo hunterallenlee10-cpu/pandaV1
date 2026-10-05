@@ -9,7 +9,9 @@
    - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to.
    - /faqs/: the hero's search narrows the questions as you type, and the topic menu beside
      the questions shows which topic you are reading.
-   - /gallery/: the hero's category chips and photos open their category's tab. */
+   - /gallery/: the hero's category chips and photos open their category's tab.
+   - The header menu where it folds behind the menu button (up to 1024 px): "Solar Options"
+     opens its page, its arrow opens its list; from 768 px its dropdowns open as on phones. */
 (function () {
   'use strict';
   document.addEventListener('click', function (event) {
@@ -468,4 +470,49 @@
       }
     }
   });
+})();
+
+/* The header menu where it folds behind the menu button (up to 1024 px). The site's own script
+   makes a tap on any dropdown entry open its list rather than follow the link, and only on
+   screens under 768 px wide when the page loads; from 768 to 1024 px a tap on "Services"
+   left for /services/, so nothing under it could be reached.
+   - "Solar Options" (Services ▸ Solar Options) opens the Solar Options page; its arrow opens
+     the list of the two products. (The click is stopped on its way down, before the site's
+     script on the link sees it; the browser still follows the link.)
+   - From 768 px, where the site's script isn't on, the lists never showed (styled to open on
+     hover, inside a menu that hides them): a tap on a dropdown entry opens its list in place,
+     as on phones. */
+(function () {
+  'use strict';
+  var SOLAR_OPTIONS = '/solar-options/';
+  // The site's script is on when the page loads under 768 px wide (jQuery's $(window).width()).
+  var siteToggles = (document.documentElement.clientWidth || window.innerWidth) < 768;
+  var folded = function () {
+    var button = document.querySelector('.nav .mobile_btn');
+    return !!button && window.getComputedStyle(button).display !== 'none';
+  };
+  // (768–1024 px: the lists are styled for hover there, so an open one is marked with a class
+  // that shows it in place, in site-fixes.css.)
+  var toggle = function (link) {
+    var open = link.parentNode.classList.toggle('pfix-open');
+    var arrow = link.querySelector('.fa-angle-right, .fa-angle-down');
+    if (arrow) arrow.classList.toggle(arrow.classList.contains('fa-angle-down') ? 'fa-rotate-180' : 'fa-rotate-90', open);
+    link.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  document.addEventListener(
+    'click',
+    function (event) {
+      var link = event.target.closest && event.target.closest('.main_menu .has_dropdown > a');
+      if (!link || !folded()) return;
+      var arrow = event.target.closest('.oxy-html-code');
+      if (link.getAttribute('href') === SOLAR_OPTIONS && !arrow) {
+        event.stopPropagation();
+        return;
+      }
+      if (siteToggles) return;
+      event.preventDefault();
+      toggle(link);
+    },
+    true
+  );
 })();
