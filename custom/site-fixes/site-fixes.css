@@ -534,6 +534,25 @@ a.bde-social-share-button:hover {
     padding-left: 24px;
   }
 }
+/* Header "Services" ▸ "Solar" (site-fixes.mjs): "Solar Panels" and "GAF Solar Shingles", each
+   with a line under the label saying what it is. The line is smaller, lighter and not bold,
+   and keeps its gray when the label turns green on hover (!important: the menu's colors are).
+   Their flyout is as wide as the menu's other dropdowns at every size (it was 150 px at
+   768–1199 px), so each line fits on one row. */
+.main_menu .pfix-nav-hint {
+  display: block;
+  margin-top: 3px;
+  color: #7c8577 !important;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+@media (min-width: 768px) {
+  .main_menu .ul .li .ul:has(.pfix-nav-hint) {
+    width: 250px;
+  }
+}
+
 /* The header on phones (up to 768 px): a rule in every page stacked the header's row
    (.oxy-container-974-102 { display: block !important }), so the menu button sat under the
    logo, and the header was placed 46 px down, below a top bar of two lines (it is one). The
@@ -1217,6 +1236,24 @@ a.bde-social-share-button:hover {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+/* (/solar/: an icon where a type has no logo.) */
+.pfix-sp .pfix-sp-type__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #fff3ea;
+  color: var(--sp-orange-ink);
+}
+.pfix-sp .pfix-sp-type + .pfix-sp-type .pfix-sp-type__icon {
+  background: #f1f8e3;
+  color: #4a7310;
+}
+.pfix-sp .pfix-sp-type__icon svg {
+  width: 28px;
+  height: 28px;
 }
 .pfix-sp .pfix-sp-type__logo img {
   display: block;
@@ -6190,6 +6227,14 @@ a.bde-social-share-button:hover {
   background-image: url("/wp-content/uploads/2025/04/hero-roofing.jpg");
   background-position: 50% 55%;
 }
+.hero-section.pfix-sv-hero--solar {
+  background-image: url("/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg.webp");
+  background-position: 50% 40%;
+}
+.hero-section.pfix-sv-hero--solar-shingles {
+  background-image: url("/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp");
+  background-position: 50% 45%;
+}
 .hero-section.pfix-sv-hero::before {
   content: "";
   position: absolute;
@@ -6324,7 +6369,9 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 /* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
@@ -6473,7 +6520,9 @@ a.bde-social-share-button:hover {
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
@@ -6482,7 +6531,9 @@ a.bde-social-share-button:hover {
   .pfix-sv-hero--gutters .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--guards .text-section .pfix-sv-hero__title,
   .pfix-sv-hero--siding .text-section .pfix-sv-hero__title,
-  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title {
+  .pfix-sv-hero--roofing .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
   .pfix-sv-hero .pfix-sv-hero__brands img {
@@ -6967,6 +7018,120 @@ a.bde-social-share-button:hover {
   .pfix-gg .pfix-gg-faq__item,
   .pfix-gg a.pfix-gg-btn {
     transition: none;
+  }
+}
+
+/* /solar/gaf-solar-roof/ (solar-pages.mjs): the Gutter Guards page's intro and sections,
+   with the intro's own label and solar shingles and panels side by side. */
+.pfix-ss-intro .flext-head::before {
+  content: "GAF solar shingles";
+}
+.pfix-gg .pfix-ss-compare {
+  background: var(--gg-bg);
+}
+.pfix-gg .pfix-ss-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.pfix-gg .pfix-ss-option {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(24px, 3vw, 32px);
+  border: 1px solid var(--gg-line);
+  border-top: 4px solid var(--gg-orange);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(20, 24, 15, 0.05);
+}
+.pfix-gg .pfix-ss-option--here {
+  border-top-color: var(--gg-lime);
+}
+.pfix-gg .pfix-ss-option__top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pfix-gg .pfix-ss-option__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #fff3ea;
+  color: var(--gg-orange-ink);
+}
+.pfix-gg .pfix-ss-option--here .pfix-ss-option__icon {
+  background: #eef6dc;
+  color: var(--gg-lime-ink);
+}
+.pfix-gg .pfix-ss-option__icon svg {
+  width: 28px;
+  height: 28px;
+}
+.pfix-gg .pfix-ss-option h3 {
+  color: var(--gg-ink);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.pfix-gg .pfix-ss-option h3 span {
+  display: block;
+  margin-top: 2px;
+  color: var(--gg-muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+.pfix-gg .pfix-ss-option__list {
+  display: grid;
+  flex: 1;
+  gap: 10px;
+}
+.pfix-gg .pfix-ss-option__list > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.pfix-gg .pfix-ss-option__list svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  color: var(--gg-lime-ink);
+}
+.pfix-gg .pfix-ss-option__here {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #eef6dc;
+  color: var(--gg-lime-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.pfix-gg a.pfix-ss-option__link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  color: var(--gg-orange-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-gg a.pfix-ss-option__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pfix-gg a.pfix-ss-option__link svg {
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 767.98px) {
+  .pfix-gg .pfix-ss-options {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 /* /siding/'s heading there is an h3 in a block, set white (!important: Bootstrap's

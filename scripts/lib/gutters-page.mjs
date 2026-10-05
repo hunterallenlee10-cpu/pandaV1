@@ -1,4 +1,4 @@
-// The Gutters, Siding and Roofing pages (/gutters/, /siding/, /roofing/): the parts their other
+// The Gutters, Siding, Roofing and Solar pages (/gutters/, /siding/, /roofing/, /solar/): the parts their other
 // modules don't cover.
 //
 //  - /gutters/ "Why Work with Our East Coast Exterior Specialists?": three lime cards with
@@ -10,6 +10,8 @@
 //  - /roofing/ "What Makes Our Roofers Stand Out?": the same lime band and lime headings. The
 //    same white icon cards, with the cards' own words, on Panda orange (the band class): the
 //    light offers band is above it and the white testimonials below.
+//  - /solar/ "What Makes Our Roofers Stand Out?": the same lime band, on a solar page. The
+//    same white icon cards, with the cards' own words, under "Why Choose Panda for Solar?".
 //  - A spot to jump to above the gutter services (the "Gutter installation" chip in the
 //    hero, services-hero.mjs, leads there).
 //
@@ -30,8 +32,10 @@ const ICON = {
   star: line('M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z'),
   card: line('M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5zM3 10h18M7 15h4'),
   clock: line('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.2 2'),
+  shield: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
 };
-// Per page: the cards (icon, title, text), the change note and a class for the band.
+// Per page: the cards (icon, title, text), the change note, a class for the band and a
+// heading for the section (where the captured one doesn't fit the page).
 const WHY = {
   '/gutters/': {
     note: 'gutters page why cards: white icon cards with dark text (was white on lime), without the cleaning services Panda doesn\'t offer',
@@ -47,6 +51,16 @@ const WHY = {
       [ICON.star, 'Quality Products', 'We offer premium siding materials from top manufacturers like CertainTeed and James Hardie, so you can have peace of mind knowing you’re getting the highest-quality products for your home exterior.'],
       [ICON.badge, 'Trained Professionals', 'Every member of our siding replacement team is trained and certified, which means you can count on us to provide great service every time! Plus, we have over 30 years of combined industry experience.'],
       [ICON.card, 'Affordable Services & Flexible Financing', 'We take pride in offering affordable services to our customers, so we can help as many people as possible. To top it off, we provide great financing options, such as no payments and no interest loan options.'],
+    ],
+  },
+  // /solar/: "What Makes Our Roofers Stand Out?" on a solar page -> its own heading.
+  '/solar/': {
+    note: 'solar page why cards: white icon cards with dark text under "Why Choose Panda for Solar?" (was "What Makes Our Roofers Stand Out?", white on lime)',
+    title: 'Why Choose Panda for Solar?',
+    cards: [
+      [ICON.badge, '30+ Years of Industry Experience', 'Our experts come to every job with over three decades of combined experience handling solar roofing projects!'],
+      [ICON.pin, 'Local Expertise', 'Our focus is on serving homes and businesses throughout the East Coast, so you can count on us to know how best to protect your home year round.'],
+      [ICON.shield, 'Top-Rated Warranties', 'We offer best in class warranties and great manufacturer warranties to ensure your investment is protected for many years to come.'],
     ],
   },
   '/roofing/': {
@@ -69,7 +83,7 @@ const whyCards = (cards) =>
     )
     .join('');
 
-/** /gutters/, /siding/, /roofing/: the "Why work with us" cards (and /gutters/' services anchor). */
+/** /gutters/, /siding/, /roofing/, /solar/: the "Why work with us" cards (and /gutters/' services anchor). */
 export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
   const why = WHY[pathname];
   if (!why) return false;
@@ -91,6 +105,15 @@ export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, change
       changes.push(why.note);
     }
     done = true;
+  }
+  // The section's heading, where the page gives its own.
+  const heading = why.title && section && find(section, (c) => c.tagName === 'h2');
+  if (heading && free(heading)) {
+    const l = heading.sourceCodeLocation;
+    if (html.slice(l.startTag.endOffset, l.endTag.startOffset) !== esc(why.title)) {
+      ed.inner(heading, esc(why.title));
+      done = true;
+    }
   }
   // The band's class.
   if (why.band && section && !hasClass(section, why.band)) {

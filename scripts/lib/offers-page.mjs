@@ -43,6 +43,8 @@ const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 const FORM_ID = 'pfix-lead-1';
 // Other names a page's form gives an offer's project (/solar/'s form: "Solar panels").
 const PROJECT_ALIASES = { Solar: ['Solar panels'] };
+// A page's own first choice for an offer's project (the GAF solar shingles page: its shingles).
+const PAGE_PROJECTS = { '/solar/gaf-solar-roof/': { Solar: 'GAF solar roof (solar shingles)' } };
 
 let data;
 const offersPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'offers-page.json'), 'utf8')));
@@ -167,7 +169,7 @@ export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes
   if (pathname === OFFERS_PATH) return false;
   const band = find(doc, (c) => attr(c, 'data-pfix-offers-strip') !== undefined) || find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Offers-Section'));
   if (!band || ed.overlaps(band.sourceCodeLocation.startOffset, band.sourceCodeLocation.endOffset)) return false;
-  const block = offersStripHtml(doc, { siteDir });
+  const block = offersStripHtml(doc, { siteDir, pathname });
   const { startOffset, endOffset } = band.sourceCodeLocation;
   if (html.slice(startOffset, endOffset) === block) return true;
   ed.outer(band, block);
@@ -181,7 +183,7 @@ export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes
  * when the form has it (the gutter and siding forms list only their own projects);
  * otherwise it opens the offer's page.
  */
-export function offersStripHtml(doc, { siteDir } = {}) {
+export function offersStripHtml(doc, { siteDir, pathname = '' } = {}) {
   const page = offersPage();
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
   const form = find(doc, (c) => attr(c, 'id') === FORM_ID);
@@ -189,7 +191,7 @@ export function offersStripHtml(doc, { siteDir } = {}) {
   const select = form && find(form, (c) => c.tagName === 'select' && attr(c, 'name') === 'project');
   const projects = new Set(select ? findAll(select, (c) => c.tagName === 'option').map((o) => clean(textOf(o))) : []);
   // The offer's project, or the name a page's own form gives it.
-  const pick = (project) => [project, ...(PROJECT_ALIASES[project] || [])].find((p) => projects.has(p)) || null;
+  const pick = (project) => [PAGE_PROJECTS[pathname]?.[project], project, ...(PROJECT_ALIASES[project] || [])].find((p) => p && projects.has(p)) || null;
   const finance = page.promises.items.find((x) => x.icon === 'card');
   const after =
     `<p class="pfix-of-strip__more">` +

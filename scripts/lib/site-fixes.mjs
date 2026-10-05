@@ -173,7 +173,7 @@
 import { collectMergedNav } from './merged-pages.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, renamedPath } from './config.mjs';
+import { ROOT, SITE_ORIGIN, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
@@ -196,6 +196,7 @@ import { collectLegalPage } from './legal-page.mjs';
 import { collectServiceHero } from './services-hero.mjs';
 import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
+import { collectSolarPages } from './solar-pages.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
 import { collectRoofingPage } from './roofing-page.mjs';
 import { collectBlogPages } from './blog.mjs';
@@ -220,7 +221,7 @@ export const SITE_FIXES_FILES = {
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|roofing costs page|costs page|roofing page|commercial roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -249,6 +250,12 @@ const SERVICE_MENU_ITEMS = [
   ['Gutter Guards', '/gutters/gutter-guards/'],
   ['Siding', '/siding/'],
 ];
+// The header's "Services" ▸ "Solar" entries: label, address and the line under the label
+// that says what each one is (solar panels and GAF solar shingles are different products).
+const SOLAR_MENU_ITEMS = [
+  ['Solar Panels', '/solar/', 'Mounted on your existing roof'],
+  ['GAF Solar Shingles', '/solar/gaf-solar-roof/', 'The roof itself makes power'],
+];
 // The Google rating in the lead form's rating picture (admin-ajax-2.png).
 const GOOGLE_RATING = '4.9';
 
@@ -268,7 +275,7 @@ const SERVICE_CARDS = [
     text: 'Environmentally friendly insulation that keeps your home comfortable all year.' },
   { group: 'Solar', title: 'Solar Panels', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
     text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
-  { group: 'Solar', title: 'GAF Solar Roof', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
+  { group: 'Solar', title: 'GAF Solar Shingles', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
   { group: 'Commercial', title: 'Commercial Roofing', href: '/commercial-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
     text: 'Flat roof replacements for businesses, from inspection to final walkthrough.' },
@@ -317,6 +324,10 @@ const GRID_CARD_FIXES = [
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
+// Card titles that change, by page: /solar/'s second card names the product (solar shingles,
+// not panels), as the header's menu does.
+const GRID_CARD_TITLES = { '/solar/': { 'GAF Solar Roof Solutions': 'GAF Solar Shingles' } };
+const gridCardTitle = (pathname, title) => GRID_CARD_TITLES[pathname]?.[title] || title;
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -655,8 +666,14 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   let done = false;
   // A grid an earlier build already made: its cards' links mended since then.
   for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'pfix-svc') && c.parentNode && hasClass(c.parentNode, 'pfix-svc-grid__item'))) {
-    const title = clean(textOf(find(a, (c) => hasClass(c, 'pfix-svc__title')) || { childNodes: [] }));
+    const titleEl = find(a, (c) => hasClass(c, 'pfix-svc__title'));
+    const title = clean(textOf(titleEl || { childNodes: [] }));
     const href = attr(a, 'href') || '';
+    if (titleEl && gridCardTitle(pathname, title) !== title) {
+      ed.inner(titleEl, esc(gridCardTitle(pathname, title)));
+      changes.push(`services grid: card renamed: "${title}" -> "${gridCardTitle(pathname, title)}"`);
+      done = true;
+    }
     const fix = gridCardFix(pathname, title, href);
     if (!fix || fix.href === href) continue;
     ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
@@ -676,7 +693,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
-      return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+      return { title: gridCardTitle(pathname, title), text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
     const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
     if (missing.length) {
@@ -961,6 +978,42 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push('services menu: "Other" -> Gutters, Gutter Guards and Siding as their own entries');
   }
 
+  // Header "Services" ▸ "Solar": a phone-only "Solar" link and "GAF Solar Roof", so nothing
+  // said the Solar page is about panels or that the two are different products -> "Solar
+  // Panels" (shown at every size) and "GAF Solar Shingles", each with a line saying what it
+  // is (.pfix-nav-hint). Each entry is edited on its own: the merged "Solar Panel
+  // Installation" entry is merged-pages.mjs's; one left pointing at /solar/ (/careers/) goes.
+  for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
+    const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
+    const ownA = (n) => (n.childNodes || []).find((a) => a.tagName === 'a');
+    const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && clean(textOf(ownA(k))) === 'Solar');
+    const sub = solar && (solar.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
+    if (!sub || find(sub, (c) => hasClass(c, 'pfix-nav-hint'))) continue;
+    const sample = find(list, (c) => c.tagName === 'a' && hasClass(c, 'Nav-Link-Hover') && hasClass(c.parentNode, 'li') && !hasClass(c.parentNode, 'mobile-show'));
+    const liClass = sample ? attr(sample.parentNode, 'class') : 'oxy-container li';
+    const aClass = sample ? attr(sample, 'class') : 'oxy-text-link Nav-Link Nav-Link-Hover';
+    const seen = new Set();
+    let edited = 0;
+    for (const li of (sub.childNodes || []).filter((k) => k.tagName && hasClass(k, 'li'))) {
+      const a = ownA(li);
+      let to = a && attr(a, 'href');
+      try {
+        to = to && new URL(to, SITE_ORIGIN).pathname;
+      } catch {
+        to = null;
+      }
+      const item = SOLAR_MENU_ITEMS.find(([, href]) => href === to);
+      if (!item || ed.overlaps(li.sourceCodeLocation.startOffset, li.sourceCodeLocation.endOffset)) continue;
+      const [label, href, hint] = item;
+      ed.outer(li, seen.has(href) ? '' : `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${esc(href)}" target="_self"> ${esc(label)} <span class="pfix-nav-hint">${esc(hint)}</span></a></div>`);
+      seen.add(href);
+      edited++;
+    }
+    if (!edited) continue;
+    changes.push('services menu: Solar -> "Solar Panels" and "GAF Solar Shingles", each with a line saying what it is');
+    used.css = true;
+  }
+
   // Inc. 5000 awards section: on /about/ and /podcast/ it sat on lime with white swooshes
   // (white text about 1.7:1, a swoosh running through the paragraph, the badges' white
   // circles showing on the lime); on /roofing/ it was plain black on white with a centred
@@ -1173,14 +1226,21 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
 
-  // /services/, /gutters/, /siding/, /roofing-costs/, /roofing/: the hero gets service chips and estimate and call buttons
+  // /services/, /gutters/, /siding/, /roofing-costs/, /roofing/, the solar pages: the hero gets service chips and estimate and call buttons
   // (services-hero.mjs).
   if (collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
-  // /gutters/, /siding/, /roofing/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
+  // /gutters/, /siding/, /roofing/, /solar/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
   if (collectGuttersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /gutters/gutter-guards/: the benefits as icon cards, how it works, questions, a band for
   // new gutters and the offers band (gutter-guards-page.mjs).
   if (collectGutterGuardsPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  // /solar/: its cards' heading names both products; /solar/gaf-solar-roof/: the benefits as
+  // icon cards, shingles and panels side by side, how it works, questions, a band and the
+  // offers band (solar-pages.mjs).
+  if (collectSolarPages(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) {
     used.css = true;
     used.js = true;
   }

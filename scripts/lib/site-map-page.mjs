@@ -78,7 +78,12 @@ const isPhoneOnly = (n) => {
   return false;
 };
 const ownLink = (item) => (item.childNodes || []).find((c) => c.tagName === 'a');
-const label = (a) => clean(textOf(a)) || clean(attr(a, 'aria-label') || attr(a, 'title') || '');
+// (Without the line some menu entries have under their label: site-fixes.mjs, .pfix-nav-hint.)
+const label = (a) => {
+  const hint = find(a, (c) => hasClass(c, 'pfix-nav-hint'));
+  const text = clean(textOf(a));
+  return clean(hint ? text.slice(0, text.lastIndexOf(clean(textOf(hint)))) : text) || clean(attr(a, 'aria-label') || attr(a, 'title') || '');
+};
 
 // The top-menu path of a link: the labels of the dropdowns it sits in, then its own.
 function menuPath(a, nav) {

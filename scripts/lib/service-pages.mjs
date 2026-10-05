@@ -7,7 +7,9 @@
 // Under the cards, each page now gets (content in custom/site-fixes/service-pages.json,
 // written only from what the site and its blog already say):
 //  - /siding/: the two siding types side by side (James Hardie fiber cement, CertainTeed
-//    vinyl), with an id the "Siding Types" card links to;
+//    vinyl), with an id the "Siding Types" card links to; /solar/: solar panels and GAF solar
+//    shingles side by side the same way (an icon where a type has no logo, and a link to
+//    the type's own page or section);
 //  - signs it's time to replace, with links to the blog posts they come from;
 //  - /gutters/: what is checked on every gutter job; /roofing/: what goes into every new roof,
 //    beside a photo of a roof Panda replaced;
@@ -77,11 +79,12 @@ const section = (key, cls, inner, id = '') =>
 function renderTypes(t, exists) {
   const option = (o) =>
     `<article class="pfix-sp-type" role="listitem">` +
-    `<div class="pfix-sp-type__top">${picture(o.logo[0], 0, 0, `${o.logo[1]} logo`, exists, 'pfix-sp-type__logo')}` +
-    `<h3 class="pfix-sp-type__name">${esc(o.name)} <span>by ${esc(o.brand)}</span></h3></div>` +
+    `<div class="pfix-sp-type__top">${o.logo ? picture(o.logo[0], 0, 0, `${o.logo[1]} logo`, exists, 'pfix-sp-type__logo') : `<span class="pfix-sp-type__icon">${ICONS[o.icon] || ICONS.home}</span>`}` +
+    `<h3 class="pfix-sp-type__name">${esc(o.name)}${o.brand ? ` <span>by ${esc(o.brand)}</span>` : ''}${o.tag ? ` <span>${esc(o.tag)}</span>` : ''}</h3></div>` +
     `<p class="pfix-sp-type__text">${esc(o.text)}</p>` +
     `<div class="pfix-sp-list" role="list">${o.points.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
     `<p class="pfix-sp-type__best"><b>Best for</b> ${esc(o.best)}</p>` +
+    (o.link ? `<a class="pfix-sp-link" href="${esc(o.link[0])}">${esc(o.link[1])}${ARROW}</a>` : '') +
     `</article>`;
   return section(
     'types',
@@ -203,7 +206,7 @@ export function collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigi
     }
     const end = cards.sourceCodeLocation.endOffset;
     ed.replace(end, end, block);
-    const parts = [page.types && 'siding types', page.signs && 'signs it’s time', page.cards && 'cards', page.check && 'what we check', page.checks && 'photo sections', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
+    const parts = [page.types && 'types compared', page.signs && 'signs it’s time', page.cards && 'cards', page.check && 'what we check', page.checks && 'photo sections', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
     changes.push(`service page: added ${parts.join(', ')} under the service cards`);
   }
   if (page.faq) {
