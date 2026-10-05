@@ -1,7 +1,10 @@
 # Site Map
 
-The Site Map (`/site-map/`) lists **every page in `site/`** and how a visitor gets to each one. Use it to check that
-no page gets missed when pages need editing or deleting.
+The site check (`/site-audit/`) lists **every page in `site/`** and how a visitor gets to each one. Use it to check that
+no page gets missed when pages need editing or deleting. It is linked from nowhere and kept out of search engines
+(`noindex`) and the XML sitemaps. The Site Map visitors see (`/site-map/`, in the footer) is a plain list of the same
+pages in groups (`renderPublicSiteMap`). Both are made from the built `/site-map/` page, until the site restructure
+the only one (README, "Site restructure").
 
 The captured page was a hand-kept list. It had fallen behind the site: it listed city sub-sites and a removed page,
 and it left out the blog. The list is now generated from the built site by `scripts/lib/site-map-page.mjs`, during the
