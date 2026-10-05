@@ -27,7 +27,7 @@ import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/medi
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '../lib/site-map-page.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
-import { removeBuiltPages, pruneUnusedFiles, editSitemaps, writeRedirectFiles } from '../lib/restructure.mjs';
+import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
@@ -48,6 +48,7 @@ function pageUrl(file) {
 // HTML goes now; the files only they used go once the other pages are updated (below).
 const removedPages = only ? { removed: [], used: new Set() } : removeBuiltPages(SITE, { dryRun });
 for (const p of removedPages.removed) console.log(`${dryRun ? 'would remove' : 'removed'} ${p} (REMOVED_PAGES)`);
+if (!only && editFeed(SITE, { dryRun })) console.log(`${dryRun ? 'would edit' : 'edited'} site/feed/index.xml (items of removed pages out)`);
 
 // The Media page is rebuilt below, from the other pages.
 const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');

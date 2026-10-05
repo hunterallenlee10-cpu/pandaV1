@@ -131,6 +131,27 @@ export function editSitemaps(siteDir, siteOrigin, newPages = [], { dryRun = fals
   return edited;
 }
 
+/** The site's RSS feed without the items of removed pages (merged blog posts). */
+export function pruneFeedXml(xml) {
+  return xml.replace(/[ \t]*<item>([\s\S]*?)<\/item>[ \t]*\r?\n?/g, (m, inner) => {
+    try {
+      const link = new URL(/<link>\s*([^<\s]+)\s*<\/link>/.exec(inner)?.[1]);
+      return isSiteUrl(link) && isRemovedPage(link.pathname) ? '' : m;
+    } catch {
+      return m;
+    }
+  });
+}
+export function editFeed(siteDir, { dryRun = false } = {}) {
+  const file = path.join(siteDir, 'feed', 'index.xml');
+  if (!fs.existsSync(file)) return false;
+  const xml = fs.readFileSync(file, 'utf8');
+  const out = pruneFeedXml(xml);
+  if (out === xml) return false;
+  if (!dryRun) fs.writeFileSync(file, out);
+  return true;
+}
+
 /** Redirect rows ({ from, to, status }) with chains followed to their last address. */
 export function flattenRedirects(rows) {
   const by = new Map(rows.map((r) => [r.from.replace(/\/+$/, '') || '/', r]));

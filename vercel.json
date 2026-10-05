@@ -186,6 +186,176 @@
       "source": "/blog/project/panda-ext-14532/",
       "destination": "/past-projects/",
       "statusCode": 301
+    },
+    {
+      "source": "/blog/5-benefits-of-hiring-a-professional-for-roof-replacement/",
+      "destination": "/blog/15-questions-to-ask-before-you-hire-a-roofer/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/beat-the-next-noreaster-why-scheduling-your-roof-replacement-before-deep-winter-saves-you-money/",
+      "destination": "/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/before-school-starts-august-is-the-perfect-time-for-solar-roof-installation/",
+      "destination": "/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/can-you-replace-a-roof-in-the-winter-yes-but-heres-the-catch/",
+      "destination": "/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/do-you-need-a-new-roof/",
+      "destination": "/blog/5-signs-its-time-to-replace-your-roof-before-it-costs-you-more/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/gutters-after-winter-cleaning-realignment-and-downspout-flow-tests/",
+      "destination": "/blog/gutters-after-winter-signs-its-time-for-repair-or-replacement/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/how-to-choose-the-right-roofing-contractor/",
+      "destination": "/blog/15-questions-to-ask-before-you-hire-a-roofer/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/insurance-roofing-in-spring-the-homeowners-field-guide-to-wind-and-hail-claims/",
+      "destination": "/blog/insurance-paid-roof-replacements-a-simple-guide-for-wind-hail-and-ice-damage-claims/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/is-it-safe-to-install-a-new-roof-in-the-winter-myths-vs-facts/",
+      "destination": "/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/",
+      "destination": "/blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/page/12/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/page/13/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/page/14/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/page/15/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/page/16/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/quarterly-inspection/",
+      "destination": "/blog/seasonal-roof-maintenance-tips-for-every-time-of-year/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/repair-or-replace-how-to-decide-after-a-winter-storm-beats-up-your-roof/",
+      "destination": "/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/replacing-a-roof-in-2024/",
+      "destination": "/blog/roof-replacement-timeline/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roof-leak-season-is-here-why-spring-rain-exposes-hidden-winter-damage/",
+      "destination": "/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roof-repair-or-replace/",
+      "destination": "/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/should-you-repair-or-replace-your-roof-after-a-spring-storm/",
+      "destination": "/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/solar-roof-inspection-summer-maintenance-for-maximum-performance/",
+      "destination": "/blog/how-to-clean-solar-panels-and-shingles/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/spring-is-a-great-season-for-roof-inspections/",
+      "destination": "/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/spring-rain-leak-season-why-roof-leaks-show-up-in-march-and-april/",
+      "destination": "/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/the-end-of-winter-roof-survival-checklist/",
+      "destination": "/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/",
+      "destination": "/blog/ice-dams-101-what-they-are-and-how-to-stop-them/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/",
+      "destination": "/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/what-questions-should-i-ask-a-roofing-contractor/",
+      "destination": "/blog/15-questions-to-ask-before-you-hire-a-roofer/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-2-3/",
+      "destination": "/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-3-3/",
+      "destination": "/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/why-fall-2024-is-the-best-time-to-combine-roof-upgrades-with-solar-installation-in-the-mid-atlantic/",
+      "destination": "/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/winter-proof-your-home-roof-gutters-and-attic-upgrades-that-stop-ice-dams-and-heat-loss/",
+      "destination": "/blog/ice-dams-101-what-they-are-and-how-to-stop-them/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/winter-ready-roofs-why-every-roof-needs-a-tune-up-before-first-freeze/",
+      "destination": "/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/winter-roof-replacement/",
+      "destination": "/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/",
+      "statusCode": 301
     }
   ]
 }

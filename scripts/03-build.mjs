@@ -22,7 +22,7 @@ import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { projectsFiles, PROJECTS_DIR } from './lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
 import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './lib/new-pages.mjs';
-import { addSitemapPages, flattenRedirects } from './lib/restructure.mjs';
+import { addSitemapPages, flattenRedirects, pruneFeedXml } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
@@ -149,7 +149,8 @@ if (SITE_FIXES) {
   primeBlogPosts(
     pages.flatMap((row) => {
       const pathname = new URL(row.url).pathname;
-      const raw = postSlug(pathname) ? fetcher.readCache(row.url) : null;
+      // (Posts removed or merged into another one are not listed: isRemovedPage.)
+      const raw = postSlug(pathname) && !isRemovedPage(pathname) ? fetcher.readCache(row.url) : null;
       return raw ? [{ pathname, html: raw.body.toString('utf8') }] : [];
     })
   );
@@ -330,6 +331,12 @@ for (const row of inv.rows) {
       body = Buffer.from(moved, 'utf8');
       if (!sitemapsEdited.includes(u.pathname)) sitemapsEdited.push(u.pathname);
     }
+  }
+  if (row.type === 'feed' && removedPages.length) {
+    // Feed items of the pages removed on request (merged blog posts) go too.
+    const xml = body.toString('utf8');
+    const kept = pruneFeedXml(xml);
+    if (kept !== xml) body = Buffer.from(kept, 'utf8');
   }
   if (row.type === 'sitemap' && removedPages.length) {
     // Sitemap entries of the pages removed on request go too.
