@@ -1306,6 +1306,30 @@ a.bde-social-share-button:hover {
   color: var(--sp-muted);
   text-align: center;
 }
+/* /solar/: the panels card says it is this page; the full comparison is a page of its own. */
+.pfix-sp .pfix-sp-type__here {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fff3ea;
+  color: var(--sp-orange-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+.pfix-sp .pfix-sp__more {
+  margin-top: 22px;
+  text-align: center;
+}
+.pfix-sp a.pfix-sp-btn--outline,
+.pfix-sp a.pfix-sp-btn--outline:hover {
+  border-color: var(--sp-ink);
+  background: transparent;
+  color: var(--sp-ink);
+}
+.pfix-sp a.pfix-sp-btn--outline:hover {
+  background: var(--sp-ink);
+  color: #ffffff;
+}
 
 /* Signs it's time: icon tiles. */
 .pfix-sp .pfix-sp__sec--signs {
@@ -7102,6 +7126,11 @@ a.bde-social-share-button:hover {
   height: 20px;
   margin-top: 3px;
   color: var(--gg-lime-ink);
+}
+/* Under the two: the full comparison is on Solar Options. */
+.pfix-gg .pfix-ss-more {
+  margin: 28px 0 0;
+  text-align: center;
 }
 .pfix-gg .pfix-ss-option__here {
   align-self: flex-start;

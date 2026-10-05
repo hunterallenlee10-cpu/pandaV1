@@ -7,9 +7,11 @@
 // Under the cards, each page now gets (content in custom/site-fixes/service-pages.json,
 // written only from what the site and its blog already say):
 //  - /siding/: the two siding types side by side (James Hardie fiber cement, CertainTeed
-//    vinyl), with an id the "Siding Types" card links to; /solar/: solar panels and GAF solar
-//    shingles side by side the same way (an icon where a type has no logo, and a link to
-//    the type's own page or section);
+//    vinyl), with an id the "Siding Types" card links to; /solar/ (the solar panels page): what
+//    solar panels are, beside a photo (its cards, which were both products, go: solar-pages.mjs),
+//    then panels and GAF solar shingles side by side the same way (an icon where a type has
+//    no logo; the panels marked as this page, the shingles linking to theirs) and a button to
+//    the Solar Options page for the full comparison;
 //  - signs it's time to replace, with links to the blog posts they come from;
 //  - /gutters/: what is checked on every gutter job; /roofing/: what goes into every new roof,
 //    beside a photo of a roof Panda replaced;
@@ -84,14 +86,16 @@ function renderTypes(t, exists) {
     `<p class="pfix-sp-type__text">${esc(o.text)}</p>` +
     `<div class="pfix-sp-list" role="list">${o.points.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
     `<p class="pfix-sp-type__best"><b>Best for</b> ${esc(o.best)}</p>` +
-    (o.link ? `<a class="pfix-sp-link" href="${esc(o.link[0])}">${esc(o.link[1])}${ARROW}</a>` : '') +
+    // The type this page is about says so; the others link to their own page.
+    (o.here ? `<p class="pfix-sp-type__here">You’re on this page</p>` : o.link ? `<a class="pfix-sp-link" href="${esc(o.link[0])}">${esc(o.link[1])}${ARROW}</a>` : '') +
     `</article>`;
   return section(
     'types',
     'types',
     head('types', t.eyebrow, t.title, t.intro) +
       `<div class="pfix-sp-types" role="list">${t.options.map(option).join('')}</div>` +
-      (t.note ? `<p class="pfix-sp__note">${esc(t.note)} <a href="#${FORM_ID}">Get a free estimate${ARROW}</a></p>` : ''),
+      (t.note ? `<p class="pfix-sp__note">${esc(t.note)} <a href="#${FORM_ID}">Get a free estimate${ARROW}</a></p>` : '') +
+      (t.more ? `<p class="pfix-sp__more"><a class="pfix-sp-btn pfix-sp-btn--outline" href="${esc(t.more[0])}">${esc(t.more[1])}${ARROW}</a></p>` : ''),
     t.id
   );
 }
@@ -158,6 +162,8 @@ export function renderServicePage(page, { siteDir } = {}) {
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
   return (
     `<div class="pfix-sp pfix-sp--${esc(page.service)}" data-pfix-sp>` +
+    // What the service is, beside a photo (/solar/: in place of its cards).
+    (page.intro ? renderCheck(page.intro, exists, 'intro') : '') +
     (page.types ? renderTypes(page.types, exists) : '') +
     (page.signs ? renderSigns(page.signs) : '') +
     // More card and photo sections, for pages that took in another page's content (the site
@@ -206,7 +212,7 @@ export function collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigi
     }
     const end = cards.sourceCodeLocation.endOffset;
     ed.replace(end, end, block);
-    const parts = [page.types && 'types compared', page.signs && 'signs it’s time', page.cards && 'cards', page.check && 'what we check', page.checks && 'photo sections', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
+    const parts = [page.intro && 'what it is', page.types && 'types compared', page.signs && 'signs it’s time', page.cards && 'cards', page.check && 'what we check', page.checks && 'photo sections', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
     changes.push(`service page: added ${parts.join(', ')} under the service cards`);
   }
   if (page.faq) {

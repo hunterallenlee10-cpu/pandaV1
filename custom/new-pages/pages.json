@@ -245,7 +245,8 @@
           ["sun", "Solar panels", "#solar-panels"],
           ["roof", "GAF solar shingles", "#solar-shingles"],
           ["layers", "Compare them side by side", "#compare"]
-        ]
+        ],
+        "photo": ["/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/d13cd5e4-38b6-4212-b137-b7c6901ca3ac-1024x683.jpg", 1024, 683]
       },
       "form": { "title": "Free Solar Estimate", "text": "Solar panels or GAF solar shingles: we’ll help you choose." },
       "sections": [
