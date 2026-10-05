@@ -148,11 +148,6 @@
       "statusCode": 301
     },
     {
-      "source": "/podcast/",
-      "destination": "/media/",
-      "statusCode": 301
-    },
-    {
       "source": "/roofing/residential/",
       "destination": "/roofing/replacement/",
       "statusCode": 301

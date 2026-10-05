@@ -257,8 +257,6 @@ export const MERGED_PAGES =
         '/commercial-roofing/roof-types/': '/commercial-roofing/',
         '/commercial-roofing/roof-replacement/': '/commercial-roofing/',
         '/solar/solar-panel-installations/': '/solar/',
-        // The Media page already has the podcast's player, episodes and ways to watch.
-        '/podcast/': '/media/',
         '/gallery/': '/past-projects/',
         '/customer-service/': '/contact-us/',
         // The two offers are on /offers/ in full; financing and the warranties get real pages.

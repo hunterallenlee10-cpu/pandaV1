@@ -121,11 +121,6 @@
       "type": 301
     },
     {
-      "source": "/podcast",
-      "destination": "/media/",
-      "type": 301
-    },
-    {
       "source": "/roofing/residential",
       "destination": "/roofing/replacement/",
       "type": 301
