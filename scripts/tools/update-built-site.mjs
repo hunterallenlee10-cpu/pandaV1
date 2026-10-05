@@ -25,7 +25,7 @@ import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs
 import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
-import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '../lib/site-map-page.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, writeRedirectFiles } from '../lib/restructure.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
@@ -52,7 +52,7 @@ for (const p of removedPages.removed) console.log(`${dryRun ? 'would remove' : '
 // The Media page is rebuilt below, from the other pages.
 const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');
 // So are the pages added in the site restructure (new-pages.mjs).
-const newFiles = new Set(newPagePaths().map((p) => path.join(SITE, p, 'index.html')));
+const newFiles = new Set([...newPagePaths(), SITE_AUDIT_PATH].map((p) => path.join(SITE, p, 'index.html')));
 const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile) && !newFiles.has(f));
 const counts = {};
 const linked = new Set(); // the /_custom/ files the pages link
@@ -110,6 +110,12 @@ if (SITE_MAP_PAGE && fs.existsSync(siteMapFile)) {
     changed++;
     if (!dryRun) writeFile(siteMapFile, siteMap.html);
     console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, siteMapFile)} (${siteMap.pages} page(s); not reachable by clicking: ${siteMap.orphans.join(', ') || 'none'})`);
+  }
+  const auditFile = path.join(SITE, SITE_AUDIT_PATH, 'index.html');
+  if (siteMap && (!fs.existsSync(auditFile) || fs.readFileSync(auditFile, 'utf8') !== siteMap.audit)) {
+    changed++;
+    if (!dryRun) writeFile(auditFile, siteMap.audit);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, auditFile)} (the site check, noindex)`);
   }
 }
 

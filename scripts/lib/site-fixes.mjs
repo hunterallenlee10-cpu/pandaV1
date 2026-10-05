@@ -732,6 +732,26 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // The site restructure: menu entries of merged pages out, the new pages in (merged-pages.mjs).
   collectMergedNav(doc, html, ed, changes);
 
+  // A page with no main heading (/roofing/attic-insulation/: its hero's headline was a div):
+  // the hero's headline becomes the page's h1, looking the same (.pfix-h1).
+  if (!find(doc, (c) => c.tagName === 'h1')) {
+    const headline = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'heading') && hasClass(c.parentNode, 'text-section') && ancestors(c).some((a) => hasClass(a, 'hero-section')));
+    const st = headline?.sourceCodeLocation;
+    if (st && !ed.overlaps(st.startOffset, st.endOffset)) {
+      ed.retag(headline, withClass(headline, ['pfix-h1']), 'h1');
+      changes.push('page heading: the hero headline is now the page’s h1 (it had none)');
+      used.css = true;
+    }
+  }
+  // /services/: titled "Roofing Services", though it is the page of every service.
+  if (pathname === '/services/') {
+    const title = 'Our Services | Panda Exteriors';
+    for (const t of findAll(doc, (c) => c.tagName === 'title')) if (textOf(t) !== title) ed.inner(t, esc(title));
+    for (const m of findAll(doc, (c) => c.tagName === 'meta' && ['og:title', 'twitter:title'].includes(attr(c, 'property') || attr(c, 'name')))) {
+      if (attr(m, 'content') !== title) ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: title } : a)));
+    }
+  }
+
   // Top bar: weather readout -> free-estimate phone number; no more location prompt.
   const ribbon = find(doc, (c) => hasClass(c, 'xai-weather-ribbon'));
   const readout = ribbon && find(ribbon, (c) => hasClass(c, 'weather-data'));

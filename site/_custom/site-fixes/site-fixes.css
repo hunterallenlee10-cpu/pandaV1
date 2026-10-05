@@ -9208,3 +9208,9 @@ a.bde-social-share-button:hover {
 .pfix-ct .pfix-ct-office--hq a.pfix-ct-office__page:hover {
   color: #9acd32;
 }
+
+/* A hero headline made the page's h1 (site-fixes.mjs): it keeps the look it had as a div. */
+h1.pfix-h1 {
+  margin: 0;
+  padding: 0;
+}

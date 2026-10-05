@@ -24,7 +24,7 @@ import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-p
 import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './lib/new-pages.mjs';
 import { addSitemapPages, flattenRedirects } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
-import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -520,6 +520,7 @@ if (SITE_MAP_PAGE) {
   if (siteMapPage) {
     const rel = path.posix.join(SITE_MAP_PATH.replace(/^\/|\/$/g, ''), 'index.html');
     put(rel, siteMapPage.html, written.get(rel) || 'custom/site-map');
+    put(path.posix.join(SITE_AUDIT_PATH.replace(/^\/|\/$/g, ''), 'index.html'), siteMapPage.audit, 'custom/site-map');
     for (const [from, url] of siteMapFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/site-map/${path.basename(from)}`);
   }
 }
