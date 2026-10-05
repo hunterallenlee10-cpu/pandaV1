@@ -141,9 +141,9 @@ Most of these problems are on the live site too.
   two different products. It now has **Solar Panels** ("Mounted on your existing roof") and **GAF Solar Shingles**
   ("The roof itself makes power") at every screen size, each with that line in smaller gray type under its label. The
   `/services/` card for the shingles page says "GAF Solar Shingles" too. "Solar" itself (the
-  entry you hover to open the flyout) leads to the **Solar Options** page (`/solar-options/`, one of the
-  [new pages](#site-restructure)) rather than the solar panels page, and on phones, where tapping "Solar" opens the
-  flyout, the flyout starts with a "Solar Options" entry, as Roofing's starts with "Roofing".
+  entry you hover to open the flyout) is now **Solar Options** and leads to the Solar Options page (`/solar-options/`,
+  one of the [new pages](#site-restructure)) rather than the solar panels page, and on phones, where tapping it opens
+  the flyout, the flyout starts with a "Solar Options" entry, as Roofing's starts with "Roofing".
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
   count" or "Based on 0 reviews!".
@@ -626,7 +626,7 @@ blog already say.
   state, the jobs completed there (`custom/us-map/areas.json`), the services and the other offices.
 
 The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), and Services ▸ Solar
-leads to Solar Options; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
+became "Solar Options", leading to that page; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
 too, the service cards across the site link Storm Damage where Residential
 Roofing was, Contact Us links each office's page, and Service Areas shows the seven offices where it had the
 services row every other page has too (`serviceAreaOffices` in `scripts/lib/site-fixes.mjs`).

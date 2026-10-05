@@ -256,8 +256,11 @@ const SOLAR_MENU_ITEMS = [
   ['Solar Panels', '/solar/', 'Mounted on your existing roof'],
   ['GAF Solar Shingles', '/solar/gaf-solar-roof/', 'The roof itself makes power'],
 ];
-// Where "Solar" itself leads: the page that shows both (new-pages.mjs).
+// Where "Solar" itself leads: the page that shows both (new-pages.mjs), and its label there.
 const SOLAR_OPTIONS_PATH = '/solar-options/';
+const SOLAR_OPTIONS_LABEL = 'Solar Options';
+// The "Solar" entry's label: as captured, and once renamed.
+const SOLAR_LABELS = ['Solar', SOLAR_OPTIONS_LABEL];
 // The Google rating in the lead form's rating picture (admin-ajax-2.png).
 const GOOGLE_RATING = '4.9';
 
@@ -980,7 +983,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
     const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
     const ownA = (n) => (n.childNodes || []).find((a) => a.tagName === 'a');
-    const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && clean(textOf(ownA(k))) === 'Solar');
+    const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && SOLAR_LABELS.includes(clean(textOf(ownA(k)))));
     const sub = solar && (solar.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
     if (!sub || find(sub, (c) => hasClass(c, 'pfix-nav-hint'))) continue;
     const sample = find(list, (c) => c.tagName === 'a' && hasClass(c, 'Nav-Link-Hover') && hasClass(c.parentNode, 'li') && !hasClass(c.parentNode, 'mobile-show'));
@@ -1008,15 +1011,15 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.css = true;
   }
 
-  // Header "Services" ▸ "Solar" itself led to /solar/, the solar panels page -> the Solar
-  // Options page, which shows both products (new-pages.mjs). Phones open the list rather than
-  // follow the entry, so the list starts with a phone-only "Solar Options" entry, as Roofing's
-  // starts with "Roofing".
+  // Header "Services" ▸ "Solar" itself led to /solar/, the solar panels page -> "Solar
+  // Options", leading to the Solar Options page, which shows both products (new-pages.mjs).
+  // Phones open the list rather than follow the entry, so the list starts with a phone-only
+  // "Solar Options" entry, as Roofing's starts with "Roofing".
   if (NEW_PAGES_ON) {
     for (const menu of findAll(doc, (c) => hasClass(c, 'Service-Menu'))) {
       const list = (menu.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
       const ownA = (n) => (n.childNodes || []).find((a) => a.tagName === 'a');
-      const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && clean(textOf(ownA(k))) === 'Solar');
+      const solar = list && (list.childNodes || []).find((k) => k.tagName && hasClass(k, 'has_dropdown') && ownA(k) && SOLAR_LABELS.includes(clean(textOf(ownA(k)))));
       const sub = solar && (solar.childNodes || []).find((k) => k.tagName && hasClass(k, 'sub_menu'));
       if (!sub) continue;
       const sitePath = (a) => {
@@ -1033,6 +1036,11 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
         ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: SOLAR_OPTIONS_PATH } : x)));
         done = true;
       }
+      const label = find(a, (c) => hasClass(c, 'oxy-text'));
+      if (label && clean(textOf(label)) !== SOLAR_OPTIONS_LABEL && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
+        ed.inner(label, `\n${SOLAR_OPTIONS_LABEL}\n`);
+        done = true;
+      }
       const has = (sub.childNodes || []).some((k) => k.tagName && hasClass(k, 'li') && ownA(k) && sitePath(ownA(k)) === SOLAR_OPTIONS_PATH);
       const at = sub.sourceCodeLocation.startTag.endOffset;
       if (!has && !ed.overlaps(at, at)) {
@@ -1043,7 +1051,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
         ed.replace(at, at, `<div class="${esc(liClass)}"><a class="${esc(aClass)}" href="${SOLAR_OPTIONS_PATH}" target="_self"> Solar Options </a></div>`);
         done = true;
       }
-      if (done) changes.push('services menu: Solar leads to the Solar Options page (was the solar panels page), and its list starts with "Solar Options" on phones');
+      if (done) changes.push('services menu: "Solar" -> "Solar Options", leading to the Solar Options page (was the solar panels page), and its list starts with "Solar Options" on phones');
     }
   }
 
