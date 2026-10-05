@@ -322,14 +322,9 @@ const GRID_CARD_FIXES = [
   // in config.mjs): they lead to the sections that took in what those pages said.
   { page: '/commercial-roofing/', title: 'Roofing Replacement', from: ['/commercial-roofing/roof-replacement/', '/commerical-roofing/roof-replacement/', '/commercial-roofing/'], href: '#commercial-roof-replacement', cta: 'How we replace commercial roofs', img: GRID_PHOTOS['/commercial-roofing/roof-replacement/'] },
   { page: '/commercial-roofing/', title: 'Roofing Options', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/commercial-roofing/'], href: '#commercial-roof-systems', cta: 'Compare roof systems', img: GRID_PHOTOS['/commercial-roofing/roof-types/'] },
-  { page: '/solar/', title: 'Solar Panel Installations', from: ['/solar/solar-panel-installations/', '/solar/'], href: '#solar-panels', cta: 'Why go solar', img: photoFor('/solar/') },
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
-// Card titles that change, by page: /solar/'s second card names the product (solar shingles,
-// not panels), as the header's menu does.
-const GRID_CARD_TITLES = { '/solar/': { 'GAF Solar Roof Solutions': 'GAF Solar Shingles' } };
-const gridCardTitle = (pathname, title) => GRID_CARD_TITLES[pathname]?.[title] || title;
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
   [/\bExterior Modeling\b/g, 'Exterior Remodeling'],
@@ -668,14 +663,10 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   let done = false;
   // A grid an earlier build already made: its cards' links mended since then.
   for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'pfix-svc') && c.parentNode && hasClass(c.parentNode, 'pfix-svc-grid__item'))) {
-    const titleEl = find(a, (c) => hasClass(c, 'pfix-svc__title'));
-    const title = clean(textOf(titleEl || { childNodes: [] }));
+    // (not in a section another fix replaces: /solar/'s cards, solar-pages.mjs)
+    if (ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
+    const title = clean(textOf(find(a, (c) => hasClass(c, 'pfix-svc__title')) || { childNodes: [] }));
     const href = attr(a, 'href') || '';
-    if (titleEl && gridCardTitle(pathname, title) !== title) {
-      ed.inner(titleEl, esc(gridCardTitle(pathname, title)));
-      changes.push(`services grid: card renamed: "${title}" -> "${gridCardTitle(pathname, title)}"`);
-      done = true;
-    }
     const fix = gridCardFix(pathname, title, href);
     if (!fix || fix.href === href) continue;
     ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
@@ -687,6 +678,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   for (const grid of findAll(doc, (c) => hasClass(c, 'Service-cards'))) {
     const kids = (grid.childNodes || []).filter((c) => c.tagName);
     if (!kids.length || !kids.every((c) => c.tagName === 'a' && hasClass(c, 'service-link-card'))) continue;
+    if (ed.overlaps(grid.sourceCodeLocation.startOffset, grid.sourceCodeLocation.endOffset)) continue;
     const fixed = [];
     const cards = kids.map((a) => {
       const title = clean(textOf(find(a, (c) => hasClass(c, 'team-heading')) || { childNodes: [] }));
@@ -695,7 +687,7 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       const href = renamedPath(attr(a, 'href') || '');
       const fix = gridCardFix(pathname, title, href);
       if (fix) fixed.push(`"${title}" ${href} -> ${fix.href}`);
-      return { title: gridCardTitle(pathname, title), text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
+      return { title, text, href: fix ? fix.href : href, cta: fix?.cta, img: fix ? fix.img : GRID_PHOTOS[href] };
     });
     const missing = cards.filter((s) => !s.title || !s.img || !exists(s.img[0]));
     if (missing.length) {

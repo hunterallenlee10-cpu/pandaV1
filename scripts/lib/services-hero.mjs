@@ -163,9 +163,9 @@ const HEROES = {
     ],
     note: 'chips for the four roofing pages and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
-  // The two solar pages: panels (/solar/) and GAF solar shingles. Each hero's chips are the
-  // two products, with a line saying how they differ, so a visitor on either page sees that
-  // there are two and can switch.
+  // The two solar product pages: panels (/solar/) and GAF solar shingles. Each hero's chips are
+  // the two products, with a line saying how they differ, so a visitor on either page sees that
+  // there are two and can switch, and the Solar Options page that compares them.
   '/solar/': {
     key: 'solar',
     from: 'solar',
@@ -174,8 +174,9 @@ const HEROES = {
     title: 'Solar Panel Installation for Your East Coast Home',
     sub: 'Lower your energy bills with quality solar panels on the roof you already have, designed around your energy use and budget, with a free, no-obligation quote.',
     chips: [
-      ['sun', 'Solar panels', '#solar-options', 'Mounted on your existing roof'],
+      ['sun', 'Solar panels', '#about-solar-panels', 'Mounted on your existing roof'],
       ['roof', 'GAF solar shingles', '/solar/gaf-solar-roof/', 'The roof itself makes power'],
+      ['layers', 'Solar options', '/solar-options/', 'Compare the two side by side'],
     ],
     note: 'solar panels and GAF solar shingles chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a solar panel photo (was a heading and an awards picture on a fixed PNG)',
   },
@@ -189,6 +190,7 @@ const HEROES = {
     chips: [
       ['roof', 'GAF solar shingles', '#solar-shingles', 'The roof itself makes power'],
       ['sun', 'Solar panels', '/solar/', 'Mounted on your existing roof'],
+      ['layers', 'Solar options', '/solar-options/', 'Compare the two side by side'],
     ],
     note: 'GAF solar shingles and solar panels chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a GAF solar roof Panda installed (was a heading on a fixed PNG)',
   },

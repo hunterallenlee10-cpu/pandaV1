@@ -343,7 +343,16 @@ export function renderArchive(siteDir) {
 /** A "Recent projects" row above a service page's testimonials. */
 export function collectProjectStrip(doc, html, ed, { pathname = '', siteDir } = {}, changes = []) {
   const strip = projectsData().strips?.[pathname];
-  if (!strip) return false;
+  if (!strip) {
+    // A row an earlier build added to a page that no longer lists one (/solar/: its only
+    // solar project is a GAF solar shingle roof, which is the shingles page's).
+    const old = find(doc, (c) => c.tagName === 'section' && hasClass(c, 'ppj-strip'));
+    if (old && !ed.overlaps(old.sourceCodeLocation.startOffset, old.sourceCodeLocation.endOffset)) {
+      ed.outer(old, '');
+      changes.push('project row: removed (the page lists none)');
+    }
+    return false;
+  }
   const projects = strip.projects.map((s) => bySlug().get(s)).filter(Boolean);
   if (!projects.length) return false;
   const one = projects.length === 1;

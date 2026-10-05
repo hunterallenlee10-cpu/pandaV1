@@ -97,6 +97,7 @@
           "Not sure yet"
         ],
         "selected": {
+          "/solar/": "Solar panels",
           "/solar/solar-panel-installations/": "Solar panels",
           "/solar/gaf-solar-roof/": "GAF solar roof (solar shingles)"
         }
