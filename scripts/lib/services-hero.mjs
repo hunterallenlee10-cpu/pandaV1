@@ -24,6 +24,11 @@
 //    Master Elite contractors over a roofed home (hero-roofing.jpg, already a 250 KB JPEG: a
 //    WebP copy saved little). The chips are the four roofing pages, each with a line from
 //    the page's cards.
+//  - /solar/ and /solar/gaf-solar-roof/: each heading said "solar roofing" over the same
+//    fixed 280 KB PNG, so nothing told panels and solar shingles apart. /solar/ is now the
+//    solar panels page, over the WebP copy of its solar panel photo; the shingles page is
+//    over the aerial photo of a GAF solar roof Panda installed. On both, the chips are the
+//    two products with a line saying how they differ, so either page leads to the other.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -158,6 +163,35 @@ const HEROES = {
     ],
     note: 'chips for the four roofing pages and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
+  // The two solar pages: panels (/solar/) and GAF solar shingles. Each hero's chips are the
+  // two products, with a line saying how they differ, so a visitor on either page sees that
+  // there are two and can switch.
+  '/solar/': {
+    key: 'solar',
+    from: 'solar',
+    photo: '/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg.webp',
+    eyebrow: 'Solar panels',
+    title: 'Solar Panel Installation for Your East Coast Home',
+    sub: 'Lower your energy bills with quality solar panels on the roof you already have, designed around your energy use and budget, with a free, no-obligation quote.',
+    chips: [
+      ['sun', 'Solar panels', '#solar-options', 'Mounted on your existing roof'],
+      ['roof', 'GAF solar shingles', '/solar/gaf-solar-roof/', 'The roof itself makes power'],
+    ],
+    note: 'solar panels and GAF solar shingles chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a solar panel photo (was a heading and an awards picture on a fixed PNG)',
+  },
+  '/solar/gaf-solar-roof/': {
+    key: 'solar-shingles',
+    from: 'solar',
+    photo: '/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp',
+    eyebrow: 'GAF solar shingles',
+    title: 'GAF Timberline Solar Shingles for Your East Coast Home',
+    sub: 'A new roof that makes its own power: solar shingles that sit flush with the rest of your roof, with no panels mounted on top.',
+    chips: [
+      ['roof', 'GAF solar shingles', '#solar-shingles', 'The roof itself makes power'],
+      ['sun', 'Solar panels', '/solar/', 'Mounted on your existing roof'],
+    ],
+    note: 'GAF solar shingles and solar panels chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a GAF solar roof Panda installed (was a heading on a fixed PNG)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -165,7 +199,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', solar: 'Solar options', 'solar-shingles': 'Solar options' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +

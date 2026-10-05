@@ -1,7 +1,8 @@
 // The Roofing page (/roofing/): the sections its other modules don't cover, and "Our Process"
 // on /commercial-roofing/ too.
 //
-//  - "Our Process" (/roofing/, /commercial-roofing/, the same section and words): three blue boxes with centred white text beside the heading and
+//  - "Our Process" (/roofing/, /commercial-roofing/, the same section and words; /solar/, the
+//    same section with its own three solar steps): three blue boxes with centred white text beside the heading and
 //    paragraph, over a faded Panda mascot (the section's background picture), with no way to
 //    act on it. It becomes a charcoal-green band like the other redesigned pages' "how it
 //    works": the heading, paragraph and estimate and call buttons on the left, the three
@@ -20,7 +21,8 @@ import { hasClass, classes, esc, find } from './html-edit.mjs';
 
 export const ROOFING_PATH = '/roofing/';
 // The pages with "Our Process".
-const PROCESS_PATHS = [ROOFING_PATH, '/commercial-roofing/'];
+const SOLAR_PATH = '/solar/';
+const PROCESS_PATHS = [ROOFING_PATH, '/commercial-roofing/', SOLAR_PATH];
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
@@ -56,8 +58,17 @@ const PROCESS = {
   ],
 };
 
-function processHtml() {
-  const p = PROCESS;
+// /solar/: the same section, with the solar steps' own words.
+const SOLAR_PROCESS = {
+  ...PROCESS,
+  steps: [
+    ['Solar Evaluation & Free Quote', 'Our specialized solar team will conduct a custom solar evaluation at your home, identifying the best solar energy plan that aligns with your energy consumption and budget. As a top-notch residential solar company, we offer a free, no-obligation quote, detailing solar panel costs, expected savings, and ROI, ensuring complete transparency!'],
+    ['Installation of High-Efficiency Residential Solar Panels', 'As experts in solar installation, we optimize solar panel placement on your rooftop or yard to capture the most sunlight. Our comprehensive solar services cover the entire installation process, promising you maximum energy efficiency and sustainability.'],
+    ['Lifetime Solar Benefits & Support', 'Partnering with us for your solar solution connects you with local solar experts dedicated to your satisfaction. Our robust warranties, outstanding solar installation services, and flexible financing ensure a future powered by cost-saving, clean, and renewable energy.'],
+  ],
+};
+
+function processHtml(p = PROCESS) {
   return (
     `<section class="pfix-rp-process" id="${PROCESS_ID}" aria-labelledby="pfix-rp-process-title"><div class="pfix-rp__inner">` +
     `<div class="pfix-rp-process__intro">` +
@@ -81,20 +92,20 @@ function processHtml() {
   );
 }
 
-/** /roofing/, /commercial-roofing/: "Our Process"; /roofing/: the "About Our Team" block's colors. */
+/** /roofing/, /commercial-roofing/, /solar/: "Our Process"; /roofing/: the "About Our Team" block's colors. */
 export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
   if (!PROCESS_PATHS.includes(pathname)) return false;
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
   let done = false;
 
   // "Our Process" (as captured, or the section an earlier build made).
-  const block = processHtml();
-  const process = find(doc, (c) => hasClass(c, 'pfix-rp-process')) || find(doc, (c) => c.tagName === 'div' && hasClass(c, 'process-section'));
+  const block = processHtml(pathname === SOLAR_PATH ? SOLAR_PROCESS : PROCESS);
+  const process = find(doc, (c) => hasClass(c, 'pfix-rp-process')) || find(doc, (c) => c.tagName === 'div' && (hasClass(c, 'process-section') || hasClass(c, 'process-section-solar')));
   if (process && free(process)) {
     const { startOffset, endOffset } = process.sourceCodeLocation;
     if (html.slice(startOffset, endOffset) !== block) {
       ed.outer(process, block);
-      changes.push(`${pathname === ROOFING_PATH ? 'roofing' : 'commercial roofing'} page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)`);
+      changes.push(`${{ [ROOFING_PATH]: 'roofing', [SOLAR_PATH]: 'solar' }[pathname] || 'commercial roofing'} page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)`);
     }
     done = true;
   }

@@ -281,6 +281,44 @@
   },
   "/solar/": {
     "service": "solar",
+    "gallery": "Solar",
+    "types": {
+      "id": "solar-options",
+      "eyebrow": "Know the difference",
+      "title": "Solar Panels or GAF Solar Shingles?",
+      "intro": "They are two different products. Solar panels are mounted on top of the roof you already have; GAF solar shingles are the roof itself, installed as part of a new roof. We install both.",
+      "options": [
+        {
+          "name": "Solar panels",
+          "tag": "on your existing roof",
+          "icon": "sun",
+          "text": "Panels on racks, mounted on top of your current roof and placed to catch the most sunlight.",
+          "points": [
+            "Added to the roof you already have",
+            "Generally a lower cost per watt installed",
+            "The most power per square foot, and can be angled toward the sun",
+            "Easier to upgrade or expand later"
+          ],
+          "best": "A roof in good shape, a smaller or partly shaded roof, or the lowest upfront cost",
+          "link": ["#solar-panels", "Why go solar with panels"]
+        },
+        {
+          "name": "GAF solar shingles",
+          "tag": "the roof itself",
+          "icon": "shingle",
+          "text": "GAF Timberline Solar shingles that lie flush with the rest of the roof: your roof and your power source in one install.",
+          "points": [
+            "Installed as part of a new roof, with no racks on top",
+            "A low profile, barely noticeable from the street",
+            "No mounts drilled through the roof deck",
+            "One manufacturer, GAF, for both the roof and the solar"
+          ],
+          "best": "A roof that needs replacing soon, or a seamless look",
+          "link": ["/solar/gaf-solar-roof/", "Explore GAF solar shingles"]
+        }
+      ],
+      "note": "Not sure which suits your home? We’ll look at your roof and your energy use at your free solar estimate."
+    },
     "cards": [
       {
         "id": "solar-panels",

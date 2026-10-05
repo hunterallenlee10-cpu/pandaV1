@@ -136,6 +136,11 @@ Most of these problems are on the live site too.
   sitemaps and redirects.
 - **Services menu** (every page): the header's Services dropdown ended with "Other", which held Siding and Gutters
   (with Gutter Guards one level further in). Gutters, Gutter Guards and Siding are now their own entries under Solar.
+- **Services ▸ Solar menu** (every page; `scripts/lib/site-fixes.mjs`): the Solar flyout held a phone-only "Solar" link
+  and "GAF Solar Roof", so nothing said the Solar page is about panels or that solar panels and GAF solar shingles are
+  two different products. It now has **Solar Panels** ("Mounted on your existing roof") and **GAF Solar Shingles**
+  ("The roof itself makes power") at every screen size, each with that line in smaller gray type under its label. The
+  `/services/` card and the `/solar/` card for the shingles page say "GAF Solar Shingles" too.
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
   count" or "Based on 0 reviews!".
@@ -286,6 +291,22 @@ Most of these problems are on the live site too.
   icon cards on a light band. New sections follow: how a gutter guard project works (three steps), six questions
   answered from what the site already says (guards go on existing gutters or new ones), a "Need new gutters too?"
   band leading to `/gutters/`, and, after the testimonials, the offers band the other service pages have.
+- **`/solar/`** (solar panels; heroes in `scripts/lib/services-hero.mjs`, sections in `custom/site-fixes/service-pages.json`,
+  `scripts/lib/roofing-page.mjs`, `scripts/lib/gutters-page.mjs` and `scripts/lib/solar-pages.mjs`): the hero said "Expert
+  Solar Roofing Services" over a fixed 280 KB PNG. It now has a "Solar panels" label, the heading "Solar Panel
+  Installation for Your East Coast Home", chips for solar panels and GAF solar shingles (each with a line saying how
+  they differ), and estimate and call buttons, over the WebP copy of its solar panel photo. The cards' heading is "Two
+  Ways to Go Solar", and a new **Solar Panels or GAF Solar Shingles?** section compares the two side by side (what
+  each is, its points, who it suits, and a link to each). "Our Process" is the charcoal timeline the Roofing page has,
+  with the solar steps' own words; "What Makes Our Roofers Stand Out?" (white on lime) is white icon cards under "Why
+  Choose Panda for Solar?"; the project gallery opens on its Solar photos.
+- **`/solar/gaf-solar-roof/`** (GAF solar shingles; `scripts/lib/solar-pages.mjs`, with the Gutter Guards page's styles):
+  the same hero treatment ("GAF Timberline Solar Shingles for Your East Coast Home", the two chips) over the aerial
+  photo of a GAF solar roof Panda installed. The intro keeps its words beside a rounded photo; "Why Use GAF Solar
+  Shingles?" (white on lime) is the same words as white icon cards. New sections follow: solar shingles and solar
+  panels side by side (linking to `/solar/`), how a solar roof project works (three steps), six questions answered from
+  what the site and its blog already say (with FAQPage structured data), a "Not sure which is right for your home?"
+  band, and, after the testimonials, the offers band, whose solar **Claim** picks "GAF solar roof (solar shingles)".
 - **"Limited Time Offers"** (the home page, `/roofing/`, `/solar/`, `/commercial-roofing/`, `/siding/`, `/gutters/`,
   `/thank-you/`; `collectOffersStrip` in `scripts/lib/offers-page.mjs`): three flyer pictures with "Spring Savings" and
   a number that isn't the site's (877 213 1240) baked in, and "Panda Exteriors Internal Promotion" in their text. They
