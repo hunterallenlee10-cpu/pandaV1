@@ -631,8 +631,8 @@ blog already say.
   state, the jobs completed there (`custom/us-map/areas.json`), the services and the other offices.
 
 The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), and Services ▸ Solar
-became "Solar Options", leading to that page; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
-too, the service cards across the site link Storm Damage where Residential
+became "Solar Options", leading to that page; the footer's "Customer Service" became "Storm Damage" and its "Solar" became "Solar Options",
+leading to that page too, the service cards across the site link Storm Damage where Residential
 Roofing was, Contact Us links each office's page, and Service Areas shows the seven offices where it had the
 services row every other page has too (`serviceAreaOffices` in `scripts/lib/site-fixes.mjs`).
 

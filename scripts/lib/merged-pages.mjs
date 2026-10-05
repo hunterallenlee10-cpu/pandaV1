@@ -8,8 +8,9 @@
 //    (Commercial) becomes a plain entry. The new pages join it: Storm Damage under Roofing,
 //    Financing and Warranty under About.
 //  - Footer: "Customer Service" (merged into Contact Us, which the footer already lists)
-//    becomes "Storm Damage"; "Warranty" and "Financing" lead to their new pages; "Solar" leads
-//    to the Solar Options page (both products) rather than the solar panels page.
+//    becomes "Storm Damage"; "Warranty" and "Financing" lead to their new pages; "Solar"
+//    becomes "Solar Options", leading to that page (both products) rather than the solar
+//    panels page, as the header's entry does.
 //
 // Applied by site-fixes.mjs on every page; each step checks what is already there, so it
 // gives the same result on a page that already has it.
@@ -33,7 +34,7 @@ const NAV_ADD = [
 // Footer links whose label and address change: [label as captured, new label, new address].
 const FOOTER_SWAP = [
   ['Customer Service', 'Storm Damage', '/storm-damage/'],
-  ['Solar', 'Solar', '/solar-options/'],
+  ['Solar', 'Solar Options', '/solar-options/'],
 ];
 
 const host = new URL(SITE_ORIGIN).hostname.replace(/^www\./, '');
@@ -70,7 +71,8 @@ export function collectMergedNav(doc, html, ed, changes) {
   const body = find(doc, (c) => c.tagName === 'body');
   const blocks = (body?.childNodes || []).filter((c) => c.tagName);
   const nav = blocks.find((c) => hasClass(c, 'nav'));
-  const footer = blocks.find((c) => hasClass(c, 'footer'));
+  // (On /contact-us/ the footer is inside the page's last section, not beside it.)
+  const footer = blocks.find((c) => hasClass(c, 'footer')) || find(body, (c) => c.tagName === 'div' && hasClass(c, 'footer'));
   let removed = 0;
   let flattened = 0;
   let added = 0;
