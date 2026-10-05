@@ -10,7 +10,9 @@
 //    vinyl), with an id the "Siding Types" card links to; /solar/: solar panels and GAF solar
 //    shingles side by side the same way (an icon where a type has no logo, and a link to
 //    the type's own page or section);
-//  - signs it's time to replace, with links to the blog posts they come from;
+//  - signs it's time to replace, with links to the blog posts they come from (and, on
+//    /commercial-roofing/, the roof systems and the buildings Panda roofs, each building
+//    with a link to its project);
 //  - /gutters/: what is checked on every gutter job; /roofing/: what goes into every new roof,
 //    beside a photo of a roof Panda replaced;
 //  - how the project works, in three steps;
@@ -61,6 +63,11 @@ const ICONS = {
   sparkle: line('M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z'),
   clock: line('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.5 2'),
   roll: line('M4 7a3 3 0 0 1 6 0v10a3 3 0 0 1-6 0zM7 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7'),
+  // The buildings Panda roofs (/commercial-roofing/).
+  medical: line('M4 21V7h16v14M2.5 21h19M10 21v-4h4v4M12 9.5v5M9.5 12h5M8 4h8v3H8z'),
+  apartments: line('M3 21V9l5-3v15M8 21V4h9v17M17 10h4v11M2 21h20M11 8h1M14 8h1M11 12h1M14 12h1M11 16h1M14 16h1'),
+  terrace: line('M3 13h18M5 13v8M19 13v8M3 17h18M8 13V9M16 13V9M6 9h12M9 9V5.5a3 3 0 0 1 6 0V9'),
+  office: line('M4 21V4h11v17M15 9h5v12M2.5 21h19M7.5 8h2M7.5 12h2M7.5 16h2M11 8h1M11 12h1M11 16h1'),
 };
 const CHECK = line('M5 12.5l4.2 4.2L19 7');
 const PHONE_ICON = svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>');
@@ -103,7 +110,12 @@ function renderSigns(s, key = 'signs') {
     head(key, s.eyebrow || '', s.title, s.intro) +
       `<div class="pfix-sp-signs" role="list">` +
       s.items
-        .map(([icon, title, text]) => `<div class="pfix-sp-sign" role="listitem"><span class="pfix-sp-sign__icon">${ICONS[icon] || ICONS.crack}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`)
+        .map(
+          ([icon, title, text, link]) =>
+            `<div class="pfix-sp-sign" role="listitem"><span class="pfix-sp-sign__icon">${ICONS[icon] || ICONS.crack}</span><h3>${esc(title)}</h3><p>${esc(text)}</p>` +
+            (link ? `<a class="pfix-sp-link" href="${esc(link[0])}">${esc(link[1])}${ARROW}</a>` : '') +
+            `</div>`
+        )
         .join('') +
       `</div>` +
       `<div class="pfix-sp-signs__foot">${s.footer ? `<p>${esc(s.footer)}</p>` : ''}` +
@@ -156,15 +168,22 @@ const renderFaq = (f, cta) =>
 /** The block of new sections for one page. */
 export function renderServicePage(page, { siteDir } = {}) {
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+  const cards = (after) =>
+    (page.cards || [])
+      .map((c, i) => (!c.afterCheck === !after ? renderSigns(c, `cards-${i + 1}`) : ''))
+      .join('');
   return (
     `<div class="pfix-sp pfix-sp--${esc(page.service)}" data-pfix-sp>` +
     (page.types ? renderTypes(page.types, exists) : '') +
     (page.signs ? renderSigns(page.signs) : '') +
     // More card and photo sections, for pages that took in another page's content (the site
-    // restructure: MERGED_PAGES in config.mjs). Each can have an id that links lead to.
-    (page.cards || []).map((c, i) => renderSigns(c, `cards-${i + 1}`)).join('') +
+    // restructure: MERGED_PAGES in config.mjs). Each can have an id that links lead to, and
+    // card sections marked afterCheck go under the photo sections (/commercial-roofing/'s
+    // buildings, so the card sections don't sit back to back).
+    cards(false) +
     (page.check ? renderCheck(page.check, exists) : '') +
     (page.checks || []).map((c, i) => renderCheck(c, exists, `checks-${i + 1}`)).join('') +
+    cards(true) +
     (page.steps ? renderSteps(page.steps) : '') +
     (page.faq ? renderFaq(page.faq, page.cta) : '') +
     `</div>`

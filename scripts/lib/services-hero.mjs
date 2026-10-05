@@ -29,6 +29,12 @@
 //    solar panels page, over the WebP copy of its solar panel photo; the shingles page is
 //    over the aerial photo of a GAF solar roof Panda installed. On both, the chips are the
 //    two products with a line saying how they differ, so either page leads to the other.
+//  - /commercial-roofing/: the heading and "No matter what type of business you have…" on a
+//    stock photo of an apartment building (hero-commercial-roofing.jpg). The line says what
+//    Panda does for businesses (from the page's form and questions), the chips lead to the
+//    sections below (the roof systems, replacements, the buildings Panda roofs and its
+//    projects), over a 161 KB WebP crop (commercial-hero.webp) of the white TPO roof from
+//    Panda's "Expert TPO Roofing" project.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -192,6 +198,24 @@ const HEROES = {
     ],
     note: 'GAF solar shingles and solar panels chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a GAF solar roof Panda installed (was a heading on a fixed PNG)',
   },
+  '/commercial-roofing/': {
+    key: 'commercial',
+    from: 'commercial',
+    photo: '/_custom/site-fixes/commercial-hero.webp',
+    custom: true,
+    oldPreload: '/wp-content/uploads/2025/04/hero-commercial-roofing.jpg',
+    eyebrow: 'Commercial roofing',
+    title: 'Professional Commercial Roofing Services for Your East Coast Business',
+    sub: 'Flat roof replacements for offices, medical facilities and apartment communities, from inspection to final walkthrough. Most are done in just one day, so your business keeps running.',
+    // The sections below the hero (service-pages.json) and the projects row (project-pages.mjs).
+    chips: [
+      ['layers', 'Roof systems', '#commercial-roof-systems', 'TPO, EPDM, Mod Bit and PVC'],
+      ['swap', 'Roof replacement', '#commercial-roof-replacement', 'Most flat roofs done in one day'],
+      ['building', 'Buildings we roof', '#commercial-buildings', 'Medical, multi-family and offices'],
+      ['roof', 'Recent projects', '#ppj-strip-title', 'See commercial roofs we installed'],
+    ],
+    note: 'chips for the roof systems, replacements, buildings and projects below and estimate and call buttons, over a WebP crop of a TPO roof Panda installed (was a heading and a line on a stock photo of an apartment building)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -199,7 +223,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', solar: 'Solar options', 'solar-shingles': 'Solar options' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
