@@ -308,6 +308,11 @@ const GRID_PHOTOS = {
 const GRID_CARD_FIXES = [
   { page: '/gutters/', title: 'Gutter Installations', from: ['/powerwash/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
   { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
+  // The site restructure merged these cards' pages into the page they are on (MERGED_PAGES
+  // in config.mjs): they lead to the sections that took in what those pages said.
+  { page: '/commercial-roofing/', title: 'Roofing Replacement', from: ['/commercial-roofing/roof-replacement/', '/commerical-roofing/roof-replacement/', '/commercial-roofing/'], href: '#commercial-roof-replacement', cta: 'How we replace commercial roofs', img: GRID_PHOTOS['/commercial-roofing/roof-replacement/'] },
+  { page: '/commercial-roofing/', title: 'Roofing Options', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/commercial-roofing/'], href: '#commercial-roof-systems', cta: 'Compare roof systems', img: GRID_PHOTOS['/commercial-roofing/roof-types/'] },
+  { page: '/solar/', title: 'Solar Panel Installations', from: ['/solar/solar-panel-installations/', '/solar/'], href: '#solar-panels', cta: 'Why go solar', img: photoFor('/solar/') },
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));

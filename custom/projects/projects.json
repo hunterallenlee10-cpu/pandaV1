@@ -40,16 +40,6 @@
     ]
   },
   "strips": {
-    "/roofing/residential/": {
-      "title": "Recent residential roofing projects",
-      "intro": "A few of the homes our crews have re-roofed lately. Open one to see the photos.",
-      "projects": [
-        "panda-ext-11425",
-        "panda-ext-14513",
-        "panda-ext-14098",
-        "panda-ext-14532"
-      ]
-    },
     "/roofing/replacement/": {
       "title": "Recent roof replacements",
       "intro": "From tear-off to the last ridge cap: see how our crews replace a roof, start to finish.",
@@ -57,7 +47,7 @@
         "roof-replacement",
         "roof-replacement-2",
         "roof-replacement-gutter-guards",
-        "panda-ext-11531"
+        "spanish-tile"
       ]
     },
     "/roofing/types/": {
@@ -75,26 +65,8 @@
       "projects": [
         "linear-accelerator-roof-replacement",
         "brookfield-properties",
-        "expert-tpo-roofing",
-        "chapel-branch-apartments"
-      ]
-    },
-    "/commercial-roofing/roof-replacement/": {
-      "title": "Commercial roof replacements we’ve completed",
-      "intro": "See how our GAF Presidential Master Elite team replaces roofs on working buildings.",
-      "projects": [
-        "linear-accelerator-roof-replacement",
-        "panda-exteriors-hq",
-        "chapel-branch-apartments"
-      ]
-    },
-    "/commercial-roofing/roof-types/": {
-      "title": "These roof systems on real buildings",
-      "intro": "TPO, SBS torch-down and more, installed by our commercial crews.",
-      "projects": [
-        "expert-tpo-roofing",
-        "brookfield-properties",
-        "linear-accelerator-roof-replacement"
+        "chapel-branch-apartments",
+        "panda-exteriors-hq"
       ]
     },
     "/solar/": {
@@ -147,7 +119,7 @@
       ],
       "service": [
         "Commercial roof replacement",
-        "/commercial-roofing/roof-replacement/"
+        "/commercial-roofing/#commercial-roof-replacement"
       ],
       "cover": "/wp-content/uploads/2025/07/19-Dec-12-2024-03_02am-7DWo.jpg",
       "position": "50% 40%",
@@ -196,7 +168,7 @@
       ],
       "service": [
         "Commercial roof types",
-        "/commercial-roofing/roof-types/"
+        "/commercial-roofing/#commercial-roof-systems"
       ],
       "cover": "/wp-content/uploads/2025/07/22-Aug-09-2024-03_14am-FUCJ-1-scaled.jpg",
       "position": "50% 60%",
@@ -283,7 +255,7 @@
       ],
       "service": [
         "Commercial roof replacement",
-        "/commercial-roofing/roof-replacement/"
+        "/commercial-roofing/#commercial-roof-replacement"
       ],
       "video": {
         "id": "B8HSoz6pnM0",
@@ -565,204 +537,6 @@
         "/wp-content/uploads/2025/07/Website-Map-4-Jun-04-2025-09_19am-5HjX.jpg",
         "/wp-content/uploads/2025/07/Website-Map-5-Jun-04-2025-05_14pm-bHXV.jpg",
         "/wp-content/uploads/2025/07/Website-Map-6-Jun-04-2025-05_14pm-5SYS.jpg"
-      ]
-    },
-    {
-      "slug": "panda-ext-11425",
-      "title": "Roof Replacement",
-      "ref": "Project 11425",
-      "tag": "Roof replacement",
-      "group": "homes",
-      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
-      "body": [
-        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
-        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
-      ],
-      "facts": [
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Roof",
-          "Architectural asphalt shingles"
-        ],
-        [
-          "Photos",
-          "Drone views of finished roofs"
-        ]
-      ],
-      "service": [
-        "Residential roofing",
-        "/roofing/residential/"
-      ],
-      "cover": "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
-      "position": "50% 50%",
-      "alt": "Drone view of townhomes with new gray shingle roofs",
-      "photos": [
-        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
-        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
-        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
-      ]
-    },
-    {
-      "slug": "panda-ext-11531",
-      "title": "Roof Replacement",
-      "ref": "Project 11531",
-      "tag": "Roof replacement",
-      "group": "homes",
-      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
-      "body": [
-        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
-        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
-      ],
-      "facts": [
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Roof",
-          "Architectural asphalt shingles"
-        ],
-        [
-          "Photos",
-          "Drone views of finished roofs"
-        ]
-      ],
-      "service": [
-        "Residential roofing",
-        "/roofing/residential/"
-      ],
-      "cover": "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
-      "position": "50% 50%",
-      "alt": "Drone view of a white multi-story building and the neighborhood around it",
-      "photos": [
-        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
-        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
-        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
-      ]
-    },
-    {
-      "slug": "panda-ext-14098",
-      "title": "Roof Replacement",
-      "ref": "Project 14098",
-      "tag": "Roof replacement",
-      "group": "homes",
-      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
-      "body": [
-        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
-        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
-      ],
-      "facts": [
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Roof",
-          "Architectural asphalt shingles"
-        ],
-        [
-          "Photos",
-          "Drone views of finished roofs"
-        ]
-      ],
-      "service": [
-        "Residential roofing",
-        "/roofing/residential/"
-      ],
-      "cover": "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-      "position": "50% 50%",
-      "alt": "Drone view of a white home with a new dark shingle roof and a backyard patio",
-      "photos": [
-        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg",
-        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg"
-      ]
-    },
-    {
-      "slug": "panda-ext-14513",
-      "title": "Roof Replacement",
-      "ref": "Project 14513",
-      "tag": "Roof replacement",
-      "group": "homes",
-      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
-      "body": [
-        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
-        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
-      ],
-      "facts": [
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Roof",
-          "Architectural asphalt shingles"
-        ],
-        [
-          "Photos",
-          "Drone views of finished roofs"
-        ]
-      ],
-      "service": [
-        "Residential roofing",
-        "/roofing/residential/"
-      ],
-      "cover": "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-      "position": "50% 50%",
-      "alt": "Drone view from above of a home with a new gray shingle roof and a back deck",
-      "photos": [
-        "/wp-content/uploads/2025/03/83c060cf-9c5e-4041-9db7-50bcae5133e4-2.jpg",
-        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
-        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg"
-      ]
-    },
-    {
-      "slug": "panda-ext-14532",
-      "title": "Roof Replacement",
-      "ref": "Project 14532",
-      "tag": "Roof replacement",
-      "group": "homes",
-      "summary": "A shingle roof replacement by our GAF-certified crews, seen from the drone.",
-      "body": [
-        "A roof replacement by our GAF-certified crews, with new architectural shingles from the ridge to the gutters.",
-        "Our drone photos show the finished roofs from above, where you can see the straight lines and clean ridges our crews are known for."
-      ],
-      "facts": [
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Roof",
-          "Architectural asphalt shingles"
-        ],
-        [
-          "Photos",
-          "Drone views of finished roofs"
-        ]
-      ],
-      "service": [
-        "Residential roofing",
-        "/roofing/residential/"
-      ],
-      "cover": "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
-      "position": "50% 50%",
-      "alt": "Drone view of a home with a new dark shingle roof and a fenced backyard",
-      "photos": [
-        "/wp-content/uploads/2025/03/8e52ea15-23a7-402c-8eb6-3530da91a66f-1.jpg",
-        "/wp-content/uploads/2025/03/78fde7f5-b8e5-4280-b521-7c03899de4e2-1.jpg",
-        "/wp-content/uploads/2025/03/edefbb7f-d876-46b3-900b-f1fcea7523de-2.jpg",
-        "/wp-content/uploads/2025/03/3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b-2.jpg"
       ]
     }
   ]

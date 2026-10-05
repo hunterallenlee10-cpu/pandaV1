@@ -134,6 +134,31 @@
       "source": "/solar/solar-panel-installations",
       "destination": "/solar/",
       "type": 301
+    },
+    {
+      "source": "/blog/project/panda-ext-11425",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/panda-ext-11531",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/panda-ext-14098",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/panda-ext-14513",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/panda-ext-14532",
+      "destination": "/past-projects/",
+      "type": 301
     }
   ],
   "rewrites": [

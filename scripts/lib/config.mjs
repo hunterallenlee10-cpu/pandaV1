@@ -267,6 +267,13 @@ export const MERGED_PAGES =
         '/blog/offer/find-out-about-our-no-interest-financial-options/': '/financing/',
         '/blog/offer/our-installation-work-is-completed-by-certified-professionals/': '/warranty/',
         '/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/': '/warranty/',
+        // Five "Roof Replacement (Project N)" pages with the same words and five photos between
+        // them, all already in the photo gallery on /past-projects/.
+        '/blog/project/panda-ext-11425/': '/past-projects/',
+        '/blog/project/panda-ext-11531/': '/past-projects/',
+        '/blog/project/panda-ext-14098/': '/past-projects/',
+        '/blog/project/panda-ext-14513/': '/past-projects/',
+        '/blog/project/panda-ext-14532/': '/past-projects/',
       }
     : {};
 export const isMergedPage = (pathname) => Object.keys(MERGED_PAGES).some((p) => pathname === p || pathname === p.replace(/\/+$/, ''));

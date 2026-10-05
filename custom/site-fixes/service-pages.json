@@ -187,4 +187,128 @@
       "text": "Get a free roof inspection and estimate, and ask about 10% off a roof replacement."
     }
   }
+,
+  "/roofing/replacement/": {
+    "service": "roofing",
+    "after": "roofers-section",
+    "check": {
+      "title": "What Comes With Your New Roof",
+      "intro": "A new roof from Panda Exteriors is more than shingles. With every residential roof replacement you get:",
+      "img": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
+      "alt": "A home with a new roof installed by Panda Exteriors",
+      "items": [
+        "A one-day roof replacement on most homes, from tear-off to clean-up",
+        "GAF roofing in the style you want, from asphalt shingles to metal",
+        "Best-in-class warranty protection, on the products and on our workmanship",
+        "Insurance claim assistance if storm damage is behind your new roof",
+        "Affordable prices, with flexible financing if you want to spread the cost",
+        "Friendly customer service from your estimate to the final walkthrough"
+      ],
+      "link": ["/warranty/", "See what our warranties cover"]
+    },
+    "steps": {
+      "title": "How Your Roof Replacement Works",
+      "items": [
+        ["Free inspection and estimate", "We look over your roof, tell you honestly what it needs and give you a clear estimate, at no cost. Storm damage? We check that too, and can meet your insurance adjuster."],
+        ["Choose your roof", "Pick your material and color from GAF’s range, from architectural shingles to metal, and ask us about financing and any current offer."],
+        ["Installed in as little as one day", "Our GAF Master Elite crew tears off the old roof, fixes any damaged decking, installs your new roof and cleans up before they leave."]
+      ]
+    },
+    "faq": {
+      "title": "Roof Replacement Questions, Answered",
+      "items": [
+        ["How long does a roof replacement take?", "Our dedicated roofing contractors prioritize one-day roof replacements, so most homes have a new roof in as little as one day. The exact timing depends on the size of your roof, the material and the weather."],
+        ["Which roofing styles can I choose from?", "Style is incredibly important when it comes to roofing, so we offer many premium GAF options, from asphalt shingles to metal roofing, to give your home the protection and curb appeal it deserves. See our roof types and materials for the details."],
+        ["Can you add attic insulation at the same time?", "Yes. No home roofing project is complete without good insulation. Our attic insulation helps your home hold on to its heated and cooled air, and you’ll notice the difference on your monthly utility bill."],
+        ["Will insurance pay for my roof replacement?", "Often, when the damage is sudden and storm-related, such as wind, hail or falling limbs. Wear and tear usually isn’t covered. We offer free storm-damage inspections and help you through the claim."],
+        ["Do you offer financing?", "Yes. Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans."]
+      ]
+    },
+    "cta": {
+      "title": "Ready for a new roof?",
+      "text": "Get a free roof inspection and estimate, and ask about 10% off a roof replacement."
+    }
+  }
+,
+  "/commercial-roofing/": {
+    "service": "commercial",
+    "cards": [
+      {
+        "id": "commercial-roof-systems",
+        "eyebrow": "Roof systems",
+        "title": "Commercial Roof Systems We Install",
+        "intro": "Our GAF Master Elite contractors have over 30 years of combined experience with commercial applications. Whether you want something affordable or the top of the range, there is a flat roof system for your building and budget:",
+        "items": [
+          ["layers", "TPO", "TPO has some of the best longevity of any flat rubber roof. It is much less prone to shrinking and warping than other materials."],
+          ["roll", "EPDM", "The traditional rubber roof: a classic, affordable option that is easy to install, and one many building owners choose."],
+          ["shingle", "Mod Bit", "Like asphalt shingles, but for a flat roof: built-up asphalt layers laid on top of one another for superior waterproofing."],
+          ["shield", "PVC", "A lightweight, affordable and lesser-known commercial roofing system that still seals out the weather securely."]
+        ],
+        "footer": "Every commercial roof comes with best-in-class product warranties and an efficient installation. We are A-rated by the Better Business Bureau and dedicated to your satisfaction.",
+        "reads": [["/blog/project/expert-tpo-roofing/", "TPO on a real building"], ["/blog/project/brookfield-properties/", "Brookfield Properties"]]
+      }
+    ],
+    "check": {
+      "id": "commercial-roof-replacement",
+      "eyebrow": "Roof replacement",
+      "title": "Commercial Roof Replacements",
+      "intro": "Owning a commercial building is a big responsibility, and the roof is one of the most important parts to keep in good condition. Commercial roofs last for decades, but they do wear out. When yours does:",
+      "img": ["/wp-content/uploads/2025/04/Patient-First.jpg", 1200, 675],
+      "alt": "Aerial view of a new flat roof Panda Exteriors installed on a medical center",
+      "items": [
+        "We inspect the roof and give you a free, clear estimate",
+        "You choose the system for your building and budget: TPO, EPDM, Mod Bit or PVC",
+        "Most flat roofs are redone in just one day, so your business keeps running",
+        "Our GAF Master Elite crews install it with best-in-class product warranties",
+        "We clean up and walk the finished roof with you"
+      ],
+      "link": ["/blog/project/linear-accelerator-roof-replacement/", "See a commercial roof replacement"]
+    },
+    "faq": {
+      "title": "Commercial Roofing Questions, Answered",
+      "items": [
+        ["What is the most common commercial roof style?", "Flat roofs are the most common style for commercial buildings. They are easy to maintain and to replace."],
+        ["Which flat roof system is right for my building?", "TPO offers some of the best longevity and resists shrinking; EPDM is the affordable, traditional rubber roof; Mod Bit gives superior waterproofing; PVC is light and affordable. We’ll recommend the right one for your building and budget."],
+        ["How long does a commercial roof replacement take?", "Our commercial roof contractors can usually redo an entire flat roof in just one day, so your business operations aren’t held up."],
+        ["What are the components of a commercial roof?", "Common components include the roof membrane, insulation, flashings and drainage systems."],
+        ["What should I look for in a commercial roofing contractor?", "Consider their experience, licensing, insurance, customer reviews and the quality of the materials they use. Panda Exteriors is licensed and insured, a GAF Master Elite contractor and A-rated by the BBB."]
+      ]
+    },
+    "cta": {
+      "title": "Need a new roof for your building?",
+      "text": "Get a free commercial roof inspection and estimate from our GAF Master Elite team."
+    }
+  },
+  "/solar/": {
+    "service": "solar",
+    "cards": [
+      {
+        "id": "solar-panels",
+        "eyebrow": "Solar panels",
+        "title": "Benefits of Solar Panels for Your Home",
+        "intro": "Solar is a gift that keeps on giving: there is no better way to save on your energy costs. Installations have come down in price in recent years, and with government rebate programs, nearly anyone can afford them. Still on the fence? Consider these benefits:",
+        "items": [
+          ["coin", "Significant tax incentives", "Every state differs, but most offer substantial rebate programs and tax breaks for homeowners who install solar panels."],
+          ["home", "Higher home value", "If you ever decide it’s time to sell your home, being equipped with solar is a huge selling point."],
+          ["bolt", "Reduced utility costs", "The impact is often underestimated: with a complete system, you can often enjoy $0 a month electric bills."],
+          ["sparkle", "An expression of style", "From traditional panels to high-end, technologically advanced systems, solar can make your home stand out in the neighborhood."]
+        ],
+        "footer": "Want a solar roof without panels? GAF solar shingles work as regular roofing shingles, protecting your home from the weather, and generate electricity too.",
+        "reads": [["/solar/gaf-solar-roof/", "GAF solar shingles"], ["/blog/solar-shingles-vs-traditional-solar-panels/", "Solar shingles vs. traditional panels"]]
+      }
+    ],
+    "faq": {
+      "title": "Solar Questions, Answered",
+      "items": [
+        ["How do solar panels work?", "Solar panels convert sunlight into electricity using photovoltaic cells. When sunlight hits these cells, it stimulates electrons, creating an electric current."],
+        ["Do solar panels work at night or on cloudy days?", "Solar panels need sunlight to produce power. They produce less on cloudy days and none at night, but battery storage lets you use solar energy stored during the day."],
+        ["Panels or GAF solar shingles: which should I choose?", "Panels go on your existing roof; GAF solar shingles are your roof and your power source in one install, with a low profile many homeowners prefer. We install both and will help you choose."],
+        ["What are my solar financing options?", "There are various options, including solar loans, leases and power purchase agreements. Talk to us about the best option for you, and ask about $1,500 off your solar project."]
+      ]
+    },
+    "cta": {
+      "title": "Ready to go solar?",
+      "text": "Get a free solar estimate for panels or GAF solar shingles, and ask about $1,500 off."
+    }
+  }
 }
