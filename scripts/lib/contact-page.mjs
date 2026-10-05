@@ -22,12 +22,14 @@ import path from 'node:path';
 import { geoAlbersUsa } from 'd3-geo';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, rawText } from './html-edit.mjs';
+import { helpTopics } from './customer-service-page.mjs';
+import { officePagePath } from './new-pages.mjs';
 
 export const CONTACT_PATH = '/contact-us/';
 
 let data;
 let geo;
-const contactPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'contact-page.json'), 'utf8')));
+export const contactPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'contact-page.json'), 'utf8')));
 const states = () => (geo ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'us-map', 'us-states.json'), 'utf8')));
 const project = (lat, lon) => {
   const g = states();
@@ -85,7 +87,7 @@ function overviewMap(offices) {
 }
 
 // One office's state, framed with a little of its neighbours, and the office pinned.
-function officeMap(o) {
+export function officeMap(o) {
   const s = states().states[o.state];
   const [x0, y0, x1, y1] = s.bbox;
   // A frame of the card's shape (8:5) around the state, with a margin.
@@ -143,6 +145,8 @@ function officesSection() {
     `<a class="pfix-ct-btn pfix-ct-btn--call" href="${tel(o.phone)}">${ICONS.phone}${esc(o.phone)}</a>` +
     `<a class="pfix-ct-btn pfix-ct-btn--ghost" href="${esc(directions(o))}" target="_blank" rel="noopener">${ICONS.route}Directions<span class="pfix-ct-sr"> to the ${esc(o.name)} office (opens Google Maps)</span></a>` +
     `</div>` +
+    // Its own page (new-pages.mjs), with the site restructure.
+    (officePagePath(o) ? `<a class="pfix-ct-office__page" href="${esc(officePagePath(o))}">About our ${esc(o.city)} office<span aria-hidden="true"> →</span></a>` : '') +
     `</div>` +
     `</article>`;
   return (
@@ -170,7 +174,12 @@ function ctaSection() {
   );
 }
 
-const pageHtml = () => `<div class="pfix-ct">${hero()}${officesSection()}${ctaSection()}</div>`;
+// "Already a customer?": the Customer Service page's help topics (warranty, guarantee,
+// financing, reviews, referrals, FAQs), merged into this page (MERGED_PAGES in config.mjs).
+const customerSection = () =>
+  `<div class="pfix-cs pfix-ct-help">${helpTopics({ eyebrow: 'Customer service', title: 'Already a customer?', intro: 'Your warranty, financing, reviews and referrals: everything you need after the job, in one place.', id: 'customer-service' })}</div>`;
+
+const pageHtml = () => `<div class="pfix-ct">${hero()}${officesSection()}${customerSection()}${ctaSection()}</div>`;
 
 /**
  * /contact-us/: the hero, office cards and contact band (as captured, or this page as an

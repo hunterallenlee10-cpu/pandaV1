@@ -21,8 +21,10 @@ import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-galler
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { projectsFiles, PROJECTS_DIR } from './lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
+import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './lib/new-pages.mjs';
+import { addSitemapPages, flattenRedirects, pruneFeedXml } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
-import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -147,7 +149,8 @@ if (SITE_FIXES) {
   primeBlogPosts(
     pages.flatMap((row) => {
       const pathname = new URL(row.url).pathname;
-      const raw = postSlug(pathname) ? fetcher.readCache(row.url) : null;
+      // (Posts removed or merged into another one are not listed: isRemovedPage.)
+      const raw = postSlug(pathname) && !isRemovedPage(pathname) ? fetcher.readCache(row.url) : null;
       return raw ? [{ pathname, html: raw.body.toString('utf8') }] : [];
     })
   );
@@ -329,6 +332,12 @@ for (const row of inv.rows) {
       if (!sitemapsEdited.includes(u.pathname)) sitemapsEdited.push(u.pathname);
     }
   }
+  if (row.type === 'feed' && removedPages.length) {
+    // Feed items of the pages removed on request (merged blog posts) go too.
+    const xml = body.toString('utf8');
+    const kept = pruneFeedXml(xml);
+    if (kept !== xml) body = Buffer.from(kept, 'utf8');
+  }
   if (row.type === 'sitemap' && removedPages.length) {
     // Sitemap entries of the pages removed on request go too.
     const xml = body.toString('utf8');
@@ -361,6 +370,16 @@ if (MEDIA_PAGE) {
   if (mediaPage || intentionalChanges.some((c) => c.mediaSections?.length)) {
     for (const [from, url] of mediaFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/media/${path.relative(MEDIA_DIR, from).split(path.sep).join('/')}`);
   }
+}
+
+// 3a'. The pages added in the site restructure (new-pages.mjs): generated from a built page,
+// like the Media page; before 3b, so the files they show are kept.
+const newPages = SITE_FIXES ? buildNewPages({ siteDir: OUT, siteOrigin: SITE_ORIGIN }) : [];
+for (const p of newPages) put(path.posix.join(p.path.replace(/^\/|\/$/g, ''), 'index.html'), p.html, 'custom/new-pages');
+if (newPages.length) for (const [from, url] of newPagesFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/new-pages/${path.basename(from)}`);
+if (newPages.length && fs.existsSync(path.join(OUT, 'page-sitemap.xml'))) {
+  const file = path.join(OUT, 'page-sitemap.xml');
+  fs.writeFileSync(file, addSitemapPages(fs.readFileSync(file, 'utf8'), newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), SITE_ORIGIN));
 }
 
 // 3b. Files only the pages removed on request used (their photos, page-only styles …)
@@ -430,7 +449,17 @@ for (const c of captures.values()) {
     }
   }
 }
-const redirectList = [...redirectRows.values()].sort((a, b) => a.from.localeCompare(b.from));
+// No chains: a redirect to an address that redirects again leads straight to the last one
+// (the old /commerical-roofing/roof-types/ -> /commercial-roofing/, which it was merged into).
+const redirectList = flattenRedirects(
+  [...redirectRows.values()].map((r) => {
+    const f = new URL(r.from);
+    const t = new URL(r.to, r.from);
+    return isSiteUrl(f) && isSiteUrl(t) ? { ...r, from: f.pathname, to: t.pathname + t.search + t.hash, abs: r } : { ...r, abs: r };
+  })
+)
+  .map((r) => (r.abs ? { ...r.abs, to: isSiteUrl(new URL(r.abs.from)) && r.to.startsWith('/') ? SITE_ORIGIN + r.to : r.abs.to } : r))
+  .sort((a, b) => a.from.localeCompare(b.from));
 const serveSource = (p) => (p.replace(/\/+$/, '') || '/').replace(/[()[\]{}*+?:!]/g, '\\$&');
 const netlify = [];
 const serveRedirects = [];
@@ -498,6 +527,7 @@ if (SITE_MAP_PAGE) {
   if (siteMapPage) {
     const rel = path.posix.join(SITE_MAP_PATH.replace(/^\/|\/$/g, ''), 'index.html');
     put(rel, siteMapPage.html, written.get(rel) || 'custom/site-map');
+    put(path.posix.join(SITE_AUDIT_PATH.replace(/^\/|\/$/g, ''), 'index.html'), siteMapPage.audit, 'custom/site-map');
     for (const [from, url] of siteMapFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/site-map/${path.basename(from)}`);
   }
 }

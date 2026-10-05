@@ -451,3 +451,40 @@
     font-size: 21px !important;
   }
 }
+
+/* The visitors' site map (/site-map/, renderPublicSiteMap): the pages in groups, as plain
+   links in columns. (The full list with routes and statuses is the site check, /site-audit/.) */
+.psm--public .psm-pgroup {
+  margin-top: 32px;
+  scroll-margin-top: 120px;
+}
+.psm--public .psm-plist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 6px 28px;
+  margin-top: 12px;
+}
+.psm--public .psm-pgroup--wide .psm-plist {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+.psm--public .psm-plist a {
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--psm-ink);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.psm--public .psm-plist a:hover,
+.psm--public .psm-plist a:focus-visible {
+  color: var(--psm-lime-ink);
+  text-decoration: underline;
+}
+.psm--public .psm-lead a {
+  text-decoration: underline;
+}
+@media (max-width: 640px) {
+  .psm--public .psm-plist,
+  .psm--public .psm-pgroup--wide .psm-plist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

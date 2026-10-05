@@ -1,7 +1,9 @@
 # Blog
 
-This folder holds the blog's design: the listing pages (`/blog/` and `/blog/page/2/` … `/blog/page/16/`) and all 93
-posts (`/blog/<post>/`). The offer pages (`/blog/offer/…/`) and the project pages (`/blog/project/…/`) live under
+This folder holds the blog's design: the listing pages (`/blog/` and `/blog/page/2/` … `/blog/page/11/`) and all 64
+posts (`/blog/<post>/`). Since the site restructure, 29 posts that covered the same ground as another are merged into
+it: they redirect to it, and `merged-posts.json` holds the sections of theirs that are added to it (README, "Site
+restructure"). The offer pages (`/blog/offer/…/`) and the project pages (`/blog/project/…/`) live under
 `/blog/` too but are not part of it.
 
 As delivered, `/blog/` was a heading over a lime "Featured" card that cut its title off ("…What H...") beside a cover

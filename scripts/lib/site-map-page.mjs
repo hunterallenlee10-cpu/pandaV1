@@ -7,7 +7,8 @@
 // with the pages whose content links to it, whether the XML sitemaps list it, and the file
 // it is built from. Below the pages: the old addresses that redirect (site/_redirects) and
 // the addresses the XML sitemaps list that have no page in the copy. Pages removed on request
-// (REMOVED_PAGES) appear nowhere on it, not even as an old address.
+// (REMOVED_PAGES) appear nowhere on it, not even as an old address; pages merged into
+// another (MERGED_PAGES) are listed as old addresses that redirect.
 //
 // The page keeps its header, footer and "Site Map" heading; only the list under the heading
 // (the .site-rich block) is replaced. The links of the Site Map page itself are not counted.
@@ -19,12 +20,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
-import { ROOT, isSiteUrl, REMOVED_PAGES, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE } from './config.mjs';
+import { ROOT, isSiteUrl, REMOVED_PAGES, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE, isMergedPage } from './config.mjs';
 import { attr, hasClass, classes, esc, textOf, clean, findAll, find, textNodes, makeEditor, headEndOffset } from './html-edit.mjs';
 import { listFiles } from './util.mjs';
 
 export const SITE_MAP_DIR = path.join(ROOT, 'custom', 'site-map');
 export const SITE_MAP_PATH = '/site-map/';
+// The full list (how to reach every page, redirects, sitemap-only addresses) is a site check,
+// not a page for visitors: it lives here, kept out of search engines (noindex) and the XML
+// sitemaps, linked from nowhere. /site-map/ itself becomes a plain list of the pages for
+// visitors (renderPublicSiteMap). The site restructure.
+export const SITE_AUDIT_PATH = '/site-audit/';
 // Where the stylesheet and script are published in site/ (and linked from the page).
 export const SITE_MAP_FILES = { 'site-map.css': '/_custom/site-map/site-map.css', 'site-map.js': '/_custom/site-map/site-map.js' };
 const NOT_FOUND = '/404.html';
@@ -156,7 +162,7 @@ function sitemapEntries(siteDir, siteOrigin) {
 function redirects(siteDir) {
   const file = path.join(siteDir, '_redirects');
   if (!fs.existsSync(file)) return [];
-  const removed = (p) => REMOVED_PAGES.some((x) => p === x || p.startsWith(x));
+  const removed = (p) => !isMergedPage(p) && REMOVED_PAGES.some((x) => p === x || p.startsWith(x));
   const renamed = (p) => Object.keys(RENAMED_PATHS).some((x) => p === x || p.startsWith(x));
   return fs
     .readFileSync(file, 'utf8')
@@ -169,7 +175,9 @@ function redirects(siteDir) {
       from,
       to,
       status,
-      why: renamed(from)
+      why: isMergedPage(from)
+        ? 'Merged into this page in the site restructure.'
+        : renamed(from)
           ? 'Old misspelled address; the page now lives at the corrected one.'
           : 'Redirect the live site had; kept so old links still work.',
     }));
@@ -177,7 +185,7 @@ function redirects(siteDir) {
 
 // ------------------------------------------------------------------ working out the routes
 export function collectSiteMap({ siteDir, siteOrigin }) {
-  const files = listFiles(siteDir, (f) => f.endsWith('.html') && !NOT_PAGES.test(path.relative(siteDir, f).split(path.sep).join('/')));
+  const files = listFiles(siteDir, (f) => f.endsWith('.html') && !NOT_PAGES.test(path.relative(siteDir, f).split(path.sep).join('/')) && path.relative(siteDir, f).split(path.sep).join('/') !== SITE_AUDIT_PATH.slice(1) + 'index.html');
   const pages = new Map();
   for (const f of files.sort()) {
     const page = readPage(f, siteDir, siteOrigin);
@@ -477,6 +485,87 @@ export function renderSiteMap({ rows, redirects: moves, missing }) {
   );
 }
 
+// ------------------------------------------------------------------ the public list
+// Groups of the visitors' site map, in order: [title, test]. Pages no group takes go under
+// "More pages"; the error page, the blog's numbered listing pages and the site check don't show.
+const PUBLIC_GROUPS = [
+  ['Roofing', (p) => /^\/(roofing\/|storm-damage\/|roofing-costs\/)/.test(p)],
+  ['Commercial, solar and exteriors', (p) => /^\/(services|commercial-roofing|solar|siding|gutters)\//.test(p)],
+  ['Savings and support', (p) => /^\/(offers|financing|warranty|faqs|contact-us|referrals)\/$/.test(p)],
+  ['Our company', (p) => /^\/(about|careers|charity-and-community|reviews|past-projects|service-areas)\/$/.test(p)],
+  ['Local offices', (p) => p.startsWith('/locations/')],
+  ['Media', (p) => /^\/(media|blog)\/$/.test(p)],
+  ['Projects', (p) => p.startsWith('/blog/project/')],
+  ['Legal', (p) => /^\/(privacy-policy|terms-and-conditions)\/$/.test(p)],
+  ['Blog articles', (p) => /^\/blog\/[^/]+\/$/.test(p) && !BLOG_LIST.test(p)],
+];
+export function renderPublicSiteMap({ rows }) {
+  const left = rows.filter((r) => r.path !== NOT_FOUND && r.path !== SITE_MAP_PATH && !BLOG_PAGE.test(r.path));
+  const home = left.find((r) => r.path === '/');
+  const groups = PUBLIC_GROUPS.map(([title, test]) => {
+    const mine = left.filter((r) => r.path !== '/' && test(r.path));
+    for (const r of mine) left.splice(left.indexOf(r), 1);
+    return [title, mine];
+  });
+  const more = left.filter((r) => r.path !== '/');
+  if (more.length) groups.splice(groups.length - 1, 0, ['More pages', more]);
+  const byTitle = (a, b) => a.title.localeCompare(b.title);
+  const item = (r) => `<div role="listitem"><a href="${esc(r.path)}">${esc(r.path === '/' ? 'Home' : r.title)}</a></div>`;
+  return (
+    `<div class="psm psm--public" id="every-page">` +
+    `<p class="psm-lead">Every page on our site, in one place.${home ? ` Start at the <a href="/">home page</a>, or jump to a section:` : ''}</p>` +
+    `<nav class="psm-jump" aria-label="Sections">${groups
+      .filter(([, g]) => g.length)
+      .map(([t, g], i) => `<a href="#psm-public-${i + 1}">${esc(t)} <span>${g.length}</span></a>`)
+      .join('')}</nav>` +
+    groups
+      .filter(([, g]) => g.length)
+      .map(([t, g], i) => {
+        const sorted = t === 'Blog articles' ? [...g].sort((a, b) => (b.date || '').localeCompare(a.date || '') || byTitle(a, b)) : [...g].sort((a, b) => (a.path.split('/').length - b.path.split('/').length) || byTitle(a, b));
+        return `<section class="psm-pgroup${t === 'Blog articles' ? ' psm-pgroup--wide' : ''}" id="psm-public-${i + 1}"><h2 class="psm-group__title">${esc(t)}</h2><div role="list" class="psm-plist">${sorted.map(item).join('')}</div></section>`;
+      })
+      .join('') +
+    `</div>`
+  );
+}
+
+/**
+ * The site check (SITE_AUDIT_PATH): the full list, on a copy of the built /site-map/ page
+ * with its own title and address, kept out of search engines.
+ */
+function auditPage(html, doc, data, siteOrigin) {
+  const ed = makeEditor(html);
+  const slot = find(doc, (c) => hasClass(c, 'site-rich'));
+  ed.inner(slot, renderSiteMap(data));
+  const head = find(doc, (c) => c.tagName === 'head');
+  const url = siteOrigin + SITE_AUDIT_PATH;
+  const title = 'Site Check | Panda Exteriors';
+  const titleEl = findAll(head, (c) => c.tagName === 'title')[0];
+  if (titleEl) ed.inner(titleEl, esc(title));
+  let robots = false;
+  for (const m of findAll(head, (c) => c.tagName === 'meta')) {
+    const key = attr(m, 'property') || attr(m, 'name');
+    if (key === 'robots') {
+      ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: 'noindex, nofollow' } : a)));
+      robots = true;
+    } else if (key === 'og:url') ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: url } : a)));
+    else if (key === 'og:title' || key === 'twitter:title') ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: title } : a)));
+  }
+  for (const l of findAll(head, (c) => c.tagName === 'link' && attr(c, 'rel') === 'canonical')) ed.retag(l, l.attrs.map((a) => (a.name === 'href' ? { name: 'href', value: url } : a)));
+  // Structured data describing /site-map/ doesn't belong on the check.
+  for (const sc of findAll(head, (c) => c.tagName === 'script' && attr(c, 'type') === 'application/ld+json')) ed.outer(sc, '');
+  const has = (u) => findAll(head, (c) => attr(c, 'href') === u || attr(c, 'src') === u).length > 0;
+  const headEnd = headEndOffset(html);
+  ed.replace(
+    headEnd,
+    headEnd,
+    (robots ? '' : '<meta name="robots" content="noindex, nofollow">') +
+      (has(SITE_MAP_FILES['site-map.css']) ? '' : `<link rel="stylesheet" href="${SITE_MAP_FILES['site-map.css']}">`) +
+      (has(SITE_MAP_FILES['site-map.js']) ? '' : `<script src="${SITE_MAP_FILES['site-map.js']}" defer></script>`)
+  );
+  return ed.apply();
+}
+
 /**
  * The Site Map page: the built /site-map/ page in siteDir with its list replaced by every
  * page of the site. Returns { html, pages, orphans } or null (with a warning) when the page
@@ -497,18 +586,20 @@ export function buildSiteMapPage({ siteDir, siteOrigin }) {
   }
   const data = collectSiteMap({ siteDir, siteOrigin });
   const ed = makeEditor(html);
-  ed.inner(slot, renderSiteMap(data));
+  ed.inner(slot, renderPublicSiteMap(data));
   const head = find(doc, (c) => c.tagName === 'head');
   const has = (url) => findAll(head, (c) => attr(c, 'href') === url || attr(c, 'src') === url).length > 0;
   const headEnd = headEndOffset(html);
   if (headEnd < 0) throw new Error(`site map: ${SITE_MAP_PATH} has no </head>`);
-  ed.replace(
-    headEnd,
-    headEnd,
-    (has(SITE_MAP_FILES['site-map.css']) ? '' : `<link rel="stylesheet" href="${SITE_MAP_FILES['site-map.css']}">`) +
-      (has(SITE_MAP_FILES['site-map.js']) ? '' : `<script src="${SITE_MAP_FILES['site-map.js']}" defer></script>`)
-  );
-  return { html: ed.apply(), pages: data.rows.length, orphans: data.rows.filter((r) => r.kind === 'orphan').map((r) => r.path) };
+  // The visitors' list needs the stylesheet only (the search and filters are the check's).
+  for (const sc of findAll(head, (c) => c.tagName === 'script' && attr(c, 'src') === SITE_MAP_FILES['site-map.js'])) ed.outer(sc, '');
+  ed.replace(headEnd, headEnd, has(SITE_MAP_FILES['site-map.css']) ? '' : `<link rel="stylesheet" href="${SITE_MAP_FILES['site-map.css']}">`);
+  return {
+    html: ed.apply(),
+    audit: auditPage(html, doc, data, siteOrigin),
+    pages: data.rows.length,
+    orphans: data.rows.filter((r) => r.kind === 'orphan').map((r) => r.path),
+  };
 }
 
 /** [source file, published URL] of the stylesheet and script. */

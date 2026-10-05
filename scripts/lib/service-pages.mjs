@@ -52,6 +52,13 @@ const ICONS = {
   granules: line('M3 9h18l-2 4H5zM8 17.5v.1M12 19v.1M16 17.5v.1M10 21v.1M14 21v.1'),
   sag: line('M3 7c3 0 6 6 9 6s6-6 9-6M5 17h14M8 13.5V17M16 13.5V17'),
   bolt: line('M13 2.5L5 13.5h6l-1 8 8-11h-6z'),
+  layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
+  shield: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
+  home: line('M3.5 11L12 4l8.5 7M6 9.5V20h12V9.5M10 20v-5h4v5'),
+  coin: line('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM14.8 9.2c-.5-.8-1.5-1.3-2.8-1.3-1.7 0-2.8.8-2.8 2s1.2 1.7 2.8 2 2.8.9 2.8 2.1-1.1 2-2.8 2c-1.4 0-2.5-.6-3-1.5M12 6.3v1.6M12 16v1.7'),
+  sparkle: line('M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z'),
+  clock: line('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3.5 2'),
+  roll: line('M4 7a3 3 0 0 1 6 0v10a3 3 0 0 1-6 0zM7 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7'),
 };
 const CHECK = line('M5 12.5l4.2 4.2L19 7');
 const PHONE_ICON = svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>');
@@ -86,35 +93,37 @@ function renderTypes(t, exists) {
   );
 }
 
-function renderSigns(s) {
+function renderSigns(s, key = 'signs') {
   return section(
+    key,
     'signs',
-    'signs',
-    head('signs', '', s.title, s.intro) +
+    head(key, s.eyebrow || '', s.title, s.intro) +
       `<div class="pfix-sp-signs" role="list">` +
       s.items
         .map(([icon, title, text]) => `<div class="pfix-sp-sign" role="listitem"><span class="pfix-sp-sign__icon">${ICONS[icon] || ICONS.crack}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`)
         .join('') +
       `</div>` +
-      `<div class="pfix-sp-signs__foot"><p>${esc(s.footer)}</p>` +
+      `<div class="pfix-sp-signs__foot">${s.footer ? `<p>${esc(s.footer)}</p>` : ''}` +
       (s.reads?.length
         ? `<p class="pfix-sp-reads"><span>Read more:</span> ${s.reads.map(([href, text]) => `<a href="${esc(href)}">${esc(text)}</a>`).join('')}</p>`
         : '') +
-      `</div>`
+      `</div>`,
+    s.id
   );
 }
 
-function renderCheck(c, exists) {
+function renderCheck(c, exists, key = 'check') {
   const [src, w, h] = c.img;
   return section(
-    'check',
+    key,
     'check',
     `<div class="pfix-sp-check">` +
       `<div class="pfix-sp-check__media">${picture(src, w, h, c.alt || '', exists)}</div>` +
-      `<div class="pfix-sp-check__body">${head('check', '', c.title, c.intro)}` +
+      `<div class="pfix-sp-check__body">${head(key, c.eyebrow || '', c.title, c.intro)}` +
       `<div class="pfix-sp-list pfix-sp-list--big" role="list">${c.items.map((p) => `<div role="listitem">${CHECK}<span>${esc(p)}</span></div>`).join('')}</div>` +
       (c.link ? `<a class="pfix-sp-link" href="${esc(c.link[0])}">${esc(c.link[1])}${ARROW}</a>` : '') +
-      `</div></div>`
+      `</div></div>`,
+    c.id
   );
 }
 
@@ -148,7 +157,11 @@ export function renderServicePage(page, { siteDir } = {}) {
     `<div class="pfix-sp pfix-sp--${esc(page.service)}" data-pfix-sp>` +
     (page.types ? renderTypes(page.types, exists) : '') +
     (page.signs ? renderSigns(page.signs) : '') +
+    // More card and photo sections, for pages that took in another page's content (the site
+    // restructure: MERGED_PAGES in config.mjs). Each can have an id that links lead to.
+    (page.cards || []).map((c, i) => renderSigns(c, `cards-${i + 1}`)).join('') +
     (page.check ? renderCheck(page.check, exists) : '') +
+    (page.checks || []).map((c, i) => renderCheck(c, exists, `checks-${i + 1}`)).join('') +
     (page.steps ? renderSteps(page.steps) : '') +
     (page.faq ? renderFaq(page.faq, page.cta) : '') +
     `</div>`
@@ -190,7 +203,7 @@ export function collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigi
     }
     const end = cards.sourceCodeLocation.endOffset;
     ed.replace(end, end, block);
-    const parts = [page.types && 'siding types', page.signs && 'signs it’s time', page.check && 'what we check', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
+    const parts = [page.types && 'siding types', page.signs && 'signs it’s time', page.cards && 'cards', page.check && 'what we check', page.checks && 'photo sections', page.steps && 'how it works', page.faq && 'questions'].filter(Boolean);
     changes.push(`service page: added ${parts.join(', ')} under the service cards`);
   }
   if (page.faq) {

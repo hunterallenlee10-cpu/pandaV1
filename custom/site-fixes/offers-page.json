@@ -25,7 +25,7 @@
         ],
         "project": "Roof replacement",
         "cta": "Claim 10% off",
-        "href": "/blog/offer/10-off-roof-replacement/",
+        "href": "/offers/#pfix-of-deal-roof",
         "fine": "Some restrictions apply.",
         "img": ["/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg", 768, 432, "Panda Exteriors crew replacing the roof of a two-story home"]
       },
@@ -43,7 +43,7 @@
         ],
         "project": "Solar",
         "cta": "Claim $1,500 off",
-        "href": "/blog/offer/1500-off-solar-project/",
+        "href": "/offers/#pfix-of-deal-solar",
         "fine": "Terms and conditions apply.",
         "img": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg", 768, 512, "Solar panels on the roof of a brick home"]
       }
@@ -58,21 +58,21 @@
         "icon": "card",
         "title": "No-interest financing",
         "text": "Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
-        "href": "/blog/offer/find-out-about-our-no-interest-financial-options/",
+        "href": "/financing/",
         "link": "About financing"
       },
       {
         "icon": "shield",
         "title": "100% satisfaction guarantee",
         "text": "Every project, from roofing to gutters, is backed by our satisfaction guarantee, on top of the manufacturers’ warranties on the products we install.",
-        "href": "/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/",
+        "href": "/warranty/#satisfaction-guarantee",
         "link": "About the guarantee"
       },
       {
         "icon": "badge",
         "title": "Certified installation",
         "text": "Our certified professionals install every product correctly. If our workmanship proves faulty within two years of installation, we’ll correct it at no cost to you.*",
-        "href": "/blog/offer/our-installation-work-is-completed-by-certified-professionals/",
+        "href": "/warranty/#installation-warranty",
         "link": "About the installation warranty"
       }
     ],

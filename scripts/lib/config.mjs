@@ -243,10 +243,86 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // their sitemap entries and the files only they used are left out, and their address
 // redirects to the page in REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs).
 // REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
-  .split(',')
-  .map((p) => p.trim())
-  .filter(Boolean);
+// Pages merged into another page in the site restructure (old -> new): what was useful on
+// them now lives on the page they lead to (see README, "Site restructure"). They are removed
+// pages like the ones above, except that every link to them stays and leads to the page they
+// were merged into (customize.mjs rewrites the links, merged-pages.mjs tidies the menus), and
+// the Site Map lists their old address as a redirect. MERGE_PAGES=0 keeps them.
+export const MERGED_PAGES =
+  (process.env.MERGE_PAGES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1'
+    ? {
+        // Panda only replaces roofs, so "residential roofing" was the roof replacement page again.
+        '/roofing/residential/': '/roofing/replacement/',
+        // Three thin commercial pages with the same materials and projects -> one.
+        '/commercial-roofing/roof-types/': '/commercial-roofing/',
+        '/commercial-roofing/roof-replacement/': '/commercial-roofing/',
+        '/solar/solar-panel-installations/': '/solar/',
+        // The Media page already has the podcast's player, episodes and ways to watch.
+        '/podcast/': '/media/',
+        '/gallery/': '/past-projects/',
+        '/customer-service/': '/contact-us/',
+        // The two offers are on /offers/ in full; financing and the warranties get real pages.
+        '/blog/offer/10-off-roof-replacement/': '/offers/',
+        '/blog/offer/1500-off-solar-project/': '/offers/',
+        '/blog/offer/find-out-about-our-no-interest-financial-options/': '/financing/',
+        '/blog/offer/our-installation-work-is-completed-by-certified-professionals/': '/warranty/',
+        '/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/': '/warranty/',
+        // Five "Roof Replacement (Project N)" pages with the same words and five photos between
+        // them, all already in the photo gallery on /past-projects/.
+        '/blog/project/panda-ext-11425/': '/past-projects/',
+        '/blog/project/panda-ext-11531/': '/past-projects/',
+        '/blog/project/panda-ext-14098/': '/past-projects/',
+        '/blog/project/panda-ext-14513/': '/past-projects/',
+        '/blog/project/panda-ext-14532/': '/past-projects/',
+        // Blog posts on the same topic as another, merged into it: the sections of theirs it
+        // didn't cover are added to it (custom/blog/merged-posts.json, blog.mjs).
+        '/blog/winter-roof-replacement/': '/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/',
+        '/blog/is-it-safe-to-install-a-new-roof-in-the-winter-myths-vs-facts/': '/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/',
+        '/blog/can-you-replace-a-roof-in-the-winter-yes-but-heres-the-catch/': '/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/',
+        '/blog/beat-the-next-noreaster-why-scheduling-your-roof-replacement-before-deep-winter-saves-you-money/': '/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/',
+        '/blog/roof-repair-or-replace/': '/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/',
+        '/blog/repair-or-replace-how-to-decide-after-a-winter-storm-beats-up-your-roof/': '/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/',
+        '/blog/should-you-repair-or-replace-your-roof-after-a-spring-storm/': '/blog/repair-vs-replace-after-a-storm-the-spring-decision-matrix-insurers-use-and-how-to-tell-what-your-roof-actually-needs/',
+        '/blog/do-you-need-a-new-roof/': '/blog/5-signs-its-time-to-replace-your-roof-before-it-costs-you-more/',
+        '/blog/what-questions-should-i-ask-a-roofing-contractor/': '/blog/15-questions-to-ask-before-you-hire-a-roofer/',
+        '/blog/how-to-choose-the-right-roofing-contractor/': '/blog/15-questions-to-ask-before-you-hire-a-roofer/',
+        '/blog/5-benefits-of-hiring-a-professional-for-roof-replacement/': '/blog/15-questions-to-ask-before-you-hire-a-roofer/',
+        '/blog/spring-rain-leak-season-why-roof-leaks-show-up-in-march-and-april/': '/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/',
+        '/blog/roof-leak-season-is-here-why-spring-rain-exposes-hidden-winter-damage/': '/blog/spring-leak-map-how-to-spot-the-failure-points-before-they-become-interior-damage/',
+        '/blog/spring-is-a-great-season-for-roof-inspections/': '/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/',
+        '/blog/the-end-of-winter-roof-survival-checklist/': '/blog/spring-roof-inspection-checklist-9-problems-homeowners-miss-after-winter/',
+        '/blog/quarterly-inspection/': '/blog/seasonal-roof-maintenance-tips-for-every-time-of-year/',
+        '/blog/what-are-ice-dams-and-how-can-they-damage-my-roof-this-february/': '/blog/ice-dams-101-what-they-are-and-how-to-stop-them/',
+        '/blog/winter-proof-your-home-roof-gutters-and-attic-upgrades-that-stop-ice-dams-and-heat-loss/': '/blog/ice-dams-101-what-they-are-and-how-to-stop-them/',
+        '/blog/winter-ready-roofs-why-every-roof-needs-a-tune-up-before-first-freeze/': '/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/',
+        '/blog/what-cold-weather-does-to-a-failing-roof-and-how-to-avoid-it/': '/blog/is-your-roof-ready-for-snow-how-to-prepare-before-the-first-flake-falls/',
+        '/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-2-3/': '/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/',
+        '/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-3-3/': '/blog/when-the-sun-shines-we-shine-together-your-reasons-to-go-solar-part-1-3/',
+        '/blog/before-school-starts-august-is-the-perfect-time-for-solar-roof-installation/': '/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/',
+        '/blog/why-fall-2024-is-the-best-time-to-combine-roof-upgrades-with-solar-installation-in-the-mid-atlantic/': '/blog/best-time-to-go-solar-why-spring-is-a-smart-season-to-pair-roofing-and-solar-upgrades/',
+        '/blog/solar-roof-inspection-summer-maintenance-for-maximum-performance/': '/blog/how-to-clean-solar-panels-and-shingles/',
+        '/blog/gutters-after-winter-cleaning-realignment-and-downspout-flow-tests/': '/blog/gutters-after-winter-signs-its-time-for-repair-or-replacement/',
+        '/blog/is-your-siding-fading-from-sun-exposure-when-summer-uv-damage-means-its-time-to-replace/': '/blog/summer-siding-problems-homeowners-ignore-warping-fading-cracking-and-loose-panels/',
+        '/blog/insurance-roofing-in-spring-the-homeowners-field-guide-to-wind-and-hail-claims/': '/blog/insurance-paid-roof-replacements-a-simple-guide-for-wind-hail-and-ice-damage-claims/',
+        '/blog/replacing-a-roof-in-2024/': '/blog/roof-replacement-timeline/',
+        // With fewer posts the blog needs fewer listing pages: the extra ones lead to the blog.
+        '/blog/page/12/': '/blog/',
+        '/blog/page/13/': '/blog/',
+        '/blog/page/14/': '/blog/',
+        '/blog/page/15/': '/blog/',
+        '/blog/page/16/': '/blog/',
+      }
+    : {};
+export const isMergedPage = (pathname) => Object.keys(MERGED_PAGES).some((p) => pathname === p || pathname === p.replace(/\/+$/, ''));
+export const mergedTarget = (pathname) => MERGED_PAGES[pathname] || MERGED_PAGES[pathname + '/'] || null;
+
+export const REMOVED_PAGES = [
+  ...(process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean),
+  ...Object.keys(MERGED_PAGES),
+];
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 // Where a removed page's address leads: the closest page that is still on the site.
 export const REMOVED_PAGE_TARGETS = {
@@ -258,11 +334,12 @@ export const REMOVED_PAGE_TARGETS = {
   '/blog/project/sbs-siding/': '/past-projects/',
   '/commercial-capabilities/': '/commercial-roofing/',
   '/referral/': '/referrals/',
+  ...MERGED_PAGES,
 };
 // Removed pages whose links stay, pointed at their REMOVED_PAGE_TARGETS page instead of
 // being taken out: the "Refer & Earn" menu link and the careers page's "Refer a Friend"
 // led to /referral/ and now lead to /referrals/.
-const RELINKED_PAGES = REMOVED_PAGES.filter((p) => ['/referral/'].includes(p));
+const RELINKED_PAGES = REMOVED_PAGES.filter((p) => ['/referral/', ...Object.keys(MERGED_PAGES)].includes(p));
 export const isRelinkedPage = (pathname) => RELINKED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 
 // Pages moved to a corrected address (path prefixes, old -> new). The live site spells the

@@ -32,6 +32,30 @@ import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { hasClass, esc, find, findAll, attr, classes, startTag, headEndOffset } from './html-edit.mjs';
 import { renderArchive } from './project-pages.mjs';
+import { renderProjectGallery } from './project-gallery.mjs';
+import { isMergedPage } from './config.mjs';
+
+// The photo gallery under the project list: the work photos of the Gallery page, which was
+// merged into this one (MERGED_PAGES); its Community and Charity photos are on the Charity &
+// Community page's photo wall already (custom/site-fixes/photo-gallery.json).
+const PHOTO_GALLERY = path.join(ROOT, 'custom', 'site-fixes', 'photo-gallery.json');
+const COMMUNITY = 'Community and Charity';
+let gallery;
+function renderPhotoGallery(siteDir) {
+  if (!isMergedPage('/gallery/') || !fs.existsSync(PHOTO_GALLERY)) return '';
+  gallery ??= JSON.parse(fs.readFileSync(PHOTO_GALLERY, 'utf8'));
+  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, decodeURIComponent(src.split(/[?#]/)[0])));
+  const categories = gallery.categories.filter((c) => c.name !== COMMUNITY);
+  const photos = gallery.photos.filter((p) => categories.some((c) => c.id === p.cat) && exists(p.full) && exists(p.src));
+  if (!photos.length) return '';
+  return (
+    `<div class="ppx__gallery" id="photo-gallery">` +
+    `<div class="ppx__head"><p class="ppx__eyebrow">Photo gallery</p><h2 class="ppx__title" id="ppx-gallery-title">More photos from our crews</h2>` +
+    `<p class="ppx__intro">New roofs, solar, commercial roofing and gutters from Panda jobs across the East Coast. Pick a category, then select a photo to see it full size.</p></div>` +
+    renderProjectGallery({ categories, photos }, { uid: 'ppg-photos' }) +
+    `</div>`
+  );
+}
 
 export const PAST_PROJECTS_DIR = path.join(ROOT, 'custom', 'past-projects');
 export const PAST_PROJECTS_FILES = { 'past-projects.css': '/_custom/past-projects/past-projects.css' };
@@ -101,6 +125,7 @@ export function renderFavorites(siteDir) {
     // divs with list roles: the site's stylesheet forces bullets and colours on every ul/li.
     `<div class="ppx__grid" role="list">${f.projects.map(card).join('')}</div>` +
     renderArchive(siteDir) +
+    renderPhotoGallery(siteDir) +
     (cta
       ? `<div class="ppx__cta"><div class="ppx__cta-text"><p class="ppx__cta-title">${esc(cta.title)}</p>${cta.text ? `<p>${esc(cta.text)}</p>` : ''}</div>` +
         `<div class="ppx__cta-actions"><a class="ppx__btn" href="${esc(cta.button[1])}">${esc(cta.button[0])}</a>` +

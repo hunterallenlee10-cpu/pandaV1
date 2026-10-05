@@ -61,19 +61,19 @@ function topics() {
       'badge',
       'Installation warranty',
       'Our certified professionals install every product correctly. If our workmanship proves faulty within two years of installation, we’ll correct it at no cost to you. Some products have a longer installation warranty; your contract has the exact terms.',
-      ['About the installation warranty', '/blog/offer/our-installation-work-is-completed-by-certified-professionals/'],
+      ['About the installation warranty', '/warranty/#installation-warranty'],
     ],
     [
       'shield',
       '100% satisfaction guarantee',
       'Every project, from roofing to gutters, is backed by our satisfaction guarantee, on top of the manufacturers’ warranties on the products we install.',
-      ['About the guarantee', '/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/'],
+      ['About the guarantee', '/warranty/#satisfaction-guarantee'],
     ],
     [
       'card',
       'Financing',
       'Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.',
-      ['About financing', '/blog/offer/find-out-about-our-no-interest-financial-options/'],
+      ['About financing', '/financing/'],
     ],
     [
       'star',
@@ -107,9 +107,17 @@ function pageHtml() {
     `<a class="pfix-cs-quick__item" href="/contact-us/#offices"><span class="pfix-cs-quick__icon">${ICONS.pin}</span><span><small>Your local office</small><b>7 offices and their numbers</b></span></a>` +
     `</div>` +
     `</div></section>`;
-  const cards =
-    `<section class="pfix-cs__sec" aria-labelledby="pfix-cs-help"><div class="pfix-cs__inner">` +
-    `<div class="pfix-cs__head"><p class="pfix-cs__eyebrow">Help topics</p><h2 class="pfix-cs__title" id="pfix-cs-help">How can we help?</h2></div>` +
+  return `<div class="pfix-cs">${hero}${helpTopics()}</div>`;
+}
+
+/**
+ * "How can we help?": the help topics as cards. Also on /contact-us/ ("Already a customer?"),
+ * where the page went when it was merged into Contact Us (MERGED_PAGES).
+ */
+export function helpTopics({ eyebrow = 'Help topics', title = 'How can we help?', intro = '', id = '' } = {}) {
+  return (
+    `<section class="pfix-cs__sec"${id ? ` id="${esc(id)}"` : ''} aria-labelledby="pfix-cs-help"><div class="pfix-cs__inner">` +
+    `<div class="pfix-cs__head"><p class="pfix-cs__eyebrow">${esc(eyebrow)}</p><h2 class="pfix-cs__title" id="pfix-cs-help">${esc(title)}</h2>${intro ? `<p class="pfix-cs__intro">${esc(intro)}</p>` : ''}</div>` +
     `<div class="pfix-cs-topics" role="list">` +
     topics()
       .map(
@@ -119,8 +127,8 @@ function pageHtml() {
           `<div class="pfix-cs-topic__links">${link(first, 'pfix-cs-topic__link')}${second ? link(second, 'pfix-cs-topic__link pfix-cs-topic__link--quiet') : ''}</div></div>`
       )
       .join('') +
-    `</div></div></section>`;
-  return `<div class="pfix-cs">${hero}${cards}</div>`;
+    `</div></div></section>`
+  );
 }
 
 /** /customer-service/: the hero and help topics, and the estimate block's heading. */

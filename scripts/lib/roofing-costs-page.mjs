@@ -29,7 +29,7 @@ const FORM_ID = 'pfix-lead-1';
 // Where the hero's chips lead.
 export const COST_ANCHOR = 'roof-cost';
 export const INSURANCE_ANCHOR = 'insurance-claims';
-const FINANCING = '/blog/offer/find-out-about-our-no-interest-financial-options/';
+const FINANCING = '/financing/';
 // The intro called the company by a name it doesn't use.
 const NAME_FIX = ['Panda Contractors', 'Panda Exteriors'];
 
@@ -74,14 +74,14 @@ const QUALITY = {
   ],
 };
 // Insurance roofing, from Panda's guides on the blog.
-const COVERED = [
+export const COVERED = [
   'Wind tearing off or creasing shingles',
   'Hail leaving impact marks or bruises',
   'Tree limbs or debris hitting the roof',
   'Damage from the weight of snow or ice',
 ];
-const NOT_COVERED = ['Old, worn-out shingles', 'Long-term leaks from neglect', 'Damage from a lack of maintenance or improper earlier repairs'];
-const CLAIM_STEPS = [
+export const NOT_COVERED = ['Old, worn-out shingles', 'Long-term leaks from neglect', 'Damage from a lack of maintenance or improper earlier repairs'];
+export const CLAIM_STEPS = [
   ['Free storm-damage inspection', 'We inspect your roof, gutters and attic for obvious and hidden damage, photograph everything and tell you honestly whether it looks cosmetic or claim-worthy.'],
   ['Decide whether to file', 'We help you think through your deductible and your coverage (ACV or RCV). If a claim makes sense, you call your insurance company to open it.'],
   ['We meet your adjuster', 'A Panda representative can be on the roof with the adjuster, pointing out the damage slope by slope, so nothing gets overlooked.'],

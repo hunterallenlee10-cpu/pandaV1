@@ -25,8 +25,10 @@ import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs
 import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
-import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
-import { listFiles, args, writeFile } from '../lib/util.mjs';
+import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '../lib/site-map-page.mjs';
+import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
+import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
+import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
 const SITE = PATHS.site;
@@ -42,9 +44,17 @@ function pageUrl(file) {
   return `${SITE_ORIGIN}/${rel.replace(/(^|\/)index\.html$/, '$1')}`;
 }
 
+// Pages removed on request or merged into another (REMOVED_PAGES) that are still here: their
+// HTML goes now; the files only they used go once the other pages are updated (below).
+const removedPages = only ? { removed: [], used: new Set() } : removeBuiltPages(SITE, { dryRun });
+for (const p of removedPages.removed) console.log(`${dryRun ? 'would remove' : 'removed'} ${p} (REMOVED_PAGES)`);
+if (!only && editFeed(SITE, { dryRun })) console.log(`${dryRun ? 'would edit' : 'edited'} site/feed/index.xml (items of removed pages out)`);
+
 // The Media page is rebuilt below, from the other pages.
 const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');
-const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile));
+// So are the pages added in the site restructure (new-pages.mjs).
+const newFiles = new Set([...newPagePaths(), SITE_AUDIT_PATH].map((p) => path.join(SITE, p, 'index.html')));
+const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile) && !newFiles.has(f));
 const counts = {};
 const linked = new Set(); // the /_custom/ files the pages link
 let changed = 0;
@@ -77,6 +87,20 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
   }
 }
 
+// The pages added in the site restructure, from the pages just updated (their header and
+// footer come from one of them).
+let newPages = [];
+if (!only || newPagePaths().some((p) => only.has(p))) {
+  newPages = buildNewPages({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  for (const p of newPages) {
+    const file = path.join(SITE, p.path, 'index.html');
+    if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === p.html) continue;
+    changed++;
+    if (!dryRun) writeFile(file, p.html);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, file)}`);
+  }
+}
+
 // The Site Map's list of every page, from the pages as they are now (in a dry run, as they
 // were: nothing was written). Rebuilt whenever a page changed, since its links may have.
 let siteMap = null;
@@ -87,6 +111,12 @@ if (SITE_MAP_PAGE && fs.existsSync(siteMapFile)) {
     changed++;
     if (!dryRun) writeFile(siteMapFile, siteMap.html);
     console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, siteMapFile)} (${siteMap.pages} page(s); not reachable by clicking: ${siteMap.orphans.join(', ') || 'none'})`);
+  }
+  const auditFile = path.join(SITE, SITE_AUDIT_PATH, 'index.html');
+  if (siteMap && (!fs.existsSync(auditFile) || fs.readFileSync(auditFile, 'utf8') !== siteMap.audit)) {
+    changed++;
+    if (!dryRun) writeFile(auditFile, siteMap.audit);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, auditFile)} (the site check, noindex)`);
   }
 }
 
@@ -99,6 +129,7 @@ const files = [
   ...Object.entries(BLOG_FILES).map(([name, url]) => [path.join(BLOG_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
 if (siteMap) files.push(...siteMapFiles());
+if (newPages.length) files.push(...newPagesFiles());
 // The review wall and the reviews hero on /reviews/: their stylesheet, script and photos
 // (the photos are in the stylesheet, which the list of linked files above doesn't read).
 if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) files.push(...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]));
@@ -138,5 +169,15 @@ if (mediaUsed) {
   }
 }
 
-console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0)} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
+// The files only the removed pages used, their sitemap entries, and their redirects.
+if (!only) {
+  const pruned = pruneUnusedFiles(SITE, removedPages.used, { dryRun });
+  if (pruned.files.length) console.log(`${dryRun ? 'would remove' : 'removed'} ${pruned.files.length} file(s) only removed pages used (${fmtBytes(pruned.bytes)})`);
+  const sitemaps = editSitemaps(SITE, SITE_ORIGIN, newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), { dryRun });
+  if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
+  const redirectFiles = writeRedirectFiles(SITE, { dryRun });
+  if (redirectFiles.changed.length) console.log(`${dryRun ? 'would update' : 'updated'} ${redirectFiles.changed.join(', ')} (${redirectFiles.added} new redirect(s))`);
+}
+
+console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0) + newPages.length} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
 for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(3)} × ${k}`);

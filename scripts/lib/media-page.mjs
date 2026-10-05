@@ -23,7 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse, parseFragment } from 'parse5';
-import { ROOT } from './config.mjs';
+import { ROOT, isMergedPage } from './config.mjs';
 import { attr, hasClass, esc, textOf, clean, findAll, find, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 export const MEDIA_DIR = path.join(ROOT, 'custom', 'media');
@@ -31,7 +31,7 @@ export const MEDIA_PATH = '/media/';
 // Where the stylesheet and script are published in site/ (and linked from the page).
 export const MEDIA_FILES = { 'media.css': '/_custom/media/media.css', 'media.js': '/_custom/media/media.js' };
 // The built page whose header and footer the Media page reuses.
-const TEMPLATE = '/podcast/';
+const TEMPLATE = isMergedPage('/podcast/') ? '/faqs/' : '/podcast/';
 // Posts listed under the newest one.
 const MORE_POSTS = 3;
 const WORDS_PER_MINUTE = 238;
@@ -72,7 +72,7 @@ export function collectMediaNav(doc, html, ed, changes, { current = false } = {}
     const entries = menu ? (menu.childNodes || []).filter((c) => c.tagName) : [];
     const linkTo = (li, href) => !!find(li, (c) => c.tagName === 'a' && attr(c, 'href') === href);
     const podcast = entries.find((li) => linkTo(li, '/podcast/'));
-    if (podcast && !entries.some((li) => linkTo(li, GALLERY_ENTRY.href))) {
+    if (podcast && !isMergedPage(GALLERY_ENTRY.href) && !entries.some((li) => linkTo(li, GALLERY_ENTRY.href))) {
       const { startOffset, endOffset } = podcast.sourceCodeLocation;
       const copy = html.slice(startOffset, endOffset).replace('href="/podcast/"', `href="${GALLERY_ENTRY.href}"`).replace(/>(\s*)Podcast(\s*)</, `>$1${GALLERY_ENTRY.label}$2<`);
       ed.replace(endOffset, endOffset, `\n${copy}`);

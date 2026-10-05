@@ -10,8 +10,10 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 ## What's in scope
 
-The copy contains what a visitor can reach by clicking through the site: **172 pages** (39 main pages,
-114 blog posts and listing pages, and the 19 project pages the site links to), plus the 404 page, feed,
+The copy contains what a visitor can reach by clicking through the site. As captured that was **172 pages** (39 main
+pages, 114 blog posts and listing pages, and the 19 project pages the site links to); after the
+[site restructure](#site-restructure) it is **123 pages** (38 main pages, among them 10 new ones and the site check;
+64 blog posts with their 11 listing pages; and 10 project pages), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
 - **17 city sections** (`/baltimore-md/`, `/charlotte-nc/`, … `/wilmington-de/`). Each is a separate WordPress
@@ -111,7 +113,7 @@ listing (the old one is gone), and its intro, which described a show about "tech
 is the show's own description from its feed. The episodes are refreshed with `npm run media:podcast` — see
 [`custom/media/README.md`](custom/media/README.md).
 
-**The Site Map lists every page and how to get to it.** The captured `/site-map/` was a hand-kept list that had
+**The site check lists every page and how to get to it** (at `/site-audit/` since the [site restructure](#site-restructure); `/site-map/` is a plain list for visitors). The captured `/site-map/` was a hand-kept list that had
 fallen behind (city sub-sites, a removed page, no blog). Its list is now generated from the built site every time it
 is built (`scripts/lib/site-map-page.mjs`, `custom/site-map/`, `SITE_MAP_PAGE=0` to turn off). For each page it shows
 where it sits in the top menu or footer, which blog listing page shows it, or the clicks that lead to it from the home
@@ -536,6 +538,71 @@ Pages where a fix replaces a whole section or message are listed as "edited on p
 was last regenerated before the review carousels, project gallery, logo row, award badges and smooth scrolling were
 added; the next capture and build regenerates it.)
 
+## Site restructure
+
+After an audit of every page, overlapping pages were merged, thin ones folded into the pages that cover the same
+ground, and the pages the site was missing added. Old addresses redirect (301) to where their content went, every
+link on the site leads straight there, and nothing on the site links to a redirect. Applied by
+`npm run update:site` (and by `03-build.mjs`), so editing the files named below and running it again updates the
+site.
+
+**Merged** (`MERGED_PAGES` in `scripts/lib/config.mjs`, `MERGE_PAGES=0` keeps them). A merged page is a removed
+page (it isn't built, its sitemap entry, feed item and the files only it used go) whose links stay and lead to the
+page it went into (`relinkMerged` in `scripts/lib/merged-pages.mjs`); the header menu loses its entry (Commercial,
+left with no entries under it, becomes a plain entry); the Site Map's check lists it as an old address.
+
+| Old page | Now part of | What moved there |
+| --- | --- | --- |
+| `/roofing/residential/` | `/roofing/replacement/` | Panda only replaces roofs, so it was the same page again: "What Comes With Your New Roof", "How Your Roof Replacement Works" and questions (`custom/site-fixes/service-pages.json`) |
+| `/commercial-roofing/roof-types/`, `/commercial-roofing/roof-replacement/` | `/commercial-roofing/` | "Commercial Roof Systems We Install" (TPO, EPDM, Mod Bit, PVC), "Commercial Roof Replacements", questions; its two service cards lead to those sections |
+| `/solar/solar-panel-installations/` | `/solar/` | "Benefits of Solar Panels for Your Home" and questions |
+| `/podcast/` | `/media/` | nothing to move: Media already had the player, every episode and the ways to watch (the Media page is now built on the FAQs page's header and footer) |
+| `/gallery/` | `/past-projects/` | the work photos, as a photo gallery under the project list (`custom/site-fixes/photo-gallery.json`); the community photos were already on Charity & Community's photo wall |
+| `/customer-service/` | `/contact-us/` | its help topics, as "Already a customer?" (`helpTopics` in `scripts/lib/customer-service-page.mjs`) |
+| `/blog/offer/10-off-roof-replacement/`, `/blog/offer/1500-off-solar-project/` | `/offers/` | nothing: the offers were there in full |
+| `/blog/offer/find-out-about-our-no-interest-financial-options/` | `/financing/` (new) | |
+| `/blog/offer/our-installation-work-is-completed-by-certified-professionals/`, `/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/` | `/warranty/` (new) | the installation warranty's terms and the guarantee (the old guarantee post still offered repairs and named solar brands Panda doesn't install) |
+| the five "Roof Replacement (Project N)" pages (`/blog/project/panda-ext-11425/` …) | `/past-projects/` | nothing: they shared one text and five photos, all in the photo gallery |
+| 29 blog posts (see `MERGED_PAGES`) | the post on the same topic | the sections the kept post didn't cover, before its closing section (`custom/blog/merged-posts.json`, chosen by hand and copied as written, minus sales lines, dated wording and repair offers) |
+| `/blog/page/12/` … `/blog/page/16/` | `/blog/` | 64 posts fill 11 listing pages |
+
+The merged blog groups: winter roof replacement, repair or replace, signs you need a new roof, hiring a roofer,
+spring leaks, spring inspections, seasonal maintenance, ice dams, winter prep, the three-part "Your Reasons to Go
+Solar" series, the best season for solar, solar maintenance, gutters after winter, summer siding, insurance claim
+guides, and "Replacing a Roof in 2024" (into the replacement timeline). Posts that offer roof repairs keep their
+wording (as before).
+
+**New pages** (`scripts/lib/new-pages.mjs`; words in `custom/new-pages/pages.json`, styles in
+`custom/new-pages/new-pages.css`; `NEW_PAGES=0` leaves them out). Generated like the Media page, from a built page's
+header and footer, each with a hero beside the estimate form and its own title, description, canonical address and
+structured data (breadcrumbs, FAQ, and a `RoofingContractor` per office). Written only from what the site and its
+blog already say.
+
+- `/financing/`: Service Finance, LLC, delayed payments and no-interest loans, what can be financed, how it works,
+  other ways to save, questions.
+- `/warranty/`: the satisfaction guarantee, the installation warranty and its terms, and the manufacturers'
+  warranties (GAF and the Golden Pledge, siding).
+- `/storm-damage/`: what to do in the first 24 hours, what insurance usually covers (shared with Roofing Costs), how
+  Panda helps with the claim, questions, and every storm and insurance guide on the blog.
+- `/locations/<city-st>/`, one per office (`custom/site-fixes/contact-page.json`): the address, number, a map of the
+  state, the jobs completed there (`custom/us-map/areas.json`), the services and the other offices.
+
+The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), the footer's
+"Customer Service" became "Storm Damage", the service cards across the site link Storm Damage where Residential
+Roofing was, Contact Us links each office's page, and Service Areas shows the seven offices where it had the
+services row every other page has too (`serviceAreaOffices` in `scripts/lib/site-fixes.mjs`).
+
+**The Site Map is a page for visitors.** `/site-map/` is now a plain list of every page in groups; the full list
+described above (how to reach each page, redirects, sitemap-only addresses, source files) moved to `/site-audit/`, a
+site check linked from nowhere and kept out of search engines (`noindex`) and the XML sitemaps.
+
+**Tidy-ups**: `/services/` is titled "Our Services" (it said "Roofing Services"), and `/roofing/attic-insulation/`,
+the one page without an h1, has its hero headline as one.
+
+**Tools**: `scripts/lib/restructure.mjs` deletes removed pages still in a built `site/`, the files only they used,
+their sitemap entries and feed items, and writes their redirects with chains flattened (`/commerical-roofing/roof-types/`
+leads straight to `/commercial-roofing/`); `03-build.mjs` flattens chains the same way.
+
 ## What's in the repo
 
 ```
@@ -555,6 +622,10 @@ site/                    the website — deploy this folder
   _custom/blog/                       the blog's stylesheet and script (copied from custom/blog/)
   media/index.html                    the Media page (generated: scripts/lib/media-page.mjs)
   _custom/site-map/                   the Site Map's stylesheet and script (copied from custom/site-map/)
+  site-audit/index.html               the site check: the full list of pages and routes (generated, noindex)
+  financing/, warranty/, storm-damage/, locations/…  the pages added in the site restructure (generated:
+                                      scripts/lib/new-pages.mjs)
+  _custom/new-pages/                  their stylesheet (copied from custom/new-pages/)
   site-map/index.html                 the Site Map; its list of every page is generated (scripts/lib/site-map-page.mjs)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
@@ -587,6 +658,7 @@ custom/smooth-scroll/      smooth scrolling: Lenis (MIT licence), its stylesheet
 custom/media/              the Media page: podcast.json (the podcast's episodes), pictures, styles, script
 custom/blog/               the blog's design: blog.json (its topics and the listing pages' words), styles, script
 custom/site-map/           the Site Map's list of every page: styles, script (search and filters)
+custom/new-pages/          the pages added in the site restructure: pages.json (their words), styles
 ```
 
 ## View it locally

@@ -412,6 +412,37 @@ const inOwnCta = (n) => {
   for (let a = n.parentNode; a; a = a.parentNode) if (isOwn('data-pfix-post-cta')(a)) return true;
   return false;
 };
+// Posts merged into another one in the site restructure (MERGED_PAGES in config.mjs): the
+// sections of theirs that the kept post didn't cover are added to it, in one block before
+// its closing section (custom/blog/merged-posts.json, made once from the merged posts).
+let mergedData;
+export const mergedPosts = () => {
+  if (mergedData) return mergedData;
+  const file = path.join(BLOG_DIR, 'merged-posts.json');
+  mergedData = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')).posts || {} : {};
+  return mergedData;
+};
+const CLOSING = /^(final thoughts|conclusion|in conclusion|the bottom line|bottom line|key takeaways|wrapping up|the takeaway|takeaway|next steps|ready to|let panda|contact|call panda|schedule|get (a|your) free)/i;
+/** The block of carried-over sections for a kept post, its headings given ids not in `taken`. */
+function mergedBlock(slug, taken, { tag = 'h2' } = {}) {
+  const entries = mergedPosts()[slug];
+  if (!entries?.length) return null;
+  const heads = [];
+  const body = entries
+    .map((e) =>
+      e.html.replace(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g'), (m, inner) => {
+        const text = clean(inner.replace(/<[^>]+>/g, ''));
+        let id = slugify(text);
+        for (let i = 2; taken.has(id); i++) id = `${slugify(text)}-${i}`;
+        taken.add(id);
+        heads.push({ id, text: text.replace(/&amp;/g, '&') });
+        return `<${tag} id="${id}">${inner}</${tag}>`;
+      })
+    )
+    .join('');
+  return { html: `<div class="pfix-post-merged" data-pfix-post-merged>${body}</div>`, heads };
+}
+
 // The article's sections for "On this page": its h2s, or its h3s where it has fewer than
 // two h2s (several posts use h3 for their sections).
 function sectionHeadings(article) {
@@ -628,6 +659,26 @@ function collectBlogPost(doc, html, ed, { pathname, siteDir, siteOrigin }, chang
     toc.push({ id, text: clean(textOf(h)), node: h });
   }
 
+  // Sections carried over from posts merged into this one: before the closing section, or
+  // at the end (rendered again where an earlier run put them).
+  const mergedOld = find(article, isOwn('data-pfix-post-merged'));
+  const ownToc = toc.filter((t) => !mergedOld || !isInsideNode(t.node, mergedOld));
+  const level = ownToc[0]?.node.tagName || 'h2';
+  const merged = mergedBlock(slug, mergedOld ? new Set([...taken].filter((id) => !toc.some((t) => t.id === id && isInsideNode(t.node, mergedOld)))) : taken, { tag: level });
+  const closing = [...ownToc].reverse().find((t) => CLOSING.test(t.text));
+  if (mergedOld) ed.outer(mergedOld, merged ? merged.html : '');
+  else if (merged && closing) ed.replace(loc(closing.node).startOffset, loc(closing.node).startOffset, merged.html);
+  if (merged) {
+    // "On this page" lists them where they are.
+    const at = mergedOld ? -1 : closing ? toc.indexOf(closing) : toc.length;
+    const items = merged.heads.map((h) => ({ ...h, node: null }));
+    if (mergedOld) {
+      const first = toc.findIndex((t) => t.node && isInsideNode(t.node, mergedOld));
+      const count = toc.filter((t) => t.node && isInsideNode(t.node, mergedOld)).length;
+      toc.splice(first < 0 ? toc.length : first, count, ...items);
+    } else toc.splice(at, 0, ...items);
+  }
+
   // The summary under the title, unless the article opens with the same words.
   const firstPara = findAll(article, (c) => c.tagName === 'p' && clean(textOf(c)))[0];
   const norm = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 60);
@@ -650,9 +701,9 @@ function collectBlogPost(doc, html, ed, { pathname, siteDir, siteOrigin }, chang
 
   // Partway down (from four sections up): a call-and-estimate band before the middle section.
   const mid = find(article, (c) => attr(c, 'data-pfix-post-cta') === 'mid');
-  if (mid) ed.outer(mid, toc.length >= 4 ? postCta('mid', post, formHref) : '');
-  else if (toc.length >= 4) {
-    const before = toc[Math.floor(toc.length / 2)].node;
+  if (mid) ed.outer(mid, ownToc.length >= 4 ? postCta('mid', post, formHref) : '');
+  else if (ownToc.length >= 4) {
+    const before = ownToc[Math.floor(ownToc.length / 2)].node;
     ed.replace(loc(before).startOffset, loc(before).startOffset, postCta('mid', post, formHref));
   }
   // At the end: the band, in place of the "Call Now - Get a Free Estimate" picture.
@@ -664,11 +715,12 @@ function collectBlogPost(doc, html, ed, { pathname, siteDir, siteOrigin }, chang
       return n;
     })
     .filter(free);
-  if (end) ed.outer(end, postCta('end', post, formHref));
+  const mergedFirst = merged && !mergedOld && !closing ? merged.html : '';
+  if (end) ed.outer(end, mergedFirst + postCta('end', post, formHref));
   else if (banner.length) {
-    ed.outer(banner[banner.length - 1], postCta('end', post, formHref));
+    ed.outer(banner[banner.length - 1], mergedFirst + postCta('end', post, formHref));
     for (const b of banner.slice(0, -1)) ed.outer(b, '');
-  } else ed.append(article, postCta('end', post, formHref));
+  } else ed.append(article, mergedFirst + postCta('end', post, formHref));
 
   // After the article: its topic and share links; beside it, the sidebar.
   const foot = find(layout, isOwn('data-pfix-post-foot'));

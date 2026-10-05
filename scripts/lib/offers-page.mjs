@@ -90,7 +90,7 @@ function renderHero(page) {
   );
 }
 
-function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, after = '' } = {}) {
+function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, after = '', details = true } = {}) {
   const deal = (d) => {
     const [src, w, h, alt] = d.img;
     return (
@@ -105,7 +105,7 @@ function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, af
       (formId && (!pick || pick(d.project))
         ? `<a class="pfix-of-btn pfix-of-btn--primary" href="#${formId}" data-pfix-project="${esc(pick ? pick(d.project) : d.project)}">${esc(d.cta)}</a>`
         : `<a class="pfix-of-btn pfix-of-btn--primary" href="${esc(d.href)}">${esc(d.cta)}</a>`) +
-      `<a class="pfix-of-link" href="${esc(d.href)}">Offer details${ARROW}</a>` +
+      (details ? `<a class="pfix-of-link" href="${esc(d.href)}">Offer details${ARROW}</a>` : '') +
       `</div>` +
       `<p class="pfix-of-deal__fine">${esc(d.fine)}</p>` +
       `</div></article>`
@@ -151,7 +151,7 @@ const renderSteps = (s, cta) =>
 export function renderOffersPage({ siteDir } = {}) {
   const page = offersPage();
   const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
-  return `<div class="pfix-of" data-pfix-of>${renderOffers(page.offers, exists)}${renderPromises(page.promises)}${renderSteps(page.steps, page.cta)}</div>`;
+  return `<div class="pfix-of" data-pfix-of>${renderOffers(page.offers, exists, { details: false })}${renderPromises(page.promises)}${renderSteps(page.steps, page.cta)}</div>`;
 }
 
 /**

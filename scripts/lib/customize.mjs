@@ -30,6 +30,7 @@ import { PROJECTS_FILES } from './project-pages.mjs';
 import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-projects.mjs';
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
 import { BLOG_FILES } from './blog.mjs';
+import { relinkMerged } from './merged-pages.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -266,6 +267,14 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
     if (moved !== out) {
       changes.fixes.push(`page addresses: ${Object.entries(RENAMED_PATHS).map(([a, b]) => `${a} -> ${b}`).join(', ')}`);
       out = moved;
+    }
+  }
+  // Pages merged into another one (MERGED_PAGES): every link to them leads to that page.
+  if (fixes) {
+    const relinked = relinkMerged(out);
+    if (relinked !== out) {
+      changes.fixes.push('site restructure: links to merged pages -> the pages they were merged into');
+      out = relinked;
     }
   }
   return { html: out, changes };
