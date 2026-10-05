@@ -45,6 +45,9 @@ const FORM_ID = 'pfix-lead-1';
 const PROJECT_ALIASES = { Solar: ['Solar panels'] };
 // A page's own first choice for an offer's project (the GAF solar shingles page: its shingles).
 const PAGE_PROJECTS = { '/solar/gaf-solar-roof/': { Solar: 'GAF solar roof (solar shingles)' } };
+// Pages whose band is removed: /commercial-roofing/ (both offers are for homes: 10% off a
+// roof replacement "for your home", $1,500 off solar; there is no commercial offer).
+const NO_OFFERS_PATHS = ['/commercial-roofing/'];
 
 let data;
 const offersPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'offers-page.json'), 'utf8')));
@@ -164,11 +167,17 @@ export function renderOffersPage({ siteDir } = {}) {
  * page's coupon cards, with a line about financing and a link to all the offers. "Claim"
  * picks the offer in the page's estimate form, or opens the offer's page where the form
  * doesn't list it (or there is none). Rendered again on every run (found by data-pfix-offers-strip).
+ * On /commercial-roofing/ the band is removed instead (NO_OFFERS_PATHS).
  */
 export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes) {
   if (pathname === OFFERS_PATH) return false;
   const band = find(doc, (c) => attr(c, 'data-pfix-offers-strip') !== undefined) || find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Offers-Section'));
   if (!band || ed.overlaps(band.sourceCodeLocation.startOffset, band.sourceCodeLocation.endOffset)) return false;
+  if (NO_OFFERS_PATHS.includes(pathname)) {
+    ed.outer(band, '');
+    changes.push('offers band: removed (both offers are for homes)');
+    return false;
+  }
   const block = offersStripHtml(doc, { siteDir, pathname });
   const { startOffset, endOffset } = band.sourceCodeLocation;
   if (html.slice(startOffset, endOffset) === block) return true;
