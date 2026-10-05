@@ -12,7 +12,7 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 The copy contains what a visitor can reach by clicking through the site. As captured that was **172 pages** (39 main
 pages, 114 blog posts and listing pages, and the 19 project pages the site links to); after the
-[site restructure](#site-restructure) it is **124 pages** (39 main pages, among them 10 new ones and the site check;
+[site restructure](#site-restructure) it is **125 pages** (40 main pages, among them 11 new ones and the site check;
 64 blog posts with their 11 listing pages; and 10 project pages), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
@@ -140,7 +140,10 @@ Most of these problems are on the live site too.
   and "GAF Solar Roof", so nothing said the Solar page is about panels or that solar panels and GAF solar shingles are
   two different products. It now has **Solar Panels** ("Mounted on your existing roof") and **GAF Solar Shingles**
   ("The roof itself makes power") at every screen size, each with that line in smaller gray type under its label. The
-  `/services/` card and the `/solar/` card for the shingles page say "GAF Solar Shingles" too.
+  `/services/` card and the `/solar/` card for the shingles page say "GAF Solar Shingles" too. "Solar" itself (the
+  entry you hover to open the flyout) leads to the **Solar Options** page (`/solar-options/`, one of the
+  [new pages](#site-restructure)) rather than the solar panels page, and on phones, where tapping "Solar" opens the
+  flyout, the flyout starts with a "Solar Options" entry, as Roofing's starts with "Roofing".
 - **Lead forms** (138 pages): "Unable to load review count" (the count needs the WordPress API) is now a link to the
   Reviews page. That includes the second form on a page, in "About Our Team", which showed "Unable to load review
   count" or "Based on 0 reviews!".
@@ -607,11 +610,17 @@ blog already say.
   warranties (GAF and the Golden Pledge, siding).
 - `/storm-damage/`: what to do in the first 24 hours, what insurance usually covers (shared with Roofing Costs), how
   Panda helps with the claim, questions, and every storm and insurance guide on the blog.
+- `/solar-options/`: the two ways to go solar side by side. Solar panels and GAF solar shingles each get a photo
+  card (what it is, four points, who it suits and a button to its own page), then a comparison table (installation,
+  look, the roof deck, upfront cost, power, warranty, best for; on phones each row stacks), how going solar with
+  Panda works, why Panda, questions and the blog's solar guides. Its estimate form is the solar one. The words are
+  from the two solar pages and the blog's "Solar Shingles vs. Traditional Solar Panels".
 - `/locations/<city-st>/`, one per office (`custom/site-fixes/contact-page.json`): the address, number, a map of the
   state, the jobs completed there (`custom/us-map/areas.json`), the services and the other offices.
 
-The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), the footer's
-"Customer Service" became "Storm Damage", the service cards across the site link Storm Damage where Residential
+The header menu lists Storm Damage (under Roofing) and Financing and Warranty (under About), and Services ▸ Solar
+leads to Solar Options; the footer's "Customer Service" became "Storm Damage" and its "Solar" leads to Solar Options
+too, the service cards across the site link Storm Damage where Residential
 Roofing was, Contact Us links each office's page, and Service Areas shows the seven offices where it had the
 services row every other page has too (`serviceAreaOffices` in `scripts/lib/site-fixes.mjs`).
 

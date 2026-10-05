@@ -8,7 +8,8 @@
 //    (Commercial) becomes a plain entry. The new pages join it: Storm Damage under Roofing,
 //    Financing and Warranty under About.
 //  - Footer: "Customer Service" (merged into Contact Us, which the footer already lists)
-//    becomes "Storm Damage"; "Warranty" and "Financing" lead to their new pages.
+//    becomes "Storm Damage"; "Warranty" and "Financing" lead to their new pages; "Solar" leads
+//    to the Solar Options page (both products) rather than the solar panels page.
 //
 // Applied by site-fixes.mjs on every page; each step checks what is already there, so it
 // gives the same result on a page that already has it.
@@ -30,7 +31,10 @@ const NAV_ADD = [
   ],
 ];
 // Footer links whose label and address change: [label as captured, new label, new address].
-const FOOTER_SWAP = [['Customer Service', 'Storm Damage', '/storm-damage/']];
+const FOOTER_SWAP = [
+  ['Customer Service', 'Storm Damage', '/storm-damage/'],
+  ['Solar', 'Solar', '/solar-options/'],
+];
 
 const host = new URL(SITE_ORIGIN).hostname.replace(/^www\./, '');
 const sitePath = (href) => {
@@ -108,7 +112,7 @@ export function collectMergedNav(doc, html, ed, changes) {
       added += missing.length;
     }
   }
-  let swapped = 0;
+  const swaps = new Set();
   if (footer) {
     for (const a of findAll(footer, (c) => c.tagName === 'a')) {
       const label = clean(textOf(a));
@@ -116,12 +120,12 @@ export function collectMergedNav(doc, html, ed, changes) {
       if (!swap) continue;
       ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: swap[2] } : x)));
       ed.inner(a, `\n${esc(swap[1])}\n`);
-      swapped++;
+      swaps.add(swap);
     }
   }
   if (removed) changes.push(`site restructure: ${removed} header menu entr${removed === 1 ? 'y' : 'ies'} of merged pages removed`);
   if (flattened) changes.push(`site restructure: ${flattened} emptied dropdown(s) -> plain menu entries`);
   if (added) changes.push(`site restructure: ${added} new page(s) added to the header menu`);
-  if (swapped) changes.push(`site restructure: footer "Customer Service" -> "Storm Damage"`);
-  return removed + flattened + added + swapped > 0;
+  for (const [from, label, href] of swaps) changes.push(`site restructure: footer "${from}" -> "${label}" (${href})`);
+  return removed + flattened + added + swaps.size > 0;
 }

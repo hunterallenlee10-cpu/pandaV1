@@ -6,6 +6,8 @@
 //  - /storm-damage/: storm damage and insurance claims, the service the site's many insurance
 //    posts are about (the first 24 hours, what insurance usually covers, how Panda helps with
 //    the claim, questions, and every guide);
+//  - /solar-options/: the two ways to go solar, solar panels and GAF solar shingles, side by
+//    side (the header menu's "Solar" entry and the footer's "Solar" link lead here);
 //  - /locations/<office>/: one page per office (the seven on /contact-us/), with its address,
 //    phone, a map of its state, its jobs there (the US map's numbers), the services and the
 //    other offices.
@@ -18,8 +20,8 @@
 // custom/us-map/areas.json); the stylesheet is custom/new-pages/new-pages.css.
 //
 // buildNewPages writes them (03-build.mjs, scripts/tools/update-built-site.mjs); NEW_PAGES
-// lists their addresses (the sitemap gets them, the header menu and footer link three of
-// them: merged-pages.mjs). NEW_PAGES=0 leaves them out.
+// lists their addresses (the sitemap gets them, the header menu and footer link four of
+// them: merged-pages.mjs and site-fixes.mjs). NEW_PAGES=0 leaves them out.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
@@ -194,7 +196,38 @@ const cta = (c, phone = PHONE) =>
   `<a class="pnp-btn pnp-btn--outline" href="${esc(phone.href)}">${ICONS.phone}Call ${esc(phone.text)}</a></div>` +
   `</div></div></section>`;
 
-const RENDER = { cards, split, steps, covered, claimSteps, note, links, faq };
+// Products side by side (/solar-options/): each a photo with its one-line tag, what it is, a
+// checklist, who it suits and a button to its own page. Each has an id, for the hero's chips.
+function showcase(s, exists) {
+  const id = `pnp-h-${++uid}`;
+  const item = (o) =>
+    `<div class="pnp-option" id="${esc(o.id)}" role="listitem">` +
+    `<div class="pnp-option__media">${picture(o.img, o.alt, exists)}<span class="pnp-option__tag">${ICONS[o.icon] || ICONS.check}${esc(o.tag)}</span></div>` +
+    `<div class="pnp-option__body"><h3 class="pnp-option__name">${esc(o.name)}</h3><p class="pnp-option__text">${esc(o.text)}</p>` +
+    `<div class="pnp-list" role="list">${o.points.map((x) => `<div role="listitem">${ICONS.check}<span>${esc(x)}</span></div>`).join('')}</div>` +
+    (o.best ? `<p class="pnp-option__best"><b>Best for:</b> ${esc(o.best)}</p>` : '') +
+    `<a class="pnp-btn pnp-btn--primary pnp-option__btn" href="${esc(o.link[1])}">${esc(o.link[0])}${ARROW}</a>` +
+    `</div></div>`;
+  return section('showcase', head(s.eyebrow, s.title, s.intro, id) + `<div class="pnp-options" role="list">${s.items.map(item).join('')}</div>`, { id: s.id, label: id });
+}
+// A comparison table: a column per product, a row per question ([label, one cell per column]).
+// On phones each row stacks, its cells labelled with their column.
+function compare(s) {
+  const id = `pnp-h-${++uid}`;
+  const cols = s.columns.map(([icon, name]) => `<th scope="col"><span class="pnp-compare__col">${ICONS[icon] || ICONS.check}${esc(name)}</span></th>`).join('');
+  const rows = s.rows
+    .map(([label, ...cells]) => `<tr><th scope="row">${esc(label)}</th>${cells.map((c, i) => `<td data-label="${esc(s.columns[i][1])}">${esc(c)}</td>`).join('')}</tr>`)
+    .join('');
+  return section(
+    'compare',
+    head(s.eyebrow, s.title, s.intro, id) +
+      `<div class="pnp-compare"><table class="pnp-compare__table" aria-labelledby="${id}"><thead><tr><td></td>${cols}</tr></thead><tbody>${rows}</tbody></table></div>` +
+      (s.note ? `<p class="pnp-compare__note">${ICONS.info}<span>${esc(s.note)}</span></p>` : ''),
+    { id: s.id, label: id }
+  );
+}
+
+const RENDER = { cards, split, steps, covered, claimSteps, note, links, faq, showcase, compare };
 
 function hero(h, form, pathname, exists, { aside = '', side = '' } = {}) {
   const f = serviceForm(pathname);
@@ -239,7 +272,7 @@ function contentPage(pathname, page, siteDir) {
 const SERVICES = [
   ['roof', 'Roof replacement', '/roofing/replacement/'],
   ['umbrella', 'Storm damage', '/storm-damage/'],
-  ['solar', 'Solar', '/solar/'],
+  ['solar', 'Solar', '/solar-options/'],
   ['building', 'Commercial roofing', '/commercial-roofing/'],
   ['siding', 'Siding', '/siding/'],
   ['gutter', 'Gutters and gutter guards', '/gutters/'],
