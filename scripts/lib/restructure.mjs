@@ -185,7 +185,9 @@ export function writeRedirectFiles(siteDir, { dryRun = false } = {}) {
   const add = REMOVED_PAGES.filter((p) => p.endsWith('/') && !have.has(p))
     .sort()
     .map((p) => ({ from: p, to: removedPageTarget(p), status: 301 }));
-  const all = flattenRedirects([...rows, ...add]);
+  // A redirect whose address has a page again (a merged page brought back) goes.
+  const hasPage = (from) => from.endsWith('/') && fs.existsSync(path.join(siteDir, from, 'index.html'));
+  const all = flattenRedirects([...rows.filter((r) => !hasPage(r.from)), ...add]);
   const ruleText = (r) => `${r.from}  ${r.to}  ${r.status}`;
   const firstRule = lines.findIndex(isRule);
   const rest = lines.filter((l) => !isRule(l));

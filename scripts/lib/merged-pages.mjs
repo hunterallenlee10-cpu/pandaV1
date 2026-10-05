@@ -4,8 +4,7 @@
 //  - Links: every link to a merged page leads to the page it was merged into (relinkMerged,
 //    run by customize.mjs on the finished page, so it also covers what the fixes wrote).
 //  - Header menu: the entries of merged pages go (Residential Roofing, Commercial's Roof
-//    Types and Roof Replacement, Solar Panel Installation, Customer Service, Podcast,
-//    Gallery), so no menu lists the same page twice; a dropdown left with nothing in it
+//    Types and Roof Replacement, Solar Panel Installation, Customer Service, Gallery), so no menu lists the same page twice; a dropdown left with nothing in it
 //    (Commercial) becomes a plain entry. The new pages join it: Storm Damage under Roofing,
 //    Financing and Warranty under About.
 //  - Footer: "Customer Service" (merged into Contact Us, which the footer already lists)
@@ -19,6 +18,9 @@ import { attr, hasClass, esc, find, findAll, textOf, clean } from './html-edit.m
 // New header menu entries: [after this link, the entries to add], in order.
 const NAV_ADD = [
   ['/roofing/replacement/', [{ href: '/storm-damage/', label: 'Storm Damage' }]],
+  // The Podcast page stays (it was merged into Media, then brought back on request); a page
+  // the earlier merge took it out of gets its entry back, under Media after Blog.
+  ['/blog/', [{ href: '/podcast/', label: 'Podcast' }]],
   [
     '/roofing-costs/',
     [

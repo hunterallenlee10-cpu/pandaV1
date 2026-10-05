@@ -12,7 +12,7 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 The copy contains what a visitor can reach by clicking through the site. As captured that was **172 pages** (39 main
 pages, 114 blog posts and listing pages, and the 19 project pages the site links to); after the
-[site restructure](#site-restructure) it is **123 pages** (38 main pages, among them 10 new ones and the site check;
+[site restructure](#site-restructure) it is **124 pages** (39 main pages, among them 10 new ones and the site check;
 64 blog posts with their 11 listing pages; and 10 project pages), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
@@ -556,7 +556,6 @@ left with no entries under it, becomes a plain entry); the Site Map's check list
 | `/roofing/residential/` | `/roofing/replacement/` | Panda only replaces roofs, so it was the same page again: "What Comes With Your New Roof", "How Your Roof Replacement Works" and questions (`custom/site-fixes/service-pages.json`) |
 | `/commercial-roofing/roof-types/`, `/commercial-roofing/roof-replacement/` | `/commercial-roofing/` | "Commercial Roof Systems We Install" (TPO, EPDM, Mod Bit, PVC), "Commercial Roof Replacements", questions; its two service cards lead to those sections |
 | `/solar/solar-panel-installations/` | `/solar/` | "Benefits of Solar Panels for Your Home" and questions |
-| `/podcast/` | `/media/` | nothing to move: Media already had the player, every episode and the ways to watch (the Media page is now built on the FAQs page's header and footer) |
 | `/gallery/` | `/past-projects/` | the work photos, as a photo gallery under the project list (`custom/site-fixes/photo-gallery.json`); the community photos were already on Charity & Community's photo wall |
 | `/customer-service/` | `/contact-us/` | its help topics, as "Already a customer?" (`helpTopics` in `scripts/lib/customer-service-page.mjs`) |
 | `/blog/offer/10-off-roof-replacement/`, `/blog/offer/1500-off-solar-project/` | `/offers/` | nothing: the offers were there in full |
@@ -565,6 +564,9 @@ left with no entries under it, becomes a plain entry); the Site Map's check list
 | the five "Roof Replacement (Project N)" pages (`/blog/project/panda-ext-11425/` …) | `/past-projects/` | nothing: they shared one text and five photos, all in the photo gallery |
 | 29 blog posts (see `MERGED_PAGES`) | the post on the same topic | the sections the kept post didn't cover, before its closing section (`custom/blog/merged-posts.json`, chosen by hand and copied as written, minus sales lines, dated wording and repair offers) |
 | `/blog/page/12/` … `/blog/page/16/` | `/blog/` | 64 posts fill 11 listing pages |
+
+`/podcast/` was merged into `/media/` too, then brought back on request: it is a page again, under Media in the header
+menu (after Blog), and its old redirect is gone (`writeRedirectFiles` drops a redirect whose address has a page again).
 
 The merged blog groups: winter roof replacement, repair or replace, signs you need a new roof, hiring a roofer,
 spring leaks, spring inspections, seasonal maintenance, ice dams, winter prep, the three-part "Your Reasons to Go
