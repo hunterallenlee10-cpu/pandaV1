@@ -170,6 +170,7 @@
 //    the service pages each belongs to and every project listed on /past-projects/
 //    (project-pages.mjs, custom/projects/).
 //  - Typos in headings and labels.
+import { collectMergedNav } from './merged-pages.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, renamedPath } from './config.mjs';
@@ -260,11 +261,11 @@ const SA_MAP_ID = 'service-map';
 const SERVICE_CARDS = [
   { group: 'Roofing', title: 'Roof Replacement', href: '/roofing/replacement/', img: ['/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg', 768, 432],
     text: 'GAF Master Elite certified crews replace worn-out roofs quickly and stand behind the work.' },
-  { group: 'Roofing', title: 'Residential Roofing', href: '/roofing/residential/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
-    text: 'A new roof for your home in the style you want, from an A-rated, GAF Master Elite roofer.' },
+  { group: 'Roofing', title: 'Storm Damage', href: '/storm-damage/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+    text: 'A free storm-damage inspection, and help with your insurance claim from start to finish.' },
   { group: 'Roofing', title: 'Attic Insulation', href: '/roofing/attic-insulation/', img: ['/wp-content/uploads/2025/04/Attic-Insulation.jpg', 1200, 799],
     text: 'Environmentally friendly insulation that keeps your home comfortable all year.' },
-  { group: 'Solar', title: 'Solar Panels', href: '/solar/solar-panel-installations/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+  { group: 'Solar', title: 'Solar Panels', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
     text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
   { group: 'Solar', title: 'GAF Solar Roof', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
@@ -280,17 +281,17 @@ const SERVICE_CARDS = [
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
   text: 'Asphalt shingles, metal and flat roofs, in the colors and styles that suit your home.' };
-const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/roofing/residential/', '/roofing/attic-insulation/', '/commercial-roofing/'].map(
+const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/storm-damage/', '/roofing/attic-insulation/', '/commercial-roofing/'].map(
   (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)
 );
 // Service card grids: the photo for each card, by the page it links to (the same photos as
 // the rows above where there is one).
 const photoFor = (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)?.img;
 const GRID_PHOTOS = {
-  '/roofing/': photoFor('/roofing/residential/'),
+  '/roofing/': photoFor('/storm-damage/'),
   '/commercial-roofing/': photoFor('/commercial-roofing/'),
-  '/solar/': photoFor('/solar/solar-panel-installations/'),
-  '/solar/solar-panel-installations/': photoFor('/solar/solar-panel-installations/'),
+  '/solar/': photoFor('/solar/'),
+  '/solar/solar-panel-installations/': photoFor('/solar/'),
   '/solar/gaf-solar-roof/': photoFor('/solar/gaf-solar-roof/'),
   '/siding/': photoFor('/siding/'),
   '/gutters/': photoFor('/gutters/'),
@@ -682,6 +683,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // its hidden copy, the share buttons and "Related Posts" it replaces be.
   if (collectBlogPages(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.blog = true;
 
+  // The site restructure: menu entries of merged pages out, the new pages in (merged-pages.mjs).
+  collectMergedNav(doc, html, ed, changes);
+
   // Top bar: weather readout -> free-estimate phone number; no more location prompt.
   const ribbon = find(doc, (c) => hasClass(c, 'xai-weather-ribbon'));
   const readout = ribbon && find(ribbon, (c) => hasClass(c, 'weather-data'));
@@ -789,6 +793,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (renderPastProjects(doc, html, ed, { pathname, siteDir }, changes)) {
     used.pastProjects = true;
     used.projects = true;
+    if (pathname === '/past-projects/') used.gallery = true;
   }
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for

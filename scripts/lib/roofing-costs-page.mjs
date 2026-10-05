@@ -29,7 +29,7 @@ const FORM_ID = 'pfix-lead-1';
 // Where the hero's chips lead.
 export const COST_ANCHOR = 'roof-cost';
 export const INSURANCE_ANCHOR = 'insurance-claims';
-const FINANCING = '/blog/offer/find-out-about-our-no-interest-financial-options/';
+const FINANCING = '/financing/';
 // The intro called the company by a name it doesn't use.
 const NAME_FIX = ['Panda Contractors', 'Panda Exteriors'];
 

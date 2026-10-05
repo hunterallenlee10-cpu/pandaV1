@@ -33,7 +33,7 @@ const SIZES = '(min-width: 1320px) 420px, (min-width: 1024px) 33vw, (min-width: 
 const fileOf = (src) => (src && !src.startsWith('data:') ? src : '');
 
 // The gallery as delivered (or as a rendered snapshot left it): tabs + photos.
-function readBreakdance(gallery) {
+export function readBreakdance(gallery) {
   const categories = [];
   for (const tab of findAll(gallery, (c) => hasClass(c, 'js-tab') && attr(c, 'data-value'))) {
     const title = find(tab, (c) => hasClass(c, 'bde-tabs__tab-title'));
@@ -142,8 +142,13 @@ export function collectProjectGalleries(doc, ed, changes = [], { selected = '' }
   let count = 0;
   // The slider version only: /gallery/ shows the same photos as a full grid (.ee-gallery--grid).
   const isSlider = (c) => hasClass(c, 'Project-swipper') && find(c, (x) => hasClass(x, 'bde-gallery')) && find(c, (x) => hasClass(x, 'ee-gallery--slider'));
+  // (The photo gallery inside /past-projects/' showcase is rendered with it: past-projects.mjs.)
+  const inShowcase = (n) => {
+    for (let p = n.parentNode; p; p = p.parentNode) if (hasClass(p, 'ppx')) return true;
+    return false;
+  };
   for (const box of findAll(doc, (c) => hasClass(c, 'ppg') || isSlider(c))) {
-    if (ed.overlaps(...range(box))) continue;
+    if (ed.overlaps(...range(box)) || inShowcase(box)) continue;
     const own = hasClass(box, 'ppg');
     const gallery = own ? box : find(box, (x) => hasClass(x, 'bde-gallery'));
     const data = own ? readOwn(gallery) : readBreakdance(gallery);

@@ -138,7 +138,7 @@ const HEROES = {
     chips: [
       ['roof', 'What affects cost', '#roof-cost', 'Size, material, decking and code'],
       ['guard', 'Insurance claims', '#insurance-claims', 'Storm damage may be covered'],
-      ['card', 'Financing', '/blog/offer/find-out-about-our-no-interest-financial-options/', 'Delayed payments, no-interest loans'],
+      ['card', 'Financing', '/financing/', 'Delayed payments, no-interest loans'],
     ],
     note: 'chips for what affects the cost, insurance claims and financing and estimate and call buttons, over a WebP copy of the photo',
   },
@@ -153,7 +153,7 @@ const HEROES = {
     chips: [
       ['swap', 'Roof replacement', '/roofing/replacement/', 'Installed in as little as one day'],
       ['layers', 'Roof types', '/roofing/types/', 'Asphalt shingles, metal and flat roofs'],
-      ['roof', 'Residential roofing', '/roofing/residential/', 'The style you want, from an A-rated roofer'],
+      ['roof', 'Storm damage', '/storm-damage/', 'Free inspection and insurance claim help'],
       ['thermo', 'Attic insulation', '/roofing/attic-insulation/', 'Keeps your home comfortable all year'],
     ],
     note: 'chips for the four roofing pages and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',

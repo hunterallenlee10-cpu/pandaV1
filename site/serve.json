@@ -1,23 +1,23 @@
 {
   "redirects": [
     {
-      "source": "/affirm-payment",
-      "destination": "/",
-      "type": 301
-    },
-    {
       "source": "/commerical-roofing",
       "destination": "/commercial-roofing/",
       "type": 301
     },
     {
       "source": "/commerical-roofing/roof-replacement",
-      "destination": "/commercial-roofing/roof-replacement/",
+      "destination": "/commercial-roofing/",
       "type": 301
     },
     {
       "source": "/commerical-roofing/roof-types",
-      "destination": "/commercial-roofing/roof-types/",
+      "destination": "/commercial-roofing/",
+      "type": 301
+    },
+    {
+      "source": "/affirm-payment",
+      "destination": "/",
       "type": 301
     },
     {
@@ -73,6 +73,66 @@
     {
       "source": "/thank-you",
       "destination": "/",
+      "type": 301
+    },
+    {
+      "source": "/blog/offer/10-off-roof-replacement",
+      "destination": "/offers/",
+      "type": 301
+    },
+    {
+      "source": "/blog/offer/1500-off-solar-project",
+      "destination": "/offers/",
+      "type": 301
+    },
+    {
+      "source": "/blog/offer/find-out-about-our-no-interest-financial-options",
+      "destination": "/financing/",
+      "type": 301
+    },
+    {
+      "source": "/blog/offer/our-installation-work-is-completed-by-certified-professionals",
+      "destination": "/warranty/",
+      "type": 301
+    },
+    {
+      "source": "/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee",
+      "destination": "/warranty/",
+      "type": 301
+    },
+    {
+      "source": "/commercial-roofing/roof-replacement",
+      "destination": "/commercial-roofing/",
+      "type": 301
+    },
+    {
+      "source": "/commercial-roofing/roof-types",
+      "destination": "/commercial-roofing/",
+      "type": 301
+    },
+    {
+      "source": "/customer-service",
+      "destination": "/contact-us/",
+      "type": 301
+    },
+    {
+      "source": "/gallery",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/podcast",
+      "destination": "/media/",
+      "type": 301
+    },
+    {
+      "source": "/roofing/residential",
+      "destination": "/roofing/replacement/",
+      "type": 301
+    },
+    {
+      "source": "/solar/solar-panel-installations",
+      "destination": "/solar/",
       "type": 301
     }
   ],

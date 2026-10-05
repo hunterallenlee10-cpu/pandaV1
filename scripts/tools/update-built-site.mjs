@@ -26,7 +26,8 @@ import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
-import { listFiles, args, writeFile } from '../lib/util.mjs';
+import { removeBuiltPages, pruneUnusedFiles, editSitemaps, writeRedirectFiles } from '../lib/restructure.mjs';
+import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
 const SITE = PATHS.site;
@@ -41,6 +42,11 @@ function pageUrl(file) {
   if (rel === '404.html') return notFoundUrl;
   return `${SITE_ORIGIN}/${rel.replace(/(^|\/)index\.html$/, '$1')}`;
 }
+
+// Pages removed on request or merged into another (REMOVED_PAGES) that are still here: their
+// HTML goes now; the files only they used go once the other pages are updated (below).
+const removedPages = only ? { removed: [], used: new Set() } : removeBuiltPages(SITE, { dryRun });
+for (const p of removedPages.removed) console.log(`${dryRun ? 'would remove' : 'removed'} ${p} (REMOVED_PAGES)`);
 
 // The Media page is rebuilt below, from the other pages.
 const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');
@@ -136,6 +142,16 @@ if (mediaUsed) {
     if (!dryRun) fs.rmSync(f);
     console.log(`${dryRun ? 'would remove' : 'removed'} ${path.relative(ROOT, f)}`);
   }
+}
+
+// The files only the removed pages used, their sitemap entries, and their redirects.
+if (!only) {
+  const pruned = pruneUnusedFiles(SITE, removedPages.used, { dryRun });
+  if (pruned.files.length) console.log(`${dryRun ? 'would remove' : 'removed'} ${pruned.files.length} file(s) only removed pages used (${fmtBytes(pruned.bytes)})`);
+  const sitemaps = editSitemaps(SITE, SITE_ORIGIN, [], { dryRun });
+  if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
+  const redirectFiles = writeRedirectFiles(SITE, { dryRun });
+  if (redirectFiles.changed.length) console.log(`${dryRun ? 'would update' : 'updated'} ${redirectFiles.changed.join(', ')} (${redirectFiles.added} new redirect(s))`);
 }
 
 console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0)} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);

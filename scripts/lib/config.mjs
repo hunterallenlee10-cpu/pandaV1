@@ -243,10 +243,42 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // their sitemap entries and the files only they used are left out, and their address
 // redirects to the page in REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs).
 // REMOVE_PAGES='' keeps them.
-export const REMOVED_PAGES = (process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
-  .split(',')
-  .map((p) => p.trim())
-  .filter(Boolean);
+// Pages merged into another page in the site restructure (old -> new): what was useful on
+// them now lives on the page they lead to (see README, "Site restructure"). They are removed
+// pages like the ones above, except that every link to them stays and leads to the page they
+// were merged into (customize.mjs rewrites the links, merged-pages.mjs tidies the menus), and
+// the Site Map lists their old address as a redirect. MERGE_PAGES=0 keeps them.
+export const MERGED_PAGES =
+  (process.env.MERGE_PAGES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1'
+    ? {
+        // Panda only replaces roofs, so "residential roofing" was the roof replacement page again.
+        '/roofing/residential/': '/roofing/replacement/',
+        // Three thin commercial pages with the same materials and projects -> one.
+        '/commercial-roofing/roof-types/': '/commercial-roofing/',
+        '/commercial-roofing/roof-replacement/': '/commercial-roofing/',
+        '/solar/solar-panel-installations/': '/solar/',
+        // The Media page already has the podcast's player, episodes and ways to watch.
+        '/podcast/': '/media/',
+        '/gallery/': '/past-projects/',
+        '/customer-service/': '/contact-us/',
+        // The two offers are on /offers/ in full; financing and the warranties get real pages.
+        '/blog/offer/10-off-roof-replacement/': '/offers/',
+        '/blog/offer/1500-off-solar-project/': '/offers/',
+        '/blog/offer/find-out-about-our-no-interest-financial-options/': '/financing/',
+        '/blog/offer/our-installation-work-is-completed-by-certified-professionals/': '/warranty/',
+        '/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/': '/warranty/',
+      }
+    : {};
+export const isMergedPage = (pathname) => Object.keys(MERGED_PAGES).some((p) => pathname === p || pathname === p.replace(/\/+$/, ''));
+export const mergedTarget = (pathname) => MERGED_PAGES[pathname] || MERGED_PAGES[pathname + '/'] || null;
+
+export const REMOVED_PAGES = [
+  ...(process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
+    .split(',')
+    .map((p) => p.trim())
+    .filter(Boolean),
+  ...Object.keys(MERGED_PAGES),
+];
 export const isRemovedPage = (pathname) => REMOVED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 // Where a removed page's address leads: the closest page that is still on the site.
 export const REMOVED_PAGE_TARGETS = {
@@ -258,11 +290,12 @@ export const REMOVED_PAGE_TARGETS = {
   '/blog/project/sbs-siding/': '/past-projects/',
   '/commercial-capabilities/': '/commercial-roofing/',
   '/referral/': '/referrals/',
+  ...MERGED_PAGES,
 };
 // Removed pages whose links stay, pointed at their REMOVED_PAGE_TARGETS page instead of
 // being taken out: the "Refer & Earn" menu link and the careers page's "Refer a Friend"
 // led to /referral/ and now lead to /referrals/.
-const RELINKED_PAGES = REMOVED_PAGES.filter((p) => ['/referral/'].includes(p));
+const RELINKED_PAGES = REMOVED_PAGES.filter((p) => ['/referral/', ...Object.keys(MERGED_PAGES)].includes(p));
 export const isRelinkedPage = (pathname) => RELINKED_PAGES.some((p) => pathname.startsWith(p) || pathname === p.replace(/\/+$/, ''));
 
 // Pages moved to a corrected address (path prefixes, old -> new). The live site spells the

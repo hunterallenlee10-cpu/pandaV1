@@ -22,6 +22,7 @@ import path from 'node:path';
 import { geoAlbersUsa } from 'd3-geo';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, rawText } from './html-edit.mjs';
+import { helpTopics } from './customer-service-page.mjs';
 
 export const CONTACT_PATH = '/contact-us/';
 
@@ -170,7 +171,12 @@ function ctaSection() {
   );
 }
 
-const pageHtml = () => `<div class="pfix-ct">${hero()}${officesSection()}${ctaSection()}</div>`;
+// "Already a customer?": the Customer Service page's help topics (warranty, guarantee,
+// financing, reviews, referrals, FAQs), merged into this page (MERGED_PAGES in config.mjs).
+const customerSection = () =>
+  `<div class="pfix-cs pfix-ct-help">${helpTopics({ eyebrow: 'Customer service', title: 'Already a customer?', intro: 'Your warranty, financing, reviews and referrals: everything you need after the job, in one place.', id: 'customer-service' })}</div>`;
+
+const pageHtml = () => `<div class="pfix-ct">${hero()}${officesSection()}${customerSection()}${ctaSection()}</div>`;
 
 /**
  * /contact-us/: the hero, office cards and contact band (as captured, or this page as an

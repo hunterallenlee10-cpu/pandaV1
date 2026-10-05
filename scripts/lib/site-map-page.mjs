@@ -7,7 +7,8 @@
 // with the pages whose content links to it, whether the XML sitemaps list it, and the file
 // it is built from. Below the pages: the old addresses that redirect (site/_redirects) and
 // the addresses the XML sitemaps list that have no page in the copy. Pages removed on request
-// (REMOVED_PAGES) appear nowhere on it, not even as an old address.
+// (REMOVED_PAGES) appear nowhere on it, not even as an old address; pages merged into
+// another (MERGED_PAGES) are listed as old addresses that redirect.
 //
 // The page keeps its header, footer and "Site Map" heading; only the list under the heading
 // (the .site-rich block) is replaced. The links of the Site Map page itself are not counted.
@@ -19,7 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
-import { ROOT, isSiteUrl, REMOVED_PAGES, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE } from './config.mjs';
+import { ROOT, isSiteUrl, REMOVED_PAGES, RENAMED_PATHS, SITEMAP_ONLY_EXCLUDE, isMergedPage } from './config.mjs';
 import { attr, hasClass, classes, esc, textOf, clean, findAll, find, textNodes, makeEditor, headEndOffset } from './html-edit.mjs';
 import { listFiles } from './util.mjs';
 
@@ -156,7 +157,7 @@ function sitemapEntries(siteDir, siteOrigin) {
 function redirects(siteDir) {
   const file = path.join(siteDir, '_redirects');
   if (!fs.existsSync(file)) return [];
-  const removed = (p) => REMOVED_PAGES.some((x) => p === x || p.startsWith(x));
+  const removed = (p) => !isMergedPage(p) && REMOVED_PAGES.some((x) => p === x || p.startsWith(x));
   const renamed = (p) => Object.keys(RENAMED_PATHS).some((x) => p === x || p.startsWith(x));
   return fs
     .readFileSync(file, 'utf8')
@@ -169,7 +170,9 @@ function redirects(siteDir) {
       from,
       to,
       status,
-      why: renamed(from)
+      why: isMergedPage(from)
+        ? 'Merged into this page in the site restructure.'
+        : renamed(from)
           ? 'Old misspelled address; the page now lives at the corrected one.'
           : 'Redirect the live site had; kept so old links still work.',
     }));

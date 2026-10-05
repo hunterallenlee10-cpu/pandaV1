@@ -2,8 +2,8 @@
 # observed while capturing the live site (see docs/redirects.csv for every hop, including ones that
 # a static host does not need, like http->https or trailing-slash redirects).
 /commerical-roofing/  /commercial-roofing/  301
-/commerical-roofing/roof-replacement/  /commercial-roofing/roof-replacement/  301
-/commerical-roofing/roof-types/  /commercial-roofing/roof-types/  301
+/commerical-roofing/roof-replacement/  /commercial-roofing/  301
+/commerical-roofing/roof-types/  /commercial-roofing/  301
 /affirm-payment/  /  301
 /blog/project/bylt-restoration/  /past-projects/  301
 /blog/project/enterprise-rent-a-car/  /past-projects/  301
@@ -16,4 +16,16 @@
 /referral/  /referrals/  301
 /roofing/repairs/  /roofing/replacement/  301
 /thank-you/  /  301
+/blog/offer/10-off-roof-replacement/  /offers/  301
+/blog/offer/1500-off-solar-project/  /offers/  301
+/blog/offer/find-out-about-our-no-interest-financial-options/  /financing/  301
+/blog/offer/our-installation-work-is-completed-by-certified-professionals/  /warranty/  301
+/blog/offer/professional-remodels-backed-by-a-100-satisfaction-guarantee/  /warranty/  301
+/commercial-roofing/roof-replacement/  /commercial-roofing/  301
+/commercial-roofing/roof-types/  /commercial-roofing/  301
+/customer-service/  /contact-us/  301
+/gallery/  /past-projects/  301
+/podcast/  /media/  301
+/roofing/residential/  /roofing/replacement/  301
+/solar/solar-panel-installations/  /solar/  301
 /feed/  /feed/index.xml  200
