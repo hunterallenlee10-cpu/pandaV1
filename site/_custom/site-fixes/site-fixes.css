@@ -9053,3 +9053,158 @@ a.bde-social-share-button:hover {
   font-weight: 500;
   text-shadow: none !important;
 }
+
+/* /contact-us/: each office card's link to the office's own page (new-pages.mjs). */
+.pfix-ct a.pfix-ct-office__page {
+  display: inline-block;
+  margin-top: 14px;
+  color: #c2410c;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-ct a.pfix-ct-office__page:hover {
+  color: #f26924;
+  text-decoration: underline;
+}
+
+/* /service-areas/ "Seven Local Offices, One Team" (site-fixes.mjs, serviceAreaOffices): a
+   card per office with its state's map, linking to the office's page. */
+.pfix-sa-offices {
+  padding: clamp(56px, 7vw, 96px) 0;
+  background: #f5f7ef;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+}
+.pfix-sa-offices *,
+.pfix-sa-offices *::before,
+.pfix-sa-offices *::after {
+  box-sizing: border-box;
+}
+.pfix-sa-offices p,
+.pfix-sa-offices h2 {
+  margin: 0;
+}
+.pfix-sa-offices__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.pfix-sa-offices__head {
+  max-width: 720px;
+  margin: 0 auto clamp(28px, 4vw, 44px);
+  text-align: center;
+}
+.pfix-sa-offices .pfix-sa-offices__eyebrow {
+  margin-bottom: 10px;
+  color: #c2410c;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pfix-sa-offices .pfix-sa-offices__title {
+  color: #14180f;
+  font-family: inherit;
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+.pfix-sa-offices .pfix-sa-offices__intro {
+  margin-top: 12px;
+  color: #5d6656;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.pfix-sa-offices__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+.pfix-sa-offices a.pfix-sa-office {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e4e8dc;
+  border-radius: 18px;
+  background: #fff;
+  color: #14180f;
+  text-decoration: none;
+  box-shadow: 0 12px 32px -18px rgba(20, 24, 15, 0.25);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.pfix-sa-offices a.pfix-sa-office:hover {
+  border-color: #f26924;
+  color: #14180f;
+  transform: translateY(-2px);
+}
+.pfix-sa-office__map {
+  display: block;
+  background: #24301f;
+  aspect-ratio: 8 / 5;
+}
+.pfix-sa-office__map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pfix-sa-office .pfix-ct-map__state {
+  fill: #33422c;
+  stroke: #1b2416;
+  stroke-width: 1;
+}
+.pfix-sa-office .pfix-ct-map__state.is-office {
+  fill: #9acd32;
+}
+.pfix-sa-office .pfix-ct-pin__dot {
+  fill: #f26924;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+.pfix-sa-office .pfix-ct-pin__ring {
+  fill: rgba(242, 105, 36, 0.35);
+}
+.pfix-sa-office__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px 20px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.pfix-sa-office__state {
+  color: #4d7c0f;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pfix-sa-office__city {
+  font-size: 20px;
+  font-weight: 800;
+}
+.pfix-sa-office__addr,
+.pfix-sa-office__meta {
+  color: #5d6656;
+}
+.pfix-sa-office__more {
+  margin-top: 8px;
+  color: #c2410c;
+  font-weight: 700;
+}
+.pfix-sa-offices__all {
+  margin-top: 28px;
+  text-align: center;
+}
+.pfix-sa-offices__all a {
+  color: #c2410c;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .pfix-sa-offices__inner {
+    padding: 0 16px;
+  }
+}
+.pfix-ct .pfix-ct-office--hq a.pfix-ct-office__page,
+.pfix-ct .pfix-ct-office--hq a.pfix-ct-office__page:hover {
+  color: #9acd32;
+}

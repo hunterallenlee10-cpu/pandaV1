@@ -26,6 +26,7 @@ import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from '../lib/site-map-page.mjs';
+import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, writeRedirectFiles } from '../lib/restructure.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
@@ -50,7 +51,9 @@ for (const p of removedPages.removed) console.log(`${dryRun ? 'would remove' : '
 
 // The Media page is rebuilt below, from the other pages.
 const mediaFile = path.join(SITE, MEDIA_PATH, 'index.html');
-const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile));
+// So are the pages added in the site restructure (new-pages.mjs).
+const newFiles = new Set(newPagePaths().map((p) => path.join(SITE, p, 'index.html')));
+const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile) && !newFiles.has(f));
 const counts = {};
 const linked = new Set(); // the /_custom/ files the pages link
 let changed = 0;
@@ -83,6 +86,20 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
   }
 }
 
+// The pages added in the site restructure, from the pages just updated (their header and
+// footer come from one of them).
+let newPages = [];
+if (!only || newPagePaths().some((p) => only.has(p))) {
+  newPages = buildNewPages({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  for (const p of newPages) {
+    const file = path.join(SITE, p.path, 'index.html');
+    if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === p.html) continue;
+    changed++;
+    if (!dryRun) writeFile(file, p.html);
+    console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, file)}`);
+  }
+}
+
 // The Site Map's list of every page, from the pages as they are now (in a dry run, as they
 // were: nothing was written). Rebuilt whenever a page changed, since its links may have.
 let siteMap = null;
@@ -105,6 +122,7 @@ const files = [
   ...Object.entries(BLOG_FILES).map(([name, url]) => [path.join(BLOG_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
 if (siteMap) files.push(...siteMapFiles());
+if (newPages.length) files.push(...newPagesFiles());
 // The review wall and the reviews hero on /reviews/: their stylesheet, script and photos
 // (the photos are in the stylesheet, which the list of linked files above doesn't read).
 if (linked.has(REVIEW_WALL_FILES['review-wall.js'])) files.push(...Object.entries(REVIEW_WALL_FILES).map(([name, url]) => [path.join(REVIEWS_DIR, name), url]));
@@ -148,11 +166,11 @@ if (mediaUsed) {
 if (!only) {
   const pruned = pruneUnusedFiles(SITE, removedPages.used, { dryRun });
   if (pruned.files.length) console.log(`${dryRun ? 'would remove' : 'removed'} ${pruned.files.length} file(s) only removed pages used (${fmtBytes(pruned.bytes)})`);
-  const sitemaps = editSitemaps(SITE, SITE_ORIGIN, [], { dryRun });
+  const sitemaps = editSitemaps(SITE, SITE_ORIGIN, newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), { dryRun });
   if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
   const redirectFiles = writeRedirectFiles(SITE, { dryRun });
   if (redirectFiles.changed.length) console.log(`${dryRun ? 'would update' : 'updated'} ${redirectFiles.changed.join(', ')} (${redirectFiles.added} new redirect(s))`);
 }
 
-console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0)} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
+console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0) + newPages.length} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
 for (const [k, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(3)} × ${k}`);

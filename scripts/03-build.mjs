@@ -21,6 +21,8 @@ import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from './lib/project-galler
 import { pastProjectsFiles, PAST_PROJECTS_DIR } from './lib/past-projects.mjs';
 import { projectsFiles, PROJECTS_DIR } from './lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_DIR, MEDIA_PATH } from './lib/media-page.mjs';
+import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './lib/new-pages.mjs';
+import { addSitemapPages, flattenRedirects } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH } from './lib/site-map-page.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
@@ -363,6 +365,16 @@ if (MEDIA_PAGE) {
   }
 }
 
+// 3a'. The pages added in the site restructure (new-pages.mjs): generated from a built page,
+// like the Media page; before 3b, so the files they show are kept.
+const newPages = SITE_FIXES ? buildNewPages({ siteDir: OUT, siteOrigin: SITE_ORIGIN }) : [];
+for (const p of newPages) put(path.posix.join(p.path.replace(/^\/|\/$/g, ''), 'index.html'), p.html, 'custom/new-pages');
+if (newPages.length) for (const [from, url] of newPagesFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/new-pages/${path.basename(from)}`);
+if (newPages.length && fs.existsSync(path.join(OUT, 'page-sitemap.xml'))) {
+  const file = path.join(OUT, 'page-sitemap.xml');
+  fs.writeFileSync(file, addSitemapPages(fs.readFileSync(file, 'utf8'), newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), SITE_ORIGIN));
+}
+
 // 3b. Files only the pages removed on request used (their photos, page-only styles …)
 // are left out too. A file stays if its name appears in any other file of the copy.
 const leftOut = new Set();
@@ -430,7 +442,17 @@ for (const c of captures.values()) {
     }
   }
 }
-const redirectList = [...redirectRows.values()].sort((a, b) => a.from.localeCompare(b.from));
+// No chains: a redirect to an address that redirects again leads straight to the last one
+// (the old /commerical-roofing/roof-types/ -> /commercial-roofing/, which it was merged into).
+const redirectList = flattenRedirects(
+  [...redirectRows.values()].map((r) => {
+    const f = new URL(r.from);
+    const t = new URL(r.to, r.from);
+    return isSiteUrl(f) && isSiteUrl(t) ? { ...r, from: f.pathname, to: t.pathname + t.search + t.hash, abs: r } : { ...r, abs: r };
+  })
+)
+  .map((r) => (r.abs ? { ...r.abs, to: isSiteUrl(new URL(r.abs.from)) && r.to.startsWith('/') ? SITE_ORIGIN + r.to : r.abs.to } : r))
+  .sort((a, b) => a.from.localeCompare(b.from));
 const serveSource = (p) => (p.replace(/\/+$/, '') || '/').replace(/[()[\]{}*+?:!]/g, '\\$&');
 const netlify = [];
 const serveRedirects = [];

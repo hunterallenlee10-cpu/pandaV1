@@ -188,7 +188,8 @@ import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
-import { collectContactPage } from './contact-page.mjs';
+import { collectContactPage, contactPage, officeMap } from './contact-page.mjs';
+import { officePagePath, NEW_PAGES_ON } from './new-pages.mjs';
 import { collectCustomerServicePage } from './customer-service-page.mjs';
 import { collectNotFoundPage } from './not-found-page.mjs';
 import { collectLegalPage } from './legal-page.mjs';
@@ -484,6 +485,8 @@ function serviceCardsRow(list, { pathname, siteDir }) {
 // service page (SERVICE_CARDS).
 function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
   const section = find(doc, (c) => hasClass(c, 'roofers-section') && find(c, (x) => /^h[1-6]$/.test(x.tagName) && /Our Reliable Exterior Remodeling Services/.test(textOf(x))));
+  // With the office pages (the site restructure): the section becomes the local offices.
+  if (NEW_PAGES_ON) return serviceAreaOffices(doc, html, ed, section, changes);
   const grid = section && find(section, (c) => hasClass(c, 'Roof-grid'));
   // Already a carousel (a page built before): the cards may have changed, so the row is
   // rendered again from SERVICE_CARDS.
@@ -508,6 +511,44 @@ function servicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
       'We work with products backed by manufacturers’ warranties, so you get reliable results from every renovation. Here are the services we offer:'
     );
   changes.push(`services carousel: ${row.count} photo cards linking to each service page, gliding until hovered (was 4 green boxes of text)`);
+  return true;
+}
+
+// /service-areas/ "Our Reliable Exterior Remodeling Services" (the services row that every
+// other page has too) -> "Our local offices": a card per office with its state's map, its
+// address and number, the jobs completed in its state and a link to its own page
+// (new-pages.mjs). The site restructure; rendered again on every run.
+function serviceAreaOffices(doc, html, ed, section, changes) {
+  const own = find(doc, (c) => hasClass(c, 'pfix-sa-offices'));
+  const target = own || section;
+  if (!target) return false;
+  const { states } = loadUsMap();
+  const offices = [...contactPage().offices.items].sort((a, b) => (b.hq ? 1 : 0) - (a.hq ? 1 : 0));
+  const card = (o) => {
+    const jobs = states.find((x) => x.code === o.state)?.jobs || 0;
+    return (
+      `<a class="pfix-sa-office" role="listitem" href="${esc(officePagePath(o))}">` +
+      `<span class="pfix-sa-office__map">${officeMap(o)}</span>` +
+      `<span class="pfix-sa-office__body"><span class="pfix-sa-office__state">${esc(o.name)}${o.hq ? ' · Headquarters' : ''}</span>` +
+      `<span class="pfix-sa-office__city">${esc(o.city)}, ${esc(o.state)}</span>` +
+      `<span class="pfix-sa-office__addr">${esc(o.street)}, ${esc(o.locality)}</span>` +
+      `<span class="pfix-sa-office__meta">${esc(o.phone)}${jobs >= 50 ? ` · ${fmt(jobs)} jobs in ${esc(o.state)}` : ''}</span>` +
+      `<span class="pfix-sa-office__more">Visit the ${esc(o.city)} page<span aria-hidden="true"> →</span></span></span></a>`
+    );
+  };
+  const out =
+    `<section class="pfix-sa-offices" id="local-offices" aria-labelledby="pfix-sa-offices-title"><div class="pfix-sa-offices__inner">` +
+    `<div class="pfix-sa-offices__head"><p class="pfix-sa-offices__eyebrow">Local offices</p>` +
+    `<h2 class="pfix-sa-offices__title" id="pfix-sa-offices-title">Seven Local Offices, One Team</h2>` +
+    `<p class="pfix-sa-offices__intro">Each office has local crews, its own number and a page with everything our team does in its state. Find the one nearest you.</p></div>` +
+    `<div class="pfix-sa-offices__grid" role="list">${offices.map(card).join('')}</div>` +
+    `<p class="pfix-sa-offices__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>` +
+    `</div></section>`;
+  const { startOffset, endOffset } = target.sourceCodeLocation;
+  if (html.slice(startOffset, endOffset) === out) return true;
+  if (ed.overlaps(startOffset, endOffset)) return false;
+  ed.outer(target, out);
+  changes.push('service areas: the services row -> the seven local offices, each linking to its page');
   return true;
 }
 

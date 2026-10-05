@@ -1,0 +1,258 @@
+{
+  "_help": "The pages added in the site restructure (scripts/lib/new-pages.mjs; README, \"Site restructure\"). Each page has its head (title, description), a hero beside the estimate form and its sections, in order. Section types: cards ([icon, title, text, [link label, href]?]), split (paragraphs, a checklist and a photo), covered (two lists), steps, links (articles), note, faq. The words come from what the site and its blog already say. Edit and run `npm run update:site`. The office pages (/locations/…/) are made from custom/site-fixes/contact-page.json and custom/us-map/areas.json, with the words under \"offices\" below.",
+  "pages": {
+    "/financing/": {
+      "title": "Roof And Solar Financing | Panda Exteriors",
+      "description": "Finance your new roof, solar, siding or gutters with Panda Exteriors through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
+      "breadcrumb": "Financing",
+      "hero": {
+        "eyebrow": "Financing",
+        "title": "Get the work you need without breaking the budget",
+        "sub": "Spread the cost of your new roof, solar, siding or gutters with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
+        "chips": [["card", "Delayed payments"], ["coin", "No-interest loans"], ["check", "Free quote"]],
+        "photo": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675]
+      },
+      "form": { "title": "Free Estimate", "text": "Ask about financing at your free consultation." },
+      "sections": [
+        {
+          "type": "cards",
+          "id": "how-it-helps",
+          "eyebrow": "Flexible financing",
+          "title": "Financing Solutions Homeowners Love",
+          "intro": "An exterior remodel can have a big impact on your budget, but putting off a roof or other necessary work can cost more later. We don’t want you worrying about the cost of your renovations.",
+          "items": [
+            ["calendar", "Delayed payments", "Homeowners may qualify for delayed payments, so the work gets done now and the payments start later."],
+            ["coin", "No-interest loans", "Qualified homeowners can even get no-interest loans for their project."],
+            ["card", "Plans that fit your budget", "Loans with a variety of features, and affordable payment plans that fit into your budget."],
+            ["shield", "A trusted finance partner", "Financing is provided through Service Finance, LLC, so you deal with one established lender."]
+          ]
+        },
+        {
+          "type": "split",
+          "id": "what-you-can-finance",
+          "eyebrow": "Service Finance, LLC",
+          "title": "Finance Almost Any Exterior Project",
+          "paragraphs": [
+            "Whether you are getting a roof replacement or want to install solar panels, our financing options cover the work our crews do. We keep our projects cost-effective for customers through financing, free quotes and a 100% satisfaction guarantee.",
+            "During your free consultation, one of our local roofing and solar contractors goes over your project, your financing options and a free quote with you."
+          ],
+          "list": ["Roof replacements", "Solar panels and GAF solar roofs", "Commercial roofing", "Siding", "Gutters and gutter guards", "Attic insulation"],
+          "img": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
+          "alt": "A home with a new roof installed by Panda Exteriors"
+        },
+        {
+          "type": "steps",
+          "title": "How Financing Works",
+          "items": [
+            ["Book your free estimate", "Fill in the form or call us, and tell us what you need. Ask about financing when you book."],
+            ["Talk it through at your consultation", "We look over your home, give you a clear quote at no cost and go over the flexible financing options with you."],
+            ["Choose your plan and get started", "If you qualify, pick the plan that fits your budget, and our certified crew schedules your project."]
+          ]
+        },
+        {
+          "type": "cards",
+          "id": "more-ways-to-save",
+          "eyebrow": "More ways to save",
+          "title": "Pair Financing With These",
+          "items": [
+            ["tag", "Current offers", "10% off a roof replacement and $1,500 off a solar project, for a limited time.", ["See the offers", "/offers/"]],
+            ["umbrella", "Insurance after a storm", "If storm damage is behind your new roof, your homeowners insurance may pay for much of it.", ["Storm damage and insurance", "/storm-damage/"]],
+            ["sun", "Solar incentives", "Most states offer rebates and tax breaks for homeowners who install solar.", ["Benefits of solar", "/solar/#solar-panels"]]
+          ]
+        },
+        {
+          "type": "faq",
+          "title": "Financing Questions, Answered",
+          "items": [
+            ["Who provides your financing?", "Our financing is provided through Service Finance, LLC."],
+            ["Can I get a no-interest loan?", "Homeowners may qualify for delayed payments and even no-interest loans. The plans available to you depend on your approval."],
+            ["Which projects can I finance?", "Roof replacements, solar, commercial roofing, siding, gutters and gutter guards, and attic insulation: the work our crews do."],
+            ["What are my options for solar?", "There are various options for solar, including solar loans, leases and power purchase agreements. Talk with us to find the most suitable option for you."],
+            ["How do I get started?", "Book a free estimate. During your consultation we go over flexible financing and create a free quote for your project."]
+          ]
+        },
+        {
+          "type": "links",
+          "title": "Planning the budget for your project",
+          "items": [
+            ["What goes into the cost of a new roof", "/roofing-costs/"],
+            ["How to budget for a new roof without the sticker shock", "/blog/how-to-budget-for-a-new-roof-without-the-sticker-shock/"],
+            ["Solar financing for GAF solar shingles", "/blog/solar-financing-gaf-solar-shingles/"]
+          ]
+        }
+      ],
+      "cta": { "title": "Ready to talk financing?", "text": "Book a free estimate and ask about flexible financing and our current offers." }
+    },
+    "/warranty/": {
+      "title": "Warranties And Guarantees | Panda Exteriors",
+      "description": "Every Panda Exteriors project is backed by a 100% satisfaction guarantee, a two-year installation warranty on our workmanship and the manufacturers’ warranties on the products we install.",
+      "breadcrumb": "Warranty",
+      "hero": {
+        "eyebrow": "Warranties and guarantees",
+        "title": "Protected long after our crew leaves",
+        "sub": "Every project, from roofing to gutters, is backed by our 100% satisfaction guarantee, our installation warranty and the manufacturers’ warranties on the products we install.",
+        "chips": [["shield", "100% satisfaction guarantee", "#satisfaction-guarantee"], ["badge", "Installation warranty", "#installation-warranty"], ["layers", "Manufacturer warranties", "#manufacturer-warranties"]],
+        "photo": ["/_custom/site-fixes/roofing-ridge.webp", 720, 708]
+      },
+      "form": { "title": "Free Estimate", "text": "Roofing, siding, gutters, solar and more, backed by our guarantee." },
+      "sections": [
+        {
+          "type": "cards",
+          "id": "overview",
+          "eyebrow": "Three layers of protection",
+          "title": "What Protects Your Project",
+          "items": [
+            ["shield", "100% satisfaction guarantee", "Every remodeling project is covered by our guarantee, so you can rest easy knowing your renovation will meet the highest standards.", ["About the guarantee", "#satisfaction-guarantee"]],
+            ["badge", "Installation warranty", "If our workmanship proves faulty within two years of installation, we’ll correct it at no cost to you. Some products have a longer installation warranty.", ["About the installation warranty", "#installation-warranty"]],
+            ["layers", "Manufacturer warranties", "The products we install, from GAF and other trusted brands, come with their makers’ warranties against product defects.", ["About product warranties", "#manufacturer-warranties"]]
+          ]
+        },
+        {
+          "type": "split",
+          "id": "satisfaction-guarantee",
+          "eyebrow": "100% satisfaction guarantee",
+          "title": "Professional Remodels, Guaranteed",
+          "paragraphs": [
+            "When you hire an exterior remodeling company, you should feel comfortable with the team working on your home, and know your contractor is a skilled professional who has your best interests in mind.",
+            "That’s why we back up the work of our team with a 100% satisfaction guarantee, on top of the excellent manufacturers’ warranties on our products. Every remodeling project is covered, from roofing to gutters.",
+            "We are proud to be a BBB-accredited, A-rated remodeling company: dedicated to great customer service and ethical business operations."
+          ],
+          "list": ["Covers every project, from roofing to gutters", "On top of the manufacturers’ product warranties", "From a BBB-accredited, A-rated company and GAF Master Elite contractor"],
+          "img": ["/_custom/site-fixes/roofing-ridge.webp", 720, 708],
+          "alt": "New gray architectural shingles and ridge caps on a home Panda Exteriors re-roofed"
+        },
+        {
+          "type": "split",
+          "id": "installation-warranty",
+          "eyebrow": "Installation warranty",
+          "title": "Installed Correctly, Every Time",
+          "flip": true,
+          "paragraphs": [
+            "We want you completely satisfied with the installation of your home improvement products, so we provide an installation warranty for the one-time installation of select products.",
+            "In addition to any manufacturer’s warranty on the products used (which takes effect on the date they are installed), if the workmanship of an installation arranged by our company proves faulty within two years after the products are installed, then upon notice from you, we will have the faults corrected by repair at no additional cost to you.",
+            "The installation warranty on some products is longer than two years. Your contract has the precise length of each installation warranty."
+          ],
+          "list": ["Covers our workmanship for two years after installation, or longer on some products", "Faults corrected by repair at no additional cost to you", "Doesn’t cover product defects: those are covered by the product warranties", "Doesn’t cover damage from accident, misuse, abuse or improper maintenance"],
+          "note": "Products should be inspected before installation and any defects reported at that time; installation constitutes acceptance of the products. The proper finishing, care and maintenance of the products are the owner’s responsibility, and important to keep them performing year after year.",
+          "img": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675],
+          "alt": "Panda Exteriors crew installing a new roof"
+        },
+        {
+          "type": "cards",
+          "id": "manufacturer-warranties",
+          "eyebrow": "Manufacturer warranties",
+          "title": "Products Backed by Their Makers",
+          "intro": "We work with products backed by manufacturers’ warranties, so you get reliable results from every renovation. Product defects are covered under the applicable product warranties; your contract and the product warranties have the exact terms and limits.",
+          "items": [
+            ["roof", "GAF roofing", "As a GAF Master Elite contractor, a status held by less than 2% of roofing companies, we can offer GAF’s upgraded warranties, like the Golden Pledge, available only through Master Elite contractors.", ["Roof replacement", "/roofing/replacement/"]],
+            ["sun", "GAF solar roofs", "GAF Timberline Solar shingles are your roof and your power source in one, with GAF’s warranty protection.", ["GAF solar roof", "/solar/gaf-solar-roof/"]],
+            ["home", "Siding", "Fiber cement siding by James Hardie and vinyl siding by CertainTeed, each with its manufacturer’s warranty.", ["Siding", "/siding/"]]
+          ]
+        },
+        {
+          "type": "faq",
+          "title": "Warranty Questions, Answered",
+          "items": [
+            ["What’s the difference between the installation warranty and a product warranty?", "The installation warranty covers our workmanship: how the products were installed. Product warranties come from the manufacturers and cover defects in the products themselves."],
+            ["How long is the installation warranty?", "Two years after the products are installed, and longer for some products. Your contract has the precise length for each one."],
+            ["What isn’t covered?", "Product defects (covered by the product warranties instead) and damage caused by accident, misuse, abuse or improper maintenance."],
+            ["What is the Golden Pledge warranty?", "One of GAF’s upgraded roofing warranties. It is available only through GAF Master Elite contractors like Panda Exteriors."],
+            ["How do I make a warranty request?", "Call us at (877) 213-8536 or contact your local office, and tell us about the problem. We’ll take it from there."]
+          ]
+        },
+        {
+          "type": "links",
+          "title": "Learn more about warranties",
+          "items": [
+            ["Understanding roof warranties: what’s covered and what’s not", "/blog/understanding-roof-warranties-whats-covered-and-whats-not/"],
+            ["10 questions to ask before signing a roof replacement contract", "/blog/10-questions-to-ask-before-signing-a-roof-replacement-contract/"]
+          ]
+        }
+      ],
+      "cta": { "title": "Questions about your warranty?", "text": "Call our team or your local office, or book a free estimate for your next project." }
+    },
+    "/storm-damage/": {
+      "title": "Storm Damage And Insurance Claims | Panda Exteriors",
+      "description": "Wind, hail or ice damage? Panda Exteriors offers free storm-damage roof inspections, meets your insurance adjuster and helps you through the claim, from the first photo to your new roof.",
+      "breadcrumb": "Storm Damage",
+      "hero": {
+        "eyebrow": "Storm damage and insurance",
+        "title": "Storm damage? We’ll help you through the claim",
+        "sub": "Most homeowners insurance policies cover sudden, storm-related roof damage. We inspect your roof for free, meet your adjuster and handle the roofing side of your claim, from the first photo to the final shingle.",
+        "chips": [["search", "Free storm-damage inspection"], ["users", "We meet your adjuster"], ["roof", "Insurance-paid roof replacements"]],
+        "photo": ["/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg", 2000, 1125]
+      },
+      "form": { "title": "Free Storm Inspection", "text": "We check your roof, gutters and attic, and photograph everything." },
+      "sections": [
+        {
+          "type": "steps",
+          "id": "first-24-hours",
+          "title": "Storm Just Hit? Do This First",
+          "items": [
+            ["Put safety first", "Stay off the roof and away from downed lines or sagging ceilings. Ladders and wet shingles don’t mix."],
+            ["Take photos and videos", "Photograph the roof from the ground, the yard, gutters, siding and any leaks inside, with the date. It helps your claim."],
+            ["Look for hidden damage inside", "Check ceilings and the attic for stains, drips or damp insulation. Not all damage shows from the outside."],
+            ["Call us as soon as possible", "We inspect and document the damage, and can add temporary protection, like a tarp, to stop more water getting in."]
+          ],
+          "link": ["/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/", "What to do in the first 24 hours"]
+        },
+        { "type": "covered", "id": "what-insurance-covers", "eyebrow": "What insurance covers", "title": "Will Insurance Pay for Your Roof?", "intro": "Your policy decides, but storm damage insurance usually works like this:" },
+        { "type": "claimSteps", "id": "claim-help", "eyebrow": "How we help", "title": "Your Claim, Step by Step" },
+        {
+          "type": "note",
+          "title": "Your roofing advocate, not a public adjuster.",
+          "text": "You stay in control of your claim and talk to your insurance company; we bring the roofing facts, photos and a detailed estimate. Your insurance company decides what is covered, and sometimes the best advice is not to file at all."
+        },
+        {
+          "type": "faq",
+          "title": "Storm Damage Questions, Answered",
+          "items": [
+            ["Will my insurance pay for a new roof?", "Often, when the damage is sudden and storm-related: wind, hail, falling limbs or the weight of snow and ice. Old age and wear and tear usually aren’t covered. Your deductible and your type of coverage affect what you pay."],
+            ["How long do I have to file a claim?", "There is no single deadline. It depends on your policy, your state and the type of claim, and many policies require prompt notice. The safest approach is to have the roof inspected and notify your insurance company as soon as you know about possible storm damage."],
+            ["Should I file a claim before getting an inspection?", "You don’t necessarily need to. An inspection can show whether there is storm damage and whether it is likely to exceed your deductible. But don’t let it delay reporting serious damage, like a tree on the roof or water coming in."],
+            ["What’s the difference between ACV and RCV coverage?", "Actual cash value (ACV) pays for the roof’s depreciated value, so an older roof gets a smaller payout. Replacement cost value (RCV) is meant to pay for a new roof of similar kind and quality: often an ACV payment first, then the withheld depreciation once the roof is replaced. You pay the deductible either way."],
+            ["What if more damage is found during the replacement?", "Removing shingles can uncover damaged decking, underlayment or flashing. It should be reported as soon as it’s found; we document it and help submit a supplement to your insurance company for the extra work."],
+            ["What if my claim was denied or underpaid?", "A denial or lowball offer doesn’t always have to be the final word. A second-opinion inspection, with a detailed photo report and a line-item estimate, can be used to ask your insurance company for a reinspection or a supplement."]
+          ]
+        },
+        {
+          "type": "links",
+          "title": "Our storm and insurance guides",
+          "items": [
+            ["Storm just hit? What to do in the first 24 hours", "/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/"],
+            ["How long do you have to file a roof insurance claim?", "/blog/how-long-do-you-have-to-file-a-roof-insurance-claim-after-a-storm/"],
+            ["Insurance-paid roof replacements: a simple guide", "/blog/insurance-paid-roof-replacements-a-simple-guide-for-wind-hail-and-ice-damage-claims/"],
+            ["Does homeowners insurance cover roof leaks?", "/blog/does-homeowners-insurance-cover-roof-leaks-what-homeowners-need-to-know/"],
+            ["Roof insurance deductibles, explained", "/blog/roof-insurance-deductibles-explained-what-will-you-pay-after-storm-damage/"],
+            ["Actual cash value vs. replacement cost", "/blog/actual-cash-value-vs-replacement-cost-how-your-roof-insurance-payout-is-calculated/"],
+            ["What is a roofing insurance supplement?", "/blog/what-is-a-roofing-insurance-supplement-and-why-might-your-claim-need-one/"],
+            ["Denied or lowballed? Re-opening your claim", "/blog/denied-or-lowballed-how-panda-exteriors-helps-you-re-open-your-winter-roof-insurance-claim/"],
+            ["Wind and hail prep: what to fix before the next storm", "/blog/wind-and-hail-prep-what-to-fix-now-before-the-next-storm/"]
+          ]
+        }
+      ],
+      "cta": { "title": "Think your roof took a hit?", "text": "Book a free storm-damage inspection. We’ll tell you honestly whether it looks cosmetic or claim-worthy." }
+    }
+  },
+  "offices": {
+    "path": "/locations/",
+    "title": "Roofing, Solar and Exteriors in {city}, {st}",
+    "metaTitle": "{city}, {st} Roofing Contractor | Panda Exteriors",
+    "description": "Panda Exteriors’ {state} office in {city}, {st}: roof replacements, solar, commercial roofing, siding and gutters. Call {phone} for a free estimate.",
+    "eyebrow": "{state} office",
+    "sub": "Our {city} office serves homeowners and businesses across {state} with roof replacements, solar, commercial roofing, siding and gutters, installed by our GAF Master Elite crews.",
+    "hq": "Our headquarters",
+    "jobs": "{jobs} jobs completed in {state}",
+    "minJobs": 50,
+    "servicesTitle": "What our {state} team does",
+    "whyTitle": "Why {state} homeowners choose Panda",
+    "why": [
+      ["badge", "GAF Master Elite", "A status held by less than 2% of roofing companies, with GAF’s upgraded warranties."],
+      ["shield", "BBB A-rated", "A BBB-accredited company dedicated to great service, with a 100% satisfaction guarantee."],
+      ["clock", "One-day installs", "Most roof replacements are done in as little as one day, from tear-off to clean-up."],
+      ["card", "Flexible financing", "Delayed payments and even no-interest loans for qualified homeowners."]
+    ],
+    "othersTitle": "Our other offices",
+    "cta": { "title": "Ready for a free estimate in {state}?", "text": "Call the {city} office or our main line, or fill in the form." }
+  }
+}

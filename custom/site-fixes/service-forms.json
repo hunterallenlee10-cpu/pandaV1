@@ -3,8 +3,8 @@
     "pages": [
       "/roofing/",
       "/roofing/replacement/",
-      "/roofing/residential/",
-      "/roofing/types/"
+      "/roofing/types/",
+      "/storm-damage/"
     ],
     "title": "10% OFF Roof Replacement",
     "text": "Limited Time Savings - Act Now!",
@@ -19,7 +19,8 @@
           "Not sure yet"
         ],
         "selected": {
-          "/roofing/replacement/": "Roof replacement"
+          "/roofing/replacement/": "Roof replacement",
+          "/storm-damage/": "Roof inspection"
         }
       }
     ]
