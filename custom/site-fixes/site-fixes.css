@@ -8771,16 +8771,30 @@ h3.pfix-best-label {
   box-shadow: 0 16px 36px rgba(20, 24, 15, 0.12);
   transform: translateY(-3px);
 }
-.pfix-sp .pfix-rr-style__swatch {
+/* The roof's photo, 3:2, easing in a little on hover. (!important: a stylesheet of the
+   site's stretches every picture's height.) */
+.pfix-sp .pfix-rr-style__photo {
   position: relative;
   display: block;
-  height: 104px;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
   background: #2d312c;
 }
-.pfix-sp .pfix-rr-style__swatch svg {
+.pfix-sp .pfix-rr-style__photo img,
+.pfix-sp .pfix-rr-style__photo svg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100% !important;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+}
+.pfix-sp .pfix-rr-style__photo img {
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pfix-sp a.pfix-rr-style:hover .pfix-rr-style__photo img {
+  transform: scale(1.04);
 }
 .pfix-sp .pfix-rr-style__body {
   display: flex;
@@ -8855,9 +8869,6 @@ h3.pfix-best-label {
   .pfix-sp .pfix-rr-styles__grid {
     gap: 12px;
   }
-  .pfix-sp .pfix-rr-style__swatch {
-    height: 72px;
-  }
   .pfix-sp .pfix-rr-style__body {
     padding: 14px 14px 16px;
   }
@@ -8882,7 +8893,8 @@ h3.pfix-best-label {
   .pfix-sp a.pfix-rr-btn {
     transition: none;
   }
-  .pfix-sp a.pfix-rr-style:hover {
+  .pfix-sp a.pfix-rr-style:hover,
+  .pfix-sp a.pfix-rr-style:hover .pfix-rr-style__photo img {
     transform: none;
   }
 }

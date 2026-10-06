@@ -75,6 +75,8 @@ for (const file of pages.sort()) {
     }
   }
   for (const m of out.html.matchAll(/(?:href|src)="(\/_custom\/[^"?#]+)"/g)) linked.add(m[1]);
+  // and the ones in srcset lists (a picture's larger sizes)
+  for (const m of out.html.matchAll(/srcset="([^"]*)"/g)) for (const part of m[1].split(',')) if (part.trim().startsWith('/_custom/')) linked.add(part.trim().split(/\s+/)[0].replace(/[?#].*$/, ''));
 }
 
 // The Media page, from the pages just updated (its header and footer come from one of them).

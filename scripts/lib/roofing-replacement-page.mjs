@@ -12,8 +12,8 @@
 //    words, as the icon cards /roofing/'s signs use (service-pages.mjs's renderSigns), with
 //    three more from /roofing/ (age, granules, sagging) and Panda's guides on the blog;
 //  - "Roofing Styles for Your New Roof": the band's paragraph on GAF's roofing styles over the
-//    four roof types as small cards (their swatches and words from roofing-types-page.mjs),
-//    each leading to its card on /roofing/types/;
+//    four roof types as small cards (their words from roofing-types-page.mjs), each with a
+//    photo of that kind of roof (STYLE_PHOTOS) and leading to its card on /roofing/types/;
 //  - after the testimonials, the offers band the other service pages have (offers-page.mjs).
 // The hero is services-hero.mjs's; "What Comes With Your New Roof", "How Your Roof
 // Replacement Works" and the questions are service-pages.mjs's (custom/site-fixes/
@@ -68,6 +68,21 @@ const SIGNS = {
   ],
 };
 
+// A photo of each kind of roof, the top of its card (custom/site-fixes/roof-type-*-480.webp and
+// -960.webp, 3:2). Panda's own jobs where there is one: new architectural shingles at a ridge,
+// a white TPO flat roof in the city, a GAF solar shingle roof. No metal roof is among Panda's
+// photos, so that one is a standing-seam roof from Wikimedia Commons ("Standing seam metal
+// roof 5.jpg" by Wikideas1, CC0).
+const STYLE_PHOTOS = {
+  asphalt: 'New gray architectural shingles and ridge caps on a home Panda Exteriors re-roofed',
+  metal: 'A home with a dark gray standing-seam metal roof, seen from above',
+  flat: 'A new white flat roof on a city building, with church spires beyond',
+  solar: 'A home with a GAF solar shingle roof and three dormers, seen from above',
+};
+const stylePhoto = (key) =>
+  `<img src="/_custom/site-fixes/roof-type-${key}-480.webp" srcset="/_custom/site-fixes/roof-type-${key}-480.webp 480w, /_custom/site-fixes/roof-type-${key}-960.webp 960w" ` +
+  `sizes="(max-width: 520px) 46vw, (max-width: 1000px) 45vw, 300px" alt="${esc(STYLE_PHOTOS[key])}" width="480" height="320" loading="lazy" decoding="async">`;
+
 // The band's paragraph on GAF's roofing styles, over the four roof types.
 const STYLES = {
   eyebrow: 'Choose your new roof',
@@ -79,7 +94,7 @@ const STYLES = {
 function stylesHtml() {
   const card = (t) =>
     `<a class="pfix-rr-style" href="${TYPES_PATH}#${TYPE_ANCHORS[t.key]}" role="listitem">` +
-    `<span class="pfix-rr-style__swatch">${SWATCHES[t.key]}</span>` +
+    `<span class="pfix-rr-style__photo">${STYLE_PHOTOS[t.key] ? stylePhoto(t.key) : SWATCHES[t.key]}</span>` +
     `<span class="pfix-rr-style__body"><span class="pfix-rr-style__kicker">${esc(t.tag[1])}</span>` +
     `<span class="pfix-rr-style__name">${esc(t.name)}</span>` +
     `<span class="pfix-rr-style__text">${esc(t.kicker)}</span>` +
