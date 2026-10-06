@@ -35,8 +35,9 @@
 //    the video, darkest behind the heading. Phones (no video) get the still too.
 //  - "What Makes Panda the Best?" (home page): three floating cards with orange circle
 //    pictures of two sizes and orange headings broken at different points (so the rules
-//    and text under them sat at three heights) become one ruled panel of three columns
-//    with line icons and dark headings; the brands in the second card are listed.
+//    and text under them sat at three heights) become three ruled rows, each claim beside
+//    its proof: a photo of the crew at work, the six partner brands' logos, and the three
+//    GAF badges.
 //  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
 //    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
 //    (1140 px above), so they ran off the right of the screen (the blog text was cut
@@ -235,6 +236,10 @@ export const SITE_FIXES_FILES = {
   // the photos of /about/'s hero and "Our Mission" (about-page.mjs)
   'about-hero.webp': '/_custom/site-fixes/about-hero.webp',
   'about-team.webp': '/_custom/site-fixes/about-team.webp',
+  // the partner brands' logos in the home page's "What Makes Panda the Best?"
+  'brand-gaf.svg': '/_custom/site-fixes/brand-gaf.svg',
+  'brand-provia.svg': '/_custom/site-fixes/brand-provia.svg',
+  'brand-freedom-forever.svg': '/_custom/site-fixes/brand-freedom-forever.svg',
   // the photo behind /faqs/'s hero (faq-page.mjs)
   'faq-hero.webp': '/_custom/site-fixes/faq-hero.webp',
   // the photo behind /services/'s hero (services-hero.mjs)
@@ -298,12 +303,31 @@ const GOOGLE_RATING = '4.9';
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
 // The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
 const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
-// "What Makes Panda the Best?" (home page): a line icon per column, in the order of the
-// cards (experience: a house; products: stacked layers, as shingles; certified: a shield).
-const WHY_ICONS = [
-  '<path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/>',
-  '<path d="m12 3.5 8.5 4.5-8.5 4.5L3.5 8z"/><path d="m3.5 12 8.5 4.5 8.5-4.5"/><path d="m3.5 16 8.5 4.5 8.5-4.5"/>',
-  '<path d="M12 3.2 4.8 6v5.6c0 4.4 3 8.1 7.2 9.2 4.2-1.1 7.2-4.8 7.2-9.2V6z"/><path d="m8.9 12.1 2.2 2.2 4.1-4.3"/>',
+// "What Makes Panda the Best?" (home page): what each claim's row shows beside it, in the
+// order of the cards. Experience: the crew roofing a four-story building (/about/'s photo).
+const BEST_PHOTO = {
+  src: '/_custom/site-fixes/about-team.webp',
+  width: 1100,
+  height: 825,
+  alt: 'A Panda Exteriors crew roofing a new four-story building, with a Panda truck parked in front',
+};
+// Products: the brands the card names, roofing first. Andersen, CertainTeed and James Hardie
+// are the logos already on the site (with .webp copies); GAF is from Wikimedia Commons, ProVia
+// and Freedom Forever from their own websites. h: the logo's height in the grid, so they
+// look the same size (a square mark is taller than a long wordmark).
+const BEST_BRANDS = [
+  { name: 'GAF', src: '/_custom/site-fixes/brand-gaf.svg', width: 503, height: 503, h: 46 },
+  { name: 'CertainTeed', src: '/wp-content/uploads/2025/04/brand-certainteed.png', webp: true, width: 296, height: 70, h: 32 },
+  { name: 'James Hardie', src: '/wp-content/uploads/2025/04/brand-jameshardie.png', webp: true, width: 418, height: 84, h: 30 },
+  { name: 'Andersen Windows & Doors', src: '/wp-content/uploads/2025/04/brand-andersen-300x44-1.png', webp: true, width: 300, height: 44, h: 26 },
+  { name: 'ProVia', src: '/_custom/site-fixes/brand-provia.svg', width: 1032, height: 277, h: 34 },
+  { name: 'Freedom Forever', src: '/_custom/site-fixes/brand-freedom-forever.svg', width: 1816, height: 402, h: 36 },
+];
+// Certified: the three GAF badges already on the site, with what each one is.
+const BEST_BADGES = [
+  ['/wp-content/uploads/2025/04/brand-gaf.png', 'President’s Club'],
+  ['/wp-content/uploads/2025/04/brand-gaf-pledge.png', 'Diamond Pledge'],
+  ['/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png', 'Metal Certified'],
 ];
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
@@ -1033,38 +1057,56 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // "What Makes Panda the Best?" (home page): three floating cards, each with an orange
   // circle picture (two sizes), an orange heading broken over two lines at different
   // points (so the rules and text under them sat at three heights) and light gray text
-  // -> one ruled panel of three columns (stacked below 992 px): a line icon, a dark heading
-  // and the same text; the brands named in the second card's text are listed under it.
-  // The line above it becomes the panel's heading (.pfix-best). Runs before the column fit
-  // below, which would otherwise retag the row it replaces.
+  // -> three ruled rows, each claim (the same heading and text) beside what backs it up:
+  // the crew at work, the six partner brands' logos (named in the second card's text,
+  // which keeps its first sentence) and the three GAF badges. The line above becomes the
+  // section's heading (.pfix-proof). Also replaces the first version of this fix
+  // (.pfix-best) on pages already built with it. Runs before the column fit below, which
+  // would otherwise retag the row it replaces.
   // (The service pages' card grids share the class: .Service-cards, left to their own fixes.)
-  for (const row of findAll(doc, (c) => hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards'))) {
-    const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, 'team-card'));
+  const plainText = (n) => (n ? clean(textOf(n)).replace(/\s+/g, ' ').trim() : '');
+  for (const row of findAll(doc, (c) => (hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards')) || hasClass(c, 'pfix-best'))) {
+    const built = hasClass(row, 'pfix-best');
+    const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, built ? 'pfix-best__item' : 'team-card'));
     const items = cards.map((card) => ({
-      title: clean(textOf(find(card, (c) => hasClass(c, 'team-heading')) || { childNodes: [] })).replace(/\s+/g, ' ').trim(),
-      text: clean(textOf(find(card, (c) => hasClass(c, 'team-para')) || { childNodes: [] })).replace(/\s+/g, ' ').trim(),
+      title: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__title' : 'team-heading'))),
+      text: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__text' : 'team-para'))).replace(/\s*These brands include .+$/, ''),
     }));
-    if (items.length !== WHY_ICONS.length || items.some((i) => !i.title || !i.text)) continue;
+    if (items.length !== 3 || items.some((i) => !i.title || !i.text)) continue;
     if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
-    const label = row.parentNode && (row.parentNode.childNodes || []).filter((k) => k.tagName).find((k, i, all) => all[i + 1] === row && hasClass(k, 'para-bold'));
-    const column = ({ title, text }, i) => {
-      // "These brands include A, B, and C." -> the sentence before it, and A, B and C as a list.
-      const brands = text.match(/^(.*?)\s*These brands include (.+?)\.?$/);
-      const names = brands ? brands[2].split(/,\s*(?:and\s+)?|\s+and\s+/).map((s) => s.trim()).filter(Boolean) : [];
-      return (
-        `<div class="pfix-best__item" role="listitem">` +
-        `<svg class="pfix-best__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${WHY_ICONS[i]}</svg>` +
-        `<h4 class="pfix-best__title">${esc(title)}</h4>` +
-        `<p class="pfix-best__text">${esc(names.length > 1 ? brands[1] : text)}</p>` +
-        (names.length > 1 ? `<ul class="pfix-best__brands" aria-label="Partner brands">${names.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : '') +
+    const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
+    const img = (src, attrs) =>
+      `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
+    const evidence = [
+      `<figure class="pfix-proof__photo"><img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></figure>`,
+      `<ul class="pfix-proof__grid pfix-proof__logos" aria-label="Brands we partner with">` +
+        BEST_BRANDS.map((b) => `<li style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</li>`).join('') +
+        `</ul>`,
+      `<ul class="pfix-proof__grid pfix-proof__badges" aria-label="GAF certifications">` +
+        BEST_BADGES.map(([src, label]) => `<li>${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></li>`).join('') +
+        `</ul>`,
+    ];
+    const label = built
+      ? null
+      : row.parentNode && (row.parentNode.childNodes || []).filter((k) => k.tagName).find((k, i, all) => all[i + 1] === row && hasClass(k, 'para-bold'));
+    const labelled = built || !!label;
+    ed.outer(
+      row,
+      `<div class="pfix-proof" role="list"${labelled ? ' aria-labelledby="pfix-best-label"' : ''}>` +
+        items
+          .map(
+            ({ title, text }, i) =>
+              `<div class="pfix-proof__row pfix-proof__row--${['photo', 'logos', 'badges'][i]}" role="listitem">` +
+              `<div class="pfix-proof__claim"><h4 class="pfix-proof__title">${esc(title)}</h4><p class="pfix-proof__text">${esc(text)}</p></div>` +
+              `<div class="pfix-proof__evidence">${evidence[i]}</div></div>`
+          )
+          .join('') +
         `</div>`
-      );
-    };
-    ed.outer(row, `<div class="pfix-best" role="list"${label ? ' aria-labelledby="pfix-best-label"' : ''}>${items.map(column).join('')}</div>`);
+    );
     if (label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
-      ed.outer(label, `<h3 class="pfix-best-label" id="pfix-best-label">${esc(clean(textOf(label)).replace(/\s+/g, ' ').trim())}</h3>`);
+      ed.outer(label, `<h3 class="pfix-best-label" id="pfix-best-label">${esc(plainText(label))}</h3>`);
     }
-    changes.push('why panda: one ruled panel of three columns with line icons and dark headings, the brands listed (was three floating cards with orange circles and headings)');
+    changes.push('why panda: each claim beside its proof (the crew at work, the partner brands’ logos, the GAF badges) in three ruled rows (was three floating cards with orange circles and headings)');
     used.css = true;
   }
 
