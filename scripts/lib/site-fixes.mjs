@@ -786,7 +786,8 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       continue;
     }
     const section = ancestors(grid).find((a) => hasClass(a, 'Team-section'));
-    if (section && !hasClass(section, 'pfix-services')) ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm']));
+    // (On /gutters/ the band is Panda orange: the page had two white sections in a row.)
+    if (section && !hasClass(section, 'pfix-services')) ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm', ...(pathname === '/gutters/' ? ['pfix-services--orange'] : [])]));
     ed.outer(
       grid,
       `<div class="pfix-svc-grid${cards.length < 3 ? ' pfix-svc-grid--pair' : ''}" role="list">` +
