@@ -132,6 +132,10 @@
 //    the lime "Quality Roof Replacements" band (white on lime) becomes what affects the cost,
 //    the quality cards as icon cards, insurance roofing (what's covered, how Panda helps with
 //    a claim, Panda's guides) and questions, with the offers band (roofing-costs-page.mjs).
+//  - /roofing/types/: the hero gets chips for the four roof types and estimate and call buttons
+//    (services-hero.mjs); the lime "Gorgeous Roofing Options" band (white on lime) becomes four
+//    roof type cards, a comparison table, how to choose, why Panda and questions, with the
+//    offers band and "About Our Team" on charcoal green (roofing-types-page.mjs).
 //  - /roofing/: the hero gets chips for the four roofing pages and estimate and call buttons
 //    (services-hero.mjs); "Our Process" (blue boxes over a faded mascot) becomes a numbered
 //    timeline with estimate and call buttons on charcoal green, and "About Our Team" gets the
@@ -198,6 +202,7 @@ import { collectGuttersPage } from './gutters-page.mjs';
 import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 import { collectSolarPages } from './solar-pages.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
+import { collectRoofingTypesPage } from './roofing-types-page.mjs';
 import { collectRoofingPage } from './roofing-page.mjs';
 import { collectBlogPages } from './blog.mjs';
 import { collectProjectPage, collectProjectStrip } from './project-pages.mjs';
@@ -840,6 +845,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // questions and the offers band (roofing-costs-page.mjs). First too, so the fixes below
   // leave the lime band it replaces be.
   if (collectRoofingCostsPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  // /roofing/types/: four roof types (was three white cards on lime), side by side, how to
+  // choose, why Panda, questions, the offers band and "About Our Team" on charcoal green
+  // (roofing-types-page.mjs). First too, so the fixes below leave the lime band it replaces be.
+  if (collectRoofingTypesPage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) {
     used.css = true;
     used.js = true;
   }
