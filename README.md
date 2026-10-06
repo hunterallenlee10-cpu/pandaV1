@@ -229,9 +229,17 @@ Most of these problems are on the live site too.
   lines (it is one). It ended at 186 px while the page starts at 150 px, so it covered the top 36 px of every page,
   the top of the heading on blog posts and the offer pages. The logo and the menu button are one row again (the
   opened menu still drops below them), the header sits right under the top bar, as on larger screens, and ends at
-  148 px; the menu button has a 44 px tap area. On `/careers/`, whose own header styles kept the whole menu open over
-  the top of the page up to 1024 px (the button closed it), the menu starts closed and opens as the same full-width
-  list as everywhere else. CSS only (`custom/site-fixes/site-fixes.css`).
+  148 px; the menu button has a 44 px tap area. CSS only (`custom/site-fixes/site-fixes.css`).
+- **The header on `/careers/`** (`scripts/lib/careers-header.mjs`): Careers is a hand-built page that loads none of
+  the page builder's stylesheets and carried its own, older copy of the header (a "Residential Roofing" entry, a
+  Commercial submenu, "Customer Service" in place of Financing and Warranty, no Storm Damage, a Gallery entry) with its
+  own styles for it (bold Roboto, a narrower and taller row with a shadow, the phone-only menu entries showing in the
+  dropdowns, and the whole menu open over the page up to 1024 px), so the header changed when you went to Careers.
+  After the pages are built, Careers gets the header of `/about/`: its markup, so the menu stays the same as
+  everywhere else; the stylesheets `/about/` styles it with, limited to the header (`scripts/lib/css-scope.mjs`,
+  written to `site/_custom/site-fixes/careers-header*.css` and linked where `/about/` has them); and the page's own
+  styles no longer reach the header. Its computed styles match `/about/`'s at 1440, 1150, 1024, 820 and 390 px, and
+  the rest of the page is unchanged to the pixel.
 - **`/reviews/`**: the "Read More Reviews!" button is removed (on request).
 - **`/reviews/` review wall**: the section under the hero showed a picture of an old Google rating (4.9), a "Write a
   Review" button and one review. It is now the Google rating as Google shows it (4.8 from 1,067 reviews), a **Write a
