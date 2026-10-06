@@ -324,7 +324,10 @@ Most of these problems are on the live site too.
   Panda lime over three cards with lime headings; it is the `/roofing/` signs' icon cards on cream: its three signs in
   its own words, three more from `/roofing/` (age, granules, sagging) and links to Panda's guides and storm damage. A
   new **Roofing Styles for Your New Roof** section (the band's paragraph on GAF's styles) shows the four roof types
-  with the Roof Types page's swatches, each leading to its card there, and a button to the comparison. "What Comes With
+  as cards, each with a photo of that kind of roof (Panda's own jobs for asphalt shingles, a flat TPO roof and GAF solar
+  shingles; a standing-seam metal roof from Wikimedia Commons, "Standing seam metal roof 5.jpg" by Wikideas1, CC0, as
+  no Panda photo of a metal roof exists; `custom/site-fixes/roof-type-*-480.webp` and `-960.webp`), each leading to its
+  card there, and a button to the comparison. "What Comes With
   Your New Roof" and "How Your Roof Replacement Works" get ids the hero's chips lead to, and the offers band follows
   the testimonials.
 - **`/roofing/types/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in

@@ -258,6 +258,9 @@ export const SITE_FIXES_FILES = {
   'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
   // the still behind the home hero's video, shown until the video plays
   'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
+  // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
+  // (roofing-replacement-page.mjs), 480 and 960 px wide
+  ...Object.fromEntries(['asphalt', 'metal', 'flat', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
