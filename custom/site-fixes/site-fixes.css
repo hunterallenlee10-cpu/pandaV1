@@ -484,6 +484,63 @@ a.bde-social-share-button:hover {
   max-width: 100%;
 }
 
+/* Home hero video (.pfix-hero-video): a still of a Panda job fills the hero, the YouTube
+   video fades in over it once it is playing (site-fixes.js adds .is-playing), so YouTube's
+   spinner, play button and "Video unavailable" screen never show; a short buffering blip
+   waits before fading. The overlay sits above the video (it was under it, so bright frames
+   washed out the heading), darkest behind the heading and lighter where the form is. */
+.hero > .pfix-hero-video {
+  background: #0a0e0b;
+}
+.pfix-hero-video > picture.pfix-hero-video__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.pfix-hero-video > picture.pfix-hero-video__poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.pfix-hero-video > .video > div {
+  z-index: 1;
+}
+.pfix-hero-video iframe {
+  opacity: 0;
+  transition: opacity 0.8s ease 0.4s;
+}
+.pfix-hero-video.is-playing iframe {
+  opacity: 1;
+  transition-delay: 0s;
+}
+.pfix-hero-video > .video-overlay {
+  z-index: 2;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(10, 14, 11, 0.86) 0%, rgba(10, 14, 11, 0.72) 38%, rgba(10, 14, 11, 0.42) 68%, rgba(10, 14, 11, 0.34) 100%);
+}
+.hero > .pfix-hero-video ~ * .hero-text-col h1 {
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+.hero > .pfix-hero-video ~ * .hero-text-col p {
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+/* Columns stacked: the text above the form, darkened evenly. */
+@media (max-width: 1023.98px) {
+  .pfix-hero-video > .video-overlay {
+    background: linear-gradient(180deg, rgba(10, 14, 11, 0.82) 0%, rgba(10, 14, 11, 0.66) 50%, rgba(10, 14, 11, 0.58) 100%);
+  }
+}
+/* No moving background for people who prefer reduced motion: the still stays. */
+@media (prefers-reduced-motion: reduce) {
+  .pfix-hero-video iframe {
+    visibility: hidden;
+  }
+}
 /* Blocks with a fixed desktop width (1143 px rows, the 1198 px blog article) in a column
    that is only 960 px wide at 1120–1199 px: no wider than the column. (!important: the
    rows also have their own max-width.) */

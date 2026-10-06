@@ -93,6 +93,15 @@ wide screens. Set `HERO_VIDEO_ID` in `scripts/lib/config.mjs` (or as an environm
 video ID to change it, or to `''` to keep the live site's video and sizing. It stays muted with no controls, and
 like on the live site it is hidden on phones (under 768 px wide).
 
+With the site fixes on, the hero no longer shows YouTube's own screens (`scripts/lib/site-fixes.mjs`, "hero video"):
+a still of a Panda job (`custom/site-fixes/home-hero-poster.webp`, from the drone photo `DJI_20250722134618_0999_D`)
+fills the hero, and the video fades in over it only once YouTube reports that it is playing (`site-fixes.js`), so the
+spinner, play button, YouTube logo and "Video unavailable" message (where autoplay is blocked: Low Power Mode, data
+saver, some ad blockers) never show behind the heading. The 90% black overlay sat under the video, so bright frames
+washed out the white heading; it is now above the video, darkest behind the heading and lighter under the form (an even
+tint when the columns stack), with a soft shadow on the heading and the line under it. Phones, and people who prefer
+reduced motion, see the still.
+
 **Every page scrolls smoothly.** Mouse-wheel and trackpad scrolling glide instead of moving in steps, with
 [Lenis](https://github.com/darkroomengineering/lenis) (`custom/smooth-scroll/`, linked from every page by
 `scripts/lib/customize.mjs` during the build, `SMOOTH_SCROLL=0` to turn off). The page still scrolls the normal way
