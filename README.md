@@ -205,10 +205,13 @@ Most of these problems are on the live site too.
   black footer below. The white version of the block (5 pages) is unchanged.
 - **"What Makes Panda the Best?"** (home page): three floating cards, each with an orange circle picture (two different
   sizes), an orange heading broken over two lines at different points (so the rules and text under them sat at three
-  heights) and light gray text. It is now one white panel with hairline rules between three equal columns (stacked below
-  992 px, the icon beside each heading): an orange line icon, a dark heading and the same text. The brands named in the
-  "Top-Tier Products" text (Freedom Forever, GAF, CertainTeed, James Hardie, Andersen and ProVia) are listed under it
-  instead of in a sentence, and the line above the panel is a heading.
+  heights) and light gray text. It is now three rows under a dark rule, each claim (the same heading and text) on the
+  left and what backs it up on the right: the crew roofing a four-story building (`about-team.webp`, also on `/about/`),
+  the six partner brands' logos in a hairline grid (GAF, CertainTeed, James Hardie, Andersen, ProVia, Freedom Forever;
+  they were named in a sentence), and the three GAF badges with their names (President's Club, Diamond Pledge, Metal
+  Certified). Below 768 px each claim sits above its proof. Andersen, CertainTeed and James Hardie are the logo files
+  already on the site; `custom/site-fixes/brand-gaf.svg` is from Wikimedia Commons (`File:GAF logo.svg`), and
+  `brand-provia.svg` and `brand-freedom-forever.svg` are the logos on provia.com and freedomforever.com.
 - **Pages wider than the screen** (checked on every page at widths from 320 to 1920 px; none is left):
   - **Home page hero**: the award badges picture kept a fixed 562 px width in the 260 px column between its two white
     lines, so it ran off the screen on tablets (768–1008 px, cutting off the "No. 1" badge) and slid under the form on

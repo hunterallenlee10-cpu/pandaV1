@@ -547,134 +547,191 @@ a.bde-social-share-button:hover {
 .pfix-fit {
   max-width: 100% !important;
 }
-/* "What Makes Panda the Best?" (home page, site-fixes.mjs "why panda"): one panel with
-   hairline rules between three equal columns (stacked below 992 px), a line icon, a dark
-   heading and the text. Orange is kept to the icons; nothing moves on hover, as nothing in
-   it is a link. */
+/* "What Makes Panda the Best?" (home page, site-fixes.mjs "why panda"): three rows under a
+   dark rule, each claim on the left and what backs it up on the right: the crew at work, the
+   partner brands' logos and the GAF badges, the last two in hairline grids. The photo and the
+   logos carry the colour; nothing moves on hover, as nothing in it is a link. Below 768 px
+   each claim sits above its proof. */
 h3.pfix-best-label {
   margin: 0;
-  padding: clamp(28px, 4vw, 44px) 0 18px;
+  padding: clamp(32px, 4.5vw, 52px) 0 20px;
   color: #1a2418;
   font-family: var(--robboto, Roboto), system-ui, sans-serif;
-  font-size: clamp(22px, 2.2vw, 26px);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.005em;
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
 }
-.pfix-best {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.pfix-proof {
+  --pfix-proof-rule: #e2e5dd;
   width: 100%;
   margin: 0;
-  border: 1px solid #e4e7e0;
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(26, 36, 24, 0.04);
+  border-top: 2px solid #1a2418;
   font-family: var(--robboto, Roboto), system-ui, sans-serif;
 }
-.pfix-best *,
-.pfix-best *::before,
-.pfix-best *::after {
+.pfix-proof *,
+.pfix-proof *::before,
+.pfix-proof *::after {
   box-sizing: border-box;
 }
-.pfix-best__item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 0;
-  padding: clamp(24px, 2.6vw, 36px);
+.pfix-proof__row {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(28px, 3.4vw, 44px) 0;
 }
-.pfix-best__item + .pfix-best__item {
-  border-left: 1px solid #e4e7e0;
+.pfix-proof__row + .pfix-proof__row {
+  border-top: 1px solid var(--pfix-proof-rule);
 }
-.pfix-best__icon {
-  display: block;
-  flex: none;
-  width: 30px;
-  height: 30px;
-  margin-bottom: 22px;
-  fill: none;
-  stroke: #f26924;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.pfix-best h4.pfix-best__title {
-  margin: 0 0 10px;
+.pfix-proof h4.pfix-proof__title {
+  margin: 0 0 12px;
   padding: 0;
   color: #1a2418;
   font-family: inherit;
-  font-size: 20px;
+  font-size: clamp(20px, 1.9vw, 24px);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.008em;
   text-align: left;
+  text-wrap: balance;
 }
-.pfix-best p.pfix-best__text {
+.pfix-proof p.pfix-proof__text {
+  max-width: 42ch;
   margin: 0;
   padding: 0;
-  color: #4a5346;
-  font-size: 16px;
+  color: #485244;
+  font-size: 16.5px;
   line-height: 1.65;
   text-align: left;
 }
-/* The partner brands, under the products text. (!important: the site's stylesheet indents
-   every list and makes its items white.) */
-.pfix-best ul.pfix-best__brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 16px 0 0 !important;
-  padding: 0 !important;
-  list-style: none;
+.pfix-proof__evidence {
+  min-width: 0;
 }
-.pfix-best ul.pfix-best__brands li {
+/* The crew at work: a wide crop that keeps the roofers on the roof and the truck. */
+.pfix-proof figure.pfix-proof__photo {
   margin: 0;
-  padding: 5px 10px;
-  border: 1px solid #e4e7e0;
-  border-radius: 6px;
-  background: #f7f8f5;
-  color: #2c3529 !important;
-  font-size: 13.5px;
-  font-weight: 500;
-  line-height: 1.3;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #dfe3da;
+  aspect-ratio: 16 / 7.5;
+}
+.pfix-proof__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+/* Logos and badges: cells divided by 1 px hairlines (the list's colour showing through the
+   gaps). (!important: the site's stylesheet indents every list, makes its items white list
+   items, and stretches every picture to the height of its box.) */
+.pfix-proof ul.pfix-proof__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid var(--pfix-proof-rule);
+  border-radius: 10px;
+  background: var(--pfix-proof-rule);
   list-style: none;
 }
-.pfix-best ul.pfix-best__brands li::before,
-.pfix-best ul.pfix-best__brands li::marker {
+.pfix-proof ul.pfix-proof__grid > li {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #1a2418 !important;
+  list-style: none;
+}
+.pfix-proof ul.pfix-proof__grid > li::before,
+.pfix-proof ul.pfix-proof__grid > li::marker {
   content: none;
 }
-/* Below 992 px (three columns would be about 200 px of text each): the columns stack, the
-   icon beside the heading, rules between them. */
+.pfix-proof__grid picture {
+  display: contents;
+}
+.pfix-proof ul.pfix-proof__logos > li {
+  height: 96px;
+  padding: 0 18px;
+}
+.pfix-proof .pfix-proof__logos img {
+  display: block;
+  width: auto;
+  max-width: 82%;
+  height: var(--h, 30px) !important;
+  object-fit: contain;
+}
+.pfix-proof ul.pfix-proof__badges > li {
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 12px 16px;
+}
+.pfix-proof .pfix-proof__badges img {
+  display: block;
+  width: 92px;
+  max-width: 100%;
+  height: auto !important;
+}
+.pfix-proof__badges span {
+  color: #1a2418;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+}
+/* Tablets: the claim keeps a little more room. */
 @media (max-width: 991.98px) {
-  .pfix-best {
+  .pfix-proof__row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
+  .pfix-proof ul.pfix-proof__logos > li {
+    height: 80px;
+    padding: 0 12px;
+  }
+  .pfix-proof .pfix-proof__logos img {
+    height: calc(var(--h, 30px) * 0.82) !important;
+  }
+  .pfix-proof .pfix-proof__badges img {
+    width: 76px;
+  }
+}
+/* Phones: each claim above its proof. */
+@media (max-width: 767.98px) {
+  .pfix-proof__row {
     grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding: 26px 0;
   }
-  .pfix-best__item {
-    display: grid;
-    grid-template-columns: 26px minmax(0, 1fr);
-    column-gap: 14px;
-    padding: 22px clamp(20px, 4vw, 32px);
+  .pfix-proof p.pfix-proof__text {
+    max-width: none;
+    font-size: 16px;
   }
-  .pfix-best__item + .pfix-best__item {
-    border-top: 1px solid #e4e7e0;
-    border-left: 0;
+  .pfix-proof figure.pfix-proof__photo {
+    aspect-ratio: 16 / 9;
   }
-  .pfix-best__icon {
-    width: 26px;
-    height: 26px;
-    margin: 0;
+  .pfix-proof ul.pfix-proof__logos > li {
+    height: 72px;
   }
-  .pfix-best h4.pfix-best__title {
-    align-self: center;
-    margin: 0;
+  .pfix-proof ul.pfix-proof__badges > li {
+    padding: 16px 8px 14px;
   }
-  .pfix-best p.pfix-best__text,
-  .pfix-best ul.pfix-best__brands {
-    grid-column: 1 / -1;
+  .pfix-proof .pfix-proof__badges img {
+    width: 64px;
   }
-  .pfix-best p.pfix-best__text {
-    margin-top: 10px;
-    font-size: 15.5px;
+  .pfix-proof__badges span {
+    font-size: 12.5px;
+  }
+}
+@media (max-width: 419.98px) {
+  .pfix-proof ul.pfix-proof__logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 /* Blog posts and offer pages: lists in the article were white on white (the site's stylesheet
