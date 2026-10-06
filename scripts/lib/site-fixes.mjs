@@ -1037,7 +1037,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // and the same text; the brands named in the second card's text are listed under it.
   // The line above it becomes the panel's heading (.pfix-best). Runs before the column fit
   // below, which would otherwise retag the row it replaces.
-  for (const row of findAll(doc, (c) => hasClass(c, 'team-cards'))) {
+  // (The service pages' card grids share the class: .Service-cards, left to their own fixes.)
+  for (const row of findAll(doc, (c) => hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards'))) {
     const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, 'team-card'));
     const items = cards.map((card) => ({
       title: clean(textOf(find(card, (c) => hasClass(c, 'team-heading')) || { childNodes: [] })).replace(/\s+/g, ' ').trim(),
