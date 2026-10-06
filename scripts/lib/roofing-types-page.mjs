@@ -10,8 +10,8 @@
 //    (a class for site-fixes.css);
 //  - "Gorgeous Roofing Options for East Coast Homes" keeps its heading and paragraph over four
 //    cards: the page's three options (in its own words) and GAF solar shingles, each with a
-//    drawn swatch of the material, what sets it apart and what it's best for, and a link to
-//    the page that says more. Each card has an id the hero's chips lead to;
+//    photo of that kind of roof (ROOF_PHOTOS), what sets it apart and what it's best for, and
+//    a link to the page that says more. Each card has an id the hero's chips lead to;
 //  - the four side by side in a table (how they look, how long they last, the upfront cost,
 //    the roof they suit and what they're best for);
 //  - how to choose, on charcoal green, with estimate and call buttons;
@@ -65,8 +65,23 @@ const ICONS = {
   phone: svg('<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/>'),
 };
 
-// A drawn swatch of each material, the top of its card (no photo of every type exists:
-// a metal roof is not among Panda's project photos). Pattern ids are unique on the page.
+// A photo of each kind of roof, the top of its card here and on /roofing/replacement/
+// (custom/site-fixes/roof-type-*-480.webp and -960.webp, 3:2). Panda's own jobs where there is
+// one: new architectural shingles at a ridge, a white TPO flat roof in the city, a GAF solar
+// shingle roof. No metal roof is among Panda's photos, so that one is a standing-seam roof
+// from Wikimedia Commons ("Standing seam metal roof 5.jpg" by Wikideas1, CC0).
+export const ROOF_PHOTOS = {
+  asphalt: 'New gray architectural shingles and ridge caps on a home Panda Exteriors re-roofed',
+  metal: 'A home with a dark gray standing-seam metal roof, seen from above',
+  flat: 'A new white flat roof on a city building, with church spires beyond',
+  solar: 'A home with a GAF solar shingle roof and three dormers, seen from above',
+};
+export const roofPhoto = (key, sizes) =>
+  `<img src="/_custom/site-fixes/roof-type-${key}-480.webp" srcset="/_custom/site-fixes/roof-type-${key}-480.webp 480w, /_custom/site-fixes/roof-type-${key}-960.webp 960w" ` +
+  `sizes="${sizes}" alt="${esc(ROOF_PHOTOS[key])}" width="480" height="320" loading="lazy" decoding="async">`;
+
+// A drawn swatch of each material, shown where a type has no photo. Pattern ids are unique on
+// the page.
 const sw = (key, defs, body) =>
   `<svg class="pfix-rt-swatch__art" viewBox="0 0 480 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs>${defs}</defs>${body}` +
   `<rect width="480" height="170" fill="url(#pfix-rt-${key}-shade)"/></svg>`;
@@ -262,7 +277,7 @@ const buttons = (onOrange = false) =>
 function typesHtml() {
   const card = (t) =>
     `<article class="pfix-rt-type pfix-rt-type--${t.key}" id="${TYPE_ANCHORS[t.key]}" role="listitem" aria-labelledby="pfix-rt-type-${t.key}">` +
-    `<div class="pfix-rt-swatch">${SWATCHES[t.key]}<span class="pfix-rt-swatch__tag">${ICONS[t.tag[0]]}${esc(t.tag[1])}</span></div>` +
+    `<div class="pfix-rt-swatch${ROOF_PHOTOS[t.key] ? ' pfix-rt-swatch--photo' : ''}">${ROOF_PHOTOS[t.key] ? roofPhoto(t.key, '(max-width: 900px) min(92vw, 640px), (max-width: 1100px) 46vw, 560px') : SWATCHES[t.key]}<span class="pfix-rt-swatch__tag">${ICONS[t.tag[0]]}${esc(t.tag[1])}</span></div>` +
     `<div class="pfix-rt-type__body">` +
     `<p class="pfix-rt-type__kicker">${esc(t.kicker)}</p>` +
     `<h3 class="pfix-rt-type__name" id="pfix-rt-type-${t.key}">${esc(t.name)}</h3>` +

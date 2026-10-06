@@ -339,7 +339,8 @@ Most of these problems are on the live site too.
   chips for the four roof types below each with a line, and estimate and call buttons over the shingle photo. The
   intro keeps its words and Inc. 5000 badges beside a rounded photo. Then: **Gorgeous Roofing Options** (its heading
   and paragraph) over four cards, asphalt shingles, metal roofing and flat roofing in the page's own words plus GAF
-  solar shingles, each with a drawn swatch of the material (no photo of a metal roof exists), four points, what it's
+  solar shingles, each with a photo of that kind of roof (the same four as the Roof Replacement page's roofing styles:
+  Panda's own jobs, and the CC0 standing-seam roof from Wikimedia Commons for metal), four points, what it's
   best for and a link, and an id the hero's chips lead to, with a link to the Spanish tile project; **Compare Roof
   Types at a Glance**, a table of look, lifespan, upfront cost, roof shape and best for (it scrolls sideways on
   phones, with the row labels kept in view; lifespans from Panda's "How long does a roof really last?"); **How to

@@ -9041,8 +9041,28 @@ h3.pfix-best-label {
   width: 100%;
   height: 100%;
 }
+/* A photo of the roof in place of the swatch: wider than tall, easing in a little on hover.
+   (!important: a stylesheet of the site's stretches every picture's height.) */
+.pfix-rt .pfix-rt-swatch--photo {
+  height: auto;
+  aspect-ratio: 2 / 1;
+}
+.pfix-rt .pfix-rt-swatch--photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100% !important;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pfix-rt .pfix-rt-type:hover .pfix-rt-swatch--photo img {
+  transform: scale(1.04);
+}
 .pfix-rt .pfix-rt-swatch__tag {
   position: absolute;
+  z-index: 1;
   bottom: 14px;
   left: 16px;
   display: inline-flex;
@@ -9652,6 +9672,10 @@ h3.pfix-best-label {
   .pfix-rt .pfix-rt-swatch {
     height: 120px;
   }
+  .pfix-rt .pfix-rt-swatch--photo {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
   .pfix-rt .pfix-rt-compare__table th,
   .pfix-rt .pfix-rt-compare__table td {
     padding: 13px 14px;
@@ -9680,7 +9704,8 @@ h3.pfix-best-label {
   .pfix-rt a.pfix-rt-btn {
     transition: none;
   }
-  .pfix-rt .pfix-rt-type:hover {
+  .pfix-rt .pfix-rt-type:hover,
+  .pfix-rt .pfix-rt-type:hover .pfix-rt-swatch--photo img {
     transform: none;
   }
 }
