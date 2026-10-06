@@ -10,7 +10,9 @@
 //  - hero: the headline and the total donated, "Donate to So Kids Soar" and "Partner with
 //    Panda" buttons, beside a collage of four event photos with a So Kids Soar badge;
 //  - recent gifts: the four gifts the page listed, largest first, as cards with the
-//    organizations' logos (labelled as recent gifts: they are part of the total, not all of it);
+//    organizations' logos (labelled as recent gifts: they are part of the total, not all of it).
+//    The page's logos were 78 px pictures blown up to 124 px, so blurry; they are now 240 px
+//    copies made from each organization's own logo (custom/site-fixes/charity-*.webp);
 //  - the three organizations Panda works with, each with an icon and its line;
 //  - a photo wall of the gallery's Community and Charity photos in a grid (tall photos take
 //    two rows; 12 at first, "Show all" for the rest), each opening the project gallery's
@@ -128,7 +130,7 @@ function hero(siteDir) {
     buttons('hero') +
     `</div>` +
     `<div class="pfix-cc-collage">${tiles.join('')}` +
-    (sks ? `<p class="pfix-cc-collage__badge"><img src="${esc(sks.logo)}" alt="" width="78" height="78" decoding="async"><span>${esc(h.badge)}</span></p>` : '') +
+    (sks ? `<p class="pfix-cc-collage__badge"><img src="${esc(sks.logo)}" alt="" width="240" height="240" decoding="async"><span>${esc(h.badge)}</span></p>` : '') +
     `</div>` +
     `</div></section>`
   );
@@ -138,7 +140,7 @@ function giftsSection() {
   const { gifts, hero: h } = charityPage();
   const items = [...gifts.items].sort((a, b) => b.amount - a.amount);
   const card = (g) =>
-    `<div class="pfix-cc-gift" role="listitem"><span class="pfix-cc-gift__logo"><img src="${esc(g.logo)}" alt="" width="78" height="78" loading="lazy" decoding="async"></span>` +
+    `<div class="pfix-cc-gift" role="listitem"><span class="pfix-cc-gift__logo"><img src="${esc(g.logo)}" alt="" width="240" height="240" loading="lazy" decoding="async"></span>` +
     `<b class="pfix-cc-gift__amount">${money(g.amount)}</b><span class="pfix-cc-gift__name">${esc(g.name)}</span></div>`;
   return (
     `<section class="pfix-cc__sec" id="recent-gifts" aria-labelledby="pfix-cc-gifts-title"><div class="pfix-cc__inner">` +

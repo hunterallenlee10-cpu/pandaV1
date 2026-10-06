@@ -5530,6 +5530,11 @@ h3.pfix-best-label {
   grid-row: 5 / 7;
   animation-delay: 0.3s;
 }
+/* A tall photo in a wide tile: kept to its upper part, so the faces show (the centre cut
+   off the man's head). */
+.pfix-cc .pfix-cc-collage__tile--4 img {
+  object-position: 50% 15%;
+}
 .pfix-cc .pfix-cc-collage__badge {
   position: absolute;
   left: 50%;
@@ -5597,16 +5602,14 @@ h3.pfix-best-label {
   box-shadow: 0 0 0 6px var(--cc-bg), 0 4px 12px rgba(20, 24, 15, 0.12);
 }
 /* !important: a stylesheet of the site's stretches these pictures' height. Each file is a
-   white disc with the logo small in its middle, so it is shown larger than the circle. */
+   240 px square with the logo centred in it, so it fills the circle. */
 .pfix-cc .pfix-cc-gift__logo img {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 124px !important;
-  height: 124px !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
   max-width: none;
   margin: 0;
-  transform: translate(-50%, -50%);
   object-fit: contain;
 }
 .pfix-cc .pfix-cc-gift__amount {

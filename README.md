@@ -467,7 +467,11 @@ Most of these problems are on the live site too.
   first, **Show all** for the rest; tall photos take two rows, in an order that fills every row), each opening in
   the project gallery's photo viewer (`custom/project-gallery/project-gallery.js`, with the photo's own
   description); the Community DC episode in its iHeart player; and a closing "Running a charity event?" band with
-  partner, donate and call buttons. The "About Our Team" form block below is unchanged.
+  partner, donate and call buttons. The "About Our Team" form block below is unchanged. The page's logos were 78 px
+  pictures blown up to 124 px, so they were blurry; the gift cards and the badge now use 240 px copies made from each
+  organization's own logo (`custom/site-fixes/charity-*.webp`: So Kids Soar's logo, the Panda logo for the Eapen
+  Open, the circled 24 from the 24 Foundation's logo and the crown from Zeta Tau Alpha's, in its own teal). The
+  collage's tall baseball photo is cropped to its upper part, so the man's head is no longer cut off.
 - **`/gallery/` hero and missing photos** (`scripts/lib/gallery-page.mjs`, words and photos in
   `custom/site-fixes/gallery-page.json`): the page opened straight on the category tabs, with no heading. It now opens
   with a hero on a charcoal-green band: "Panda Exteriors Company Gallery", a line about the work, a chip per category
