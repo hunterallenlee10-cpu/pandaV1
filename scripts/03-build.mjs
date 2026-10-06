@@ -25,6 +25,7 @@ import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './li
 import { addSitemapPages, flattenRedirects, pruneFeedXml } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
+import { syncCareersHeader } from './lib/careers-header.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -381,6 +382,10 @@ if (newPages.length && fs.existsSync(path.join(OUT, 'page-sitemap.xml'))) {
   const file = path.join(OUT, 'page-sitemap.xml');
   fs.writeFileSync(file, addSitemapPages(fs.readFileSync(file, 'utf8'), newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), SITE_ORIGIN));
 }
+
+// 3a''. /careers/ carries its own, older copy of the header: the header of a standard page
+// replaces it (careers-header.mjs).
+if (SITE_FIXES) console.log(`careers header: ${syncCareersHeader(OUT)}`);
 
 // 3b. Files only the pages removed on request used (their photos, page-only styles …)
 // are left out too. A file stays if its name appears in any other file of the copy.

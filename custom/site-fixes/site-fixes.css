@@ -870,30 +870,6 @@ h3.pfix-best-label {
     flex: 0 0 100%;
   }
 }
-/* /careers/: its own header styles show the menu at every width (body.pcv2-body .nav
-   .main_menu { display: block }), so up to 1024 px, where the menu button shows, the whole
-   menu sat open over the top of the page and the button closed it. It starts closed there,
-   as on every other page; the button opens it (an inline style, which wins over this), as a
-   full-width list under the logo like everywhere else (its styles laid it out beside the logo). */
-@media (max-width: 1024.98px) {
-  body.pcv2-body .oxy-container-974-100.nav .main_menu {
-    display: none;
-  }
-  body.pcv2-body .oxy-container-974-100.nav .oxy-container-974-102.row-flex {
-    flex-wrap: wrap !important;
-  }
-  body.pcv2-body .oxy-container-974-100.nav .row-flex > .main_menu {
-    flex: 0 0 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  body.pcv2-body .oxy-container-974-100.nav .main_menu .Menus-ul.ul {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
-  }
-}
-
 /* /service-areas/ "Our Reliable Exterior Remodeling Services": a gliding row of photo
    cards, one per service page (the row moves with the logo row's script and eases to a
    stop under the mouse). Without JavaScript, or with reduced motion, the cards sit still

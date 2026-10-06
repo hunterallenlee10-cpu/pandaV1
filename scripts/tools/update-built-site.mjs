@@ -26,6 +26,7 @@ import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '../lib/site-map-page.mjs';
+import { syncCareersHeader, CAREERS_PATH } from '../lib/careers-header.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
@@ -98,6 +99,16 @@ if (!only || newPagePaths().some((p) => only.has(p))) {
     changed++;
     if (!dryRun) writeFile(file, p.html);
     console.log(`${dryRun ? 'would write' : 'wrote'} ${path.relative(ROOT, file)}`);
+  }
+}
+
+// /careers/ carries its own, older copy of the header: the header of a standard page (as just
+// updated) replaces it (careers-header.mjs).
+if (SITE_FIXES && (!only || only.has(CAREERS_PATH) || only.has('/about/'))) {
+  const result = syncCareersHeader(SITE, { dryRun });
+  if (result === 'updated') {
+    changed++;
+    console.log(`${dryRun ? 'would update' : 'updated'} the header of ${CAREERS_PATH} (copied from /about/)`);
   }
 }
 
