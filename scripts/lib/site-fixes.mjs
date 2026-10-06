@@ -236,6 +236,12 @@ export const SITE_FIXES_FILES = {
   // the photos of /about/'s hero and "Our Mission" (about-page.mjs)
   'about-hero.webp': '/_custom/site-fixes/about-hero.webp',
   'about-team.webp': '/_custom/site-fixes/about-team.webp',
+  // the organizations' logos on /charity-and-community/ (charity-page.mjs): So Kids Soar,
+  // Panda (the Eapen Open), the 24 Foundation's circled 24 and Zeta Tau Alpha's crown
+  'charity-sks.webp': '/_custom/site-fixes/charity-sks.webp',
+  'charity-panda.webp': '/_custom/site-fixes/charity-panda.webp',
+  'charity-24.webp': '/_custom/site-fixes/charity-24.webp',
+  'charity-zta.webp': '/_custom/site-fixes/charity-zta.webp',
   // the partner brands' logos in the home page's "What Makes Panda the Best?"
   'brand-gaf.svg': '/_custom/site-fixes/brand-gaf.svg',
   'brand-provia.svg': '/_custom/site-fixes/brand-provia.svg',
