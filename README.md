@@ -275,6 +275,51 @@ Most of these problems are on the live site too.
   a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
   the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
   charcoal green it has on the other pages, with the heading in the styled h2.
+- **`/roofing/attic-insulation/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/attic-insulation-page.mjs`, which uses `scripts/lib/service-pages.mjs`'s signs, steps and questions):
+  the page was a hero, the intro and "Best East Coast Attic Insulation Contractors", white text on Panda lime (its
+  heading a plain block) over four cards with lime headings, then the testimonials. The hero now has the `/roofing/`
+  treatment (an "Attic insulation" label, the heading, its line on environmentally friendly, residential-approved
+  products, chips for why it matters, the signs, how it works and roof replacement, estimate and call buttons). The
+  intro keeps its words beside a rounded photo, with its facts (30+ years of combined experience, A-rated by the BBB,
+  environmentally friendly products). Then: **Why Attic Insulation Matters** on cream (the band's paragraph on warm
+  air rising, four benefits from Panda's blog posts, and a drawing of heat leaving an attic without insulation and
+  held in with it); six **signs your attic needs insulation** with links to the three blog guides; the band's heading
+  (now an h2), paragraph and four cards in their own words as white icon cards on Panda orange; **how it works** in
+  three steps on charcoal green; seven **attic insulation questions** (with FAQPage structured data) and a call band;
+  and, after the testimonials, the offers band.
+- **`/roofing/replacement/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/roofing-replacement-page.mjs` and, as before, `custom/site-fixes/service-pages.json`): the hero was the
+  heading and one line on the bare photo; it now has the `/roofing/` treatment (a "Roof replacement" label, the
+  heading, its line with one-day installs and GAF Master Elite crews, chips for the signs, what's included, how it
+  works and the roof types, estimate and call buttons, over the WebP copy of its photo). The intro keeps its words
+  beside the YouTube video in a rounded frame, with the facts it gives (one-day installations, GAF Master Elite
+  Certified, A-rated by the BBB) under the paragraphs. "Signs You May Need a Roof Replacement" was white text on
+  Panda lime over three cards with lime headings; it is the `/roofing/` signs' icon cards on cream: its three signs in
+  its own words, three more from `/roofing/` (age, granules, sagging) and links to Panda's guides and storm damage. A
+  new **Roofing Styles for Your New Roof** section (the band's paragraph on GAF's styles) shows the four roof types
+  with the Roof Types page's swatches, each leading to its card there, and a button to the comparison. "What Comes With
+  Your New Roof" and "How Your Roof Replacement Works" get ids the hero's chips lead to, and the offers band follows
+  the testimonials.
+- **`/roofing/types/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/roofing-types-page.mjs`): the hero was "High-Quality East Coast Roof Types and Styles" and one line on
+  the bare photo; under the intro, "Gorgeous Roofing Options for East Coast Homes" was white text on Panda lime over
+  three cards with lime headings, a sentence each, with nothing to compare them by. The hero now has the `/roofing/`
+  treatment (its block is the page's own `.types`, not a `.hero-section`; the same look in `site-fixes.css`): a "Roof
+  types" label, "Roof Types and Styles for Your East Coast Home", the line about GAF Master Elite installations,
+  chips for the four roof types below each with a line, and estimate and call buttons over the shingle photo. The
+  intro keeps its words and Inc. 5000 badges beside a rounded photo. Then: **Gorgeous Roofing Options** (its heading
+  and paragraph) over four cards, asphalt shingles, metal roofing and flat roofing in the page's own words plus GAF
+  solar shingles, each with a drawn swatch of the material (no photo of a metal roof exists), four points, what it's
+  best for and a link, and an id the hero's chips lead to, with a link to the Spanish tile project; **Compare Roof
+  Types at a Glance**, a table of look, lifespan, upfront cost, roof shape and best for (it scrolls sideways on
+  phones, with the row labels kept in view; lifespans from Panda's "How long does a roof really last?"); **How to
+  Choose the Right Roof** on charcoal green (six questions beside facts and estimate and call buttons); **Whatever You
+  Choose, It's Installed Right** as white icon cards on Panda orange (GAF Master Elite, upgraded warranties, one-day
+  install, financing); eight roof type questions (with FAQPage structured data) and a call band; after the
+  testimonials, the offers band; and **About Our Team** on charcoal green, as on `/roofing/`. No prices (every roof is
+  different); the words come from the page and from what `/roofing/`, `/roofing-costs/`, `/commercial-roofing/`,
+  `/solar-options/`, `/warranty/` and the blog already say.
 - **`/commercial-roofing/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
   `custom/site-fixes/service-pages.json` and `scripts/lib/service-pages.mjs`, "Our Process" in
   `scripts/lib/roofing-page.mjs`, cards in `scripts/lib/gutters-page.mjs`): the hero was the heading and "No matter

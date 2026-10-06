@@ -35,6 +35,19 @@
 //    sections below (the roof systems, replacements, the buildings Panda roofs and its
 //    projects), over a 161 KB WebP crop (commercial-hero.webp) of the white TPO roof from
 //    Panda's "Expert TPO Roofing" project.
+//  - /roofing/types/: "High-Quality East Coast Roof Types and Styles" and its line on a close-up
+//    of shingles (Roofing-Shingles.jpg, already a 172 KB JPEG). Its hero is the one without the
+//    hero-section class (found by its own, "types"; site-fixes.css gives it the same look). The
+//    chips lead to the four roof types below (roofing-types-page.mjs), each with a line from
+//    its card.
+//  - /roofing/replacement/: "High-Quality Roof Replacement Services in the East Coast" and its line
+//    over an aerial photo of a roof being replaced (the 175 KB WebP copy beside the 276 KB
+//    JPEG). The chips lead to the signs, what comes with a new roof and how it works below
+//    (roofing-replacement-page.mjs, service-pages.json) and to the roof types.
+//  - /roofing/attic-insulation/: "High-Efficiency Attic Insulation Services in the East Coast" and
+//    its line on environmentally friendly products, over a photo of a roofer fitting insulation
+//    (Attic-Insulation.jpg, already a 231 KB JPEG). The chips lead to why it matters, the
+//    signs and how it works below (attic-insulation-page.mjs) and to roof replacement.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -57,6 +70,8 @@ const ICONS = {
   gutter: line('M3 7h18l-2 4H5zM17 11v6.5a2.5 2.5 0 0 0 2.5 2.5'),
   guard: line('M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6zM8.8 12.2l2.2 2.2 4.4-4.6'),
   layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
+  // standing-seam metal panels (/roofing/types/)
+  seam: line('M3 20V9l3-4 3 4v11M9 20V9l3-4 3 4v11M15 20V9l3-4 3 4v11'),
   swap: line('M4 9h13l-3.5-3.5M20 15H7l3.5 3.5'),
   thermo: line('M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0zM12 9v7.5'),
   card: line('M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5zM3 10h18M7 15h4'),
@@ -218,6 +233,56 @@ const HEROES = {
     ],
     note: 'chips for the roof systems, replacements, buildings and projects below and estimate and call buttons, over a WebP crop of a TPO roof Panda installed (was a heading and a line on a stock photo of an apartment building)',
   },
+  '/roofing/types/': {
+    key: 'types',
+    from: 'types',
+    // (Not a hero-section: the page's own hero block.)
+    anyBlock: true,
+    photo: '/wp-content/uploads/2025/04/Roofing-Shingles.jpg',
+    eyebrow: 'Roof types',
+    title: 'Roof Types and Styles for Your East Coast Home',
+    sub: 'As a GAF Master Elite contractor, you can depend on our team for industry-leading installations and service, whichever roof you choose: shingles, metal, a flat roof or solar shingles.',
+    // The four roof types below (roofing-types-page.mjs), with a line from each card.
+    chips: [
+      ['layers', 'Asphalt shingles', '#asphalt-shingles', 'Classic and cost-effective'],
+      ['seam', 'Metal roofing', '#metal-roofing', 'Lasts upwards of 50 years'],
+      ['building', 'Flat roofing', '#flat-roofing', 'TPO, EPDM, Mod Bit and PVC'],
+      ['sun', 'GAF solar shingles', '#solar-shingles', 'A roof that makes its own power'],
+    ],
+    note: 'chips for the four roof types below and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
+  '/roofing/replacement/': {
+    key: 'replacement',
+    from: 'replacement',
+    photo: '/wp-content/uploads/2025/04/Roof-Replacement.jpg.webp',
+    eyebrow: 'Roof replacement',
+    title: 'High-Quality Roof Replacements for Your East Coast Home',
+    sub: 'Our hardworking attitude ensures you’ll receive a top-quality roof installation in no time at all: most homes are done in as little as one day, by GAF Master Elite certified crews.',
+    // The sections below the hero and the Roof Types page, with a line from each.
+    chips: [
+      ['roof', 'Signs it’s time', '#replacement-signs', 'Missing shingles, stains, dark spots'],
+      ['guard', 'What’s included', '#whats-included', 'Warranties, clean-up and more'],
+      ['swap', 'How it works', '#how-it-works', 'Installed in as little as one day'],
+      ['layers', 'Roof types', '/roofing/types/', 'Shingles, metal, flat and solar'],
+    ],
+    note: 'chips for the signs, what comes with a new roof, how it works and the roof types and estimate and call buttons, with a WebP copy of the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
+  '/roofing/attic-insulation/': {
+    key: 'attic',
+    from: 'attic',
+    photo: '/wp-content/uploads/2025/04/Attic-Insulation.jpg',
+    eyebrow: 'Attic insulation',
+    title: 'High-Efficiency Attic Insulation for Your East Coast Home',
+    sub: 'Keep your home comfortable all year and your energy bills down. All our insulation products are environmentally friendly and residential approved, so you and your loved ones are safe.',
+    // The sections below the hero and roof replacement, with a line from each.
+    chips: [
+      ['thermo', 'Why it matters', '#why-insulate', 'Lower bills, a healthier roof'],
+      ['roof', 'Signs you need it', '#insulation-signs', 'Drafts, hot rooms, ice dams'],
+      ['swap', 'How it works', '#how-it-works', 'A free attic check to start'],
+      ['layers', 'With a new roof', '/roofing/replacement/', 'Do both at once'],
+    ],
+    note: 'chips for why it matters, the signs, how it works and roof replacement and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -225,7 +290,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
@@ -261,7 +326,7 @@ export function collectServiceHero(doc, html, ed, { pathname = '', siteDir = '' 
     return false;
   }
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
-  const hero = find(doc, (c) => hasClass(c, 'hero-section') && (hasClass(c, h.from) || hasClass(c, 'pfix-sv-hero')));
+  const hero = find(doc, (c) => (h.anyBlock || hasClass(c, 'hero-section')) && (hasClass(c, h.from) || hasClass(c, 'pfix-sv-hero')));
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   if (!text || !free(text)) return false;
 
