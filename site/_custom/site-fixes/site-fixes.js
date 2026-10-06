@@ -10,6 +10,7 @@
    - /faqs/: the hero's search narrows the questions as you type, and the topic menu beside
      the questions shows which topic you are reading.
    - /gallery/: the hero's category chips and photos open their category's tab.
+   - Home hero: the YouTube background video fades in over its still once it is playing.
    - The header menu where it folds behind the menu button (up to 1024 px): "Solar Options"
      opens its page, its arrow opens its list; from 768 px its dropdowns open as on phones. */
 (function () {
@@ -515,4 +516,60 @@
     },
     true
   );
+})();
+
+/* Home hero video (.pfix-hero-video): YouTube shows a spinner, a play button and its logo
+   until the video plays (and keeps the play button, or says "Video unavailable", where
+   autoplay is blocked), so the player stays hidden over the hero's still until it reports
+   that it is playing. The player only reports once asked (the "listening" message the
+   YouTube IFrame API sends; the embed has enablejsapi=1). WP Rocket loads the player when
+   the hero nears the screen, so this asks again after each load. A player that never
+   answers at all is shown after a while, as before. */
+(function () {
+  'use strict';
+  var box = document.querySelector('.pfix-hero-video');
+  var frame = box && box.querySelector('iframe');
+  if (!frame) return;
+  var PLAYING = 1;
+  var BUFFERING = 3;
+  var heard = false;
+  var asking = null;
+  var fallback = null;
+
+  function ask() {
+    if (!frame.contentWindow || !/youtube(?:-nocookie)?\.com\/embed\//.test(frame.src)) return;
+    frame.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 'pfix-hero-video', channel: 'widget' }), '*');
+  }
+  function startAsking() {
+    var tries = 0;
+    clearInterval(asking);
+    asking = setInterval(function () {
+      ask();
+      if (heard || ++tries > 40) clearInterval(asking);
+    }, 250);
+    ask();
+    clearTimeout(fallback);
+    fallback = setTimeout(function () {
+      if (!heard) box.classList.add('is-playing');
+    }, 12000);
+  }
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== frame.contentWindow || !/^https:\/\/www\.youtube(?:-nocookie)?\.com$/.test(event.origin)) return;
+    var data;
+    try {
+      data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+    } catch (e) {
+      return;
+    }
+    if (!data || typeof data !== 'object') return;
+    heard = true;
+    var state = data.event === 'onStateChange' ? data.info : data.info && data.info.playerState;
+    if (typeof state !== 'number') return;
+    // A short buffering blip keeps the video showing (the fade out waits a moment anyway).
+    if (state === BUFFERING) return;
+    box.classList.toggle('is-playing', state === PLAYING);
+  });
+  frame.addEventListener('load', startAsking);
+  startAsking();
 })();

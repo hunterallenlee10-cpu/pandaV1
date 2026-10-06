@@ -27,6 +27,12 @@
 //    between two white lines (off the right of the screen on tablets, under the form on
 //    small laptops); above phone size the lines and the picture now share one width, as
 //    they already did on phones.
+//  - Home hero video: YouTube's own loading screen (spinner, play button, logo, or "Video
+//    unavailable" where autoplay is blocked) showed behind the heading, and the 90% black
+//    overlay sat under the video, so bright frames washed out the white text. A still of
+//    a Panda job (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
+//    fades in over it only once it is playing (site-fixes.js), and the overlay is above
+//    the video, darkest behind the heading. Phones (no video) get the still too.
 //  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
 //    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
 //    (1140 px above), so they ran off the right of the screen (the blog text was cut
@@ -235,11 +241,13 @@ export const SITE_FIXES_FILES = {
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
   // the photo behind /commercial-roofing/'s hero (services-hero.mjs)
   'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
+  // the still behind the home hero's video, shown until the video plays
+  'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -284,6 +292,8 @@ const GOOGLE_RATING = '4.9';
 
 // /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
+// The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
+const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
 const SA_MAP_ID = 'service-map';
@@ -988,6 +998,25 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     if (!retagOnce(box, 'pfix-hero-awards')) continue;
     changes.push('hero awards picture: kept between its two lines, no wider than its column (it ran off the screen on tablets and under the form on small laptops)');
     used.css = true;
+  }
+
+  // Home hero: the YouTube background video (applyHeroVideo in customize.mjs) -> a still
+  // under it that shows until the video plays, the video fading in once it does
+  // (site-fixes.js), and the overlay above the video (.pfix-hero-video).
+  const heroVideo = find(
+    doc,
+    (c) => hasClass(c, 'video-background') && hasClass(c.parentNode, 'hero') && find(c, (x) => x.tagName === 'iframe' && /youtube(?:-nocookie)?\.com\/embed\//.test(attr(x, 'data-lazy-src') || attr(x, 'src') || ''))
+  );
+  if (heroVideo && retagOnce(heroVideo, 'pfix-hero-video')) {
+    const at = heroVideo.sourceCodeLocation.startTag.endOffset;
+    ed.replace(
+      at,
+      at,
+      `<picture class="pfix-hero-video__poster"><img src="${HERO_POSTER.src}" alt="" width="${HERO_POSTER.width}" height="${HERO_POSTER.height}" fetchpriority="high" decoding="async"></picture>`
+    );
+    changes.push('hero video: a still of a Panda job shows until the video plays (no YouTube play button or loading screen), the overlay above the video, darkest behind the heading');
+    used.css = true;
+    used.js = true;
   }
 
   // Blocks with a fixed desktop width wider than their column at 1120–1199 px (1143 px
