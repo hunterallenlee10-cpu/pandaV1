@@ -141,6 +141,10 @@
 //    page's facts, and the lime "Signs You May Need a Roof Replacement" band (white on lime)
 //    becomes six icon-card signs and the four roof styles, with the offers band
 //    (roofing-replacement-page.mjs).
+//  - /roofing/attic-insulation/: the hero gets chips for the sections below and estimate and
+//    call buttons (services-hero.mjs); the lime "Best East Coast Attic Insulation Contractors"
+//    band (white on lime) becomes why it matters, signs, its cards on Panda orange, how it
+//    works and questions, with the offers band (attic-insulation-page.mjs).
 //  - /roofing/: the hero gets chips for the four roofing pages and estimate and call buttons
 //    (services-hero.mjs); "Our Process" (blue boxes over a faded mascot) becomes a numbered
 //    timeline with estimate and call buttons on charcoal green, and "About Our Team" gets the
@@ -209,6 +213,7 @@ import { collectSolarPages } from './solar-pages.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
 import { collectRoofingTypesPage } from './roofing-types-page.mjs';
 import { collectRoofingReplacementPage } from './roofing-replacement-page.mjs';
+import { collectAtticInsulationPage } from './attic-insulation-page.mjs';
 import { collectRoofingPage } from './roofing-page.mjs';
 import { collectBlogPages } from './blog.mjs';
 import { collectProjectPage, collectProjectStrip } from './project-pages.mjs';
@@ -865,6 +870,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // cards (was three white cards on lime), the four roof styles and the offers band
   // (roofing-replacement-page.mjs). First too, so the fixes below leave the lime band be.
   if (collectRoofingReplacementPage(doc, html, ed, { pathname, siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  // /roofing/attic-insulation/: the intro with the page's facts; why it matters, signs, the
+  // four cards on Panda orange (was white on lime), how it works, questions and the offers band
+  // (attic-insulation-page.mjs). First too, so the fixes below leave the lime band be.
+  if (collectAtticInsulationPage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) {
     used.css = true;
     used.js = true;
   }

@@ -58,6 +58,8 @@ const ICONS = {
   granules: line('M3 9h18l-2 4H5zM8 17.5v.1M12 19v.1M16 17.5v.1M10 21v.1M14 21v.1'),
   // a roof with a dark patch (/roofing/replacement/)
   patch: line('M3 12L12 4l9 8M5.5 10v10h13V10M9 13.5c1.2-1 2.6-1 3.8 0s2.4 1 3.2.2'),
+  // a snowflake (ice dams, /roofing/attic-insulation/)
+  ice: line('M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5L12 6l2.5-1.5M9.5 19.5L12 18l2.5 1.5'),
   sag: line('M3 7c3 0 6 6 9 6s6-6 9-6M5 17h14M8 13.5V17M16 13.5V17'),
   bolt: line('M13 2.5L5 13.5h6l-1 8 8-11h-6z'),
   layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
@@ -148,7 +150,7 @@ function renderCheck(c, exists, key = 'check') {
   );
 }
 
-const renderSteps = (s) =>
+export const renderSteps = (s) =>
   section(
     'steps',
     'steps',
@@ -157,7 +159,7 @@ const renderSteps = (s) =>
     s.id
   );
 
-const renderFaq = (f, cta) =>
+export const renderFaq = (f, cta) =>
   section(
     'faq',
     'faq',
@@ -199,7 +201,7 @@ export function renderServicePage(page, { siteDir } = {}) {
   );
 }
 
-const faqLd = (page, url) =>
+export const faqLd = (page, url) =>
   `<script type="application/ld+json" data-pfix-sp-ld>${JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

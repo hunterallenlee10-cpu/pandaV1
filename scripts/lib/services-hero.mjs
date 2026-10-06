@@ -44,6 +44,10 @@
 //    over an aerial photo of a roof being replaced (the 175 KB WebP copy beside the 276 KB
 //    JPEG). The chips lead to the signs, what comes with a new roof and how it works below
 //    (roofing-replacement-page.mjs, service-pages.json) and to the roof types.
+//  - /roofing/attic-insulation/: "High-Efficiency Attic Insulation Services in the East Coast" and
+//    its line on environmentally friendly products, over a photo of a roofer fitting insulation
+//    (Attic-Insulation.jpg, already a 231 KB JPEG). The chips lead to why it matters, the
+//    signs and how it works below (attic-insulation-page.mjs) and to roof replacement.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -263,6 +267,22 @@ const HEROES = {
     ],
     note: 'chips for the signs, what comes with a new roof, how it works and the roof types and estimate and call buttons, with a WebP copy of the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
+  '/roofing/attic-insulation/': {
+    key: 'attic',
+    from: 'attic',
+    photo: '/wp-content/uploads/2025/04/Attic-Insulation.jpg',
+    eyebrow: 'Attic insulation',
+    title: 'High-Efficiency Attic Insulation for Your East Coast Home',
+    sub: 'Keep your home comfortable all year and your energy bills down. All our insulation products are environmentally friendly and residential approved, so you and your loved ones are safe.',
+    // The sections below the hero and roof replacement, with a line from each.
+    chips: [
+      ['thermo', 'Why it matters', '#why-insulate', 'Lower bills, a healthier roof'],
+      ['roof', 'Signs you need it', '#insulation-signs', 'Drafts, hot rooms, ice dams'],
+      ['swap', 'How it works', '#how-it-works', 'A free attic check to start'],
+      ['layers', 'With a new roof', '/roofing/replacement/', 'Do both at once'],
+    ],
+    note: 'chips for why it matters, the signs, how it works and roof replacement and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -270,7 +290,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +

@@ -275,6 +275,19 @@ Most of these problems are on the live site too.
   a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
   the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
   charcoal green it has on the other pages, with the heading in the styled h2.
+- **`/roofing/attic-insulation/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/attic-insulation-page.mjs`, which uses `scripts/lib/service-pages.mjs`'s signs, steps and questions):
+  the page was a hero, the intro and "Best East Coast Attic Insulation Contractors", white text on Panda lime (its
+  heading a plain block) over four cards with lime headings, then the testimonials. The hero now has the `/roofing/`
+  treatment (an "Attic insulation" label, the heading, its line on environmentally friendly, residential-approved
+  products, chips for why it matters, the signs, how it works and roof replacement, estimate and call buttons). The
+  intro keeps its words beside a rounded photo, with its facts (30+ years of combined experience, A-rated by the BBB,
+  environmentally friendly products). Then: **Why Attic Insulation Matters** on cream (the band's paragraph on warm
+  air rising, four benefits from Panda's blog posts, and a drawing of heat leaving an attic without insulation and
+  held in with it); six **signs your attic needs insulation** with links to the three blog guides; the band's heading
+  (now an h2), paragraph and four cards in their own words as white icon cards on Panda orange; **how it works** in
+  three steps on charcoal green; seven **attic insulation questions** (with FAQPage structured data) and a call band;
+  and, after the testimonials, the offers band.
 - **`/roofing/replacement/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
   `scripts/lib/roofing-replacement-page.mjs` and, as before, `custom/site-fixes/service-pages.json`): the hero was the
   heading and one line on the bare photo; it now has the `/roofing/` treatment (a "Roof replacement" label, the

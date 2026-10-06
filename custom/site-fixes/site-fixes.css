@@ -6336,6 +6336,11 @@ a.bde-social-share-button:hover {
 }
 /* /roofing/types/: a close-up of shingles (its hero is the page's own block, .types, not a
    .hero-section). */
+/* /roofing/attic-insulation/: a roofer fitting insulation between the rafters. */
+.hero-section.pfix-sv-hero--attic {
+  background-image: url("/wp-content/uploads/2025/04/Attic-Insulation.jpg");
+  background-position: 50% 35%;
+}
 /* /roofing/replacement/: an aerial photo of a roof being replaced. */
 .hero-section.pfix-sv-hero--replacement {
   background-image: url("/wp-content/uploads/2025/04/Roof-Replacement.jpg.webp");
@@ -6485,7 +6490,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--types .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--attic .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 /* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
@@ -6640,7 +6646,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--types .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--attic .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
@@ -6654,7 +6661,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--types .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--attic .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
   .pfix-sv-hero .pfix-sv-hero__brands img {
@@ -7626,7 +7634,8 @@ a.bde-social-share-button:hover {
    The intro: its words, as a heading and paragraphs beside a rounded photo. */
 .Service-container.pfix-rc-intro,
 .Service-container.pfix-rt-intro,
-.Service-container.pfix-rr-intro {
+.Service-container.pfix-rr-intro,
+.Service-container.pfix-ai-intro {
   align-items: center;
   gap: clamp(28px, 4vw, 56px);
   padding-top: clamp(48px, 6vw, 88px) !important;
@@ -7638,7 +7647,9 @@ a.bde-social-share-button:hover {
 .pfix-rt-intro .flext-head,
 .pfix-rt-intro .flext-head h2,
 .pfix-rr-intro .flext-head,
-.pfix-rr-intro .flext-head h2 {
+.pfix-rr-intro .flext-head h2,
+.pfix-ai-intro .flext-head,
+.pfix-ai-intro .flext-head h2 {
   color: #14180f;
   font-family: inherit;
   font-size: clamp(28px, 3vw, 38px);
@@ -7651,7 +7662,8 @@ a.bde-social-share-button:hover {
 }
 .pfix-rc-intro .flext-head::before,
 .pfix-rt-intro .flext-head::before,
-.pfix-rr-intro .flext-head::before {
+.pfix-rr-intro .flext-head::before,
+.pfix-ai-intro .flext-head::before {
   content: "Roofing costs";
   display: block;
   margin-bottom: 10px;
@@ -7663,7 +7675,8 @@ a.bde-social-share-button:hover {
 }
 .pfix-rc-intro .flex-para,
 .pfix-rt-intro .flex-para,
-.pfix-rr-intro .flex-para {
+.pfix-rr-intro .flex-para,
+.pfix-ai-intro .flex-para {
   padding-bottom: 14px !important;
   color: #3f463a;
   font-size: 17px;
@@ -7674,7 +7687,8 @@ a.bde-social-share-button:hover {
   font-weight: 700;
 }
 .pfix-rc-intro .Flex-image img,
-.pfix-rt-intro .Flex-image img {
+.pfix-rt-intro .Flex-image img,
+.pfix-ai-intro .Flex-image img {
   border-radius: 22px;
   box-shadow: 0 20px 44px rgba(20, 24, 15, 0.16);
 }
@@ -8176,6 +8190,289 @@ a.bde-social-share-button:hover {
   .pfix-rc .pfix-rc-faq__item,
   .pfix-rc a.pfix-rc-btn {
     transition: none;
+  }
+}
+
+/* /roofing/attic-insulation/ (attic-insulation-page.mjs). The intro: its words beside a
+   rounded photo, labelled like the other intros, with the page's facts. */
+.pfix-ai-intro .flext-head::before {
+  content: "Attic insulation";
+}
+.pfix-ai-intro .pfix-ai-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.pfix-ai-intro .pfix-ai-facts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #dfe8cc;
+  border-radius: 999px;
+  background: #f4f9e8;
+  color: #14180f;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pfix-ai-intro .pfix-ai-facts svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: #4d7c0f;
+}
+
+/* Why it matters, on cream: the paragraph and four benefits beside a drawing of heat leaving
+   an attic without insulation and held in with it. */
+.pfix-sp .pfix-sp__sec[id],
+.pfix-sp.pfix-ai .pfix-sp__sec {
+  scroll-margin-top: 140px;
+}
+.pfix-sp.pfix-ai .pfix-ai-why {
+  background: #f6f8f1;
+}
+.pfix-sp .pfix-ai-why__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 64px);
+}
+.pfix-sp .pfix-ai-why__text .pfix-sp__head {
+  margin: 0 0 26px;
+  text-align: left;
+}
+.pfix-sp .pfix-ai-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 24px;
+}
+.pfix-sp .pfix-ai-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.pfix-sp .pfix-ai-benefit__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(20, 24, 15, 0.08);
+  color: #c2410c;
+}
+.pfix-sp .pfix-ai-benefit__icon svg {
+  width: 22px;
+  height: 22px;
+}
+.pfix-sp .pfix-ai-benefit h3 {
+  margin-bottom: 4px;
+  font-size: 17.5px;
+}
+.pfix-sp .pfix-ai-benefit p {
+  color: var(--sp-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.pfix-sp .pfix-ai-diagram {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+.pfix-sp .pfix-ai-diagram__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  border: 1px solid #e4e8dc;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(20, 24, 15, 0.07);
+}
+.pfix-sp .pfix-ai-diagram__panel--good {
+  border-color: #cfe5a6;
+}
+.pfix-sp .pfix-ai-diagram__panel p {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--sp-muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.pfix-sp .pfix-ai-diagram__panel b {
+  color: var(--sp-ink);
+  font-size: 17px;
+}
+.pfix-sp .pfix-ai-diagram__panel--bad b {
+  color: #c2410c;
+}
+.pfix-sp .pfix-ai-diagram__panel--good b {
+  color: #4d7c0f;
+}
+.pfix-sp svg.pfix-ai-house {
+  width: 100%;
+  height: auto;
+}
+.pfix-ai-house .pfix-ai-house__ground {
+  fill: #dfe6d2;
+}
+.pfix-ai-house .pfix-ai-house__rooms {
+  fill: #fff4ec;
+}
+.pfix-ai-house .pfix-ai-house__walls {
+  fill: none;
+  stroke: #f3d9c6;
+  stroke-width: 2;
+}
+.pfix-ai-house .pfix-ai-house__attic {
+  fill: #f1ece4;
+}
+.pfix-ai-house .pfix-ai-house__roof {
+  fill: none;
+  stroke: #3b4038;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pfix-ai-house .pfix-ai-house__ceiling {
+  fill: none;
+  stroke: #8a8f84;
+  stroke-width: 3;
+}
+.pfix-ai-house .pfix-ai-house__insulation {
+  fill: #f7c3b5;
+}
+.pfix-ai-house .pfix-ai-house__fluff {
+  fill: none;
+  stroke: #e79a86;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.pfix-ai-house .pfix-ai-house__fluff--thin {
+  stroke: #f0b4a3;
+}
+.pfix-ai-house .pfix-ai-house__heat {
+  fill: none;
+  stroke: #f26924;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pfix-ai-diagram__panel--good .pfix-ai-house__heat {
+  stroke: #e2531a;
+}
+
+/* The band's four cards, as white icon cards on Panda orange. */
+.pfix-sp.pfix-ai .pfix-ai-panda {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.14), transparent 38%),
+    linear-gradient(120deg, #f26924 0%, #e2531a 100%);
+}
+.pfix-sp .pfix-ai-panda .pfix-sp__eyebrow {
+  color: #ffe6d6;
+}
+.pfix-sp .pfix-ai-panda .pfix-sp__title {
+  color: #ffffff;
+}
+.pfix-sp .pfix-ai-panda .pfix-sp__intro {
+  color: #fff6ef;
+  font-weight: 500;
+}
+.pfix-sp .pfix-ai-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.pfix-sp .pfix-ai-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(120, 40, 5, 0.22);
+}
+.pfix-sp .pfix-ai-card__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 14px;
+  background: #fff1e8;
+  color: #c2410c;
+}
+.pfix-sp .pfix-ai-card__icon svg {
+  width: 28px;
+  height: 28px;
+}
+.pfix-sp .pfix-ai-card h3 {
+  font-size: 19px;
+}
+.pfix-sp .pfix-ai-card p {
+  color: var(--sp-muted);
+  font-size: 15.5px;
+}
+.pfix-sp a.pfix-ai-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+  color: #c2410c;
+  font-size: 15.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.pfix-sp a.pfix-ai-more:hover {
+  color: #9a3412;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pfix-sp a.pfix-ai-more svg {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 1100px) {
+  .pfix-sp .pfix-ai-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 960px) {
+  .pfix-sp .pfix-ai-why__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-sp .pfix-ai-diagram {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-sp .pfix-ai-diagram__panel {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .pfix-sp .pfix-ai-benefits,
+  .pfix-sp .pfix-ai-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pfix-sp .pfix-ai-diagram {
+    gap: 10px;
+  }
+  .pfix-sp .pfix-ai-diagram__panel {
+    padding: 12px;
+  }
+  .pfix-sp .pfix-ai-diagram__panel p {
+    font-size: 13.5px;
+  }
+  .pfix-sp .pfix-ai-diagram__panel b {
+    font-size: 15px;
   }
 }
 
