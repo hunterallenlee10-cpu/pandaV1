@@ -194,7 +194,7 @@
             ["Look for hidden damage inside", "Check ceilings and the attic for stains, drips or damp insulation. Not all damage shows from the outside."],
             ["Call us as soon as possible", "We inspect and document the damage, and can add temporary protection, like a tarp, to stop more water getting in."]
           ],
-          "link": ["/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/", "What to do in the first 24 hours"]
+          "link": ["What to do in the first 24 hours", "/blog/storm-just-hit-what-to-do-in-the-first-24-hours-if-you-suspect-roof-damage/"]
         },
         { "type": "covered", "id": "what-insurance-covers", "eyebrow": "What insurance covers", "title": "Will Insurance Pay for Your Roof?", "intro": "Your policy decides, but storm damage insurance usually works like this:" },
         { "type": "claimSteps", "id": "claim-help", "eyebrow": "How we help", "title": "Your Claim, Step by Step" },
