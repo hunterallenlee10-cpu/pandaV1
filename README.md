@@ -275,6 +275,19 @@ Most of these problems are on the live site too.
   a lime band) uses the Gutters page's white icon cards with its own words, on Panda orange. **About Our Team** was
   the white version of the block, with its heading in a second, unstyled h2 (the styled one was empty); it gets the
   charcoal green it has on the other pages, with the heading in the styled h2.
+- **`/roofing/replacement/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
+  `scripts/lib/roofing-replacement-page.mjs` and, as before, `custom/site-fixes/service-pages.json`): the hero was the
+  heading and one line on the bare photo; it now has the `/roofing/` treatment (a "Roof replacement" label, the
+  heading, its line with one-day installs and GAF Master Elite crews, chips for the signs, what's included, how it
+  works and the roof types, estimate and call buttons, over the WebP copy of its photo). The intro keeps its words
+  beside the YouTube video in a rounded frame, with the facts it gives (one-day installations, GAF Master Elite
+  Certified, A-rated by the BBB) under the paragraphs. "Signs You May Need a Roof Replacement" was white text on
+  Panda lime over three cards with lime headings; it is the `/roofing/` signs' icon cards on cream: its three signs in
+  its own words, three more from `/roofing/` (age, granules, sagging) and links to Panda's guides and storm damage. A
+  new **Roofing Styles for Your New Roof** section (the band's paragraph on GAF's styles) shows the four roof types
+  with the Roof Types page's swatches, each leading to its card there, and a button to the comparison. "What Comes With
+  Your New Roof" and "How Your Roof Replacement Works" get ids the hero's chips lead to, and the offers band follows
+  the testimonials.
 - **`/roofing/types/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
   `scripts/lib/roofing-types-page.mjs`): the hero was "High-Quality East Coast Roof Types and Styles" and one line on
   the bare photo; under the intro, "Gorgeous Roofing Options for East Coast Homes" was white text on Panda lime over

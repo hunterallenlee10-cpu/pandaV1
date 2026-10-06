@@ -40,6 +40,10 @@
 //    hero-section class (found by its own, "types"; site-fixes.css gives it the same look). The
 //    chips lead to the four roof types below (roofing-types-page.mjs), each with a line from
 //    its card.
+//  - /roofing/replacement/: "High-Quality Roof Replacement Services in the East Coast" and its line
+//    over an aerial photo of a roof being replaced (the 175 KB WebP copy beside the 276 KB
+//    JPEG). The chips lead to the signs, what comes with a new roof and how it works below
+//    (roofing-replacement-page.mjs, service-pages.json) and to the roof types.
 //
 // Applied by site-fixes.mjs; the text is rendered again on every run (the hero is found by
 // its own class on a page an earlier build changed), so `npm run update:site` updates it.
@@ -243,6 +247,22 @@ const HEROES = {
     ],
     note: 'chips for the four roof types below and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
+  '/roofing/replacement/': {
+    key: 'replacement',
+    from: 'replacement',
+    photo: '/wp-content/uploads/2025/04/Roof-Replacement.jpg.webp',
+    eyebrow: 'Roof replacement',
+    title: 'High-Quality Roof Replacements for Your East Coast Home',
+    sub: 'Our hardworking attitude ensures you’ll receive a top-quality roof installation in no time at all: most homes are done in as little as one day, by GAF Master Elite certified crews.',
+    // The sections below the hero and the Roof Types page, with a line from each.
+    chips: [
+      ['roof', 'Signs it’s time', '#replacement-signs', 'Missing shingles, stains, dark spots'],
+      ['guard', 'What’s included', '#whats-included', 'Warranties, clean-up and more'],
+      ['swap', 'How it works', '#how-it-works', 'Installed in as little as one day'],
+      ['layers', 'Roof types', '/roofing/types/', 'Shingles, metal, flat and solar'],
+    ],
+    note: 'chips for the signs, what comes with a new roof, how it works and the roof types and estimate and call buttons, with a WebP copy of the photo darkened behind the text (was a heading and a line on the bare photo)',
+  },
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
@@ -250,7 +270,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +

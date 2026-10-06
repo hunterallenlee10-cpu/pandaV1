@@ -192,6 +192,7 @@
     "service": "roofing",
     "after": "roofers-section",
     "check": {
+      "id": "whats-included",
       "title": "What Comes With Your New Roof",
       "intro": "A new roof from Panda Exteriors is more than shingles. With every residential roof replacement you get:",
       "img": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
@@ -207,6 +208,7 @@
       "link": ["/warranty/", "See what our warranties cover"]
     },
     "steps": {
+      "id": "how-it-works",
       "title": "How Your Roof Replacement Works",
       "items": [
         ["Free inspection and estimate", "We look over your roof, tell you honestly what it needs and give you a clear estimate, at no cost. Storm damage? We check that too, and can meet your insurance adjuster."],

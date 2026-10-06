@@ -136,6 +136,11 @@
 //    (services-hero.mjs); the lime "Gorgeous Roofing Options" band (white on lime) becomes four
 //    roof type cards, a comparison table, how to choose, why Panda and questions, with the
 //    offers band and "About Our Team" on charcoal green (roofing-types-page.mjs).
+//  - /roofing/replacement/: the hero gets chips for the sections below and the roof types and
+//    estimate and call buttons (services-hero.mjs); the intro sits beside the video with the
+//    page's facts, and the lime "Signs You May Need a Roof Replacement" band (white on lime)
+//    becomes six icon-card signs and the four roof styles, with the offers band
+//    (roofing-replacement-page.mjs).
 //  - /roofing/: the hero gets chips for the four roofing pages and estimate and call buttons
 //    (services-hero.mjs); "Our Process" (blue boxes over a faded mascot) becomes a numbered
 //    timeline with estimate and call buttons on charcoal green, and "About Our Team" gets the
@@ -203,6 +208,7 @@ import { collectGutterGuardsPage } from './gutter-guards-page.mjs';
 import { collectSolarPages } from './solar-pages.mjs';
 import { collectRoofingCostsPage } from './roofing-costs-page.mjs';
 import { collectRoofingTypesPage } from './roofing-types-page.mjs';
+import { collectRoofingReplacementPage } from './roofing-replacement-page.mjs';
 import { collectRoofingPage } from './roofing-page.mjs';
 import { collectBlogPages } from './blog.mjs';
 import { collectProjectPage, collectProjectStrip } from './project-pages.mjs';
@@ -852,6 +858,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // choose, why Panda, questions, the offers band and "About Our Team" on charcoal green
   // (roofing-types-page.mjs). First too, so the fixes below leave the lime band it replaces be.
   if (collectRoofingTypesPage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+  // /roofing/replacement/: the intro beside the video with the page's facts, six signs as icon
+  // cards (was three white cards on lime), the four roof styles and the offers band
+  // (roofing-replacement-page.mjs). First too, so the fixes below leave the lime band be.
+  if (collectRoofingReplacementPage(doc, html, ed, { pathname, siteDir }, changes)) {
     used.css = true;
     used.js = true;
   }

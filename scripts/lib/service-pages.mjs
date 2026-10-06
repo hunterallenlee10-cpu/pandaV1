@@ -56,6 +56,8 @@ const ICONS = {
   calendar: line('M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5zM4 10h16M8.5 3v4M15.5 3v4M8 14h3'),
   shingle: line('M3 17l9-9 9 9M6 14v6h12v-6M9.5 11.5l2 2M14 9.5l1.5-3'),
   granules: line('M3 9h18l-2 4H5zM8 17.5v.1M12 19v.1M16 17.5v.1M10 21v.1M14 21v.1'),
+  // a roof with a dark patch (/roofing/replacement/)
+  patch: line('M3 12L12 4l9 8M5.5 10v10h13V10M9 13.5c1.2-1 2.6-1 3.8 0s2.4 1 3.2.2'),
   sag: line('M3 7c3 0 6 6 9 6s6-6 9-6M5 17h14M8 13.5V17M16 13.5V17'),
   bolt: line('M13 2.5L5 13.5h6l-1 8 8-11h-6z'),
   layers: line('M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5'),
@@ -107,7 +109,7 @@ function renderTypes(t, exists) {
   );
 }
 
-function renderSigns(s, key = 'signs') {
+export function renderSigns(s, key = 'signs') {
   return section(
     key,
     'signs',
@@ -151,7 +153,8 @@ const renderSteps = (s) =>
     'steps',
     'steps',
     head('steps', '', s.title) +
-      `<div class="pfix-sp-steps" role="list">${s.items.map(([title, text], i) => `<div class="pfix-sp-step" role="listitem"><span class="pfix-sp-steps__n" aria-hidden="true">${i + 1}</span><h3><span class="pfix-sp-sr">Step ${i + 1}: </span>${esc(title)}</h3><p>${esc(text)}</p></div>`).join('')}</div>`
+      `<div class="pfix-sp-steps" role="list">${s.items.map(([title, text], i) => `<div class="pfix-sp-step" role="listitem"><span class="pfix-sp-steps__n" aria-hidden="true">${i + 1}</span><h3><span class="pfix-sp-sr">Step ${i + 1}: </span>${esc(title)}</h3><p>${esc(text)}</p></div>`).join('')}</div>`,
+    s.id
   );
 
 const renderFaq = (f, cta) =>

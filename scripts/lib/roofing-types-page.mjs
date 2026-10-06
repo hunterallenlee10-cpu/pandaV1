@@ -72,7 +72,7 @@ const sw = (key, defs, body) =>
   `<rect width="480" height="170" fill="url(#pfix-rt-${key}-shade)"/></svg>`;
 const shade = (key, from, to) =>
   `<linearGradient id="pfix-rt-${key}-shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${from}"/><stop offset="1" stop-color="${to}"/></linearGradient>`;
-const SWATCHES = {
+export const SWATCHES = {
   // Staggered rows of shingle tabs, in charcoal.
   asphalt: sw(
     'asphalt',
@@ -119,7 +119,7 @@ const SWATCHES = {
 
 // The roof types: the page's three options in its own words, and GAF solar shingles (from
 // /solar-options/ and /solar/gaf-solar-roof/).
-const TYPES = [
+export const TYPES = [
   {
     key: 'asphalt',
     tag: ['star', 'Most popular'],

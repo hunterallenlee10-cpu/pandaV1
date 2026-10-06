@@ -6336,6 +6336,11 @@ a.bde-social-share-button:hover {
 }
 /* /roofing/types/: a close-up of shingles (its hero is the page's own block, .types, not a
    .hero-section). */
+/* /roofing/replacement/: an aerial photo of a roof being replaced. */
+.hero-section.pfix-sv-hero--replacement {
+  background-image: url("/wp-content/uploads/2025/04/Roof-Replacement.jpg.webp");
+  background-position: 50% 45%;
+}
 .types.pfix-sv-hero--types {
   background-image: url("/wp-content/uploads/2025/04/Roofing-Shingles.jpg");
   background-position: 50% 50%;
@@ -6479,7 +6484,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--types .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--types .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
   font-size: 46px;
 }
 /* The brands a page installs (/siding/: James Hardie, CertainTeed), in white. */
@@ -6633,7 +6639,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--types .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--types .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
     font-size: 38px;
   }
 }
@@ -6646,7 +6653,8 @@ a.bde-social-share-button:hover {
 .pfix-sv-hero--solar .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--solar-shingles .text-section .pfix-sv-hero__title,
 .pfix-sv-hero--commercial .text-section .pfix-sv-hero__title,
-.pfix-sv-hero--types .text-section .pfix-sv-hero__title {
+.pfix-sv-hero--types .text-section .pfix-sv-hero__title,
+.pfix-sv-hero--replacement .text-section .pfix-sv-hero__title {
     font-size: 30px !important;
   }
   .pfix-sv-hero .pfix-sv-hero__brands img {
@@ -7617,7 +7625,8 @@ a.bde-social-share-button:hover {
 
    The intro: its words, as a heading and paragraphs beside a rounded photo. */
 .Service-container.pfix-rc-intro,
-.Service-container.pfix-rt-intro {
+.Service-container.pfix-rt-intro,
+.Service-container.pfix-rr-intro {
   align-items: center;
   gap: clamp(28px, 4vw, 56px);
   padding-top: clamp(48px, 6vw, 88px) !important;
@@ -7627,7 +7636,9 @@ a.bde-social-share-button:hover {
 .pfix-rc-intro .flext-head,
 .pfix-rc-intro .flext-head h2,
 .pfix-rt-intro .flext-head,
-.pfix-rt-intro .flext-head h2 {
+.pfix-rt-intro .flext-head h2,
+.pfix-rr-intro .flext-head,
+.pfix-rr-intro .flext-head h2 {
   color: #14180f;
   font-family: inherit;
   font-size: clamp(28px, 3vw, 38px);
@@ -7639,7 +7650,8 @@ a.bde-social-share-button:hover {
   color: #c2410c !important;
 }
 .pfix-rc-intro .flext-head::before,
-.pfix-rt-intro .flext-head::before {
+.pfix-rt-intro .flext-head::before,
+.pfix-rr-intro .flext-head::before {
   content: "Roofing costs";
   display: block;
   margin-bottom: 10px;
@@ -7650,7 +7662,8 @@ a.bde-social-share-button:hover {
   text-transform: uppercase;
 }
 .pfix-rc-intro .flex-para,
-.pfix-rt-intro .flex-para {
+.pfix-rt-intro .flex-para,
+.pfix-rr-intro .flex-para {
   padding-bottom: 14px !important;
   color: #3f463a;
   font-size: 17px;
@@ -8163,6 +8176,201 @@ a.bde-social-share-button:hover {
   .pfix-rc .pfix-rc-faq__item,
   .pfix-rc a.pfix-rc-btn {
     transition: none;
+  }
+}
+
+/* /roofing/replacement/ (roofing-replacement-page.mjs). The intro: its words beside the
+   video in a rounded frame, labelled like the other intros, with the page's facts. */
+.pfix-rr-intro .flext-head::before {
+  content: "Roof replacement";
+}
+.pfix-rr-intro .Flex-image {
+  align-self: center;
+}
+.pfix-rr-intro .bde-video {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #172015;
+  box-shadow: 0 20px 44px rgba(20, 24, 15, 0.16);
+}
+.pfix-rr-intro .pfix-rr-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.pfix-rr-intro .pfix-rr-facts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #dfe8cc;
+  border-radius: 999px;
+  background: #f4f9e8;
+  color: #14180f;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pfix-rr-intro .pfix-rr-facts svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: #4d7c0f;
+}
+
+/* The signs (service-pages.mjs's cards) on cream, then the four roof styles. */
+.pfix-sp.pfix-rr .pfix-sp__sec--signs {
+  background: #f6f8f1;
+}
+.pfix-sp.pfix-rr .pfix-sp-sign {
+  background: #ffffff;
+}
+.pfix-sp.pfix-rr .pfix-sp__sec,
+.pfix-sp #whats-included,
+.pfix-sp #how-it-works {
+  scroll-margin-top: 140px;
+}
+.pfix-sp.pfix-rr .pfix-rr-styles {
+  background: #ffffff;
+}
+.pfix-sp .pfix-rr-styles__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.pfix-sp a.pfix-rr-style {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e4e8dc;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(20, 24, 15, 0.06);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.pfix-sp a.pfix-rr-style:hover {
+  border-color: #9acd32;
+  box-shadow: 0 16px 36px rgba(20, 24, 15, 0.12);
+  transform: translateY(-3px);
+}
+.pfix-sp .pfix-rr-style__swatch {
+  position: relative;
+  display: block;
+  height: 104px;
+  overflow: hidden;
+  background: #2d312c;
+}
+.pfix-sp .pfix-rr-style__swatch svg {
+  position: absolute;
+  inset: 0;
+}
+.pfix-sp .pfix-rr-style__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px 20px;
+}
+.pfix-sp .pfix-rr-style__kicker {
+  color: #4d7c0f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pfix-sp .pfix-rr-style__name {
+  color: var(--sp-ink);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pfix-sp .pfix-rr-style__text {
+  color: var(--sp-muted);
+  font-size: 15px;
+}
+.pfix-sp .pfix-rr-style__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 10px;
+  color: var(--sp-orange-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+.pfix-sp .pfix-rr-style__more svg {
+  width: 16px;
+  height: 16px;
+}
+.pfix-sp .pfix-rr-styles__more {
+  margin-top: clamp(26px, 3.5vw, 40px);
+  text-align: center;
+}
+.pfix-sp a.pfix-rr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 50px;
+  padding: 12px 26px;
+  border: 2px solid var(--sp-ink);
+  border-radius: 999px;
+  color: var(--sp-ink);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.pfix-sp a.pfix-rr-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-sp a.pfix-rr-btn:hover {
+  background: var(--sp-ink);
+  color: #ffffff;
+}
+@media (max-width: 1000px) {
+  .pfix-sp .pfix-rr-styles__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .pfix-sp .pfix-rr-styles__grid {
+    gap: 12px;
+  }
+  .pfix-sp .pfix-rr-style__swatch {
+    height: 72px;
+  }
+  .pfix-sp .pfix-rr-style__body {
+    padding: 14px 14px 16px;
+  }
+  .pfix-sp .pfix-rr-style__kicker {
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+  }
+  .pfix-sp .pfix-rr-style__name {
+    font-size: 17px;
+  }
+  .pfix-sp .pfix-rr-style__text,
+  .pfix-sp .pfix-rr-style__more {
+    font-size: 14px;
+  }
+  .pfix-sp a.pfix-rr-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-sp a.pfix-rr-style,
+  .pfix-sp a.pfix-rr-btn {
+    transition: none;
+  }
+  .pfix-sp a.pfix-rr-style:hover {
+    transform: none;
   }
 }
 
