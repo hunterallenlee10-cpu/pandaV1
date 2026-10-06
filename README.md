@@ -203,6 +203,12 @@ Most of these problems are on the live site too.
   read (about 1.7:1, with the paragraphs also at 80% opacity). The block now sits on a charcoal green (Panda lime
   darkened, `#1a2418`): paragraphs about 11:1, a lime "Learn More" button with dark text, and it stays distinct from the
   black footer below. The white version of the block (5 pages) is unchanged.
+- **"What Makes Panda the Best?"** (home page): three floating cards, each with an orange circle picture (two different
+  sizes), an orange heading broken over two lines at different points (so the rules and text under them sat at three
+  heights) and light gray text. It is now one white panel with hairline rules between three equal columns (stacked below
+  992 px, the icon beside each heading): an orange line icon, a dark heading and the same text. The brands named in the
+  "Top-Tier Products" text (Freedom Forever, GAF, CertainTeed, James Hardie, Andersen and ProVia) are listed under it
+  instead of in a sentence, and the line above the panel is a heading.
 - **Pages wider than the screen** (checked on every page at widths from 320 to 1920 px; none is left):
   - **Home page hero**: the award badges picture kept a fixed 562 px width in the 260 px column between its two white
     lines, so it ran off the screen on tablets (768–1008 px, cutting off the "No. 1" badge) and slid under the form on
@@ -212,7 +218,7 @@ Most of these problems are on the live site too.
     widths at 1120 px, but the page's column stays 960 px wide until 1200 px. The header's phone button wrapped under
     the logo, and the taller header covered the top of the page; on the 98 blog posts and offers the article ran off
     the screen and its text was cut off; on 10 pages a row (the home page's "What Makes Panda the Best?" cards among
-    them) did the same. The header now uses the whole width there, and those blocks stop at the column's edge.
+    them, since replaced) did the same. The header now uses the whole width there, and those blocks stop at the column's edge.
   - **Smaller cases**: the badges picture on `/roofing/residential/` (480–529 px), and on the smallest phones a long
     email address in a blog post and the topic tags at the top of blog posts.
 - **The header on phones** (every page, up to 768 px; on the live site too): a rule in every page stacked the

@@ -33,6 +33,10 @@
 //    a Panda job (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
 //    fades in over it only once it is playing (site-fixes.js), and the overlay is above
 //    the video, darkest behind the heading. Phones (no video) get the still too.
+//  - "What Makes Panda the Best?" (home page): three floating cards with orange circle
+//    pictures of two sizes and orange headings broken at different points (so the rules
+//    and text under them sat at three heights) become one ruled panel of three columns
+//    with line icons and dark headings; the brands in the second card are listed.
 //  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
 //    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
 //    (1140 px above), so they ran off the right of the screen (the blog text was cut
@@ -247,7 +251,7 @@ export const SITE_FIXES_FILES = {
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -294,6 +298,13 @@ const GOOGLE_RATING = '4.9';
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
 // The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
 const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
+// "What Makes Panda the Best?" (home page): a line icon per column, in the order of the
+// cards (experience: a house; products: stacked layers, as shingles; certified: a shield).
+const WHY_ICONS = [
+  '<path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/>',
+  '<path d="m12 3.5 8.5 4.5-8.5 4.5L3.5 8z"/><path d="m3.5 12 8.5 4.5 8.5-4.5"/><path d="m3.5 16 8.5 4.5 8.5-4.5"/>',
+  '<path d="M12 3.2 4.8 6v5.6c0 4.4 3 8.1 7.2 9.2 4.2-1.1 7.2-4.8 7.2-9.2V6z"/><path d="m8.9 12.1 2.2 2.2 4.1-4.3"/>',
+];
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
 const SA_MAP_ID = 'service-map';
@@ -1017,6 +1028,44 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push('hero video: a still of a Panda job shows until the video plays (no YouTube play button or loading screen), the overlay above the video, darkest behind the heading');
     used.css = true;
     used.js = true;
+  }
+
+  // "What Makes Panda the Best?" (home page): three floating cards, each with an orange
+  // circle picture (two sizes), an orange heading broken over two lines at different
+  // points (so the rules and text under them sat at three heights) and light gray text
+  // -> one ruled panel of three columns (stacked below 992 px): a line icon, a dark heading
+  // and the same text; the brands named in the second card's text are listed under it.
+  // The line above it becomes the panel's heading (.pfix-best). Runs before the column fit
+  // below, which would otherwise retag the row it replaces.
+  // (The service pages' card grids share the class: .Service-cards, left to their own fixes.)
+  for (const row of findAll(doc, (c) => hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards'))) {
+    const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, 'team-card'));
+    const items = cards.map((card) => ({
+      title: clean(textOf(find(card, (c) => hasClass(c, 'team-heading')) || { childNodes: [] })).replace(/\s+/g, ' ').trim(),
+      text: clean(textOf(find(card, (c) => hasClass(c, 'team-para')) || { childNodes: [] })).replace(/\s+/g, ' ').trim(),
+    }));
+    if (items.length !== WHY_ICONS.length || items.some((i) => !i.title || !i.text)) continue;
+    if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
+    const label = row.parentNode && (row.parentNode.childNodes || []).filter((k) => k.tagName).find((k, i, all) => all[i + 1] === row && hasClass(k, 'para-bold'));
+    const column = ({ title, text }, i) => {
+      // "These brands include A, B, and C." -> the sentence before it, and A, B and C as a list.
+      const brands = text.match(/^(.*?)\s*These brands include (.+?)\.?$/);
+      const names = brands ? brands[2].split(/,\s*(?:and\s+)?|\s+and\s+/).map((s) => s.trim()).filter(Boolean) : [];
+      return (
+        `<div class="pfix-best__item" role="listitem">` +
+        `<svg class="pfix-best__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${WHY_ICONS[i]}</svg>` +
+        `<h4 class="pfix-best__title">${esc(title)}</h4>` +
+        `<p class="pfix-best__text">${esc(names.length > 1 ? brands[1] : text)}</p>` +
+        (names.length > 1 ? `<ul class="pfix-best__brands" aria-label="Partner brands">${names.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : '') +
+        `</div>`
+      );
+    };
+    ed.outer(row, `<div class="pfix-best" role="list"${label ? ' aria-labelledby="pfix-best-label"' : ''}>${items.map(column).join('')}</div>`);
+    if (label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
+      ed.outer(label, `<h3 class="pfix-best-label" id="pfix-best-label">${esc(clean(textOf(label)).replace(/\s+/g, ' ').trim())}</h3>`);
+    }
+    changes.push('why panda: one ruled panel of three columns with line icons and dark headings, the brands listed (was three floating cards with orange circles and headings)');
+    used.css = true;
   }
 
   // Blocks with a fixed desktop width wider than their column at 1120–1199 px (1143 px
