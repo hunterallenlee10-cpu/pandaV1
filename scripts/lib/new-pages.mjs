@@ -113,8 +113,11 @@ const picture = (img, alt, exists, { eager = false } = {}) => {
 let uid = 0;
 const head = (eyebrow, title, intro, id) =>
   `<div class="pnp-head">${eyebrow ? `<p class="pnp-eyebrow">${esc(eyebrow)}</p>` : ''}<h2 class="pnp-title" id="${id}">${esc(title)}</h2>${intro ? `<p class="pnp-intro">${esc(intro)}</p>` : ''}</div>`;
-const section = (cls, inner, { id = '', label } = {}) =>
-  `<section class="pnp-sec pnp-sec--${cls}"${id ? ` id="${esc(id)}"` : ''} aria-labelledby="${label}"><div class="pnp-inner">${inner}</div></section>`;
+// (tone: "orange" or "dark", a band of colour in place of the white and light tint the
+// sections take in turn)
+const TONES = ['orange', 'dark'];
+const section = (cls, inner, { id = '', label, tone = '' } = {}) =>
+  `<section class="pnp-sec pnp-sec--${cls}${TONES.includes(tone) ? ` pnp-sec--${tone}` : ''}"${id ? ` id="${esc(id)}"` : ''} aria-labelledby="${label}"><div class="pnp-inner">${inner}</div></section>`;
 const linkHtml = ([label, href], cls = 'pnp-link') => `<a class="${cls}" href="${esc(href)}">${esc(label)}${ARROW}</a>`;
 
 // ------------------------------------------------------------------ sections
@@ -125,7 +128,7 @@ function cards(s) {
   return section(
     'cards',
     head(s.eyebrow, s.title, s.intro, id) + `<div class="pnp-cards pnp-cards--${s.items.length}" role="list">${s.items.map(card).join('')}</div>`,
-    { id: s.id, label: id }
+    { id: s.id, label: id, tone: s.tone }
   );
 }
 function split(s, exists) {
@@ -140,7 +143,7 @@ function split(s, exists) {
       (s.note ? `<p class="pnp-fine">${esc(s.note)}</p>` : '') +
       (s.link ? linkHtml(s.link) : '') +
       `</div></div>`,
-    { id: s.id, label: id }
+    { id: s.id, label: id, tone: s.tone }
   );
 }
 function steps(s) {
