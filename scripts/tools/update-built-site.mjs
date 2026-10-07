@@ -29,6 +29,7 @@ import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '
 import { syncCareersHeader, CAREERS_PATH } from '../lib/careers-header.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
+import { syncSitemaps } from '../lib/sitemaps.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
@@ -112,6 +113,14 @@ if (SITE_FIXES && (!only || only.has(CAREERS_PATH) || only.has('/about/'))) {
     changed++;
     console.log(`${dryRun ? 'would update' : 'updated'} the header of ${CAREERS_PATH} (copied from /about/)`);
   }
+}
+
+// The XML sitemaps list the pages of the copy, and only those (scripts/lib/sitemaps.mjs);
+// before the Site Map's list, which reads them.
+if (SITE_FIXES && !only) {
+  const synced = syncSitemaps(SITE, SITE_ORIGIN, { dryRun });
+  if (synced.edited.length || synced.deleted.length || synced.kml)
+    console.log(`${dryRun ? 'would sync' : 'synced'} the sitemaps: ${synced.dropped} entr${synced.dropped === 1 ? 'y' : 'ies'} without a page out, ${synced.added.length} page(s) in, ${synced.deleted.length} empty sitemap(s) deleted${synced.kml ? ', locations.kml written' : ''}`);
 }
 
 // The Site Map's list of every page, from the pages as they are now (in a dry run, as they
