@@ -83,15 +83,75 @@ main.pmedia {
 }
 
 /* ------------------------------------------------------------------ hero */
+/* On the night of the podcast half: a tilted wall of the page's own pictures (blog images and
+   episode stills) drifting slowly behind a dark veil, darkest where the words are, with a lime
+   glow at the top left and a coral one at the bottom right. */
 .pmedia-hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-  padding: clamp(44px, 7vw, 88px) var(--pm-gutter) clamp(36px, 5vw, 60px);
+  padding: clamp(56px, 8vw, 112px) var(--pm-gutter) clamp(48px, 6vw, 84px);
   text-align: center;
+  background: var(--pm-night);
+}
+.pmedia-hero__wall {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+.pmedia-hero__grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(6, 300px);
+  gap: 18px;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  opacity: 0.5;
+  animation: pmedia-drift 70s linear infinite alternate;
+}
+.pmedia-hero__tile {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #1d221e;
+}
+.pmedia-hero__tile img {
+  filter: saturate(0.85);
+}
+.pmedia-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background:
-    radial-gradient(520px 260px at 12% 0%, rgba(154, 205, 50, 0.16), transparent 70%),
-    radial-gradient(520px 260px at 88% 100%, rgba(255, 111, 97, 0.1), transparent 70%),
-    #fff;
+    radial-gradient(ellipse 60% 70% at 50% 50%, rgba(14, 17, 15, 0.97) 0%, rgba(14, 17, 15, 0.88) 50%, rgba(14, 17, 15, 0.5) 100%),
+    radial-gradient(600px 300px at 8% 0%, rgba(154, 205, 50, 0.28), transparent 70%),
+    radial-gradient(600px 300px at 92% 100%, rgba(255, 111, 97, 0.2), transparent 70%);
+}
+@keyframes pmedia-drift {
+  from {
+    transform: translate(-50%, -50%) rotate(-8deg) translateX(-60px);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-8deg) translateX(60px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pmedia-hero__grid {
+    animation: none;
+  }
+}
+@media (max-width: 640px) {
+  .pmedia-hero__grid {
+    grid-template-columns: repeat(6, 180px);
+    gap: 12px;
+  }
+  .pmedia-hero__tile {
+    border-radius: 10px;
+  }
 }
 .pmedia-hero__inner {
   max-width: 860px;
@@ -107,6 +167,9 @@ main.pmedia {
   text-transform: uppercase;
   color: var(--pm-muted);
 }
+.pmedia-hero .pmedia-eyebrow {
+  color: var(--pm-night-muted);
+}
 .pmedia-eyebrow::before {
   content: '';
   width: 8px;
@@ -121,19 +184,19 @@ body.breakdance .pmedia .pmedia-hero__title {
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.025em;
-  color: var(--pm-ink);
+  color: #fff;
   text-wrap: balance;
 }
 .pmedia-hero__title span {
   display: inline-block;
-  background: linear-gradient(transparent 62%, rgba(154, 205, 50, 0.55) 62%, rgba(154, 205, 50, 0.55) 92%, transparent 92%);
+  color: var(--pm-lime);
 }
 .pmedia-hero__lead {
   max-width: 620px;
   margin: 0 auto !important;
   font-size: clamp(16px, 1.6vw, 19px);
   line-height: 1.6;
-  color: var(--pm-muted);
+  color: var(--pm-night-text);
   text-wrap: pretty;
 }
 
@@ -143,10 +206,10 @@ body.breakdance .pmedia .pmedia-hero__title {
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 32px;
-  border: 2px solid var(--pm-ink);
+  border: 2px solid #fff;
   border-radius: 999px;
   overflow: hidden;
-  box-shadow: 0 14px 30px -18px rgba(26, 28, 25, 0.55);
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.7);
 }
 .pmedia-jump__link {
   flex: 1 1 auto;
@@ -168,11 +231,11 @@ body.breakdance .pmedia .pmedia-hero__title {
   background: var(--pm-lime-hover);
 }
 .pmedia .pmedia-jump__link--podcast {
-  background: var(--pm-ink);
-  color: #fff;
+  background: #fff;
+  color: var(--pm-ink);
 }
 .pmedia .pmedia-jump__link--podcast:hover {
-  color: var(--pm-lime);
+  background: var(--pm-paper);
 }
 .pmedia-jump__link:focus-visible {
   outline-offset: -5px;
