@@ -112,7 +112,9 @@ reduced motion get instant scrolling — see [`custom/smooth-scroll/README.md`](
 **The header's Media menu item leads to a new Media page.** On the live site the item (Blog and Podcast under it)
 went nowhere: its link was `#`. On every page it now leads to `/media/` (`custom/media/`, written by
 `scripts/lib/media-page.mjs` during the build, `MEDIA_PAGE=0` to turn off), which sets the blog and the podcast side
-by side: the newest blog post (read from the site's own feed when the page is built) with the three before it, and
+by side, under a dark hero whose background is a slowly drifting, tilted wall of the page's own blog images and
+episode stills behind a dark veil (still with reduced motion): the newest blog post (read from the site's own feed
+when the page is built) with the three before it, and
 Panda Vision, the company's video podcast, with its newest episode in a player and the ways to watch it (on the page,
 on Apple Podcasts, or in any podcast app). Every episode follows in a row across the page. The page keeps the site's
 header and footer. On phones, the first entry under Media, which said "Blog" like the entry below it, is now "Media

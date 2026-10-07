@@ -359,12 +359,37 @@ const renderEpisodes = (podcast) =>
   renderEpisodeList(podcast) +
   `</div></section>`;
 
+// Behind the hero: a tilted wall of the page's own pictures (the posts' images and the
+// episodes' stills, taking turns), dimmed under the words. Decorative, so hidden from screen
+// readers; the small sizes only.
+const WALL_TILES = 24;
+function heroWall(posts, { show, episodes }) {
+  const postTile = (img) => {
+    const s = [...img.sizes, ...(img.width ? [{ src: img.src, w: img.width }] : [])].sort((a, b) => a.w - b.w).find((x) => x.w >= 300) || { src: img.src };
+    return { src: s.src, webp: img.webp ? `${s.src}.webp` : '' };
+  };
+  const epTile = (e) => {
+    const poster = e.poster || show.cover;
+    const rel = e.poster && fs.existsSync(path.join(MEDIA_DIR, small(e.poster))) ? small(poster) : poster;
+    return { src: asset(rel), webp: asset(webp(rel)) };
+  };
+  const a = posts.filter((x) => x.image).map((x) => postTile(x.image));
+  const b = episodes.filter((e) => e.poster || show.cover).map(epTile);
+  const mixed = [];
+  for (let i = 0; i < Math.max(a.length, b.length); i++) mixed.push(...(i < a.length ? [a[i]] : []), ...(i < b.length ? [b[i]] : []));
+  if (!mixed.length) return '';
+  const tile = (t) =>
+    `<span class="pmedia-hero__tile"><picture>${t.webp ? `<source type="image/webp" srcset="${esc(t.webp)}">` : ''}` +
+    `<img src="${esc(t.src)}" alt="" width="480" height="270" decoding="async" fetchpriority="low"></picture></span>`;
+  return `<div class="pmedia-hero__wall" aria-hidden="true"><div class="pmedia-hero__grid">${Array.from({ length: WALL_TILES }, (_, i) => tile(mixed[i % mixed.length])).join('')}</div></div>`;
+}
+
 export function renderMedia({ posts, podcast }) {
   const [post, ...more] = posts;
   const { show } = podcast;
   return (
     `<main class="pmedia" id="media">` +
-    `<header class="pmedia-hero"><div class="pmedia-hero__inner">` +
+    `<header class="pmedia-hero">${heroWall(posts, podcast)}<div class="pmedia-hero__inner">` +
     `<p class="pmedia-eyebrow">Panda Media</p>` +
     `<h1 class="pmedia-hero__title">Read the latest. <span>Watch the newest.</span></h1>` +
     `<p class="pmedia-hero__lead">Straight-talk roofing advice from our blog, side by side with ${esc(show.title)}, the video podcast about the people behind Panda.</p>` +
