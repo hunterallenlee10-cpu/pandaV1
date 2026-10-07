@@ -263,6 +263,9 @@ export const SITE_FIXES_FILES = {
   ...Object.fromEntries(['asphalt', 'metal', 'flat', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
+  // the photos of /siding/'s "Siding Replacements" and "Siding Types" cards (GRID_CARD_FIXES)
+  'siding-install.webp': '/_custom/site-fixes/siding-install.webp',
+  'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
@@ -385,6 +388,15 @@ const GRID_PHOTOS = {
   '/commercial-roofing/roof-replacement/': ['/wp-content/uploads/2025/04/Patient-First.jpg', 1200, 675],
   '/commercial-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
 };
+// Photos of siding for /siding/'s two cards, which showed drawn renderings (the siding page's
+// hero picture, and a roof types one). No siding job is among Panda's photos, so both are
+// from Wikimedia Commons, 1200 x 800 (custom/site-fixes/): a volunteer nailing lap siding
+// over house wrap at a Habitat for Humanity build ("U.S. Army 1st Sgt. Benton Gil measures
+// the length of a house before installing its sidings…", by Capt. Elizabeth Brown, U.S.
+// Army, public domain), and a home in blue fiber cement lap siding ("Fiber cement
+// siding.jpg" by Wikideas1, CC0).
+const SIDING_INSTALL_PHOTO = ['/_custom/site-fixes/siding-install.webp', 1200, 800];
+const SIDING_TYPES_PHOTO = ['/_custom/site-fixes/siding-fiber-cement.webp', 1200, 800];
 // Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
 // page they are on, their title and the addresses they had (live, or in an earlier build).
 // Each sits on the page that covers its service (/gutters/ is gutter installations,
@@ -392,14 +404,16 @@ const GRID_PHOTOS = {
 // the siding types section further down its page (service-pages.mjs).
 const GRID_CARD_FIXES = [
   { page: '/gutters/', title: 'Gutter Installations', from: ['/powerwash/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
-  { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/siding/') },
+  { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: SIDING_INSTALL_PHOTO },
   // The site restructure merged these cards' pages into the page they are on (MERGED_PAGES
   // in config.mjs): they lead to the sections that took in what those pages said.
   { page: '/commercial-roofing/', title: 'Roofing Replacement', from: ['/commercial-roofing/roof-replacement/', '/commerical-roofing/roof-replacement/', '/commercial-roofing/'], href: '#commercial-roof-replacement', cta: 'How we replace commercial roofs', img: GRID_PHOTOS['/commercial-roofing/roof-replacement/'] },
   { page: '/commercial-roofing/', title: 'Roofing Options', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/commercial-roofing/'], href: '#commercial-roof-systems', cta: 'Compare roof systems', img: GRID_PHOTOS['/commercial-roofing/roof-types/'] },
-  { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: ROOF_TYPES_CARD.img },
+  { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: SIDING_TYPES_PHOTO },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
+// (a card an earlier build already mended: its fix, by the address it now has)
+const mendedGridCard = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.href === href);
 // Card text that changes, by page: /commercial-roofing/'s "Roofing Options" offered GAF
 // shingles, solar panels and solar shingles (the residential roofing card's words) on a page
 // about flat roofs; it names the flat roof systems the page compares below.
@@ -541,18 +555,24 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
 
 // One photo card linking to a service page: { href, title, text, img: [src, w, h] }, with
 // an optional group label above the title and call to action (default "Learn more").
+const serviceCardPicture = ([src, w, h], exists) =>
+  `<picture>${exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}` +
+  `<img src="${esc(src)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></picture>`;
 function serviceCard(s, exists) {
-  const [src, w, h] = s.img;
-  const webp = exists(`${src}.webp`) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : '';
   return (
     `<a class="pfix-svc" href="${esc(s.href)}">` +
-    `<span class="pfix-svc__media"><picture>${webp}<img src="${esc(src)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></picture></span>` +
+    `<span class="pfix-svc__media">${serviceCardPicture(s.img, exists)}</span>` +
     `<span class="pfix-svc__body">${s.group ? `<span class="pfix-svc__group">${esc(s.group)}</span>` : ''}` +
     `<h3 class="pfix-svc__title">${esc(s.title)}</h3><span class="pfix-svc__text">${esc(s.text)}</span>` +
     `<span class="pfix-svc__more">${esc(s.cta || 'Learn more')}<span aria-hidden="true"> →</span></span></span></a>`
   );
 }
-const fileExists = (siteDir) => (src) => !siteDir || fs.existsSync(path.join(siteDir, src));
+// (a site-fixes file counts once it is in custom/site-fixes/: a full build copies those after
+// the pages)
+const fileExists = (siteDir) => (src) =>
+  !siteDir ||
+  fs.existsSync(path.join(siteDir, src)) ||
+  Object.entries(SITE_FIXES_FILES).some(([name, url]) => url === src && fs.existsSync(path.join(SITE_FIXES_DIR, name)));
 
 // A row of photo cards (one per service page, each linking to it) that moves with the logo
 // row's script (.pfix-marquee in site-fixes.js), easing to a stop under the mouse; without
@@ -740,12 +760,13 @@ function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
 // /services/, /solar/, /siding/, /gutters/, /commercial-roofing/: a grid of the same
 // orange icon cards as the slider above (icon, orange title and rule, grey text, "Read
 // More" button), standing still -> the same photo cards in a grid, with each page's own
-// titles and text, in the section's orange. Broken links are mended (GRID_CARD_FIXES).
+// titles and text, in the section's orange. Broken links are mended, and those cards get
+// their own photo (GRID_CARD_FIXES).
 // The office cards on /contact-us/ (not links) are left alone.
 function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   const exists = fileExists(siteDir);
   let done = false;
-  // A grid an earlier build already made: its cards' links mended since then.
+  // A grid an earlier build already made: its cards' links and photos mended since then.
   for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'pfix-svc') && c.parentNode && hasClass(c.parentNode, 'pfix-svc-grid__item'))) {
     // (not in a section another fix replaces: /solar/'s cards, solar-pages.mjs)
     if (ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
@@ -758,7 +779,14 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       changes.push(`services grid: card text: "${title}"`);
       done = true;
     }
-    const fix = gridCardFix(pathname, title, href);
+    const fix = gridCardFix(pathname, title, href) || mendedGridCard(pathname, title, href);
+    const media = fix && find(a, (c) => hasClass(c, 'pfix-svc__media'));
+    const img = media && find(media, (c) => c.tagName === 'img');
+    if (img && attr(img, 'src') !== fix.img[0] && exists(fix.img[0])) {
+      ed.inner(media, serviceCardPicture(fix.img, exists));
+      changes.push(`services grid: card photo: "${title}" -> ${fix.img[0]}`);
+      done = true;
+    }
     if (!fix || fix.href === href) continue;
     ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: fix.href } : x)));
     const more = find(a, (c) => hasClass(c, 'pfix-svc__more'));

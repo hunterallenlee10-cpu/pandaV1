@@ -571,7 +571,11 @@ Most of these problems are on the live site too.
   site, about pressure washing and windows), and "Siding Types" led to the commercial roof types page. Those cards
   sit on the pages that cover their service (`/gutters/` is "Gutter Replacements And Installations", `/siding/` is
   "Siding Replacements And Installations"), so the first two now lead to the contact page ("Get a free estimate") and
-  "Siding Types" to the siding types section further down `/siding/` ("Compare siding types"; `GRID_CARD_FIXES`). On
+  "Siding Types" to the siding types section further down `/siding/` ("Compare siding types"; `GRID_CARD_FIXES`). The
+  two `/siding/` cards showed drawn renderings; they now have real photos of siding (no siding job is among Panda's
+  photos, so both are from Wikimedia Commons): a volunteer nailing lap siding over house wrap at a Habitat for Humanity
+  build (by Capt. Elizabeth Brown, U.S. Army, public domain) and a home in blue fiber cement lap siding ("Fiber cement
+  siding.jpg" by Wikideas1, CC0), in `custom/site-fixes/siding-install.webp` and `siding-fiber-cement.webp`. On
   `/services/` the two empty headings around "Our Services" are removed and the heading gets the site's
   section-heading style. The office cards on `/contact-us/` are unchanged.
 - **`/siding/` and `/gutters/` (and `/roofing/`, above): one strong page per service.** Under the service cards each
