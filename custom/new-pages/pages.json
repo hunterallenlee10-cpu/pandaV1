@@ -1,5 +1,5 @@
 {
-  "_help": "The pages added in the site restructure (scripts/lib/new-pages.mjs; README, \"Site restructure\"). Each page has its head (title, description), a hero beside the estimate form and its sections, in order. Section types: cards ([icon, title, text, [link label, href]?]), split (paragraphs, a checklist and a photo), covered (two lists), steps, links (articles), note, faq, showcase (products side by side, each with a photo, points and a link) and compare (a table: [row label, one cell per column]). The words come from what the site and its blog already say. Edit and run `npm run update:site`. The office pages (/locations/…/) are made from custom/site-fixes/contact-page.json and custom/us-map/areas.json, with the words under \"offices\" below.",
+  "_help": "The pages added in the site restructure (scripts/lib/new-pages.mjs; README, \"Site restructure\"). Each page has its head (title, description), a hero beside the estimate form and its sections, in order. Section types: cards ([icon, title, text, [link label, href]?]), split (paragraphs, a checklist and a photo), covered (two lists), steps, links (articles), note, faq, showcase (products side by side, each with a photo, points and a link) and compare (a table: [row label, one cell per column]). A cards or split section can take \"tone\": \"orange\" or \"dark\" (charcoal green), a band of colour in place of the white and light tint the sections take in turn. The words come from what the site and its blog already say. Edit and run `npm run update:site`. The office pages (/locations/…/) are made from custom/site-fixes/contact-page.json and custom/us-map/areas.json, with the words under \"offices\" below.",
   "pages": {
     "/financing/": {
       "title": "Roof And Solar Financing | Panda Exteriors",
@@ -99,6 +99,7 @@
         {
           "type": "cards",
           "id": "overview",
+          "tone": "orange",
           "eyebrow": "Three layers of protection",
           "title": "What Protects Your Project",
           "items": [
@@ -124,6 +125,7 @@
         {
           "type": "split",
           "id": "installation-warranty",
+          "tone": "dark",
           "eyebrow": "Installation warranty",
           "title": "Installed Correctly, Every Time",
           "flip": true,

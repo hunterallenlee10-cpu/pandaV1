@@ -719,7 +719,10 @@ blog already say.
 - `/financing/`: Service Finance, LLC, delayed payments and no-interest loans, what can be financed, how it works,
   other ways to save, questions.
 - `/warranty/`: the satisfaction guarantee, the installation warranty and its terms, and the manufacturers'
-  warranties (GAF and the Golden Pledge, siding).
+  warranties (GAF and the Golden Pledge, siding). Its sections were white and near-white one after another; the
+  three kinds of protection now sit on Panda orange (white cards) and the installation warranty on charcoal green, so
+  the page runs dark hero, orange, white, green, white, light tint, white and the orange call band (a section's
+  `"tone"` in `pages.json`: `"orange"` or `"dark"`, for cards and split sections).
 - `/storm-damage/`: what to do in the first 24 hours, what insurance usually covers (shared with Roofing Costs), how
   Panda helps with the claim, questions, and every storm and insurance guide on the blog.
 - `/solar-options/`: the two ways to go solar side by side, over a photo of solar homes from the solar gallery (the

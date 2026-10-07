@@ -606,6 +606,59 @@
   color: var(--pnp-lime);
 }
 
+/* A band of colour (a section's "tone"): Panda orange, like the site's other orange bands, with
+   its heading in white and its cards in white; or charcoal green, like the steps above. */
+.pnp .pnp-sec--orange,
+.pnp .pnp-sec--orange:nth-of-type(even) {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.14), transparent 38%),
+    linear-gradient(120deg, #f26924 0%, #e2531a 100%);
+}
+.pnp .pnp-sec--orange .pnp-title,
+.pnp .pnp-sec--orange .pnp-eyebrow {
+  color: #fff;
+}
+.pnp .pnp-sec--orange .pnp-intro,
+.pnp .pnp-sec--orange .pnp-p {
+  color: #fff6ef;
+  font-weight: 500;
+}
+.pnp .pnp-sec--orange .pnp-card {
+  border-color: transparent;
+  box-shadow: 0 16px 36px rgba(120, 40, 5, 0.22);
+}
+.pnp .pnp-sec--dark,
+.pnp .pnp-sec--dark:nth-of-type(even) {
+  background: radial-gradient(circle at 88% 12%, rgba(154, 205, 50, 0.16), transparent 42%), var(--pnp-dark);
+}
+.pnp .pnp-sec--dark .pnp-title {
+  color: #fff;
+}
+.pnp .pnp-sec--dark .pnp-eyebrow,
+.pnp .pnp-sec--dark .pnp-link {
+  color: var(--pnp-lime);
+}
+.pnp .pnp-sec--dark .pnp-intro,
+.pnp .pnp-sec--dark .pnp-p {
+  color: rgba(255, 255, 255, 0.8);
+}
+.pnp .pnp-sec--dark .pnp-list > div {
+  color: #fff;
+}
+.pnp .pnp-sec--dark .pnp-list svg {
+  background: rgba(154, 205, 50, 0.18);
+  color: var(--pnp-lime);
+}
+.pnp .pnp-sec--dark .pnp-fine {
+  color: rgba(255, 255, 255, 0.62);
+}
+.pnp .pnp-sec--dark .pnp-split__media img {
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.7);
+}
+.pnp .pnp-sec--dark .pnp-card {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 /* What insurance usually covers */
 .pnp .pnp-covered {
   display: grid;
