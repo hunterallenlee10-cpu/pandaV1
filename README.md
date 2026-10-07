@@ -271,6 +271,9 @@ Most of these problems are on the live site too.
   page's gutter-guard photo darkened behind the text. "Why Work with Our East Coast Exterior Specialists?" was three
   lime cards with white text (about 1.7:1) and promised "stellar cleaning services", which Panda doesn't offer; it is
   now three white cards with an icon each and dark text, without the cleaning line (`scripts/lib/gutters-page.mjs`).
+  "East Coast Gutter Installations and Gutter Guards" (the services under the hero) and "Signs It's Time for New
+  Gutters" were both white, one after the other; the first is now on Panda orange, like the site's other orange bands,
+  with its heading and line in white and its two photo cards in white.
 - **`/roofing-costs/`, redesigned** (hero in `scripts/lib/services-hero.mjs`, sections in
   `scripts/lib/roofing-costs-page.mjs`): the hero said only "Roofing Costs" and "Partner with our team for your roofing
   needs."; under the intro, "Quality Roof Replacements" was white text on Panda lime over cards with lime headings, and

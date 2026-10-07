@@ -17,6 +17,9 @@
 //    Building Owners Choose Panda", with the cards' words told for a business's building.
 //  - A spot to jump to above the gutter services (the "Gutter installation" chip in the
 //    hero, services-hero.mjs, leads there).
+//  - /gutters/ "East Coast Gutter Installations and Gutter Guards" (the services under the
+//    hero): on Panda orange, with its two photo cards in white. It and "Signs It's Time for
+//    New Gutters" below were both white, one after the other.
 //
 // The hero is services-hero.mjs's, the sections under the services service-pages.mjs's.
 // Applied by site-fixes.mjs; rendered again on every run.
@@ -145,6 +148,17 @@ export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, change
 
   // A spot just above the gutter services, for the hero's chip.
   if (pathname !== GUTTERS_PATH) return done;
+  // The gutter services on Panda orange (site-fixes.mjs adds the class when it first styles
+  // the section; this keeps it on a page built before).
+  const band = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Team-section') && hasClass(c, 'pfix-services'));
+  if (band && !hasClass(band, 'pfix-services--orange')) {
+    const l = band.sourceCodeLocation.startTag;
+    if (!ed.overlaps(l.startOffset, l.endOffset)) {
+      ed.retag(band, band.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: `${a.value} pfix-services--orange` } : a)));
+      changes.push('gutters page: the gutter services on Panda orange (two white sections were in a row)');
+      done = true;
+    }
+  }
   if (!find(doc, (c) => attr(c, 'id') === SERVICES_ANCHOR)) {
     const services = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'Team-section') && hasClass(c, 'oxy-container'));
     const at = services?.sourceCodeLocation.startOffset;

@@ -1093,6 +1093,36 @@ h3.pfix-best-label {
 .pfix-services--warm .pfix-services__all a:hover {
   background: #d9541a;
 }
+/* /gutters/ "East Coast Gutter Installations and Gutter Guards": on Panda orange, like the
+   site's other orange bands, with the heading and line in white and the photo cards in white.
+   (!important: the section is white by the page builder's class.) */
+.Team-section.pfix-services--orange {
+  background:
+    radial-gradient(circle at 92% 10%, rgba(255, 255, 255, 0.14), transparent 38%),
+    linear-gradient(120deg, #f26924 0%, #e2531a 100%) !important;
+}
+.pfix-services--orange .heading-2,
+.pfix-services--orange .heading-2 * {
+  color: #ffffff !important;
+}
+.pfix-services--orange .Team-text-container,
+.pfix-services--orange .Team-text-container p {
+  color: #fff6ef !important;
+  font-weight: 500;
+}
+.pfix-services--orange a.pfix-svc,
+.pfix-services--orange a.pfix-svc:hover {
+  border-color: transparent;
+  box-shadow: 0 16px 36px rgba(120, 40, 5, 0.22);
+}
+.pfix-services--orange a.pfix-svc:hover,
+.pfix-services--orange a.pfix-svc:focus-visible {
+  border-color: #ffffff;
+  box-shadow: 0 20px 44px rgba(120, 40, 5, 0.3);
+}
+.pfix-services--orange a.pfix-svc:focus-visible {
+  outline-color: #ffffff;
+}
 /* /services/, /solar/, /siding/, /gutters/, /commercial-roofing/: the same photo cards,
    standing still in a grid (three across, or a centred pair), each as tall as its row. */
 .pfix-svc-grid {
