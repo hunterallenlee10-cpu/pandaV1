@@ -25,6 +25,7 @@ import { buildNewPages, newPagesFiles, newPagePaths, NEW_PAGES_DATE } from './li
 import { addSitemapPages, flattenRedirects, pruneFeedXml } from './lib/restructure.mjs';
 import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
+import { syncSitemaps } from './lib/sitemaps.mjs';
 import { syncCareersHeader } from './lib/careers-header.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
@@ -523,6 +524,13 @@ writeJson(path.join(OUT, 'serve.json'), {
   ],
 });
 writeFile(path.join(OUT, '.nojekyll'), '');
+
+// 3c. The XML sitemaps list the pages of the copy, and only those (scripts/lib/sitemaps.mjs):
+// before 4a, which reads them.
+if (SITE_FIXES) {
+  const synced = syncSitemaps(OUT, SITE_ORIGIN);
+  console.log(`sitemaps: ${synced.dropped} entr${synced.dropped === 1 ? 'y' : 'ies'} without a page dropped, ${synced.added.length} page(s) added, ${synced.deleted.length} empty sitemap(s) deleted${synced.kml ? ', locations.kml written' : ''}`);
+}
 
 // 4a. The Site Map's list of every page (SITE_MAP_PAGE): from the built pages, the sitemaps
 // and the redirects just written (scripts/lib/site-map-page.mjs).

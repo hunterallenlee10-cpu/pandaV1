@@ -68,7 +68,8 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   it, and its old address redirects to `/referrals/`. Its fix (the form no longer opened an email to the careers
   address) went with it.
 - **5,309 auto-generated `/blog/project/` posts** that appear only in the sitemaps and are not linked from any
-  page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too).
+  page (`SITEMAP_ONLY_EXCLUDE` in `scripts/lib/config.mjs`; set it to `''` to capture them too). The copy's sitemaps no longer list
+  them ([sitemaps](#xml-sitemaps)).
 - Admin, login and API URLs, which are never requested.
 
 ## Deliberate changes
@@ -750,6 +751,19 @@ site check linked from nowhere and kept out of search engines (`noindex`) and th
 **Tidy-ups**: `/services/` is titled "Our Services" (it said "Roofing Services"), and `/roofing/attic-insulation/`,
 the one page without an h1, has its hero headline as one.
 
+<a id="xml-sitemaps"></a>**The XML sitemaps list the copy's pages, and only those** (`scripts/lib/sitemaps.mjs`, run by `03-build.mjs`
+and `scripts/tools/update-built-site.mjs` with the site fixes, before the site check reads them). As captured, the
+28 project sitemaps listed 5,506 project posts, of which the copy has 10, and post-sitemap.xml and page-sitemap.xml
+missed the 12 newest blog posts and `/media/`. Now every entry without a page is dropped, every indexable page no
+sitemap listed is added (blog posts to post-sitemap.xml, projects to project-sitemap1.xml, the rest to
+page-sitemap.xml, dated by the page's own modified date; noindex pages, the 404 page and the blog's numbered listing
+pages stay out, as on the live site), and the sitemaps left empty (project-sitemap2.xml to project-sitemap28.xml) are
+deleted and taken out of sitemap_index.xml, whose dates follow the newest entry of each sitemap. The sitemaps'
+stylesheet link (`//pandaexteriors.com/main-sitemap.xsl`, which a browser won't apply on another host) points at
+`/main-sitemap.xsl` on the same host. `locations.kml`, which local-sitemap.xml lists, was an empty sitemap header on
+the live site; it is now a KML file with a placemark (address, phone, page, coordinates) for each of the seven
+offices. The addresses stay on `https://pandaexteriors.com`, like the canonical URLs.
+
 **Tools**: `scripts/lib/restructure.mjs` deletes removed pages still in a built `site/`, the files only they used,
 their sitemap entries and feed items, and writes their redirects with chains flattened (`/commerical-roofing/roof-types/`
 leads straight to `/commercial-roofing/`); `03-build.mjs` flattens chains the same way.
@@ -780,7 +794,7 @@ site/                    the website — deploy this folder
   site-map/index.html                 the Site Map; its list of every page is generated (scripts/lib/site-map-page.mjs)
   _raw/<path>/index.html              the HTML exactly as the server delivered it (reference only)
   404.html                            the site's 404 page
-  robots.txt, sitemap*.xml, feed/     kept verbatim
+  robots.txt, sitemap*.xml, feed/     as captured, apart from the sitemap sync (scripts/lib/sitemaps.mjs)
   _redirects, _headers                Netlify / Cloudflare Pages rules (redirects seen on the live site)
   (../vercel.json)                    the same rules for Vercel, next to site/
   serve.json                          the same rules for `npx serve`
