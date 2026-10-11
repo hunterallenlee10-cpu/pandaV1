@@ -430,6 +430,8 @@ const TYPOS = [
   [/\bOur Services Areas\b/g, 'Our Service Areas'],
   // footer, every page
   [/\bis a East Coast exterior remodeling company\b/g, 'is an East Coast exterior remodeling company'],
+  // the region Panda serves is called the East Coast everywhere (footer, map band, blog posts)
+  [/\bNortheast(?:ern)?\b/g, 'East Coast'],
   // "Our Process" (/roofing/, /commercial-roofing/): a dropped first letter, and a missing "and"
   [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
   [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],

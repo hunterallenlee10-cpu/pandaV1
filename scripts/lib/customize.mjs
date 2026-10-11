@@ -43,7 +43,7 @@ export const SMOOTH_SCROLL_FILES = {
 
 // ------------------------------------------------------------- the band
 const PARAGRAPH_FIXES = [
-  [/throughout Northeast/g, 'throughout the Northeast'],
+  [/throughout (?:the )?Northeast/g, 'throughout the East Coast'],
   [/including, /g, 'including '],
   [/Washington D\.C, and/g, 'Washington, D.C., and'],
 ];
