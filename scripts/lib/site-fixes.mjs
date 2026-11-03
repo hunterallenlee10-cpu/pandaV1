@@ -1591,5 +1591,23 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   if (fixedTypos.size) changes.push(`typos: ${[...fixedTypos].join('; ')}`);
   if (repairCopy) changes.push(`roof repairs: ${repairCopy} sentence(s) that offered repairs reworded`);
 
+  // Footer credit (every page with a footer): one line under its bottom row (Site Map ·
+  // Privacy Policy), in that row's type and link style; on /careers/ (its own hand-built
+  // footer) a small line under the footer's link columns, in their muted color.
+  const CREDIT_LINK = 'href="https://www.leeenterprisesunlimited.com/" target="_blank" rel="noopener">Lee Enterprises Unlimited</a>';
+  const footer = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'footer'));
+  const careersFooter = !footer && find(doc, (c) => hasClass(c, 'pcv2-footer-main'));
+  const creditBox = footer || careersFooter;
+  const creditAt = creditBox?.sourceCodeLocation?.endTag?.startOffset;
+  if (creditAt != null && !ed.overlaps(creditAt, creditAt) && !find(creditBox, (c) => c.tagName === 'a' && /leeenterprisesunlimited\.com/.test(attr(c, 'href') || ''))) {
+    ed.append(
+      creditBox,
+      footer
+        ? `<div class="oxy-container container footer-pages pb-3"><div class="oxy-container Link"><span class="footer-text text-white">Website by <a class="oxy-text-link Link-text text-decoration-none footer-text" ${CREDIT_LINK}</span></div></div>`
+        : `<p style="margin:32px auto 0;font-size:0.85rem">Website by <a ${CREDIT_LINK}</p>`
+    );
+    changes.push('footer credit: "Website by Lee Enterprises Unlimited" under the bottom row');
+  }
+
   return used;
 }
