@@ -28,6 +28,7 @@ import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '
 import { syncSitemaps } from './lib/sitemaps.mjs';
 import { syncCareersHeader } from './lib/careers-header.mjs';
 import { launchReady } from './lib/launch.mjs';
+import { vercelHeaders, netlifyHeaders, serveHeaders } from './lib/hosting.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -509,22 +510,23 @@ const redirectsFile = [
   '',
 ].join('\n');
 writeFile(path.join(OUT, '_redirects'), redirectsFile);
-writeFile(
-  path.join(OUT, '_headers'),
-  ['# Netlify / Cloudflare Pages headers', '/_raw/*', '  Content-Type: text/plain; charset=utf-8', '  X-Robots-Tag: noindex', ''].join('\n'),
-);
+const RAW_ONLY_HEADERS = ['# Netlify / Cloudflare Pages headers', '/_raw/*', '  Content-Type: text/plain; charset=utf-8', '  X-Robots-Tag: noindex', ''].join('\n');
+// (With the site fixes: also security and caching headers, hosting.mjs.)
+writeFile(path.join(OUT, '_headers'), SITE_FIXES ? netlifyHeaders() : RAW_ONLY_HEADERS);
 writeJson(path.join(OUT, 'serve.json'), {
   redirects: serveRedirects,
   rewrites: rewrites.map((r) => ({ source: serveSource(r.from), destination: r.to })),
-  headers: [
-    {
-      source: '_raw/**',
-      headers: [
-        { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
-        { key: 'X-Robots-Tag', value: 'noindex' },
+  headers: SITE_FIXES
+    ? serveHeaders()
+    : [
+        {
+          source: '_raw/**',
+          headers: [
+            { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+            { key: 'X-Robots-Tag', value: 'noindex' },
+          ],
+        },
       ],
-    },
-  ],
 });
 writeFile(path.join(OUT, '.nojekyll'), '');
 
@@ -576,7 +578,8 @@ const vercel = {
   outputDirectory: path.basename(OUT),
   trailingSlash: true,
   rewrites: rewrites.map((r) => ({ source: vercelSource(r.from), destination: r.to })),
-  headers: [{ source: '/_raw/(.*)', headers: rawHeaders }],
+  // (With the site fixes: no indexing off the live domain, security and caching headers, hosting.mjs.)
+  headers: SITE_FIXES ? vercelHeaders() : [{ source: '/_raw/(.*)', headers: rawHeaders }],
 };
 // Every redirect/rewrite/header rule counts toward Vercel's 2,048 routes per
 // deployment; past that, redirects go to a bulk-redirects file instead.

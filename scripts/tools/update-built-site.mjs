@@ -31,6 +31,7 @@ import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../l
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
 import { syncSitemaps } from '../lib/sitemaps.mjs';
 import { launchReady } from '../lib/launch.mjs';
+import { syncHostHeaders } from '../lib/hosting.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
@@ -206,6 +207,9 @@ if (!only) {
   if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
   const redirectFiles = writeRedirectFiles(SITE, { dryRun });
   if (redirectFiles.changed.length) console.log(`${dryRun ? 'would update' : 'updated'} ${redirectFiles.changed.join(', ')} (${redirectFiles.added} new redirect(s))`);
+  // The headers the hosts send: no indexing off the live domain, security, caching (hosting.mjs).
+  const headerFiles = SITE_FIXES ? syncHostHeaders(SITE, { dryRun }) : [];
+  if (headerFiles.length) console.log(`${dryRun ? 'would update' : 'updated'} the response headers in ${headerFiles.join(', ')}`);
 }
 
 console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0) + newPages.length} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);

@@ -5,7 +5,7 @@
    - /service-areas/, /about/, /podcast/, /roofing/: the service cards glide past the same
      way (.pfix-marquee--cards).
    - /service-areas/ hero: the state chips zoom the map to their state.
-   - Service estimate forms: checked on submit, then a "not switched on yet" message.
+   - Service estimate forms: checked on submit, then sent to the address in the page settings.
    - /offers/: a "Claim" button chooses its offer's project in the estimate form it leads to.
    - /faqs/: the hero's search narrows the questions as you type, and the topic menu beside
      the questions shows which topic you are reading.
@@ -236,19 +236,69 @@
   });
 })();
 
-/* Service estimate forms (service-forms.mjs): not connected to anything yet. On submit the
-   fields are checked; then, instead of pretending the request was sent, the card says
-   online requests aren't switched on and offers the phone number. */
+/* Service estimate forms (service-forms.mjs). On submit the fields are checked, then the
+   request is posted to the address in the page's settings (PANDA_SITE.leads, from
+   custom/site-fixes/launch.json) and the card says it arrived. If it could not be sent, or
+   no address is set, the card says so and offers the phone number instead of pretending. */
 (function () {
   'use strict';
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var loadedAt = Date.now();
   function label(el) {
     return (el.getAttribute('placeholder') || (el.closest('label') ? el.closest('label').textContent : '') || 'This field').replace(/\s*\(optional\)$/, '').trim();
+  }
+  function settings() {
+    return window.PANDA_SITE || {};
+  }
+  // What is sent: the fields as filled in, the consents as yes/no, and where the request came from.
+  function payload(form) {
+    var data = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.name === 'website' || el.type === 'submit') return;
+      if (el.type === 'checkbox') data[el.name] = el.checked ? 'yes' : 'no';
+      else data[el.name] = (el.value || '').trim();
+    });
+    data.name = [data.first_name, data.last_name].filter(Boolean).join(' ');
+    data.page_url = location.href.split('#')[0];
+    data.page_title = document.title;
+    data.referrer = document.referrer || '';
+    data.submitted_at = new Date().toISOString();
+    try {
+      new URLSearchParams(location.search).forEach(function (value, key) {
+        if (/^(utm_[a-z]+|gclid|gbraid|wbraid|fbclid|msclkid)$/.test(key)) data[key] = value;
+      });
+    } catch (e) {}
+    return data;
+  }
+  function show(form, state) {
+    var box = form.closest('.pfix-lead');
+    var done = box && box.querySelector('.pfix-lead__done');
+    if (!done) return;
+    var first = form.querySelector('[name="first_name"]');
+    var name = done.querySelector('[data-pfix-lead-name]');
+    if (name && first && first.value.trim()) name.textContent = ', ' + first.value.trim().split(/\s+/)[0];
+    Array.prototype.forEach.call(done.querySelectorAll('[data-pfix-lead-msg]'), function (p) {
+      p.hidden = p.getAttribute('data-pfix-lead-msg') !== state;
+    });
+    Array.prototype.forEach.call(done.querySelectorAll('[data-pfix-lead-call]'), function (p) {
+      p.hidden = (p.getAttribute('data-pfix-lead-call') === 'sent') !== (state === 'sent');
+    });
+    form.hidden = true;
+    done.hidden = false;
+    done.focus();
+  }
+  function track(form) {
+    var detail = { event: 'generate_lead', form_service: (form.elements.service || {}).value || '', form_page: location.pathname };
+    try {
+      (window.dataLayer = window.dataLayer || []).push(detail);
+      if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { form_service: detail.form_service, form_page: detail.form_page });
+    } catch (e) {}
   }
   document.addEventListener('submit', function (event) {
     var form = event.target;
     if (!form || !form.hasAttribute || !form.hasAttribute('data-pfix-lead-form')) return;
     event.preventDefault();
+    if (form.getAttribute('aria-busy') === 'true') return;
     var error = form.querySelector('.pfix-lead__error');
     var bad = null;
     var message = '';
@@ -271,15 +321,49 @@
       return;
     }
     if (error) error.hidden = true;
-    var box = form.closest('.pfix-lead');
-    var done = box && box.querySelector('.pfix-lead__done');
-    if (!done) return;
-    var first = form.querySelector('[name="first_name"]');
-    var name = done.querySelector('[data-pfix-lead-name]');
-    if (name && first && first.value.trim()) name.textContent = ', ' + first.value.trim().split(/\s+/)[0];
-    form.hidden = true;
-    done.hidden = false;
-    done.focus();
+    var endpoint = settings().leads;
+    if (!endpoint) return show(form, 'offline');
+    // A bot: the hidden field is filled in, or the form came back within two seconds.
+    var trap = form.elements.website;
+    if ((trap && trap.value) || Date.now() - loadedAt < 2000) return show(form, 'sent');
+    var button = form.querySelector('[data-pfix-lead-submit]');
+    var text = button ? button.textContent : '';
+    form.setAttribute('aria-busy', 'true');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Sending…';
+    }
+    var finish = function (ok) {
+      form.removeAttribute('aria-busy');
+      if (button) {
+        button.disabled = false;
+        button.textContent = text;
+      }
+      if (ok) track(form);
+      show(form, ok ? 'sent' : 'failed');
+    };
+    var noCors = !!settings().noCors;
+    var timer = null;
+    var options = { method: 'POST', body: new URLSearchParams(payload(form)), mode: noCors ? 'no-cors' : 'cors' };
+    try {
+      if (window.AbortController) {
+        var abort = new AbortController();
+        options.signal = abort.signal;
+        timer = setTimeout(function () { abort.abort(); }, 15000);
+      }
+      fetch(endpoint, options)
+        .then(function (response) {
+          clearTimeout(timer);
+          // (An endpoint without CORS headers gives an unreadable answer: taken as sent.)
+          finish(noCors || response.ok);
+        })
+        .catch(function () {
+          clearTimeout(timer);
+          finish(false);
+        });
+    } catch (e) {
+      finish(false);
+    }
   });
   // Clear a field's error mark as soon as it is edited.
   document.addEventListener('input', function (event) {

@@ -2072,6 +2072,20 @@ h3.pfix-best-label {
   line-height: 1.5;
   text-align: center;
 }
+.pfix-lead .pfix-lead__hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.pfix-lead .pfix-lead__done [hidden] {
+  display: none !important;
+}
+.pfix-lead .submit-btn[disabled] {
+  opacity: 0.7;
+  cursor: progress;
+}
 .pfix-lead .pfix-lead__done[hidden],
 .pfix-lead .pfix-lead__form[hidden],
 .pfix-lead .pfix-lead__error[hidden] {
