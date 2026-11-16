@@ -86,9 +86,12 @@
         chip.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       if (status) {
-        var n = matches.length;
+        // (The newest article, shown large above the cards, counts too: the hero and the
+        // "All" chip count every article.)
+        var extra = !filtering && feature ? 1 : 0;
+        var n = matches.length + extra;
         status.textContent = n
-          ? 'Showing ' + Math.min(state.limit, n) + ' of ' + n + (n === 1 ? ' article' : ' articles') +
+          ? 'Showing ' + (Math.min(state.limit, matches.length) + extra) + ' of ' + n + (n === 1 ? ' article' : ' articles') +
             (state.topic ? ' in ' + names[state.topic] : '') +
             (w.length ? ' matching “' + state.q + '”' : '')
           : '';

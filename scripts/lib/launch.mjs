@@ -186,6 +186,32 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
     if (attr(a, 'target') === '_blank' && !attr(a, 'rel')) attrs = [...attrs, { name: 'rel', value: 'noopener' }];
     retag(a, attrs);
   }
+  // The footer: its second set of social icons (the one phones show) still had Twitter's bird
+  // where the first has the X; the Terms link was there but hidden; and nothing said whose
+  // site it is.
+  const X_PATH = 'M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.2L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z';
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && /twitter\.com|\/\/x\.com/.test(attr(c, 'href') || ''))) {
+    const bird = find(a, (c) => c.tagName === 'path' && /^M22\.46 6c/.test(attr(c, 'd') || ''));
+    if (bird && !ed.overlaps(location(bird).startOffset, location(bird).endOffset)) {
+      ed.outer(bird, `<path d="${X_PATH}"/>`);
+      changes.push('footer: the Twitter bird in the phone footer -> the X, as in the desktop footer');
+    }
+  }
+  const pages = find(doc, (c) => hasClass(c, 'footer-pages'));
+  if (pages) {
+    for (const el of findAll(pages, (c) => hasClass(c, 'd-none') && (hasClass(c, 'footer-dot') || find(c, (x) => x.tagName === 'a' && /^\/terms-and-conditions\/$/.test(attr(x, 'href') || ''))))) {
+      const st = location(el).startTag;
+      if (ed.overlaps(st.startOffset, st.endOffset)) continue;
+      ed.retag(el, el.attrs.map((x) => (x.name === 'class' ? { name: 'class', value: x.value.split(/\s+/).filter((k) => k !== 'd-none').join(' ') } : x)));
+      if (!hasClass(el, 'footer-dot')) changes.push('footer: the Terms and Conditions link shows (it was there, hidden)');
+    }
+    const next = (pages.parentNode.childNodes || []).filter((c) => c.tagName)[(pages.parentNode.childNodes || []).filter((c) => c.tagName).indexOf(pages) + 1];
+    if (!(next && hasClass(next, 'pfix-copyright')) && location(pages).endTag && !ed.overlaps(location(pages).endOffset, location(pages).endOffset + 1)) {
+      ed.replace(location(pages).endOffset, location(pages).endOffset, '<div class="pfix-copyright">© Panda Exteriors. All rights reserved.</div>');
+      changes.push('footer: a copyright line');
+    }
+  }
+
   if (named) changes.push(`names: ${named} link(s) and picture(s) without one given a name (logo, social links) or marked decorative`);
 
   out = ed.count ? ed.apply() : out;

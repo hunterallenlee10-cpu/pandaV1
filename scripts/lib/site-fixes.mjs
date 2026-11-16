@@ -435,6 +435,8 @@ const TYPOS = [
   // "Our Process" (/roofing/, /commercial-roofing/): a dropped first letter, and a missing "and"
   [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
   [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],
+  // /roofing-costs/: "our customer's expectations and ensure that we have an enjoyable roofing experience"
+  [/exceed our customer(['’]|&#8217;)s expectations and ensure that we have an enjoyable roofing experience/g, 'exceed our customers’ expectations and ensure that you have an enjoyable roofing experience'],
 ];
 
 // Panda does not do roof repairs (small repair jobs), so the site no longer offers them:

@@ -11198,3 +11198,13 @@ h1.pfix-h1 {
   overflow: hidden;
   color: #fbbc04;
 }
+
+/* The footer's copyright line, under its links (launch.mjs). */
+.pfix-copyright {
+  width: 100%;
+  padding: 2px 16px 14px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
