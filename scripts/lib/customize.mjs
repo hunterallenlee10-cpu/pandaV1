@@ -280,6 +280,6 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   }
   // Launch readiness, last (launch.mjs): the WordPress install's dead scripts out, analytics
   // for the live domain only, the forms' settings, names for links and pictures.
-  if (fixes) out = launchReady(out, { pathname }, changes.fixes);
+  if (fixes) out = launchReady(out, { pathname, siteDir }, changes.fixes);
   return { html: out, changes };
 }

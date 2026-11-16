@@ -23,7 +23,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { parse } from 'parse5';
 import { Parser as TagScanner } from 'htmlparser2';
-import { ROOT, SITE_ORIGIN } from './config.mjs';
+import { ROOT, SITE_ORIGIN, PATHS } from './config.mjs';
 import { attr, hasClass, esc, clean, textOf, rawText, find, findAll, makeEditor, headEndOffset } from './html-edit.mjs';
 
 const CONFIG_FILE = path.join(ROOT, 'custom', 'site-fixes', 'launch.json');
@@ -142,6 +142,22 @@ export function unnestLinks(html) {
   return { html: out, count: cuts.length };
 }
 
+// Whether a stylesheet of the site holds no rules (only white space and comments).
+const emptySheets = new Map();
+function isEmptyStylesheet(siteDir, href) {
+  const file = path.join(siteDir, decodeURIComponent(href.split(/[?#]/)[0]));
+  if (!emptySheets.has(file)) {
+    let empty = false;
+    try {
+      empty = fs.statSync(file).size < 4096 && !fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').trim();
+    } catch {
+      empty = false; // not there: left alone
+    }
+    emptySheets.set(file, empty);
+  }
+  return emptySheets.get(file);
+}
+
 const location = (n) => n.sourceCodeLocation;
 const setAttr = (n, name, value) => (n.attrs.some((a) => a.name === name) ? n.attrs.map((a) => (a.name === name ? { name, value } : a)) : [...n.attrs, { name, value }]);
 
@@ -149,7 +165,7 @@ const setAttr = (n, name, value) => (n.attrs.some((a) => a.name === name) ? n.at
  * Makes a page ready to go live. `changes`, when given, collects a line per kind of edit.
  * Returns the page's HTML.
  */
-export function launchReady(html, { pathname = '' } = {}, changes = []) {
+export function launchReady(html, { pathname = '', siteDir = PATHS.site } = {}, changes = []) {
   // The disabled tracking snippets and their stand-ins go; the settings script (below) takes
   // their place.
   let out = html.replace(TRACKING_COMMENT, '').replace(TRACKING_STUB, '').replace(LAUNCH_SCRIPT, '');
@@ -207,6 +223,15 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   for (const f of findAll(doc, (c) => c.tagName === 'iframe' && (/^__privateStripe/.test(attr(c, 'name') || '') || /js\.stripe\.com|stripe\.network/.test(attr(c, 'src') || '')))) if (drop(f)) scripts++;
   for (const l of findAll(doc, (c) => c.tagName === 'link' && /preconnect|dns-prefetch/.test(attr(c, 'rel') || '') && DEAD_HINT.test(attr(c, 'href') || ''))) if (drop(l)) scripts++;
   if (scripts) changes.push(`dead weight: ${scripts} script(s), frame(s) and hint(s) of Stripe, Contact Form 7, Site Kit and other WordPress add-ons removed`);
+
+  // Stylesheets with nothing in them (Oxygen writes a "defaults" file for every template,
+  // most of them empty): half of a page's stylesheet requests, each one holding up the
+  // first paint for nothing.
+  let empty = 0;
+  for (const l of findAll(doc, (c) => c.tagName === 'link' && /(^|\s)stylesheet(\s|$)/i.test(attr(c, 'rel') || '') && /^\/[^/]/.test(attr(c, 'href') || ''))) {
+    if (isEmptyStylesheet(siteDir, attr(l, 'href')) && drop(l)) empty++;
+  }
+  if (empty) changes.push(`dead weight: ${empty} link(s) to empty stylesheets removed`);
 
   // WP Rocket's "lazy render" (content-visibility: auto on [data-wpr-lazyrender]): sections
   // off screen had no height, so the page grew as it was scrolled (the scrollbar jumped and
