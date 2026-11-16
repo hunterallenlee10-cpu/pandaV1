@@ -258,6 +258,9 @@ export const SITE_FIXES_FILES = {
   'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
   // the still behind the home hero's video, shown until the video plays
   'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
+  // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
+  'home-hero-poster-800.webp': '/_custom/site-fixes/home-hero-poster-800.webp',
+  'about-team-640.webp': '/_custom/site-fixes/about-team-640.webp',
   // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
   // (roofing-replacement-page.mjs), 480 and 960 px wide
   ...Object.fromEntries(['asphalt', 'metal', 'flat', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
@@ -268,6 +271,9 @@ export const SITE_FIXES_FILES = {
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
   // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
   'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
+  // two photos /careers/ loaded as 1.4 MB and 0.8 MB camera files (launch.mjs)
+  'careers-install.webp': '/_custom/site-fixes/careers-install.webp',
+  'careers-project.webp': '/_custom/site-fixes/careers-project.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;

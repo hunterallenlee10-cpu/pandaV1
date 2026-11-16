@@ -142,6 +142,39 @@ export function unnestLinks(html) {
   return { html: out, count: cuts.length };
 }
 
+// Pictures that were sent at one size to every screen: the sizes a browser may choose from.
+// The header logo offered sizes up to 2,337 px and told browsers it fills the screen, so a
+// 90 px logo arrived as a 110-150 KB file on every page.
+const RESPONSIVE = {
+  '/_custom/site-fixes/home-hero-poster.webp': { srcset: '/_custom/site-fixes/home-hero-poster-800.webp 800w, /_custom/site-fixes/home-hero-poster.webp 1500w', sizes: '100vw' },
+  '/_custom/site-fixes/about-team.webp': { srcset: '/_custom/site-fixes/about-team-640.webp 640w, /_custom/site-fixes/about-team.webp 1100w', sizes: '(max-width: 767px) 100vw, 560px' },
+};
+const LOGO_SIZES = '90px';
+// Photos sent as camera files (/careers/: 1.4 MB and 0.8 MB): a copy at the size the page shows.
+const LIGHTER = {
+  '/wp-content/uploads/2025/07/down-net_http20250709-70-rpl92v.jpg': '/_custom/site-fixes/careers-install.webp',
+  '/wp-content/uploads/2025/07/1-Jun-24-2025-09_32am-Qg47.jpg': '/_custom/site-fixes/careers-project.webp',
+  '/wp-content/uploads/2025/07/bighead-1402x1536.png': '/wp-content/uploads/2025/07/bighead-274x300.png',
+};
+// A picture's lighter copy: the one named above, or the .webp WordPress made beside it
+// (pictures inside <picture> already choose theirs).
+const lighterCopies = new Map();
+function lighterCopy(siteDir, src) {
+  if (!/^\/[^/].*\.(png|jpe?g)$/i.test(src || '')) return '';
+  if (LIGHTER[src]) return LIGHTER[src];
+  if (!lighterCopies.has(src)) {
+    let copy = '';
+    try {
+      const file = path.join(siteDir, decodeURIComponent(src));
+      if (fs.statSync(file).size > 60000 && fs.statSync(`${file}.webp`).size < fs.statSync(file).size * 0.8) copy = `${src}.webp`;
+    } catch {
+      copy = '';
+    }
+    lighterCopies.set(src, copy);
+  }
+  return lighterCopies.get(src);
+}
+
 // Whether a stylesheet of the site holds no rules (only white space and comments).
 const emptySheets = new Map();
 function isEmptyStylesheet(siteDir, href) {
@@ -159,6 +192,10 @@ function isEmptyStylesheet(siteDir, href) {
 }
 
 const location = (n) => n.sourceCodeLocation;
+const inNoscriptEl = (n) => {
+  for (let p = n.parentNode; p; p = p.parentNode) if (p.tagName === 'noscript') return true;
+  return false;
+};
 const setAttr = (n, name, value) => (n.attrs.some((a) => a.name === name) ? n.attrs.map((a) => (a.name === name ? { name, value } : a)) : [...n.attrs, { name, value }]);
 
 /**
@@ -270,6 +307,32 @@ export function launchReady(html, { pathname = '', siteDir = PATHS.site } = {}, 
       if (attr(l, 'href') !== self && st && !ed.overlaps(st.startOffset, st.endOffset)) ed.retag(l, setAttr(l, 'href', self));
     }
   }
+
+  // Pictures at the size the screen needs (RESPONSIVE, and the header logo).
+  let sized = 0;
+  let lighter = 0;
+  for (const img of findAll(doc, (c) => c.tagName === 'img')) {
+    const st = location(img)?.startTag;
+    if (!st || ed.overlaps(st.startOffset, st.endOffset) || inNoscriptEl(img)) continue;
+    if (img.parentNode?.tagName !== 'picture' && !attr(img, 'srcset') && !attr(img, 'data-lazy-srcset')) {
+      const swap = img.attrs.map((a) => (['src', 'data-lazy-src'].includes(a.name) && lighterCopy(siteDir, a.value) ? { name: a.name, value: lighterCopy(siteDir, a.value) } : a));
+      if (swap.some((a, i) => a !== img.attrs[i])) {
+        ed.retag(img, swap);
+        lighter++;
+        continue;
+      }
+    }
+    const r = RESPONSIVE[attr(img, 'src')];
+    if (r && attr(img, 'srcset') !== r.srcset) {
+      ed.retag(img, setAttr(setAttr(img, 'srcset', r.srcset).reduce((n, a) => ((n.attrs.push(a), n)), { attrs: [] }), 'sizes', r.sizes));
+      sized++;
+    } else if (hasClass(img, 'Logo-nav') && attr(img, 'srcset') && attr(img, 'sizes') !== LOGO_SIZES) {
+      ed.retag(img, setAttr(img, 'sizes', LOGO_SIZES));
+      sized++;
+    }
+  }
+  if (lighter) changes.push(`pictures: ${lighter} photo(s) sent as large JPEG/PNG files -> their lighter copies`);
+  if (sized) changes.push(`pictures: ${sized} picture(s) offered at the size the screen needs (the header logo, the home hero)`);
 
   // Embedded players (YouTube, iHeart) load when the visitor gets near them, not with the page.
   for (const f of findAll(doc, (c) => c.tagName === 'iframe' && /^https?:/.test(attr(c, 'src') || '') && !attr(c, 'loading'))) {
