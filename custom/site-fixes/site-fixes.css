@@ -2072,6 +2072,20 @@ h3.pfix-best-label {
   line-height: 1.5;
   text-align: center;
 }
+.pfix-lead .pfix-lead__hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.pfix-lead .pfix-lead__done [hidden] {
+  display: none !important;
+}
+.pfix-lead .submit-btn[disabled] {
+  opacity: 0.7;
+  cursor: progress;
+}
 .pfix-lead .pfix-lead__done[hidden],
 .pfix-lead .pfix-lead__form[hidden],
 .pfix-lead .pfix-lead__error[hidden] {
@@ -6966,7 +6980,7 @@ h3.pfix-best-label {
   width: 28px;
   height: 28px;
 }
-.pfix-why h4.pfix-why__title {
+.pfix-why .pfix-why__title {
   margin: 0;
   padding: 0;
   color: #14180f;
@@ -11076,4 +11090,269 @@ h3.pfix-best-label {
 h1.pfix-h1 {
   margin: 0;
   padding: 0;
+}
+
+/* Main headings on phones. The site's own stylesheet makes every h1 22px under 768px
+   ("font-size: 22px !important"), smaller than the section headings below it; the heroes
+   above set their own size, these did not. */
+@media (max-width: 767.98px) {
+  .pfix-sa-hero .pfix-sa-hero__title,
+  .hero-section .heading h1,
+  .hero-section h1.heading {
+    font-size: 32px !important;
+    line-height: 1.12;
+  }
+  h1.pcv2-hero-title.pcv2-hero-title {
+    font-size: clamp(44px, 13vw, 60px) !important;
+    line-height: 0.98;
+  }
+}
+
+/* The site's own stylesheet gives every <main> 20px of padding on top under 768px, which
+   showed as a white strip between the header and these pages' heroes. */
+@media (max-width: 768px) {
+  main.pnp,
+  main.ppj,
+  main.pfix-404,
+  main.pmedia,
+  main.pfix-legal,
+  main.pfix-blog,
+  main.pfix-post {
+    padding-top: 0 !important;
+  }
+}
+
+/* The header on phones: with a 100px logo it covered 148px of the screen (a sixth of a
+   phone), on every page and all the way down. A 64px logo brings it to 112px. */
+@media (max-width: 767.98px) {
+  .oxy-container-974-100 .Logo-nav {
+    width: auto !important;
+    height: 64px !important;
+  }
+  body {
+    padding-top: 112px !important;
+  }
+}
+
+/* The Google rating in the free-estimate forms (was a picture of an old rating; the same
+   badge as on /reviews/, whose stylesheet only that page loads). */
+.prh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px auto 2px;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+}
+.prh-badge__g svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+.prh-badge__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.prh-badge__label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+}
+.prh-badge__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.prh-badge__row b {
+  color: #111827;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+.prh-badge__stars {
+  position: relative;
+  display: inline-block;
+  font-size: 18px;
+  line-height: 0;
+}
+.prh-badge .prw-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.prh-badge .prw-stars svg {
+  display: block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+.prh-badge .prw-stars--base {
+  color: #e5e7eb;
+}
+.prh-badge .prw-stars--fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--prw-fill, 100%);
+  overflow: hidden;
+  color: #fbbc04;
+}
+
+/* The footer's copyright line, under its links (launch.mjs). */
+.pfix-copyright {
+  width: 100%;
+  padding: 2px 16px 14px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* A headline that became the page's h1 (launch.mjs: /podcast/), looking as it did. */
+h1.pfix-h1.pfix-h1--plain {
+  margin: 0 0 8px;
+  color: #000;
+  font-size: 32px !important;
+  font-weight: 600;
+  line-height: 38px;
+}
+
+/* /charity-and-community/ on phones: the "Proud partner of So Kids Soar" badge was laid out
+   in half the collage's width, so its last word ran out of the white pill. */
+.pfix-cc .pfix-cc-collage__badge {
+  width: max-content;
+  max-width: calc(100% - 12px);
+}
+
+/* /careers/: "Apply Now" in the open positions took the page's grey link colour on the
+   orange button (the one in "Ready to build?" is white). */
+a.pcv2-btn:not(.pcv2-btn-green),
+a.pcv2-btn:not(.pcv2-btn-green):hover {
+  color: #fff !important;
+}
+
+/* /careers/: the awards picture has its own navy background, which showed as a box on the
+   near-black section. Blended, only the badges show. */
+.pcv2-awards img {
+  mix-blend-mode: lighten;
+}
+
+/* Contrast. White on the top bar's salmon (2.7 to 1) and on lime (1.9 to 1), the lime form
+   titles on white (1.9 to 1) and the menu's light grey on white (2.4 to 1) were hard to read;
+   each now clears 4.5 to 1 in the same hue. */
+body:not(.wp-admin) .xai-weather-ribbon {
+  background-color: #c2410c !important;
+}
+.main_menu a,
+.main_menu .Nav-Link {
+  color: #4b5563 !important;
+}
+.main_menu a:hover,
+.main_menu .Nav-Link:hover {
+  color: #14180f !important;
+}
+.heading-form {
+  color: #4d7c0f !important;
+}
+/* Text on the lime bands (home and /services/: "Panda Exteriors Is Your Top Roofing Choice";
+   home: "Looking For a Remodeler?"; /service-areas/: "Proud to Serve…"): dark, like "Our
+   Project Gallery". */
+.oxy-text-15132-101.text-white,
+.oxy-text-15132-102,
+.oxy-text-2-259.text-white,
+.oxy-text-2-469,
+.oxy-container-1048-115 .text-white,
+.oxy-container-1048-115 p {
+  color: #14180f !important;
+}
+/* The header's phone button: dark on lime (white was 1.9 to 1). */
+.oxy-container-974-100 a[href^="tel:"],
+.oxy-container-974-100 a[href^="tel:"] .button-atom__text,
+.breakdance .oxy-container-974-100 .bde-button a.bde-button__button[href^="tel:"] {
+  color: #14180f !important;
+}
+
+/* The footer's small links and icons on phones: room to tap. */
+@media (max-width: 767.98px) {
+  .footer-pages a.footer-text {
+    display: inline-block;
+    padding: 10px 4px;
+  }
+}
+
+/* /contact-us/: the estimate form under the hero (contact-page.mjs). */
+.pfix-ct .pfix-ct-estimate {
+  background: #fff;
+  scroll-margin-top: 130px;
+}
+.pfix-ct .pfix-ct-estimate__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+.pfix-ct .pfix-ct-estimate__text .pfix-ct__title,
+.pfix-ct .pfix-ct-estimate__text .pfix-ct__sub {
+  text-align: left;
+}
+.pfix-ct .pfix-ct-estimate__text .pfix-ct__sub {
+  max-width: 520px;
+  margin-top: 14px;
+}
+.pfix-ct .pfix-ct-estimate__points {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 26px;
+}
+.pfix-ct .pfix-ct-estimate__points p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--ct-ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+.pfix-ct .pfix-ct-estimate__points svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 50%;
+  background: #e9f5d0;
+  color: var(--ct-lime-ink);
+}
+.pfix-ct .pfix-ct-estimate__card {
+  padding: clamp(22px, 2.6vw, 32px);
+  border: 1px solid var(--ct-line);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 24px 50px -28px rgba(20, 24, 15, 0.35);
+}
+.pfix-ct .pfix-ct-estimate__form-title {
+  margin: 0 0 10px;
+  color: var(--ct-ink);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+.pfix-ct .pfix-ct-estimate__rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+.pfix-ct .pfix-ct-estimate__rating a {
+  color: var(--ct-ink);
+  font-weight: 700;
+  text-decoration: underline;
+}
+@media (max-width: 860px) {
+  .pfix-ct .pfix-ct-estimate__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

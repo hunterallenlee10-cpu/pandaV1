@@ -28,6 +28,7 @@ import { parse } from 'parse5';
 import { ROOT, SITE_ORIGIN } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, makeEditor, headEndOffset } from './html-edit.mjs';
 import { serviceForm, renderServiceForm } from './service-forms.mjs';
+import { formBadge } from './review-wall.mjs';
 import { contactPage, officeMap } from './contact-page.mjs';
 import { COVERED, NOT_COVERED, CLAIM_STEPS } from './roofing-costs-page.mjs';
 import { loadUsMap } from './us-map.mjs';
@@ -251,8 +252,10 @@ function hero(h, form, pathname, exists, { aside = '', side = '' } = {}) {
     `<a class="pnp-btn pnp-btn--ghost" href="${side ? esc(side.href) : PHONE.href}">${ICONS.phone}Call ${esc(side ? side.text : PHONE.text)}</a></div>` +
     `</div>` +
     `<div class="pnp-form-card"><p class="pnp-form-card__title">${esc(form.title)}</p><p class="pnp-form-card__text">${esc(form.text)}</p>` +
-    (f ? renderServiceForm(f, pathname, 1) : '') +
-    `<p class="pnp-form-card__reviews"><a href="/reviews/">Read our customer reviews</a></p>` +
+    // The Google rating and the reviews link above the fields, as in every other page's form.
+    `<div class="pnp-form-card__rating">${formBadge()}<a href="/reviews/">Read our customer reviews</a></div>` +
+    // (a page may name its own button: "form": { "button": … } in pages.json)
+    (f ? renderServiceForm(form.button ? { ...f, button: form.button } : f, pathname, 1) : '') +
     `</div>` +
     `</div></section>`
   );

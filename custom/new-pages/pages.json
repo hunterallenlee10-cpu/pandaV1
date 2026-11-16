@@ -184,7 +184,7 @@
         "chips": [["search", "Free storm-damage inspection"], ["users", "We meet your adjuster"], ["roof", "Insurance-paid roof replacements"]],
         "photo": ["/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg", 2000, 1125]
       },
-      "form": { "title": "Free Storm Inspection", "text": "We check your roof, gutters and attic, and photograph everything." },
+      "form": { "title": "Free Storm Inspection", "text": "We check your roof, gutters and attic, and photograph everything.", "button": "Book My Free Inspection" },
       "sections": [
         {
           "type": "steps",

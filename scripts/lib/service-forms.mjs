@@ -10,8 +10,10 @@
 // gets the general form ("default"), which asks what the visitor needs. Each has its own
 // heading, line and button, the contact fields and questions about the job, with the
 // page's own service chosen already where it has one. The Google rating and the reviews
-// link stay. The forms are not connected to anything yet: on submit, site-fixes.js says so
-// and gives the phone number, so nobody thinks a request went through. The old form's
+// link stay. Where a request goes is a setting (custom/site-fixes/launch.json, "leads"):
+// site-fixes.js posts the form there and says the request arrived, or, if it could not be
+// sent, says so and gives the phone number. With no address set, nothing is sent and the
+// card says online requests aren't switched on, so nobody thinks one went through. The old form's
 // scripts (lead routing, address lookup, the location prompt) are removed from every page,
 // including the ones that only loaded them without a form. (The careers pages' own
 // placeholders for them, which switch the location prompt off, are left alone.)
@@ -70,14 +72,20 @@ export function renderServiceForm(f, pathname, n) {
       'I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. Reply HELP for help and STOP to cancel. I also agree to Panda Exteriors’s <a href="/terms-and-conditions/" target="_blank">Terms of Use</a> and <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.'
     ) +
     consent('email_consent', 'I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.') +
+    // A field people never see: a request with it filled in comes from a bot (site-fixes.js).
+    `<div class="pfix-lead__hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>` +
     `<p class="pfix-lead__error" role="alert" hidden></p>` +
-    `<button type="submit" class="submit-btn">${esc(f.button)}</button>` +
+    `<button type="submit" class="submit-btn" data-pfix-lead-submit>${esc(f.button)}</button>` +
     `<noscript><p class="pfix-lead__call">Or call <a href="${PHONE.href}">${PHONE.text}</a> to book your free estimate.</p></noscript>` +
     `</form>` +
+    // What the card says after a request: sent (the default), or one of the two below when
+    // nothing was sent, each with the phone number (site-fixes.js picks).
     `<div class="pfix-lead__done" role="status" tabindex="-1" hidden>` +
     `<p class="pfix-lead__done-title">Thanks<span data-pfix-lead-name></span>!</p>` +
-    `<p>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p>` +
-    `<a class="submit-btn pfix-lead__done-call" href="${PHONE.href}">Call ${PHONE.text}</a>` +
+    `<p data-pfix-lead-msg="sent">We’ve got your request. A Panda Exteriors specialist will call you shortly to book your free estimate.</p>` +
+    `<p data-pfix-lead-msg="offline" hidden>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p>` +
+    `<p data-pfix-lead-msg="failed" hidden>Something went wrong on our side and your request didn’t reach us. Please give us a call and we’ll book your free estimate.</p>` +
+    `<a class="submit-btn pfix-lead__done-call" href="${PHONE.href}"><span data-pfix-lead-call="sent">Can’t wait? Call ${PHONE.text}</span><span data-pfix-lead-call="other" hidden>Call ${PHONE.text}</span></a>` +
     `</div></div>`
   );
 }
@@ -115,7 +123,7 @@ export function collectServiceForms(doc, html, ed, { pathname }, changes) {
     ed.outer(block, form);
     replaced++;
   });
-  if (replaced) changes.push(`service form: ${replaced} "10% OFF Roof Replacement" form(s) -> "${f.title}" (not connected yet: on submit it says so and gives the phone number)`);
+  if (replaced) changes.push(`service form: ${replaced} "10% OFF Roof Replacement" form(s) -> "${f.title}"`);
   // The old forms' scripts: lead routing, Google address lookup, the location prompt.
   let removed = 0;
   for (const s of findAll(doc, (c) => c.tagName === 'script')) {

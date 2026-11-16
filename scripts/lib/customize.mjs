@@ -31,6 +31,7 @@ import { renderFavorites, favoritesNote, PAST_PROJECTS_FILES } from './past-proj
 import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.mjs';
 import { BLOG_FILES } from './blog.mjs';
 import { relinkMerged } from './merged-pages.mjs';
+import { launchReady } from './launch.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -277,5 +278,8 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
       out = relinked;
     }
   }
+  // Launch readiness, last (launch.mjs): the WordPress install's dead scripts out, analytics
+  // for the live domain only, the forms' settings, names for links and pictures.
+  if (fixes) out = launchReady(out, { pathname, siteDir }, changes.fixes);
   return { html: out, changes };
 }

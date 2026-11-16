@@ -99,7 +99,8 @@ function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, af
   const deal = (d) => {
     const [src, w, h, alt] = d.img;
     return (
-      `<article class="pfix-of-deal pfix-of-deal--${esc(d.key)}" id="pfix-of-deal-${esc(d.key)}" role="listitem" aria-labelledby="pfix-of-deal-${esc(d.key)}-title">` +
+      // (a div: an <article> may not carry a list item's role)
+      `<div class="pfix-of-deal pfix-of-deal--${esc(d.key)}" id="pfix-of-deal-${esc(d.key)}" role="listitem" aria-labelledby="pfix-of-deal-${esc(d.key)}-title">` +
       `<div class="pfix-of-deal__media">${exists(src) ? picture(src, w, h, alt, exists) : ''}<span class="pfix-of-deal__tag">${esc(d.tag)}</span></div>` +
       `<div class="pfix-of-deal__body">` +
       `<p class="pfix-of-deal__amount"><b>${esc(d.amount)}</b> <span>${esc(d.unit)}</span></p>` +
@@ -113,7 +114,7 @@ function renderOffers(o, exists, { formId = FORM_ID, pick = null, top = null, af
       (details ? `<a class="pfix-of-link" href="${esc(d.href)}">Offer details${ARROW}</a>` : '') +
       `</div>` +
       `<p class="pfix-of-deal__fine">${esc(d.fine)}</p>` +
-      `</div></article>`
+      `</div></div>`
     );
   };
   const h = top || o;

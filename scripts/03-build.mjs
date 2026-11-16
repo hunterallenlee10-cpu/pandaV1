@@ -27,6 +27,8 @@ import { primeBlogPosts, postSlug, BLOG_DIR, BLOG_FILES } from './lib/blog.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from './lib/site-map-page.mjs';
 import { syncSitemaps } from './lib/sitemaps.mjs';
 import { syncCareersHeader } from './lib/careers-header.mjs';
+import { launchReady } from './lib/launch.mjs';
+import { vercelHeaders, netlifyHeaders, serveHeaders } from './lib/hosting.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
 import { readJson, writeJson, writeFile, toCsv, mdTable, args, fmtBytes, listFiles } from './lib/util.mjs';
@@ -367,6 +369,7 @@ for (const row of inv.rows) {
 let mediaPage = null;
 if (MEDIA_PAGE) {
   mediaPage = buildMediaPage({ siteDir: OUT, siteOrigin: SITE_ORIGIN });
+  if (mediaPage && SITE_FIXES) mediaPage.html = launchReady(mediaPage.html, { pathname: MEDIA_PATH });
   if (mediaPage) put(path.posix.join(MEDIA_PATH.replace(/^\/|\/$/g, ''), 'index.html'), mediaPage.html, 'custom/media');
   // Its stylesheet, script and pictures, used by it and by the Podcast page's player.
   if (mediaPage || intentionalChanges.some((c) => c.mediaSections?.length)) {
@@ -377,6 +380,7 @@ if (MEDIA_PAGE) {
 // 3a'. The pages added in the site restructure (new-pages.mjs): generated from a built page,
 // like the Media page; before 3b, so the files they show are kept.
 const newPages = SITE_FIXES ? buildNewPages({ siteDir: OUT, siteOrigin: SITE_ORIGIN }) : [];
+for (const p of newPages) p.html = launchReady(p.html, { pathname: p.path });
 for (const p of newPages) put(path.posix.join(p.path.replace(/^\/|\/$/g, ''), 'index.html'), p.html, 'custom/new-pages');
 if (newPages.length) for (const [from, url] of newPagesFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/new-pages/${path.basename(from)}`);
 if (newPages.length && fs.existsSync(path.join(OUT, 'page-sitemap.xml'))) {
@@ -506,22 +510,23 @@ const redirectsFile = [
   '',
 ].join('\n');
 writeFile(path.join(OUT, '_redirects'), redirectsFile);
-writeFile(
-  path.join(OUT, '_headers'),
-  ['# Netlify / Cloudflare Pages headers', '/_raw/*', '  Content-Type: text/plain; charset=utf-8', '  X-Robots-Tag: noindex', ''].join('\n'),
-);
+const RAW_ONLY_HEADERS = ['# Netlify / Cloudflare Pages headers', '/_raw/*', '  Content-Type: text/plain; charset=utf-8', '  X-Robots-Tag: noindex', ''].join('\n');
+// (With the site fixes: also security and caching headers, hosting.mjs.)
+writeFile(path.join(OUT, '_headers'), SITE_FIXES ? netlifyHeaders() : RAW_ONLY_HEADERS);
 writeJson(path.join(OUT, 'serve.json'), {
   redirects: serveRedirects,
   rewrites: rewrites.map((r) => ({ source: serveSource(r.from), destination: r.to })),
-  headers: [
-    {
-      source: '_raw/**',
-      headers: [
-        { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
-        { key: 'X-Robots-Tag', value: 'noindex' },
+  headers: SITE_FIXES
+    ? serveHeaders()
+    : [
+        {
+          source: '_raw/**',
+          headers: [
+            { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+            { key: 'X-Robots-Tag', value: 'noindex' },
+          ],
+        },
       ],
-    },
-  ],
 });
 writeFile(path.join(OUT, '.nojekyll'), '');
 
@@ -537,6 +542,10 @@ if (SITE_FIXES) {
 let siteMapPage = null;
 if (SITE_MAP_PAGE) {
   siteMapPage = buildSiteMapPage({ siteDir: OUT, siteOrigin: SITE_ORIGIN });
+  if (siteMapPage && SITE_FIXES) {
+    siteMapPage.html = launchReady(siteMapPage.html, { pathname: SITE_MAP_PATH });
+    siteMapPage.audit = launchReady(siteMapPage.audit, { pathname: SITE_AUDIT_PATH });
+  }
   if (siteMapPage) {
     const rel = path.posix.join(SITE_MAP_PATH.replace(/^\/|\/$/g, ''), 'index.html');
     put(rel, siteMapPage.html, written.get(rel) || 'custom/site-map');
@@ -569,7 +578,8 @@ const vercel = {
   outputDirectory: path.basename(OUT),
   trailingSlash: true,
   rewrites: rewrites.map((r) => ({ source: vercelSource(r.from), destination: r.to })),
-  headers: [{ source: '/_raw/(.*)', headers: rawHeaders }],
+  // (With the site fixes: no indexing off the live domain, security and caching headers, hosting.mjs.)
+  headers: SITE_FIXES ? vercelHeaders() : [{ source: '/_raw/(.*)', headers: rawHeaders }],
 };
 // Every redirect/rewrite/header rule counts toward Vercel's 2,048 routes per
 // deployment; past that, redirects go to a bulk-redirects file instead.

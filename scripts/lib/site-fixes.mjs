@@ -200,7 +200,7 @@ import path from 'node:path';
 import { ROOT, SITE_ORIGIN, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
-import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
+import { collectReviewWall, collectReviewsHero, collectFormBadges, loadReviewWall } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
@@ -258,6 +258,9 @@ export const SITE_FIXES_FILES = {
   'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
   // the still behind the home hero's video, shown until the video plays
   'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
+  // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
+  'home-hero-poster-800.webp': '/_custom/site-fixes/home-hero-poster-800.webp',
+  'about-team-640.webp': '/_custom/site-fixes/about-team-640.webp',
   // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
   // (roofing-replacement-page.mjs), 480 and 960 px wide
   ...Object.fromEntries(['asphalt', 'metal', 'flat', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
@@ -266,6 +269,11 @@ export const SITE_FIXES_FILES = {
   // the photos of /siding/'s "Siding Replacements" and "Siding Types" cards (GRID_CARD_FIXES)
   'siding-install.webp': '/_custom/site-fixes/siding-install.webp',
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
+  // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
+  'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
+  // two photos /careers/ loaded as 1.4 MB and 0.8 MB camera files (launch.mjs)
+  'careers-install.webp': '/_custom/site-fixes/careers-install.webp',
+  'careers-project.webp': '/_custom/site-fixes/careers-project.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
@@ -308,8 +316,8 @@ const SOLAR_OPTIONS_PATH = '/solar-options/';
 const SOLAR_OPTIONS_LABEL = 'Solar Options';
 // The "Solar" entry's label: as captured, and once renamed.
 const SOLAR_LABELS = ['Solar', SOLAR_OPTIONS_LABEL];
-// The Google rating in the lead form's rating picture (admin-ajax-2.png).
-const GOOGLE_RATING = '4.9';
+// The Google rating (custom/reviews/google-reviews.json, "place"), as the lead forms and /reviews/ show it.
+const googleRating = () => Number(loadReviewWall().place.rating).toFixed(1);
 
 // /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
@@ -435,6 +443,8 @@ const TYPOS = [
   // "Our Process" (/roofing/, /commercial-roofing/): a dropped first letter, and a missing "and"
   [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
   [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],
+  // /roofing-costs/: "our customer's expectations and ensure that we have an enjoyable roofing experience"
+  [/exceed our customer(['’]|&#8217;)s expectations and ensure that we have an enjoyable roofing experience/g, 'exceed our customers’ expectations and ensure that you have an enjoyable roofing experience'],
 ];
 
 // Panda does not do roof repairs (small repair jobs), so the site no longer offers them:
@@ -495,7 +505,14 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   const hero = find(doc, (c) => hasClass(c, 'service-area-hero'));
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   const h1 = text && find(text, (c) => c.tagName === 'h1');
-  if (!h1 || hasClass(hero, 'pfix-sa-hero')) return false;
+  if (hero && hasClass(hero, 'pfix-sa-hero')) {
+    // Built already: its Google rating follows custom/reviews/google-reviews.json.
+    const star = find(hero, (c) => hasClass(c, 'pfix-sa-hero__star'));
+    const before = star && (star.parentNode.childNodes || []).find((c) => c.nodeName === '#text' && /^\s*\d(\.\d)?\s*$/.test(c.value));
+    if (before && before.value.trim() !== googleRating() && editText(ed, html, before, () => googleRating())) changes.push(`service areas hero: Google rating ${before.value.trim()} -> ${googleRating()}`);
+    return false;
+  }
+  if (!h1) return false;
   if (siteDir && ![SA_HERO_PHOTO, `${SA_HERO_PHOTO}.webp`].every((f) => fs.existsSync(path.join(siteDir, f)))) {
     console.warn(`site-fixes: ${pathname}: the hero photo is missing from the site, hero left as is`);
     return false;
@@ -523,7 +540,7 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
     (jobs ? stat(fmt(jobs), 'Jobs completed') : '') +
     stat(states.length, 'States') +
     stat(offices, 'Local offices') +
-    stat(`${GOOGLE_RATING}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
+    stat(`${googleRating()}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
     `</div>` +
     `<div class="pfix-sa-hero__areas">` +
     `<p class="pfix-sa-hero__label" id="pfix-sa-hero-areas">${jobs ? 'Jobs completed by state' : 'Some of the states we work in'}</p>` +
@@ -1000,6 +1017,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /reviews/ hero: the Google rating, faces, a quote and buttons over a sharp photo; the
   // forms' rating picture shows the current rating (review-wall.mjs).
   if (collectReviewsHero(doc, html, ed, { pathname }, changes)) used.reviewWall = true;
+  // Every other page's forms: the current Google rating too (was a picture saying 4.9).
+  else if (collectFormBadges(doc, ed, changes)) used.css = true;
 
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.

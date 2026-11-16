@@ -30,6 +30,8 @@ import { syncCareersHeader, CAREERS_PATH } from '../lib/careers-header.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
 import { syncSitemaps } from '../lib/sitemaps.mjs';
+import { launchReady } from '../lib/launch.mjs';
+import { syncHostHeaders } from '../lib/hosting.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
 const opts = args();
@@ -84,6 +86,7 @@ for (const file of pages.sort()) {
 let media = null;
 if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
   media = buildMediaPage({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  if (media && SITE_FIXES) media.html = launchReady(media.html, { pathname: MEDIA_PATH });
   if (media && (!fs.existsSync(mediaFile) || fs.readFileSync(mediaFile, 'utf8') !== media.html)) {
     changed++;
     if (!dryRun) writeFile(mediaFile, media.html);
@@ -96,6 +99,7 @@ if (MEDIA_PAGE && (!only || only.has(MEDIA_PATH))) {
 let newPages = [];
 if (!only || newPagePaths().some((p) => only.has(p))) {
   newPages = buildNewPages({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  if (SITE_FIXES) for (const p of newPages) p.html = launchReady(p.html, { pathname: p.path });
   for (const p of newPages) {
     const file = path.join(SITE, p.path, 'index.html');
     if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === p.html) continue;
@@ -129,6 +133,10 @@ let siteMap = null;
 const siteMapFile = path.join(SITE, SITE_MAP_PATH, 'index.html');
 if (SITE_MAP_PAGE && fs.existsSync(siteMapFile)) {
   siteMap = buildSiteMapPage({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
+  if (siteMap && SITE_FIXES) {
+    siteMap.html = launchReady(siteMap.html, { pathname: SITE_MAP_PATH });
+    siteMap.audit = launchReady(siteMap.audit, { pathname: SITE_AUDIT_PATH });
+  }
   if (siteMap && fs.readFileSync(siteMapFile, 'utf8') !== siteMap.html) {
     changed++;
     if (!dryRun) writeFile(siteMapFile, siteMap.html);
@@ -199,6 +207,9 @@ if (!only) {
   if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
   const redirectFiles = writeRedirectFiles(SITE, { dryRun });
   if (redirectFiles.changed.length) console.log(`${dryRun ? 'would update' : 'updated'} ${redirectFiles.changed.join(', ')} (${redirectFiles.added} new redirect(s))`);
+  // The headers the hosts send: no indexing off the live domain, security, caching (hosting.mjs).
+  const headerFiles = SITE_FIXES ? syncHostHeaders(SITE, { dryRun }) : [];
+  if (headerFiles.length) console.log(`${dryRun ? 'would update' : 'updated'} the response headers in ${headerFiles.join(', ')}`);
 }
 
 console.log(`${dryRun ? 'Would update' : 'Updated'} ${changed} of ${pages.length + (media ? 1 : 0) + newPages.length} page(s) in ${path.relative(ROOT, SITE) || '.'}/; ${copied} file(s) copied.`);
