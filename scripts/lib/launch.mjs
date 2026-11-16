@@ -20,6 +20,7 @@
 // Every edit gives the same result on a page that already has it.
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { parse } from 'parse5';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, clean, textOf, rawText, find, findAll, makeEditor, headEndOffset } from './html-edit.mjs';
@@ -83,6 +84,11 @@ export function launchScript(c = launchConfig()) {
   );
 }
 
+// Pictures a page carried as text (a data: address), by the start of their SHA-1: the file
+// that replaces them. /careers/ held its awards picture three times, 930 KB of a 1.1 MB page.
+const INLINE_PICTURES = { c8f1ea785a1a: '/_custom/site-fixes/careers-awards.webp' };
+const INLINE_PICTURE = /data:image\/(?:png|jpe?g|webp);base64,([A-Za-z0-9+/=]{20000,})/g;
+
 const TRACKING_COMMENT = /<!-- TRACKING DISABLED \(.*?\) --><!--\n[\s\S]*?\n-->\n?/g;
 const TRACKING_STUB = /<script>\/\* TRACKING DISABLED: no-op stand-ins[\s\S]*?<\/script>\n?/g;
 const LAUNCH_SCRIPT = /<script id="pfix-launch">[\s\S]*?<\/script>/g;
@@ -100,6 +106,13 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   let out = html.replace(TRACKING_COMMENT, '').replace(TRACKING_STUB, '').replace(LAUNCH_SCRIPT, '');
   if (out !== html && !LAUNCH_SCRIPT.test(html)) changes.push('analytics: the disabled snippets -> one settings script that loads the tags on the live domain only');
   LAUNCH_SCRIPT.lastIndex = 0;
+  let pictures = 0;
+  out = out.replace(INLINE_PICTURE, (all, data) => {
+    const file = INLINE_PICTURES[crypto.createHash('sha1').update(data).digest('hex').slice(0, 12)];
+    if (file) pictures++;
+    return file || all;
+  });
+  if (pictures) changes.push(`pictures: ${pictures} cop${pictures === 1 ? 'y' : 'ies'} of a picture held in the page as text -> a file the browser can cache`);
 
   const doc = parse(out, { sourceCodeLocationInfo: true });
   const ed = makeEditor(out);
@@ -153,6 +166,17 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   for (const meta of findAll(doc, (c) => c.tagName === 'meta' && ['og:title', 'twitter:title'].includes(attr(c, 'property') || attr(c, 'name')))) {
     const m = (attr(meta, 'content') || '').match(twice);
     if (m) ed.retag(meta, setAttr(meta, 'content', `${m[1]} | Panda Exteriors`));
+  }
+
+  // A page with no main heading (/podcast/: "Panda Vision Podcast" was an h2): its first
+  // headline becomes the h1, looking the same (.pfix-h1--plain in site-fixes.css).
+  if (!find(doc, (c) => c.tagName === 'h1')) {
+    const headline = find(doc, (c) => c.tagName === 'h2' && hasClass(c, 'flext-head'));
+    const l = headline && location(headline);
+    if (l?.endTag && !ed.overlaps(l.startOffset, l.endOffset)) {
+      ed.retag(headline, setAttr(headline, 'class', `${attr(headline, 'class')} pfix-h1 pfix-h1--plain`), 'h1');
+      changes.push(`page heading: "${clean(textOf(headline))}" is now the page's h1 (it had none)`);
+    }
   }
 
   // Names for screen readers and search engines.

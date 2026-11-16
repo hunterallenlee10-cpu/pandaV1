@@ -254,7 +254,8 @@ function hero(h, form, pathname, exists, { aside = '', side = '' } = {}) {
     `<div class="pnp-form-card"><p class="pnp-form-card__title">${esc(form.title)}</p><p class="pnp-form-card__text">${esc(form.text)}</p>` +
     // The Google rating and the reviews link above the fields, as in every other page's form.
     `<div class="pnp-form-card__rating">${formBadge()}<a href="/reviews/">Read our customer reviews</a></div>` +
-    (f ? renderServiceForm(f, pathname, 1) : '') +
+    // (a page may name its own button: "form": { "button": … } in pages.json)
+    (f ? renderServiceForm(form.button ? { ...f, button: form.button } : f, pathname, 1) : '') +
     `</div>` +
     `</div></section>`
   );

@@ -11208,3 +11208,32 @@ h1.pfix-h1 {
   line-height: 1.5;
   text-align: center;
 }
+
+/* A headline that became the page's h1 (launch.mjs: /podcast/), looking as it did. */
+h1.pfix-h1.pfix-h1--plain {
+  margin: 0 0 8px;
+  color: #000;
+  font-size: 32px !important;
+  font-weight: 600;
+  line-height: 38px;
+}
+
+/* /charity-and-community/ on phones: the "Proud partner of So Kids Soar" badge was laid out
+   in half the collage's width, so its last word ran out of the white pill. */
+.pfix-cc .pfix-cc-collage__badge {
+  width: max-content;
+  max-width: calc(100% - 12px);
+}
+
+/* /careers/: "Apply Now" in the open positions took the page's grey link colour on the
+   orange button (the one in "Ready to build?" is white). */
+a.pcv2-btn:not(.pcv2-btn-green),
+a.pcv2-btn:not(.pcv2-btn-green):hover {
+  color: #fff !important;
+}
+
+/* /careers/: the awards picture has its own navy background, which showed as a box on the
+   near-black section. Blended, only the badges show. */
+.pcv2-awards img {
+  mix-blend-mode: lighten;
+}

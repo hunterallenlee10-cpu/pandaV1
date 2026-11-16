@@ -266,6 +266,8 @@ export const SITE_FIXES_FILES = {
   // the photos of /siding/'s "Siding Replacements" and "Siding Types" cards (GRID_CARD_FIXES)
   'siding-install.webp': '/_custom/site-fixes/siding-install.webp',
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
+  // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
+  'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
