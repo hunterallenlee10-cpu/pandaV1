@@ -25,6 +25,17 @@
       { "id": "virginia", "state": "VA", "name": "Virginia", "city": "Reston", "street": "11260 Roger Bacon Dr", "locality": "Reston, VA 20190", "phone": "(571) 451-2773", "at": [38.9521, -77.3372], "label": 298 }
     ]
   },
+  "estimate": {
+    "eyebrow": "Free estimate",
+    "title": "Tell us about your project",
+    "sub": "Send a few details and a Panda specialist will call you to book your free estimate. Rather talk now? Call our main line.",
+    "points": [
+      "Free estimate, no obligation",
+      "Roofing, siding, gutters and solar",
+      "A local team from one of seven offices"
+    ],
+    "formTitle": "Request a Free Estimate"
+  },
   "cta": {
     "title": "Not sure which office to call?",
     "text": "Call our main line for a free estimate and we’ll connect you with your local team."

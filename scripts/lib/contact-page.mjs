@@ -11,6 +11,8 @@
 //  - the seven offices, headquarters first: each card has a small map of its state with
 //    the office pinned, its street address with "Get directions" (Google Maps) and its own
 //    number as a call button;
+//  - the estimate form, right under the hero (every "Free Estimate" button on the site leads
+//    to this page);
 //  - a closing band with the main line and email.
 // The maps are drawn in the page (SVG) from the US map's state outlines
 // (custom/us-map/us-states.json), like the site's other maps: no API key, nothing to load.
@@ -24,6 +26,8 @@ import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, rawText } from './html-edit.mjs';
 import { helpTopics } from './customer-service-page.mjs';
 import { officePagePath } from './new-pages.mjs';
+import { serviceForm, renderServiceForm } from './service-forms.mjs';
+import { formBadge } from './review-wall.mjs';
 
 export const CONTACT_PATH = '/contact-us/';
 
@@ -179,7 +183,31 @@ function ctaSection() {
 const customerSection = () =>
   `<div class="pfix-cs pfix-ct-help">${helpTopics({ eyebrow: 'Customer service', title: 'Already a customer?', intro: 'Your warranty, financing, reviews and referrals: everything you need after the job, in one place.', id: 'customer-service' })}</div>`;
 
-const pageHtml = () => `<div class="pfix-ct">${hero()}${officesSection()}${customerSection()}${ctaSection()}</div>`;
+// The estimate form, right under the hero: every "Free Estimate" button on the site leads to
+// this page, which had phone numbers and addresses but no form.
+const CHECK = svg('<path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>');
+function estimateSection() {
+  const { estimate, main } = contactPage();
+  const f = serviceForm(CONTACT_PATH);
+  if (!estimate || !f) return '';
+  return (
+    `<section class="pfix-ct__sec pfix-ct-estimate" id="estimate" aria-labelledby="pfix-ct-estimate-title"><div class="pfix-ct__inner pfix-ct-estimate__inner">` +
+    `<div class="pfix-ct-estimate__text">` +
+    `<p class="pfix-ct__eyebrow">${esc(estimate.eyebrow)}</p>` +
+    `<h2 class="pfix-ct__title" id="pfix-ct-estimate-title">${esc(estimate.title)}</h2>` +
+    `<p class="pfix-ct__sub">${esc(estimate.sub)}</p>` +
+    `<div class="pfix-ct-estimate__points">${estimate.points.map((p) => `<p>${CHECK}<span>${esc(p)}</span></p>`).join('')}</div>` +
+    `<a class="pfix-ct-btn pfix-ct-btn--dark" href="${esc(main.phone[1])}">${ICONS.phone}Call ${esc(main.phone[0])}</a>` +
+    `</div>` +
+    `<div class="pfix-ct-estimate__card"><p class="pfix-ct-estimate__form-title">${esc(estimate.formTitle)}</p>` +
+    `<div class="pfix-ct-estimate__rating">${formBadge()}<a href="/reviews/">Read our customer reviews</a></div>` +
+    renderServiceForm(f, CONTACT_PATH, 1) +
+    `</div>` +
+    `</div></section>`
+  );
+}
+
+const pageHtml = () => `<div class="pfix-ct">${hero()}${estimateSection()}${officesSection()}${customerSection()}${ctaSection()}</div>`;
 
 /**
  * /contact-us/: the hero, office cards and contact band (as captured, or this page as an

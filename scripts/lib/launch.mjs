@@ -221,6 +221,13 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   }
   if (lazy) changes.push(`lazy render off for ${lazy} section(s): it cut off content that reaches outside a section and made the page's height jump while scrolling`);
 
+  // Embedded players (YouTube, iHeart) load when the visitor gets near them, not with the page.
+  for (const f of findAll(doc, (c) => c.tagName === 'iframe' && /^https?:/.test(attr(c, 'src') || '') && !attr(c, 'loading'))) {
+    const st = location(f)?.startTag;
+    if (!st || ed.overlaps(st.startOffset, st.endOffset)) continue;
+    ed.retag(f, [...f.attrs, { name: 'loading', value: 'lazy' }]);
+  }
+
   // A title with a second title after "| Panda Exteriors" (two SEO fields joined).
   const twice = /^(.*?\S)\s*\|\s*Panda Exteriors\s+\S.*$/;
   for (const t of findAll(doc, (c) => c.tagName === 'title')) {
@@ -302,6 +309,23 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
       changes.push('footer: a copyright line');
     }
   }
+
+  // Lists of links marked up as <a role="listitem">: the role replaced the link's own, so a
+  // screen reader announced "list item", not a link. The links keep their role; the list
+  // roles go.
+  let lists = 0;
+  for (const list of findAll(doc, (c) => attr(c, 'role') === 'list')) {
+    const items = (list.childNodes || []).filter((c) => c.tagName);
+    const linkItems = items.filter((c) => c.tagName === 'a' && attr(c, 'role') === 'listitem');
+    if (!linkItems.length) continue;
+    const tags = [list, ...linkItems].map((n) => location(n)?.startTag);
+    if (tags.some((st) => !st || ed.overlaps(st.startOffset, st.endOffset))) continue;
+    for (const a of linkItems) ed.retag(a, a.attrs.filter((x) => x.name !== 'role'));
+    // (a list of links only: its own role goes too; a mixed one keeps its other items)
+    if (linkItems.length === items.length) ed.retag(list, list.attrs.filter((x) => x.name !== 'role'));
+    lists++;
+  }
+  if (lists) changes.push(`names: ${lists} list(s) of links announced as links again (the links carried a list item's role)`);
 
   if (named) changes.push(`names: ${named} link(s) and picture(s) without one given a name (logo, social links) or marked decorative`);
 
