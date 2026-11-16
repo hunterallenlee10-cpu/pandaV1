@@ -74,7 +74,8 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 
 ## Deliberate changes
 
-Besides removing the city links (above), the copy differs from the live site on purpose in five ways.
+Besides removing the city links (above), the copy differs from the live site on purpose in five ways, and a last pass
+makes every page ready to go live ([Going live](#going-live)).
 
 **The old map sections are replaced by an animated US map** (`custom/us-map/`, applied by `scripts/lib/customize.mjs`
 during the build, `CUSTOM_US_MAP=0` to turn off). That covers the "Local East Coast Exterior Remodelers" band on 10
@@ -603,9 +604,11 @@ Most of these problems are on the live site too.
   `/roofing/attic-insulation/` get one for their service; the other roofing pages keep the roof replacement offer
   with a roofing form; every other page gets a general "Free Estimate" form that asks what the visitor needs. Each
   has its own heading, line and button, the contact fields and questions about the job, with the page's own service
-  already chosen where it has one. The Google rating and reviews link stay. **The forms are not connected to anything
-  yet**: on submit the fields are checked, then the card says online requests aren't switched on and offers the
-  phone number, so nobody thinks a request went through. The old form's scripts are removed from every page (163,
+  already chosen where it has one. The Google rating and reviews link stay. **Where a request goes is a setting**
+  (`custom/site-fixes/launch.json`, `"leads"`, see [Going live](#going-live)): on submit the fields are checked and
+  the request is posted there; the card then confirms it arrived, or says it could not be sent and gives the phone
+  number. With no address set (as committed) nothing is sent and the card says online requests aren't switched on, so
+  nobody thinks a request went through. The old form's scripts are removed from every page (163,
   including the project pages and the 404 page, which loaded them without a form): they sent leads to Salesforce
   (no longer used), Zapier, AccuLynx and Five9, looked up addresses with Google Maps, and **asked every visitor for
   their location as the page loaded**. That also clears two console errors on most pages. (The careers pages' own
@@ -891,16 +894,17 @@ would make them. The map sections are the exception: only `03-build.mjs` renders
   Submissions made on the copy go to the static host and fail harmlessly; they never reach the live site.
   The captured free-estimate lead forms posted straight to Salesforce (web-to-lead) and Zapier, and `/referrals/`
   showed the live GetTheReferral sign-up; with the site fixes on (the default) none of them is left: the estimate
-  forms say online requests aren't switched on yet and give the phone number, and the referral page links to the
-  Panda Exteriors app instead, so **no lead
-  form on the copy sends anything to Panda or any lead service** (the employee referral form, which opened an email
-  to Panda's careers address, went with `/referral/`). [`docs/forms.md`](docs/forms.md) lists the forms as captured,
+  forms send to the address in `custom/site-fixes/launch.json` and, until one is set, say online requests aren't
+  switched on and give the phone number, and the referral page links to the Panda Exteriors app instead, so **no lead
+  form sends anything to Panda or any lead service until that address is set** (the employee referral form, which
+  opened an email to Panda's careers address, went with `/referral/`). [`docs/forms.md`](docs/forms.md) lists the forms as captured,
   before the site fixes.
 - **Site search** (`/?s=…`) and anything else that needs WordPress to run: **comments**, AJAX "load more",
   `admin-ajax.php` / REST API calls, logins, previews.
 - **Query-string URLs** show the same page as the path without the query, because a static host ignores the query.
-- **Analytics, ad pixels and call tracking** are disabled on purpose ([`docs/tracking.md`](docs/tracking.md)).
-  Phone numbers are therefore the ones in the HTML, not dynamically swapped tracking numbers.
+- **Analytics, ad pixels and call tracking** run only on the live domain ([Going live](#going-live);
+  [`docs/tracking.md`](docs/tracking.md) lists what the capture found). Anywhere else, phone numbers are the ones in
+  the HTML, not dynamically swapped tracking numbers.
 - **Third-party embeds** (maps, videos, review or chat widgets) still load from their live sources, so they need an
   internet connection ([`docs/external-dependencies.md`](docs/external-dependencies.md)).
 - Server-side behaviour that varies per visitor (geo, A/B tests, logged-in state) is frozen as captured.
@@ -926,5 +930,32 @@ The `site/` folder is a plain static site and works on any static host that serv
   `.nojekyll` is included so folders starting with `_` are published. GitHub Pages requires a public repository
   unless you're on a paid plan.
 
-Before any public deployment, add a `noindex` or change the canonical URLs so search engines don't treat the copy as
-a duplicate of the live site.
+On Vercel, `vercel.json` tells search engines not to index the site on any host but the live domain, so a preview
+address does not compete with the real site. On another host, add a `noindex` yourself until the domain points at it.
+
+## Going live
+
+`scripts/lib/launch.mjs` runs last on every page (and `scripts/lib/hosting.mjs` writes the hosts' headers); its
+settings are in `custom/site-fixes/launch.json`. After editing it, run `npm run update:site`.
+
+- **Analytics.** The live site's Tag Manager container and Analytics tags (`"analytics"`) are in every page, but
+  load only when the page is open on one of `"liveHosts"` (`pandaexteriors.com`, `www.pandaexteriors.com`). Previews
+  and local copies load nothing and report nothing. A sent estimate request pushes a `generate_lead` event to the
+  data layer (`form_service`, `form_page`); conversions in Tag Manager that fired on the old forms or on `/thank-you/`
+  need to listen for it instead.
+- **Estimate forms.** Set `"leads"."endpoint"` to an address that accepts a form POST (the CRM's web form address, or
+  a webhook from n8n, Zapier, Make, Formspree…). It receives `first_name`, `last_name`, `name`, `email`, `phone`,
+  `address`, the form's questions (`project`, …), `service`, `page`, `sms_consent` and `email_consent` (`yes`/`no`),
+  `page_url`, `page_title`, `referrer`, `submitted_at` and any `utm_*` / `gclid` on the page's address. The form
+  confirms only when the address answers with a success status; if it sends no CORS headers, set `"noCors": true`
+  (the form then cannot tell whether the request arrived). A hidden field and a two-second minimum keep bots out.
+- **Search engines.** Canonical addresses, sitemaps and `robots.txt` already name `https://pandaexteriors.com`. On
+  Vercel every other host answers with `X-Robots-Tag: noindex`.
+- **What the pass removes or repairs on every page**: Stripe's script and frames, Contact Form 7 and the other
+  WordPress add-ons a static site cannot use, WP Rocket's lazy render (it cut off content and made the page's height
+  jump), links to empty stylesheets, links inside links, links that led nowhere, second titles glued onto blog
+  titles; it names the logo and social links, sizes the logo and hero pictures for the screen, and gives the footer
+  its X icon, Terms link and copyright line.
+- **Not deployed**: `site/_raw/` (the old site's HTML as delivered, reference only; `.vercelignore`).
+- **The switch itself**: add the domain to the Vercel project, point DNS at it, and keep WordPress reachable until
+  the forms and tags are confirmed on the new site. Old addresses are redirected (`vercel.json`).

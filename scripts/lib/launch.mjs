@@ -175,6 +175,27 @@ function lighterCopy(siteDir, src) {
   return lighterCopies.get(src);
 }
 
+// Whether a link's page is neither on the site nor redirected (site/_redirects).
+const missingPages = new Map();
+let redirected;
+function isMissingPage(siteDir, target) {
+  if (!/\/$/.test(target)) return false; // files (pictures, PDFs) are checked by 05-check-links.mjs
+  if (!missingPages.has(target)) {
+    if (!redirected) {
+      redirected = new Set();
+      try {
+        for (const line of fs.readFileSync(path.join(siteDir, '_redirects'), 'utf8').split('\n')) if (line.startsWith('/')) redirected.add(line.split(/\s+/)[0]);
+      } catch {
+        redirected = null;
+      }
+    }
+    // (no redirect list to check against: nothing is called missing)
+    const there = !redirected || redirected.has(target) || fs.existsSync(path.join(siteDir, decodeURIComponent(target), 'index.html')) || !fs.existsSync(path.join(siteDir, 'index.html'));
+    missingPages.set(target, !there);
+  }
+  return missingPages.get(target);
+}
+
 // Whether a stylesheet of the site holds no rules (only white space and comments).
 const emptySheets = new Map();
 function isEmptyStylesheet(siteDir, href) {
@@ -333,6 +354,22 @@ export function launchReady(html, { pathname = '', siteDir = PATHS.site } = {}, 
   }
   if (lighter) changes.push(`pictures: ${lighter} photo(s) sent as large JPEG/PNG files -> their lighter copies`);
   if (sized) changes.push(`pictures: ${sized} picture(s) offered at the size the screen needs (the header logo, the home hero)`);
+
+  // Links that lead nowhere: to WordPress's admin (a toolbar left in a rendered page) and to
+  // pages the site does not have (and no redirect covers). The toolbar goes; the other
+  // links keep their words.
+  let deadLinks = 0;
+  for (const bar of findAll(doc, (c) => /^wp-admin-bar/.test(attr(c, 'id') || '') || attr(c, 'id') === 'wpadminbar')) if (drop(bar)) deadLinks++;
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && /^\/[^/]/.test(attr(c, 'href') || ''))) {
+    const l = location(a);
+    if (!l?.endTag || ed.overlaps(l.startOffset, l.endOffset)) continue;
+    const target = attr(a, 'href').split(/[?#]/)[0];
+    if (/^\/wp-admin\//.test(target) || isMissingPage(siteDir, target)) {
+      ed.retag(a, a.attrs.filter((x) => !['href', 'target', 'rel'].includes(x.name)), 'span');
+      deadLinks++;
+    }
+  }
+  if (deadLinks) changes.push(`links: ${deadLinks} link(s) that led nowhere (WordPress's admin, a page the site does not have) removed, their words kept`);
 
   // Embedded players (YouTube, iHeart) load when the visitor gets near them, not with the page.
   for (const f of findAll(doc, (c) => c.tagName === 'iframe' && /^https?:/.test(attr(c, 'src') || '') && !attr(c, 'loading'))) {
