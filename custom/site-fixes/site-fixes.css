@@ -6980,7 +6980,7 @@ h3.pfix-best-label {
   width: 28px;
   height: 28px;
 }
-.pfix-why h4.pfix-why__title {
+.pfix-why .pfix-why__title {
   margin: 0;
   padding: 0;
   color: #14180f;
@@ -11236,4 +11236,47 @@ a.pcv2-btn:not(.pcv2-btn-green):hover {
    near-black section. Blended, only the badges show. */
 .pcv2-awards img {
   mix-blend-mode: lighten;
+}
+
+/* Contrast. White on the top bar's salmon (2.7 to 1) and on lime (1.9 to 1), the lime form
+   titles on white (1.9 to 1) and the menu's light grey on white (2.4 to 1) were hard to read;
+   each now clears 4.5 to 1 in the same hue. */
+body:not(.wp-admin) .xai-weather-ribbon {
+  background-color: #c2410c !important;
+}
+.main_menu a,
+.main_menu .Nav-Link {
+  color: #4b5563 !important;
+}
+.main_menu a:hover,
+.main_menu .Nav-Link:hover {
+  color: #14180f !important;
+}
+.heading-form {
+  color: #4d7c0f !important;
+}
+/* Text on the lime bands (home and /services/: "Panda Exteriors Is Your Top Roofing Choice";
+   home: "Looking For a Remodeler?"; /service-areas/: "Proud to Serve…"): dark, like "Our
+   Project Gallery". */
+.oxy-text-15132-101.text-white,
+.oxy-text-15132-102,
+.oxy-text-2-259.text-white,
+.oxy-text-2-469,
+.oxy-container-1048-115 .text-white,
+.oxy-container-1048-115 p {
+  color: #14180f !important;
+}
+/* The header's phone button: dark on lime (white was 1.9 to 1). */
+.oxy-container-974-100 a[href^="tel:"],
+.oxy-container-974-100 a[href^="tel:"] .button-atom__text,
+.breakdance .oxy-container-974-100 .bde-button a.bde-button__button[href^="tel:"] {
+  color: #14180f !important;
+}
+
+/* The footer's small links and icons on phones: room to tap. */
+@media (max-width: 767.98px) {
+  .footer-pages a.footer-text {
+    display: inline-block;
+    padding: 10px 4px;
+  }
 }

@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { parse } from 'parse5';
+import { Parser as TagScanner } from 'htmlparser2';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, clean, textOf, rawText, find, findAll, makeEditor, headEndOffset } from './html-edit.mjs';
 
@@ -93,6 +94,54 @@ const TRACKING_COMMENT = /<!-- TRACKING DISABLED \(.*?\) --><!--\n[\s\S]*?\n-->\
 const TRACKING_STUB = /<script>\/\* TRACKING DISABLED: no-op stand-ins[\s\S]*?<\/script>\n?/g;
 const LAUNCH_SCRIPT = /<script id="pfix-launch">[\s\S]*?<\/script>/g;
 
+/**
+ * A link inside a link (a card that is one big link, with a "Read More" link in it). A browser
+ * cannot nest links: it ends the outer one where the inner one starts and scatters empty,
+ * invisible copies of it around the inner one, which keyboards stop on and screen readers
+ * announce as links with no name. The outer link now ends where the browser ended it, before
+ * the block that holds the inner link, so the page is the same without the empty copies.
+ */
+export function unnestLinks(html) {
+  const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
+  const stack = [];
+  const cuts = []; // { at, close: [start, end] }
+  const parser = new TagScanner(
+    {
+      onopentag(name) {
+        const node = { name, start: parser.startIndex };
+        if (name === 'a') {
+          const i = stack.findLastIndex((n) => n.name === 'a');
+          if (i >= 0 && !stack[i].cut) {
+            // the outer link's child that holds this one (or this one itself)
+            stack[i].cut = { at: (stack[i + 1] || node).start };
+          }
+        }
+        if (!VOID.has(name)) stack.push(node);
+      },
+      onclosetag(name, implied) {
+        if (VOID.has(name)) return;
+        const i = stack.findLastIndex((n) => n.name === name);
+        if (i < 0) return;
+        const node = stack[i];
+        stack.length = i;
+        if (name === 'a' && node.cut && !implied) cuts.push({ ...node.cut, close: [parser.startIndex, parser.endIndex + 1] });
+      },
+    },
+    { decodeEntities: false, lowerCaseTags: true, recognizeSelfClosing: false }
+  );
+  parser.write(html);
+  parser.end();
+  if (!cuts.length) return { html, count: 0 };
+  const edits = cuts.flatMap((c) => [
+    { start: c.at, end: c.at, text: '</a>' },
+    { start: c.close[0], end: c.close[1], text: '' },
+  ]);
+  edits.sort((a, b) => b.start - a.start);
+  let out = html;
+  for (const e of edits) out = out.slice(0, e.start) + e.text + out.slice(e.end);
+  return { html: out, count: cuts.length };
+}
+
 const location = (n) => n.sourceCodeLocation;
 const setAttr = (n, name, value) => (n.attrs.some((a) => a.name === name) ? n.attrs.map((a) => (a.name === name ? { name, value } : a)) : [...n.attrs, { name, value }]);
 
@@ -106,6 +155,11 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   let out = html.replace(TRACKING_COMMENT, '').replace(TRACKING_STUB, '').replace(LAUNCH_SCRIPT, '');
   if (out !== html && !LAUNCH_SCRIPT.test(html)) changes.push('analytics: the disabled snippets -> one settings script that loads the tags on the live domain only');
   LAUNCH_SCRIPT.lastIndex = 0;
+  const unnested = unnestLinks(out);
+  if (unnested.count) {
+    out = unnested.html;
+    changes.push(`links: ${unnested.count} link(s) inside a link untangled (the browser left empty, nameless copies of the outer link)`);
+  }
   let pictures = 0;
   out = out.replace(INLINE_PICTURE, (all, data) => {
     const file = INLINE_PICTURES[crypto.createHash('sha1').update(data).digest('hex').slice(0, 12)];
@@ -153,6 +207,19 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
   for (const f of findAll(doc, (c) => c.tagName === 'iframe' && (/^__privateStripe/.test(attr(c, 'name') || '') || /js\.stripe\.com|stripe\.network/.test(attr(c, 'src') || '')))) if (drop(f)) scripts++;
   for (const l of findAll(doc, (c) => c.tagName === 'link' && /preconnect|dns-prefetch/.test(attr(c, 'rel') || '') && DEAD_HINT.test(attr(c, 'href') || ''))) if (drop(l)) scripts++;
   if (scripts) changes.push(`dead weight: ${scripts} script(s), frame(s) and hint(s) of Stripe, Contact Form 7, Site Kit and other WordPress add-ons removed`);
+
+  // WP Rocket's "lazy render" (content-visibility: auto on [data-wpr-lazyrender]): sections
+  // off screen had no height, so the page grew as it was scrolled (the scrollbar jumped and
+  // links into the page landed short), and anything reaching outside such a section was cut
+  // off, like the "Read More" buttons under the home page's service cards on desktop.
+  let lazy = 0;
+  for (const el of findAll(doc, (c) => attr(c, 'data-wpr-lazyrender') !== undefined)) {
+    const st = location(el)?.startTag;
+    if (!st || ed.overlaps(st.startOffset, st.endOffset)) continue;
+    ed.retag(el, el.attrs.filter((a) => a.name !== 'data-wpr-lazyrender'));
+    lazy++;
+  }
+  if (lazy) changes.push(`lazy render off for ${lazy} section(s): it cut off content that reaches outside a section and made the page's height jump while scrolling`);
 
   // A title with a second title after "| Panda Exteriors" (two SEO fields joined).
   const twice = /^(.*?\S)\s*\|\s*Panda Exteriors\s+\S.*$/;
