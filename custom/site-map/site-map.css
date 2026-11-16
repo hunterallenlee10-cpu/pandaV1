@@ -488,3 +488,11 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* On phones the site's own stylesheet makes every h1 22px ("!important"), the size of the
+   group headings: the page's title keeps its size. */
+@media (max-width: 767.98px) {
+  .breakdance h1 {
+    font-size: 32px !important;
+  }
+}

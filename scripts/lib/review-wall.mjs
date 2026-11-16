@@ -238,7 +238,7 @@ function ratingStars(rating, cls) {
 }
 
 /** The Google rating in the free-estimate form (in place of the old rating picture). */
-function formBadge() {
+export function formBadge() {
   const { place } = loadReviewWall();
   const rating = Number(place.rating) || 5;
   return (
@@ -325,3 +325,26 @@ export function collectReviewsHero(doc, html, ed, { pathname = '' } = {}, change
   );
   return true;
 }
+
+/**
+ * Every other page: the free-estimate forms showed a picture of an old Google rating (4.9,
+ * while /reviews/ and the blog said 4.8). They show the current one too
+ * (custom/reviews/google-reviews.json, "place"); its styles are in site-fixes.css.
+ */
+export function collectFormBadges(doc, ed, changes = []) {
+  const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  const inForm = (n) => {
+    for (let a = n.parentNode; a; a = a.parentNode) if (hasClass(a, 'form-card')) return true;
+    return false;
+  };
+  const badge = formBadge();
+  let swapped = 0;
+  for (const pic of findAll(doc, (c) => ((c.tagName === 'picture' && hasClass(c, 'rating')) || hasClass(c, 'prh-badge')) && inForm(c))) {
+    if (!free(pic)) continue;
+    if (c_is_picture(pic)) swapped++;
+    ed.outer(pic, badge);
+  }
+  if (swapped) changes.push(`lead form: the picture of an old Google rating (4.9) -> the current rating (${loadReviewWall().place.rating}), ${swapped} form(s)`);
+  return findAll(doc, (c) => hasClass(c, 'prh-badge')).length + swapped > 0;
+}
+const c_is_picture = (n) => n.tagName === 'picture';

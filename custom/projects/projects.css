@@ -897,3 +897,11 @@
     animation: none !important;
   }
 }
+
+/* On phones the site's own stylesheet makes every h1 22px ("!important"), smaller than
+   the section headings: the project's name keeps its size. */
+@media (max-width: 767.98px) {
+  .ppj .ppj-hero__title {
+    font-size: 32px !important;
+  }
+}

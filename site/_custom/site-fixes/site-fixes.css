@@ -11091,3 +11091,110 @@ h1.pfix-h1 {
   margin: 0;
   padding: 0;
 }
+
+/* Main headings on phones. The site's own stylesheet makes every h1 22px under 768px
+   ("font-size: 22px !important"), smaller than the section headings below it; the heroes
+   above set their own size, these did not. */
+@media (max-width: 767.98px) {
+  .pfix-sa-hero .pfix-sa-hero__title,
+  .hero-section .heading h1,
+  .hero-section h1.heading {
+    font-size: 32px !important;
+    line-height: 1.12;
+  }
+  h1.pcv2-hero-title.pcv2-hero-title {
+    font-size: clamp(44px, 13vw, 60px) !important;
+    line-height: 0.98;
+  }
+}
+
+/* The site's own stylesheet gives every <main> 20px of padding on top under 768px, which
+   showed as a white strip between the header and these pages' heroes. */
+@media (max-width: 768px) {
+  main.pnp,
+  main.ppj,
+  main.pfix-404,
+  main.pmedia,
+  main.pfix-legal,
+  main.pfix-blog,
+  main.pfix-post {
+    padding-top: 0 !important;
+  }
+}
+
+/* The header on phones: with a 100px logo it covered 148px of the screen (a sixth of a
+   phone), on every page and all the way down. A 64px logo brings it to 112px. */
+@media (max-width: 767.98px) {
+  .oxy-container-974-100 .Logo-nav {
+    width: auto !important;
+    height: 64px !important;
+  }
+  body {
+    padding-top: 112px !important;
+  }
+}
+
+/* The Google rating in the free-estimate forms (was a picture of an old rating; the same
+   badge as on /reviews/, whose stylesheet only that page loads). */
+.prh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px auto 2px;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  text-align: left;
+}
+.prh-badge__g svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+.prh-badge__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.prh-badge__label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+}
+.prh-badge__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.prh-badge__row b {
+  color: #111827;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+.prh-badge__stars {
+  position: relative;
+  display: inline-block;
+  font-size: 18px;
+  line-height: 0;
+}
+.prh-badge .prw-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.prh-badge .prw-stars svg {
+  display: block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+.prh-badge .prw-stars--base {
+  color: #e5e7eb;
+}
+.prh-badge .prw-stars--fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--prw-fill, 100%);
+  overflow: hidden;
+  color: #fbbc04;
+}

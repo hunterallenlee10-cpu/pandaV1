@@ -200,7 +200,7 @@ import path from 'node:path';
 import { ROOT, SITE_ORIGIN, renamedPath } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
-import { collectReviewWall, collectReviewsHero } from './review-wall.mjs';
+import { collectReviewWall, collectReviewsHero, collectFormBadges, loadReviewWall } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
 import { loadUsMap } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
@@ -308,8 +308,8 @@ const SOLAR_OPTIONS_PATH = '/solar-options/';
 const SOLAR_OPTIONS_LABEL = 'Solar Options';
 // The "Solar" entry's label: as captured, and once renamed.
 const SOLAR_LABELS = ['Solar', SOLAR_OPTIONS_LABEL];
-// The Google rating in the lead form's rating picture (admin-ajax-2.png).
-const GOOGLE_RATING = '4.9';
+// The Google rating (custom/reviews/google-reviews.json, "place"), as the lead forms and /reviews/ show it.
+const googleRating = () => Number(loadReviewWall().place.rating).toFixed(1);
 
 // /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
@@ -495,7 +495,14 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   const hero = find(doc, (c) => hasClass(c, 'service-area-hero'));
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   const h1 = text && find(text, (c) => c.tagName === 'h1');
-  if (!h1 || hasClass(hero, 'pfix-sa-hero')) return false;
+  if (hero && hasClass(hero, 'pfix-sa-hero')) {
+    // Built already: its Google rating follows custom/reviews/google-reviews.json.
+    const star = find(hero, (c) => hasClass(c, 'pfix-sa-hero__star'));
+    const before = star && (star.parentNode.childNodes || []).find((c) => c.nodeName === '#text' && /^\s*\d(\.\d)?\s*$/.test(c.value));
+    if (before && before.value.trim() !== googleRating() && editText(ed, html, before, () => googleRating())) changes.push(`service areas hero: Google rating ${before.value.trim()} -> ${googleRating()}`);
+    return false;
+  }
+  if (!h1) return false;
   if (siteDir && ![SA_HERO_PHOTO, `${SA_HERO_PHOTO}.webp`].every((f) => fs.existsSync(path.join(siteDir, f)))) {
     console.warn(`site-fixes: ${pathname}: the hero photo is missing from the site, hero left as is`);
     return false;
@@ -523,7 +530,7 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
     (jobs ? stat(fmt(jobs), 'Jobs completed') : '') +
     stat(states.length, 'States') +
     stat(offices, 'Local offices') +
-    stat(`${GOOGLE_RATING}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
+    stat(`${googleRating()}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
     `</div>` +
     `<div class="pfix-sa-hero__areas">` +
     `<p class="pfix-sa-hero__label" id="pfix-sa-hero-areas">${jobs ? 'Jobs completed by state' : 'Some of the states we work in'}</p>` +
@@ -1000,6 +1007,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /reviews/ hero: the Google rating, faces, a quote and buttons over a sharp photo; the
   // forms' rating picture shows the current rating (review-wall.mjs).
   if (collectReviewsHero(doc, html, ed, { pathname }, changes)) used.reviewWall = true;
+  // Every other page's forms: the current Google rating too (was a picture saying 4.9).
+  else if (collectFormBadges(doc, ed, changes)) used.css = true;
 
   // Testimonials: every review carousel -> the looping review carousel (reviews.mjs).
   // Before the missing-photo fix below, which then leaves the replaced reviews alone.

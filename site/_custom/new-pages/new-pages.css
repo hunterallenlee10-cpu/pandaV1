@@ -256,14 +256,31 @@
   font-size: 15px;
   text-align: center;
 }
-.pnp .pnp-form-card__reviews {
-  margin-top: 12px;
+/* The Google rating and the reviews link, above the fields as in every other page's form. */
+.pnp .pnp-form-card__rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 14px;
   font-size: 14px;
   text-align: center;
 }
-.pnp .pnp-form-card__reviews a {
-  color: var(--pnp-orange-ink);
-  font-weight: 600;
+.pnp .pnp-form-card__rating a {
+  color: var(--pnp-ink);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.pnp .pnp-form-card__rating .prh-badge__g svg {
+  width: 40px;
+  height: 40px;
+}
+/* A select says it opens (the site's reset takes the browser's arrow away). */
+.pnp .pnp-form-card select.input-field {
+  padding-right: 36px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%23374151' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center / 16px;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .pnp .pnp-form-card .name-row {
   display: flex;
@@ -1163,5 +1180,13 @@
   .pnp *::before,
   .pnp *::after {
     transition: none !important;
+  }
+}
+
+/* On phones the site's own stylesheet makes every h1 22px ("!important"), smaller than
+   the section headings: the hero's headline keeps its size. */
+@media (max-width: 767.98px) {
+  .pnp .pnp-hero__title {
+    font-size: 32px !important;
   }
 }
