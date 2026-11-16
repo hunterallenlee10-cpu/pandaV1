@@ -1,14 +1,26 @@
 {
   "about": "Launch settings, applied to every page by scripts/lib/launch.mjs (run `npm run update:site` after editing).",
-  "liveHosts": ["pandaexteriors.com", "www.pandaexteriors.com"],
+  "liveHosts": [
+    "pandaexteriors.com",
+    "www.pandaexteriors.com"
+  ],
   "analytics": {
     "about": "Loaded only when the page is open on one of liveHosts, so previews and copies never report visits. Empty values switch a tag off.",
     "gtm": "GTM-ND5VBQCV",
-    "gtag": ["GT-KF856BRJ", "G-28J2ZDP9B0"]
+    "gtag": [
+      "GT-KF856BRJ",
+      "G-28J2ZDP9B0"
+    ]
   },
   "leads": {
     "about": "Where the estimate forms send a request: a URL that accepts a form POST (a webhook from the CRM, n8n, Zapier, Make, Formspree...). Empty: nothing is sent and the form asks the visitor to call instead. Set noCors to true only for an endpoint that sends no CORS headers (the form then cannot tell whether the request arrived).",
     "endpoint": "",
     "noCors": false
+  },
+  "descriptions": {
+    "about": "Search-result descriptions for pages that shared one with another page (or had a typo in theirs). Path -> description.",
+    "/gutters/gutter-guards/": "Keep leaves and debris out of your gutters with gutter guards installed by Panda Exteriors. Get a free quote for gutter guards on your East Coast home.",
+    "/service-areas/": "Panda Exteriors works across the East Coast from local offices in Maryland, Delaware, Florida, New Jersey, North Carolina, Pennsylvania and Virginia. See where we work and get a free quote.",
+    "/site-map/": "Every page on the Panda Exteriors website in one place: roofing, solar, siding and gutter services, offers, past projects, reviews and the blog."
   }
 }

@@ -23,7 +23,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { parse } from 'parse5';
 import { Parser as TagScanner } from 'htmlparser2';
-import { ROOT } from './config.mjs';
+import { ROOT, SITE_ORIGIN } from './config.mjs';
 import { attr, hasClass, esc, clean, textOf, rawText, find, findAll, makeEditor, headEndOffset } from './html-edit.mjs';
 
 const CONFIG_FILE = path.join(ROOT, 'custom', 'site-fixes', 'launch.json');
@@ -220,6 +220,31 @@ export function launchReady(html, { pathname = '' } = {}, changes = []) {
     lazy++;
   }
   if (lazy) changes.push(`lazy render off for ${lazy} section(s): it cut off content that reaches outside a section and made the page's height jump while scrolling`);
+
+  // Search results: a description of its own for pages that shared one (launch.json), and
+  // the blog's numbered pages say which page they are and name themselves as the address to
+  // index (they all said "Blog" and pointed at /blog/, so their posts' links counted for less).
+  const setMeta = (keys, value) => {
+    for (const m of findAll(doc, (c) => c.tagName === 'meta' && keys.includes(attr(c, 'name') || attr(c, 'property')))) {
+      const st = location(m)?.startTag;
+      if (attr(m, 'content') === value || !st || ed.overlaps(st.startOffset, st.endOffset)) continue;
+      ed.retag(m, setAttr(m, 'content', value));
+    }
+  };
+  const description = launchConfig().descriptions?.[pathname];
+  if (description) setMeta(['description', 'og:description', 'twitter:description'], description);
+  const blogPage = pathname.match(/^\/blog\/page\/(\d+)\/$/);
+  if (blogPage) {
+    const title = `Blog, Page ${blogPage[1]} | Panda Exteriors`;
+    for (const t of findAll(doc, (c) => c.tagName === 'title')) if (clean(textOf(t)) !== title && location(t).endTag) ed.inner(t, esc(title));
+    setMeta(['og:title', 'twitter:title'], title);
+    const self = `${SITE_ORIGIN}${pathname}`;
+    setMeta(['og:url'], self);
+    for (const l of findAll(doc, (c) => c.tagName === 'link' && attr(c, 'rel') === 'canonical')) {
+      const st = location(l)?.startTag;
+      if (attr(l, 'href') !== self && st && !ed.overlaps(st.startOffset, st.endOffset)) ed.retag(l, setAttr(l, 'href', self));
+    }
+  }
 
   // Embedded players (YouTube, iHeart) load when the visitor gets near them, not with the page.
   for (const f of findAll(doc, (c) => c.tagName === 'iframe' && /^https?:/.test(attr(c, 'src') || '') && !attr(c, 'loading'))) {
