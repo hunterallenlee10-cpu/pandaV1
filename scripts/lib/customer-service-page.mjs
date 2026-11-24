@@ -88,7 +88,7 @@ function topics() {
       'Earn $25 for downloading the Panda Exteriors app, then up to $200 for every friend you refer for a new roof, siding or solar.',
       ['How Refer & Earn works', '/referrals/'],
     ],
-    ['help', 'Questions & answers', 'Answers about our company, roofing, commercial roofing and solar, all in one place.', ['Read the FAQs', '/faqs/']],
+    ['help', 'Questions & answers', 'Answers about our company, roofing and solar, all in one place.', ['Read the FAQs', '/faqs/']],
   ];
 }
 

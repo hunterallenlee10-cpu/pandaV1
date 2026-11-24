@@ -29,16 +29,10 @@
 //    solar panels page, over the WebP copy of its solar panel photo; the shingles page is
 //    over the aerial photo of a GAF solar roof Panda installed. On both, the chips are the
 //    two products with a line saying how they differ, so either page leads to the other.
-//  - /commercial-roofing/: the heading and "No matter what type of business you have…" on a
-//    stock photo of an apartment building (hero-commercial-roofing.jpg). The line says what
-//    Panda does for businesses (from the page's form and questions), the chips lead to the
-//    sections below (the roof systems, replacements, the buildings Panda roofs and its
-//    projects), over a 161 KB WebP crop (commercial-hero.webp) of the white TPO roof from
-//    Panda's "Expert TPO Roofing" project.
 //  - /roofing/types/: "High-Quality East Coast Roof Types and Styles" and its line on a close-up
 //    of shingles (Roofing-Shingles.jpg, already a 172 KB JPEG). Its hero is the one without the
 //    hero-section class (found by its own, "types"; site-fixes.css gives it the same look). The
-//    chips lead to the four roof types below (roofing-types-page.mjs), each with a line from
+//    chips lead to the three roof types below (roofing-types-page.mjs), each with a line from
 //    its card.
 //  - /roofing/replacement/: "High-Quality Roof Replacement Services in the East Coast" and its line
 //    over an aerial photo of a roof being replaced (the 175 KB WebP copy beside the 276 KB
@@ -95,7 +89,6 @@ const HEROES = {
     // The services, in the order of the cards below the hero (and the header's menu).
     chips: [
       ['roof', 'Roofing', '/roofing/'],
-      ['building', 'Commercial', '/commercial-roofing/'],
       ['sun', 'Solar', '/solar/'],
       ['siding', 'Siding', '/siding/'],
       ['gutter', 'Gutters', '/gutters/'],
@@ -178,7 +171,7 @@ const HEROES = {
     // The four roofing pages (the cards below), with a line from each card.
     chips: [
       ['swap', 'Roof replacement', '/roofing/replacement/', 'Installed in as little as one day'],
-      ['layers', 'Roof types', '/roofing/types/', 'Asphalt shingles, metal and flat roofs'],
+      ['layers', 'Roof types', '/roofing/types/', 'Asphalt shingles, metal and solar shingles'],
       ['roof', 'Storm damage', '/storm-damage/', 'Free inspection and insurance claim help'],
       ['thermo', 'Attic insulation', '/roofing/attic-insulation/', 'Keeps your home comfortable all year'],
     ],
@@ -215,24 +208,6 @@ const HEROES = {
     ],
     note: 'GAF solar shingles and solar panels chips (the two products, and how they differ) and estimate and call buttons, over a WebP copy of a GAF solar roof Panda installed (was a heading on a fixed PNG)',
   },
-  '/commercial-roofing/': {
-    key: 'commercial',
-    from: 'commercial',
-    photo: '/_custom/site-fixes/commercial-hero.webp',
-    custom: true,
-    oldPreload: '/wp-content/uploads/2025/04/hero-commercial-roofing.jpg',
-    eyebrow: 'Commercial roofing',
-    title: 'Professional Commercial Roofing Services for Your East Coast Business',
-    sub: 'Flat roof replacements for offices, medical facilities and apartment communities, from inspection to final walkthrough. Most are done in just one day, so your business keeps running.',
-    // The sections below the hero (service-pages.json) and the projects row (project-pages.mjs).
-    chips: [
-      ['layers', 'Roof systems', '#commercial-roof-systems', 'TPO, EPDM, Mod Bit and PVC'],
-      ['swap', 'Roof replacement', '#commercial-roof-replacement', 'Most flat roofs done in one day'],
-      ['building', 'Buildings we roof', '#commercial-buildings', 'Medical, multi-family and offices'],
-      ['roof', 'Recent projects', '#ppj-strip-title', 'See commercial roofs we installed'],
-    ],
-    note: 'chips for the roof systems, replacements, buildings and projects below and estimate and call buttons, over a WebP crop of a TPO roof Panda installed (was a heading and a line on a stock photo of an apartment building)',
-  },
   '/roofing/types/': {
     key: 'types',
     from: 'types',
@@ -241,15 +216,14 @@ const HEROES = {
     photo: '/wp-content/uploads/2025/04/Roofing-Shingles.jpg',
     eyebrow: 'Roof types',
     title: 'Roof Types and Styles for Your East Coast Home',
-    sub: 'As a GAF Master Elite contractor, you can depend on our team for industry-leading installations and service, whichever roof you choose: shingles, metal, a flat roof or solar shingles.',
-    // The four roof types below (roofing-types-page.mjs), with a line from each card.
+    sub: 'As a GAF Master Elite contractor, you can depend on our team for industry-leading installations and service, whichever roof you choose: shingles, metal or solar shingles.',
+    // The three roof types below (roofing-types-page.mjs), with a line from each card.
     chips: [
       ['layers', 'Asphalt shingles', '#asphalt-shingles', 'Classic and cost-effective'],
       ['seam', 'Metal roofing', '#metal-roofing', 'Lasts upwards of 50 years'],
-      ['building', 'Flat roofing', '#flat-roofing', 'TPO, EPDM, Mod Bit and PVC'],
       ['sun', 'GAF solar shingles', '#solar-shingles', 'A roof that makes its own power'],
     ],
-    note: 'chips for the four roof types below and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
+    note: 'chips for the three roof types below and estimate and call buttons, with the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
   '/roofing/replacement/': {
     key: 'replacement',
@@ -263,7 +237,7 @@ const HEROES = {
       ['roof', 'Signs it’s time', '#replacement-signs', 'Missing shingles, stains, dark spots'],
       ['guard', 'What’s included', '#whats-included', 'Warranties, clean-up and more'],
       ['swap', 'How it works', '#how-it-works', 'Installed in as little as one day'],
-      ['layers', 'Roof types', '/roofing/types/', 'Shingles, metal, flat and solar'],
+      ['layers', 'Roof types', '/roofing/types/', 'Shingles, metal and solar'],
     ],
     note: 'chips for the signs, what comes with a new roof, how it works and the roof types and estimate and call buttons, with a WebP copy of the photo darkened behind the text (was a heading and a line on the bare photo)',
   },
@@ -290,7 +264,7 @@ const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
   `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options', commercial: 'Commercial roofing' }[h.key] || 'Gutter services'}">` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +

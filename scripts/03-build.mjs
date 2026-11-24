@@ -460,7 +460,7 @@ for (const c of captures.values()) {
   }
 }
 // No chains: a redirect to an address that redirects again leads straight to the last one
-// (the old /commerical-roofing/roof-types/ -> /commercial-roofing/, which it was merged into).
+// (the old /commerical-roofing/ -> /commercial-roofing/ -> /roofing/).
 const redirectList = flattenRedirects(
   [...redirectRows.values()].map((r) => {
     const f = new URL(r.from);

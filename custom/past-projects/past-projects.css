@@ -54,7 +54,8 @@
    both. Computers: four columns, the first card a 2x2 tile:
      1 1 2 2
      1 1 3 4
-     5 5 6 6 */
+     5 5 6 6
+   (with five projects, the fifth runs across the last row) */
 .ppx__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -84,6 +85,9 @@
   .ppx-card--5,
   .ppx-card--6 {
     grid-column: span 2;
+  }
+  .ppx-card--5:last-child {
+    grid-column: span 4;
   }
 }
 

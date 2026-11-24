@@ -34,7 +34,7 @@ const FORM_ID = 'pfix-lead-1';
 // as the hero's background, and it is preloaded) is a webp copy of
 // /wp-content/uploads/2025/03/eaf2e8a6-efc7-47c5-8d45-932796dd33bc-1-min.png; the mission's is
 // a 1,100 px copy of /wp-content/uploads/2025/07/3-Jul-14-2025-07_57am-5LCD.jpg. With them,
-// the section's own photo of a crew on a commercial roof.
+// the section's own photo of a crew on a roof.
 export const ABOUT_HERO_PHOTO = '/_custom/site-fixes/about-hero.webp';
 export const ABOUT_TEAM_PHOTO = '/_custom/site-fixes/about-team.webp';
 const customFile = (url) => path.join(ROOT, 'custom', 'site-fixes', path.basename(url));
@@ -112,7 +112,7 @@ function missionSection() {
     `<p class="pfix-ab-mission__eyebrow">Our mission</p>` +
     `<h2 class="pfix-ab-mission__title" id="${MISSION_ID}-title">Every job is only as good as the team behind it</h2>` +
     `<p class="pfix-ab-mission__lead">Creating a positive and lighthearted experience for our customers is a big part of what keeps us going at Panda Exteriors. ` +
-    `As an exterior remodeler serving the East Coast, we’ve seen homes and businesses in all kinds of conditions. No matter the scope of the damage, ` +
+    `As an exterior remodeler serving the East Coast, we’ve seen homes in all kinds of conditions. No matter the scope of the damage, ` +
     `the work completed on these properties is only as good as the team involved.</p>` +
     `<div class="pfix-ab-mission__points" role="list">${POINTS.map(point).join('')}</div>` +
     `<p class="pfix-ab-mission__places">${ICONS.pin}<span>Serving ${PLACES.map((p) => `<b>${esc(p)}</b>`).join(', ')} and neighborhoods across the East Coast</span></p>` +
@@ -121,7 +121,7 @@ function missionSection() {
     `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--main"><img src="${ABOUT_TEAM_PHOTO}" alt="A Panda Exteriors truck at a job site while the crew roofs the building" width="1100" height="825" loading="lazy" decoding="async"></figure>` +
     `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--inset"><picture>` +
     `<source type="image/webp" srcset="${MISSION_PHOTO.src}.webp">` +
-    `<img src="${MISSION_PHOTO.src}" alt="A Panda Exteriors crew laying out a commercial roof" width="${MISSION_PHOTO.width}" height="${MISSION_PHOTO.height}" loading="lazy" decoding="async"></picture></figure>` +
+    `<img src="${MISSION_PHOTO.src}" alt="A Panda Exteriors crew laying out a new roof" width="${MISSION_PHOTO.width}" height="${MISSION_PHOTO.height}" loading="lazy" decoding="async"></picture></figure>` +
     `<div class="pfix-ab-mission__badge"><b>30+</b><span>years of combined experience</span></div>` +
     `</div>` +
     `</div></section>`

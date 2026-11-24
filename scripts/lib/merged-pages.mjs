@@ -3,9 +3,9 @@
 //
 //  - Links: every link to a merged page leads to the page it was merged into (relinkMerged,
 //    run by customize.mjs on the finished page, so it also covers what the fixes wrote).
-//  - Header menu: the entries of merged pages go (Residential Roofing, Commercial's Roof
-//    Types and Roof Replacement, Solar Panel Installation, Customer Service, Gallery), so no menu lists the same page twice; a dropdown left with nothing in it
-//    (Commercial) becomes a plain entry. The new pages join it: Storm Damage under Roofing,
+//  - Header menu: the entries of merged pages go (Residential Roofing, Solar Panel
+//    Installation, Customer Service, Gallery), so no menu lists the same page twice; a
+//    dropdown left with nothing in it becomes a plain entry. The new pages join it: Storm Damage under Roofing,
 //    Financing and Warranty under About.
 //  - Footer: "Customer Service" (merged into Contact Us, which the footer already lists)
 //    becomes "Storm Damage"; "Warranty" and "Financing" lead to their new pages; "Solar"

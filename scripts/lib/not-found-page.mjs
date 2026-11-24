@@ -45,7 +45,7 @@ const LINKS = [
   ['siding', 'Siding', 'Premium siding from CertainTeed and James Hardie.', '/siding/'],
   ['gutter', 'Gutters', 'Seamless gutters and gutter guards.', '/gutters/'],
   ['sun', 'Solar', 'Solar panels and the GAF solar roof.', '/solar/'],
-  ['photo', 'Past projects', 'Homes and businesses we’ve worked on.', '/past-projects/'],
+  ['photo', 'Past projects', 'Homes we’ve worked on.', '/past-projects/'],
   ['pin', 'Contact us', 'Our offices, phone numbers and email.', '/contact-us/'],
 ];
 

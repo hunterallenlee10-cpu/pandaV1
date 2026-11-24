@@ -45,9 +45,9 @@ const FORM_ID = 'pfix-lead-1';
 const PROJECT_ALIASES = { Solar: ['Solar panels'] };
 // A page's own first choice for an offer's project (the GAF solar shingles page: its shingles).
 const PAGE_PROJECTS = { '/solar/gaf-solar-roof/': { Solar: 'GAF solar roof (solar shingles)' } };
-// Pages whose band is removed: /commercial-roofing/ (both offers are for homes: 10% off a
-// roof replacement "for your home", $1,500 off solar; there is no commercial offer).
-const NO_OFFERS_PATHS = ['/commercial-roofing/'];
+// Pages whose band is removed (none since /commercial-roofing/ went: both offers are for
+// homes).
+const NO_OFFERS_PATHS = [];
 
 let data;
 const offersPage = () => (data ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'offers-page.json'), 'utf8')));
@@ -162,13 +162,13 @@ export function renderOffersPage({ siteDir } = {}) {
 
 /**
  * The "Limited Time Offers" band on other pages (the home page, /roofing/, /solar/,
- * /commercial-roofing/, /siding/, /gutters/, /thank-you/): three flyer pictures with
+ * /siding/, /gutters/, /thank-you/): three flyer pictures with
  * "Spring Savings" and a number that isn't the site's (877 213 1240) baked in, and "Panda
  * Exteriors Internal Promotion" in their text. It becomes the two offers as the /offers/
  * page's coupon cards, with a line about financing and a link to all the offers. "Claim"
  * picks the offer in the page's estimate form, or opens the offer's page where the form
  * doesn't list it (or there is none). Rendered again on every run (found by data-pfix-offers-strip).
- * On /commercial-roofing/ the band is removed instead (NO_OFFERS_PATHS).
+ * On the pages in NO_OFFERS_PATHS the band is removed instead.
  */
 export function collectOffersStrip(doc, html, ed, { pathname, siteDir }, changes) {
   if (pathname === OFFERS_PATH) return false;

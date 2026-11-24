@@ -3,7 +3,7 @@
 // (16 cards): five near-identical drone shots of the same houses titled "Panda Ext-14098"
 // and the like, three titled just "Roof Replacement", photos of bare decking mid-tear-off,
 // and three cards whose (2,560 px) photos often didn't show at all. The page now leads
-// with six of the best-looking jobs (residential, solar and commercial) in a photo grid,
+// with five of the best-looking jobs (homes and solar) in a photo grid,
 // each with a short line from its project page, then a call to action; the map ("Areas We
 // Serve") follows.
 //
@@ -51,7 +51,7 @@ function renderPhotoGallery(siteDir) {
   return (
     `<div class="ppx__gallery" id="photo-gallery">` +
     `<div class="ppx__head"><p class="ppx__eyebrow">Photo gallery</p><h2 class="ppx__title" id="ppx-gallery-title">More photos from our crews</h2>` +
-    `<p class="ppx__intro">New roofs, solar, commercial roofing and gutters from Panda jobs across the East Coast. Pick a category, then select a photo to see it full size.</p></div>` +
+    `<p class="ppx__intro">New roofs, solar and gutters from Panda jobs across the East Coast. Pick a category, then select a photo to see it full size.</p></div>` +
     renderProjectGallery({ categories, photos }, { uid: 'ppg-photos' }) +
     `</div>`
   );

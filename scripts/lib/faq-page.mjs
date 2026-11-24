@@ -13,8 +13,8 @@
 //    down the page (the current topic highlighted) and a "Still have a question?" card with
 //    call and estimate buttons, beside the questions grouped by topic, each group with its
 //    icon, a line about it and a link to its service page, every question an accordion
-//    (<details>, so it works without JavaScript). The three commercial roofing questions
-//    are their own group. FAQPage structured data is added for search engines.
+//    (<details>, so it works without JavaScript). (The three commercial roofing questions,
+//    once their own group, are gone with commercial roofing.) FAQPage structured data is added.
 //
 // The words are the page's own (custom/site-fixes/faq-page.json), with a missing full stop
 // added; edit them there and run `npm run update:site`. Applied by site-fixes.mjs; both

@@ -238,7 +238,12 @@ export const SITE_MAP_PAGE = (process.env.SITE_MAP_PAGE ?? (process.env.SITE_ORI
 // Roof Replacement 3, SBS Siding; their case-study links on /commercial-capabilities/ go
 // too); and /commercial-capabilities/ itself (nothing links to it); and /referral/, the
 // employee referral form ("Refer a Future Panda"), since "Refer & Earn" should lead to the
-// Refer & Earn page about the Panda Exteriors app (/referrals/). Removed pages
+// Refer & Earn page about the Panda Exteriors app (/referrals/); and everything about
+// commercial roofing (the owner wants none of it on the site): /commercial-roofing/ and the
+// two pages merged into it, the blog posts "Commercial Roofing Industry and the Future" and
+// "Often Overlooked Roofing Issues and Items" (about commercial roofs), and the five
+// commercial and multi-family project pages (the rest of the commercial wording,
+// menu entries and cards is handled by noCommercial in scripts/lib/site-fixes.mjs). Removed pages
 // are not built, links to them are removed like the sub-site links (except RELINKED_PAGES),
 // their sitemap entries and the files only they used are left out, and their address
 // redirects to the page in REMOVED_PAGE_TARGETS, or else the home page (scripts/03-build.mjs).
@@ -253,9 +258,6 @@ export const MERGED_PAGES =
     ? {
         // Panda only replaces roofs, so "residential roofing" was the roof replacement page again.
         '/roofing/residential/': '/roofing/replacement/',
-        // Three thin commercial pages with the same materials and projects -> one.
-        '/commercial-roofing/roof-types/': '/commercial-roofing/',
-        '/commercial-roofing/roof-replacement/': '/commercial-roofing/',
         '/solar/solar-panel-installations/': '/solar/',
         '/gallery/': '/past-projects/',
         '/customer-service/': '/contact-us/',
@@ -315,7 +317,7 @@ export const isMergedPage = (pathname) => Object.keys(MERGED_PAGES).some((p) => 
 export const mergedTarget = (pathname) => MERGED_PAGES[pathname] || MERGED_PAGES[pathname + '/'] || null;
 
 export const REMOVED_PAGES = [
-  ...(process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/'))
+  ...(process.env.REMOVE_PAGES ?? (process.env.SITE_ORIGIN ? '' : '/interiors/,/roofing/repairs/,/affirm-payment/,/thank-you/,/position-details/,/blog/project/bylt-restoration/,/blog/project/enterprise-rent-a-car/,/blog/project/roof-replacement-3/,/blog/project/sbs-siding/,/commercial-capabilities/,/referral/,/commercial-roofing/roof-types/,/commercial-roofing/roof-replacement/,/commercial-roofing/,/blog/commercial-roofing-industry-and-the-future/,/blog/often-overlooked-roofing-issues-and-items/,/blog/project/linear-accelerator-roof-replacement/,/blog/project/brookfield-properties/,/blog/project/expert-tpo-roofing/,/blog/project/panda-exteriors-hq/,/blog/project/chapel-branch-apartments/'))
     .split(',')
     .map((p) => p.trim())
     .filter(Boolean),
@@ -330,7 +332,17 @@ export const REMOVED_PAGE_TARGETS = {
   '/blog/project/enterprise-rent-a-car/': '/past-projects/',
   '/blog/project/roof-replacement-3/': '/past-projects/',
   '/blog/project/sbs-siding/': '/past-projects/',
-  '/commercial-capabilities/': '/commercial-roofing/',
+  '/commercial-capabilities/': '/roofing/',
+  '/commercial-roofing/roof-types/': '/roofing/types/',
+  '/commercial-roofing/roof-replacement/': '/roofing/replacement/',
+  '/commercial-roofing/': '/roofing/',
+  '/blog/commercial-roofing-industry-and-the-future/': '/blog/',
+  '/blog/often-overlooked-roofing-issues-and-items/': '/blog/',
+  '/blog/project/linear-accelerator-roof-replacement/': '/past-projects/',
+  '/blog/project/brookfield-properties/': '/past-projects/',
+  '/blog/project/expert-tpo-roofing/': '/past-projects/',
+  '/blog/project/panda-exteriors-hq/': '/past-projects/',
+  '/blog/project/chapel-branch-apartments/': '/past-projects/',
   '/referral/': '/referrals/',
   ...MERGED_PAGES,
 };

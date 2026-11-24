@@ -38,19 +38,6 @@
       ]
     },
     {
-      "id": "commercial-roofing",
-      "icon": "building",
-      "title": "Commercial roofing",
-      "short": "Commercial",
-      "text": "Roofs for businesses, and choosing who builds them.",
-      "link": ["/commercial-roofing/", "Commercial roofing"],
-      "items": [
-        ["What is the most common commercial roof style?", "Flat roofs are the most common style for commercial buildings."],
-        ["What are the components of a commercial roof?", "Common components include the roof membrane, insulation, flashings, and drainage systems."],
-        ["What factors do you need to consider when hiring a commercial roofing contractor?", "You should consider their experience, licensing, insurance, customer reviews, and the quality of materials they use."]
-      ]
-    },
-    {
       "id": "solar",
       "icon": "sun",
       "title": "Solar",

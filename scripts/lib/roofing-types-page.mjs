@@ -4,15 +4,16 @@
 // beside a photo) came "Gorgeous Roofing Options for East Coast Homes": white text on Panda
 // lime over three white cards with lime headings (both hard to read), naming asphalt shingles,
 // metal roofing and flat roofs in a sentence each, with nothing to compare them by and no way
-// to act on them. Then the projects row, the testimonials, the project gallery and the white
+// to act on them. (Flat roofs, offered for commercial buildings, went with commercial
+// roofing.) Then the projects row, the testimonials, the project gallery and the white
 // version of "About Our Team". Now:
 //  - the intro keeps its words, set as a label, heading and paragraphs beside a rounded photo
 //    (a class for site-fixes.css);
-//  - "Gorgeous Roofing Options for East Coast Homes" keeps its heading and paragraph over four
-//    cards: the page's three options (in its own words) and GAF solar shingles, each with a
+//  - "Gorgeous Roofing Options for East Coast Homes" keeps its heading and paragraph over three
+//    cards: the page's two options for homes (in its own words) and GAF solar shingles, each with a
 //    photo of that kind of roof (ROOF_PHOTOS), what sets it apart and what it's best for, and
 //    a link to the page that says more. Each card has an id the hero's chips lead to;
-//  - the four side by side in a table (how they look, how long they last, the upfront cost,
+//  - the three side by side in a table (how they look, how long they last, the upfront cost,
 //    the roof they suit and what they're best for);
 //  - how to choose, on charcoal green, with estimate and call buttons;
 //  - "Whatever You Choose, It's Installed Right": GAF Master Elite, the upgraded warranties,
@@ -22,7 +23,7 @@
 //  - "About Our Team" gets the charcoal green it has on /roofing/ (the classes
 //    /customer-service/'s estimate block uses, site-fixes.css).
 // The words come from the page and from what the site already says elsewhere: /roofing/,
-// /roofing-costs/, /commercial-roofing/, /solar-options/, /warranty/ and Panda's blog posts on
+// /roofing-costs/, /solar-options/, /warranty/ and Panda's blog posts on
 // how long a roof lasts and on roof warranties. No prices (every roof is different). The hero
 // is services-hero.mjs's; the projects row, the testimonials and the gallery are unchanged.
 //
@@ -35,7 +36,7 @@ const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
 // Where the hero's chips lead.
-export const TYPE_ANCHORS = { asphalt: 'asphalt-shingles', metal: 'metal-roofing', flat: 'flat-roofing', solar: 'solar-shingles' };
+export const TYPE_ANCHORS = { asphalt: 'asphalt-shingles', metal: 'metal-roofing', solar: 'solar-shingles' };
 const COMPARE_ANCHOR = 'compare-roof-types';
 // The intro's class (site-fixes.css), and "About Our Team"'s: the dark version's text and
 // button colors, and the dark background and heading.
@@ -67,13 +68,11 @@ const ICONS = {
 
 // A photo of each kind of roof, the top of its card here and on /roofing/replacement/
 // (custom/site-fixes/roof-type-*-480.webp and -960.webp, 3:2). Panda's own jobs where there is
-// one: new architectural shingles at a ridge, a white TPO flat roof in the city, a GAF solar
-// shingle roof. No metal roof is among Panda's photos, so that one is a standing-seam roof
+// one: new architectural shingles at a ridge, a GAF solar shingle roof. No metal roof is among Panda's photos, so that one is a standing-seam roof
 // from Wikimedia Commons ("Standing seam metal roof 5.jpg" by Wikideas1, CC0).
 export const ROOF_PHOTOS = {
   asphalt: 'New gray architectural shingles and ridge caps on a home Panda Exteriors re-roofed',
   metal: 'A home with a dark gray standing-seam metal roof, seen from above',
-  flat: 'A new white flat roof on a city building, with church spires beyond',
   solar: 'A home with a GAF solar shingle roof and three dormers, seen from above',
 };
 export const roofPhoto = (key, sizes) =>
@@ -109,17 +108,6 @@ export const SWATCHES = {
       shade('metal', 'rgba(255,255,255,0.1)', 'rgba(0,0,0,0.22)'),
     `<rect width="480" height="170" fill="url(#pfix-rt-metal-g)"/><rect width="480" height="170" fill="url(#pfix-rt-metal-p)"/>`
   ),
-  // A white membrane with welded seams, a rooftop unit and a drain.
-  flat: sw(
-    'flat',
-    `<pattern id="pfix-rt-flat-p" width="480" height="48" patternUnits="userSpaceOnUse">` +
-      `<rect width="480" height="48" fill="#eef1f3"/><path d="M0 46.5h480" stroke="#cdd5db" stroke-width="2"/><path d="M0 42.5h480" stroke="#dde3e8" stroke-width="1"/></pattern>` +
-      shade('flat', 'rgba(255,255,255,0.15)', 'rgba(20,24,15,0.16)'),
-    `<rect width="480" height="170" fill="url(#pfix-rt-flat-p)"/>` +
-      `<rect x="318" y="34" width="96" height="62" rx="4" fill="#c4ccd2"/><rect x="318" y="34" width="96" height="10" rx="3" fill="#b1bac1"/>` +
-      `<path d="M330 56h72M330 66h72M330 76h72M330 86h72" stroke="#9aa5ad" stroke-width="2"/>` +
-      `<circle cx="120" cy="112" r="11" fill="#d5dce1"/><circle cx="120" cy="112" r="6" fill="#9aa5ad"/>`
-  ),
   // Dark solar cells, flush in the roof, with a sheen.
   solar: sw(
     'solar',
@@ -132,7 +120,7 @@ export const SWATCHES = {
   ),
 };
 
-// The roof types: the page's three options in its own words, and GAF solar shingles (from
+// The roof types: the page's options for homes in its own words, and GAF solar shingles (from
 // /solar-options/ and /solar/gaf-solar-roof/).
 export const TYPES = [
   {
@@ -166,21 +154,6 @@ export const TYPES = [
     link: ['/roofing-costs/', 'What a new roof costs'],
   },
   {
-    key: 'flat',
-    tag: ['building', 'Flat & low-slope roofs'],
-    kicker: 'For commercial-style roofs',
-    name: 'Flat Roofing',
-    text: 'If you own a commercial building or a commercial-style home, we also have flat roofing options, from affordable systems to the top of the range.',
-    points: [
-      'TPO: some of the best longevity of any flat rubber roof',
-      'EPDM: the classic, affordable rubber roof',
-      'Mod Bit: built-up asphalt layers for superior waterproofing',
-      'PVC: lightweight, and seals out the weather securely',
-    ],
-    best: 'Commercial buildings and commercial-style homes',
-    link: ['/commercial-roofing/', 'Commercial roofing'],
-  },
-  {
     key: 'solar',
     tag: ['sun', 'Makes its own power'],
     kicker: 'Your roof and your power source',
@@ -196,7 +169,7 @@ export const TYPES = [
     link: ['/solar/gaf-solar-roof/', 'GAF solar shingles'],
   },
 ];
-// The section's own heading and paragraphs (the second, which led into the three cards, with
+// The section's own heading and paragraphs (the second, which led into the cards, with
 // GAF solar shingles too).
 const OPTIONS = {
   title: 'Gorgeous Roofing Options for East Coast Homes',
@@ -206,13 +179,13 @@ const OPTIONS = {
 const TILE = ['/blog/project/spanish-tile/', 'See the Spanish tile roof we installed'];
 
 // Side by side. Lifespans from Panda's "How long does a roof really last?" (architectural
-// shingles, rubber flat roofs) and the page (metal); the rest from the cards' sources.
+// shingles) and the page (metal); the rest from the cards' sources.
 const COMPARE = {
   rows: [
-    ['Look', ['Classic, in a wide range of colors and dimensional styles', 'Clean lines and a sleek, modern look', 'A membrane you won’t see from the ground', 'Lies flush with the rest of the roof, barely noticeable from the street']],
-    ['How long it lasts', ['20 to 30 years (architectural shingles)', 'Upwards of 50 years', '15 to 25 years (EPDM, TPO)', 'A 25-year warranty on power production']],
-    ['Upfront cost', ['The most affordable', 'Higher than shingles, and designed to last up to twice as long', 'Depends on the system: EPDM is the affordable classic', 'The highest: a new roof and solar in one']],
-    ['Roof shape', ['Sloped roofs', 'Sloped roofs', 'Flat and low-slope roofs', 'Sloped roofs with open sun']],
+    ['Look', ['Classic, in a wide range of colors and dimensional styles', 'Clean lines and a sleek, modern look', 'Lies flush with the rest of the roof, barely noticeable from the street']],
+    ['How long it lasts', ['20 to 30 years (architectural shingles)', 'Upwards of 50 years', 'A 25-year warranty on power production']],
+    ['Upfront cost', ['The most affordable', 'Higher than shingles, and designed to last up to twice as long', 'The highest: a new roof and solar in one']],
+    ['Roof shape', ['Sloped roofs', 'Sloped roofs', 'Sloped roofs with open sun']],
     ['Best for', TYPES.map((t) => t.best)],
   ],
   note: 'Lifespans are typical ranges: your climate, your attic’s ventilation and the quality of the installation all play a part.',
@@ -226,7 +199,7 @@ const CHOOSE = {
   items: [
     ['coin', 'Your budget', 'Asphalt shingles cost the least up front. Metal and solar shingles cost more, and give it back in lifespan or in lower energy bills.'],
     ['clock', 'How long you’ll stay', 'Staying for decades? Metal is designed to last up to twice as long as shingles. Moving in a few years? New shingles add curb appeal for less.'],
-    ['home', 'Your roof’s shape', 'Sloped roofs suit shingles, metal and solar shingles. Flat and low-slope roofs need a system made for them, like TPO or EPDM.'],
+    ['home', 'Your roof’s shape', 'Shingles, metal and solar shingles all suit a sloped roof; solar shingles work best where the roof gets open sun.'],
     ['swatch', 'The look you want', 'From classic shingle colors to the clean lines of metal, choose a roof that suits your home’s style, not one that looks like every other on the street.'],
     ['sun', 'Your energy goals', 'Want lower energy bills? GAF solar shingles turn your new roof into a power source, with no panels mounted on top.'],
     ['storm', 'East Coast weather', 'Wind, hail, snow and ice: we’ll recommend the shingles and materials with the wind and impact ratings your area needs.'],
@@ -251,12 +224,11 @@ const WHY = {
 };
 
 const FAQ = [
-  ['What roofing materials do you install?', 'We offer a variety of roofing options from GAF, from asphalt shingles to metal roofing, as well as flat roofs and GAF Timberline Solar shingles. We’ll help you choose the best option for your home and budget.'],
+  ['What roofing materials do you install?', 'We offer a variety of roofing options from GAF, from asphalt shingles to metal roofing, as well as GAF Timberline Solar shingles. We’ll help you choose the best option for your home and budget.'],
   ['Is metal roofing worth the extra cost?', 'Traditional shingles are less expensive than metal roofing, but metal roofing is designed to last up to twice as long. If you plan to stay in your home for many years, the longer life can make it the better value.'],
   ['What’s the difference between 3-tab and architectural shingles?', 'Architectural shingles are thicker and dimensional, with better wind ratings than basic 3-tab shingles, and they typically come with longer warranties: 30 to 50 years, against 20 to 25 for 3-tab.'],
-  ['How long does each type of roof last?', 'Architectural asphalt shingles typically last 20 to 30 years, metal roofing upwards of 50 years, and flat rubber roofs (EPDM, TPO) 15 to 25 years. Your climate, attic ventilation and the quality of the installation all play a part.'],
+  ['How long does each type of roof last?', 'Architectural asphalt shingles typically last 20 to 30 years, and metal roofing upwards of 50 years. Your climate, attic ventilation and the quality of the installation all play a part.'],
   ['Do I need a new roof for solar shingles?', 'Yes. GAF Timberline Solar shingles are installed as part of a full roof replacement, which makes them a cost-effective choice when your roof is nearing the end of its life. If your roof is in good shape, solar panels can be added to the roof you already have.'],
-  ['Do you install flat roofs on homes?', 'Yes. If you own a commercial building or a commercial-style home, we also have flat roofing options: TPO, EPDM, Mod Bit and PVC.'],
   ['Does the roof type affect my warranty?', 'It can. Architectural shingles typically come with longer warranties than basic 3-tab shingles, and as a GAF Master Elite contractor we can offer GAF’s upgraded warranties, like the Golden Pledge.'],
   ['Can I finance my new roof?', 'Yes. Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.'],
 ];
@@ -304,7 +276,7 @@ function compareHtml() {
   return (
     `<section class="pfix-rt__sec" id="${COMPARE_ANCHOR}" aria-labelledby="pfix-rt-compare"><div class="pfix-rt__inner">` +
     head('pfix-rt-compare', 'Side by side', 'Compare Roof Types at a Glance', 'Each roof has its strengths: the right choice comes down to your home, your budget and how long you plan to stay.') +
-    `<p class="pfix-rt-compare__hint">${ICONS.swipe}Swipe the table to see all four</p>` +
+    `<p class="pfix-rt-compare__hint">${ICONS.swipe}Swipe the table to see all three</p>` +
     `<div class="pfix-rt-compare" role="region" aria-labelledby="pfix-rt-compare" tabindex="0">` +
     `<table class="pfix-rt-compare__table"><thead><tr><td></td>${cols}</tr></thead><tbody>${rows}</tbody></table></div>` +
     `<p class="pfix-rt-compare__note">${ICONS.info}<span>${esc(COMPARE.note)} ${more(COMPARE.read, 'pfix-rt-inline')}</span></p>` +
@@ -388,7 +360,7 @@ export function collectRoofingTypesPage(doc, html, ed, { pathname = '', siteDir 
     const { startOffset, endOffset } = old.sourceCodeLocation;
     if (html.slice(startOffset, endOffset) !== block) {
       ed.outer(old, block);
-      changes.push('roof types page: four roof types (was three white cards on lime), side by side, how to choose, why Panda and questions');
+      changes.push('roof types page: three roof types (was three white cards on lime), side by side, how to choose, why Panda and questions');
     }
     done = true;
   }
