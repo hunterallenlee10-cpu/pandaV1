@@ -14,9 +14,9 @@
 //    one, the photos as a grid that opens the project gallery's photo viewer, three more
 //    projects, and a closing estimate band;
 //  - /past-projects/ lists every project under the favorites ("Browse all of our
-//    projects", with Homes / Commercial & multi-family / Solar filters);
+//    projects", with Homes / Solar filters);
 //  - the service pages a project belongs to (residential roofing, roof replacement, roof
-//    types, the three commercial pages, solar, GAF solar roofs, gutter guards) show it in a
+//    types, solar, GAF solar roofs, gutter guards) show it in a
 //    "Recent projects" row above their testimonials.
 // So every project is a click or two from the home page, in context.
 //

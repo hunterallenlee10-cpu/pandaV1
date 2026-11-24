@@ -11,7 +11,7 @@
 //    redirects again leads straight to the last address.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, REMOVED_PAGES, isRemovedPage, removedPageTarget, isSiteUrl } from './config.mjs';
+import { ROOT, REMOVED_PAGES, isRemovedPage, removedPageTarget, isSiteUrl, renamedPath } from './config.mjs';
 import { listFiles, writeFile } from './util.mjs';
 
 const TEXT_FILE = /\.(html?|css|js|mjs|json|xml|xsl|txt|svg|webmanifest)$/i;
@@ -181,6 +181,12 @@ export function writeRedirectFiles(siteDir, { dryRun = false } = {}) {
     const [from, to, status] = l.trim().split(/\s+/);
     return { from, to, status: Number(status) };
   });
+  // A removed page's redirect leads to its own target (REMOVED_PAGE_TARGETS), by its corrected
+  // address where it has one: an earlier one may lead to a page removed since.
+  for (const r of rows) {
+    const p = renamedPath(r.from);
+    if (r.from.endsWith('/') && isRemovedPage(p)) r.to = removedPageTarget(p);
+  }
   const have = new Set(rows.map((r) => r.from));
   const add = REMOVED_PAGES.filter((p) => p.endsWith('/') && !have.has(p))
     .sort()

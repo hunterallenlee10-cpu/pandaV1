@@ -104,31 +104,6 @@
       }
     ]
   },
-  "commercial": {
-    "pages": [
-      "/commercial-roofing/",
-      "/commercial-roofing/roof-replacement/",
-      "/commercial-roofing/roof-types/"
-    ],
-    "title": "Free Commercial Roofing Estimate",
-    "text": "Flat roof replacements for businesses, from inspection to final walkthrough.",
-    "button": "Get My Free Commercial Estimate",
-    "business": true,
-    "questions": [
-      {
-        "name": "project",
-        "label": "What do you need?",
-        "options": [
-          "Roof replacement",
-          "Roof inspection",
-          "Not sure yet"
-        ],
-        "selected": {
-          "/commercial-roofing/roof-replacement/": "Roof replacement"
-        }
-      }
-    ]
-  },
   "attic": {
     "pages": [
       "/roofing/attic-insulation/"
@@ -165,7 +140,6 @@
           "Gutters or gutter guards",
           "Solar",
           "Attic insulation",
-          "Commercial roofing",
           "Something else"
         ]
       }

@@ -1,5 +1,5 @@
 // "Our Project Gallery" (/, /solar/, /roofing/, /roofing/types/, /gutters/, /siding/,
-// /commercial-capabilities/, /commercial-roofing/). As delivered it is a Breakdance
+// /commercial-capabilities/, /commercial-roofing/, both since removed). As delivered it is a Breakdance
 // gallery (category tabs over a Swiper slider, filtered with Isotope) that three scripts
 // start at once: Breakdance's own Swiper, the theme's `new Swiper('.Project-swipper')` on
 // its wrapper and the theme's `new Swiper('.swiper')` (a 2.5 s autoplay meant for the logo
@@ -86,8 +86,14 @@ function readOwn(box) {
 }
 
 /** The gallery's markup: tabs, the carousel (every photo, in category order) and its controls. */
+// Categories left out on request: Commercial (commercial roofing is off the site; the
+// live site spells it "Commerical" in places).
+const LEFT_OUT = /^commerc?ial$|^commerical$/i;
 export function renderProjectGallery({ categories, photos }, { uid = 'ppg-1', selected = '' } = {}) {
-  const groups = categories.map((c) => ({ ...c, photos: photos.filter((p) => p.cat === c.id) })).filter((g) => g.photos.length);
+  const groups = categories
+    .filter((c) => !LEFT_OUT.test(c.name))
+    .map((c) => ({ ...c, photos: photos.filter((p) => p.cat === c.id) }))
+    .filter((g) => g.photos.length);
   // The tab shown first: the category named `selected`, or the first one.
   const first = Math.max(0, groups.findIndex((g) => g.name === selected));
   const tabs = groups.map(
@@ -152,7 +158,7 @@ export function collectProjectGalleries(doc, ed, changes = [], { selected = '' }
     const own = hasClass(box, 'ppg');
     const gallery = own ? box : find(box, (x) => hasClass(x, 'bde-gallery'));
     const data = own ? readOwn(gallery) : readBreakdance(gallery);
-    const used = data.categories.filter((c) => data.photos.some((p) => p.cat === c.id));
+    const used = data.categories.filter((c) => !LEFT_OUT.test(c.name) && data.photos.some((p) => p.cat === c.id));
     if (!used.length) continue;
     const uid = `ppg-${++count}`;
     ed.outer(box, renderProjectGallery(data, { uid, selected }));

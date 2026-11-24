@@ -279,7 +279,6 @@ const SERVICES = [
   ['roof', 'Roof replacement', '/roofing/replacement/'],
   ['umbrella', 'Storm damage', '/storm-damage/'],
   ['solar', 'Solar', '/solar-options/'],
-  ['building', 'Commercial roofing', '/commercial-roofing/'],
   ['siding', 'Siding', '/siding/'],
   ['gutter', 'Gutters and gutter guards', '/gutters/'],
   ['home', 'Attic insulation', '/roofing/attic-insulation/'],

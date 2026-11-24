@@ -36,7 +36,7 @@
             "Whether you are getting a roof replacement or want to install solar panels, our financing options cover the work our crews do. We keep our projects cost-effective for customers through financing, free quotes and a 100% satisfaction guarantee.",
             "During your free consultation, one of our local roofing and solar contractors goes over your project, your financing options and a free quote with you."
           ],
-          "list": ["Roof replacements", "Solar panels and GAF solar roofs", "Commercial roofing", "Siding", "Gutters and gutter guards", "Attic insulation"],
+          "list": ["Roof replacements", "Solar panels and GAF solar roofs", "Siding", "Gutters and gutter guards", "Attic insulation"],
           "img": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
           "alt": "A home with a new roof installed by Panda Exteriors"
         },
@@ -66,7 +66,7 @@
           "items": [
             ["Who provides your financing?", "Our financing is provided through Service Finance, LLC."],
             ["Can I get a no-interest loan?", "Homeowners may qualify for delayed payments and even no-interest loans. The plans available to you depend on your approval."],
-            ["Which projects can I finance?", "Roof replacements, solar, commercial roofing, siding, gutters and gutter guards, and attic insulation: the work our crews do."],
+            ["Which projects can I finance?", "Roof replacements, solar, siding, gutters and gutter guards, and attic insulation: the work our crews do."],
             ["What are my options for solar?", "There are various options for solar, including solar loans, leases and power purchase agreements. Talk with us to find the most suitable option for you."],
             ["How do I get started?", "Book a free estimate. During your consultation we go over flexible financing and create a free quote for your project."]
           ]
@@ -332,7 +332,7 @@
           "title": "Why Choose Panda for Solar?",
           "items": [
             ["badge", "30+ years of experience", "Our experts come to every job with over three decades of combined experience handling solar roofing projects."],
-            ["home", "Local expertise", "We serve homes and businesses throughout the East Coast, so we know how best to protect your home year round."],
+            ["home", "Local expertise", "We serve homeowners throughout the East Coast, so we know how best to protect your home year round."],
             ["shield", "Top-rated warranties", "Best-in-class warranties and great manufacturer warranties keep your investment protected for many years to come."]
           ]
         },
@@ -369,9 +369,9 @@
     "path": "/locations/",
     "title": "Roofing, Solar and Exteriors in {city}, {st}",
     "metaTitle": "{city}, {st} Roofing Contractor | Panda Exteriors",
-    "description": "Panda Exteriors’ {state} office in {city}, {st}: roof replacements, solar, commercial roofing, siding and gutters. Call {phone} for a free estimate.",
+    "description": "Panda Exteriors’ {state} office in {city}, {st}: roof replacements, solar, siding and gutters. Call {phone} for a free estimate.",
     "eyebrow": "{state} office",
-    "sub": "Our {city} office serves homeowners and businesses across {state} with roof replacements, solar, commercial roofing, siding and gutters, installed by our GAF Master Elite crews.",
+    "sub": "Our {city} office serves homeowners across {state} with roof replacements, solar, siding and gutters, installed by our GAF Master Elite crews.",
     "hq": "Our headquarters",
     "jobs": "{jobs} jobs completed in {state}",
     "minJobs": 50,

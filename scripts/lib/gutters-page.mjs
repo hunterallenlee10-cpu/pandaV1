@@ -1,5 +1,5 @@
-// The Gutters, Siding, Roofing, Solar and Commercial pages (/gutters/, /siding/, /roofing/, /solar/,
-// /commercial-roofing/): the parts their other modules don't cover.
+// The Gutters, Siding, Roofing and Solar pages (/gutters/, /siding/, /roofing/, /solar/): the
+// parts their other modules don't cover.
 //
 //  - /gutters/ "Why Work with Our East Coast Exterior Specialists?": three lime cards with
 //    white text (about 1.7:1, hard to read), the first promising "stellar cleaning services"
@@ -12,9 +12,6 @@
 //    light offers band is above it and the white testimonials below.
 //  - /solar/ "What Makes Our Roofers Stand Out?": the same lime band, on a solar page. The
 //    same white icon cards, with the cards' own words, under "Why Choose Panda for Solar?".
-//  - /commercial-roofing/ "What Makes Our Roofers Stand Out?": the same lime band, with the
-//    roofing page's words ("…for your East Coast home"). The same white icon cards under "Why
-//    Building Owners Choose Panda", with the cards' words told for a business's building.
 //  - A spot to jump to above the gutter services (the "Gutter installation" chip in the
 //    hero, services-hero.mjs, leads there).
 //  - /gutters/ "East Coast Gutter Installations and Gutter Guards" (the services under the
@@ -47,7 +44,7 @@ const WHY = {
     note: 'gutters page why cards: white icon cards with dark text (was white on lime), without the cleaning services Panda doesn\'t offer',
     cards: [
       [ICON.badge, 'Trained & Certified Teams', 'Every member of our team is professionally trained and locally certified to handle all types of exterior remodeling projects.'],
-      [ICON.pin, 'Local Expertise', 'Our focus is on serving homes and businesses throughout the East Coast, so you can count on us to know how best to protect your home year round.'],
+      [ICON.pin, 'Local Expertise', 'Our focus is on serving homeowners throughout the East Coast, so you can count on us to know how best to protect your home year round.'],
       [ICON.check, 'Easy & Efficient Care', 'We take pride in offering comprehensive services in a straightforward way, so you don’t have to worry about feeling overwhelmed throughout the project.'],
     ],
   },
@@ -65,18 +62,8 @@ const WHY = {
     title: 'Why Choose Panda for Solar?',
     cards: [
       [ICON.badge, '30+ Years of Industry Experience', 'Our experts come to every job with over three decades of combined experience handling solar roofing projects!'],
-      [ICON.pin, 'Local Expertise', 'Our focus is on serving homes and businesses throughout the East Coast, so you can count on us to know how best to protect your home year round.'],
+      [ICON.pin, 'Local Expertise', 'Our focus is on serving homeowners throughout the East Coast, so you can count on us to know how best to protect your home year round.'],
       [ICON.shield, 'Top-Rated Warranties', 'We offer best in class warranties and great manufacturer warranties to ensure your investment is protected for many years to come.'],
-    ],
-  },
-  // /commercial-roofing/: the roofing page's cards, said for a business's building.
-  '/commercial-roofing/': {
-    note: 'commercial page why cards: white icon cards with dark text under "Why Building Owners Choose Panda" (was "What Makes Our Roofers Stand Out?", white on lime, about homes)',
-    title: 'Why Building Owners Choose Panda',
-    cards: [
-      [ICON.star, 'Quality Roofing Products', 'Our team installs TPO, EPDM, Mod Bit and PVC flat roof systems, so you can choose the right roof for your building and your budget.'],
-      [ICON.badge, 'GAF Master Elite Roofing Contractors', 'In addition to providing quality products, we are a certified GAF Master Elite contractor and A-rated by the Better Business Bureau. That said, you can count on us to provide stellar services, too.'],
-      [ICON.clock, 'One-Day Installations', 'Our commercial roofers can redo most flat roofs in as little as one day, so your tenants, patients and customers aren’t dealing with construction for long.'],
     ],
   },
   '/roofing/': {
@@ -99,7 +86,7 @@ const whyCards = (cards) =>
     )
     .join('');
 
-/** /gutters/, /siding/, /roofing/, /solar/, /commercial-roofing/: the "Why work with us" cards (and /gutters/' services anchor). */
+/** /gutters/, /siding/, /roofing/, /solar/: the "Why work with us" cards (and /gutters/' services anchor). */
 export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
   const why = WHY[pathname];
   if (!why) return false;
@@ -122,8 +109,8 @@ export function collectGuttersPage(doc, html, ed, { pathname = '' } = {}, change
     }
     done = true;
   }
-  // The section's heading, where the page gives its own. (/commercial-roofing/'s was an h3,
-  // the section's only heading: it becomes the h2 the other pages have.)
+  // The section's heading, where the page gives its own. (Where it is an h3, the section's
+  // only heading, it becomes the h2 the other pages have.)
   const heading =
     why.title && section && (find(section, (c) => c.tagName === 'h2') || find(section, (c) => c.tagName === 'h3' && !hasClass(c, 'pfix-why__title') && !(grid && find(grid, (x) => x === c))));
   if (heading && free(heading)) {

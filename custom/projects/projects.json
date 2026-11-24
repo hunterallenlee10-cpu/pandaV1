@@ -3,7 +3,7 @@
     "id": "all-projects",
     "eyebrow": "Every project",
     "title": "Browse all of our projects",
-    "intro": "Homes, businesses, apartment communities and solar roofs: pick a type, or open any project for its story and photos.",
+    "intro": "Family homes and solar roofs: pick a type, or open any project for its story and photos.",
     "filters": [
       [
         "all",
@@ -12,10 +12,6 @@
       [
         "homes",
         "Homes"
-      ],
-      [
-        "commercial",
-        "Commercial & multi-family"
       ],
       [
         "solar",
@@ -32,7 +28,7 @@
     ]
   },
   "cta": {
-    "title": "Want results like these on your home or building?",
+    "title": "Want results like these on your home?",
     "text": "Tell us about your project and we’ll come out for a free, no-pressure estimate.",
     "button": [
       "Get a free estimate",
@@ -59,16 +55,6 @@
         "panda-ext-15321"
       ]
     },
-    "/commercial-roofing/": {
-      "title": "Recent commercial roofing projects",
-      "intro": "Medical facilities, apartment communities, rooftop terraces and our own headquarters.",
-      "projects": [
-        "linear-accelerator-roof-replacement",
-        "brookfield-properties",
-        "chapel-branch-apartments",
-        "panda-exteriors-hq"
-      ]
-    },
     "/solar/gaf-solar-roof/": {
       "title": "A GAF Timberline Solar roof we installed",
       "intro": "About 7 kW of clean power from shingles you can hardly tell apart from the rest of the roof.",
@@ -85,230 +71,6 @@
     }
   },
   "projects": [
-    {
-      "slug": "linear-accelerator-roof-replacement",
-      "title": "Linear Accelerator Roof Replacement",
-      "tag": "Commercial",
-      "group": "commercial",
-      "summary": "A new roof for a hospital’s second linear accelerator facility, where precision matters.",
-      "body": [
-        "Panda Exteriors proudly completed the roof replacement for a state-of-the-art second Linear Accelerator facility.",
-        "Our GAF Presidential Master Elite team installed a high-performance roofing system, ensuring durability and precision for this critical medical infrastructure, and worked carefully around the rooftop equipment, piping and walkways the building depends on.",
-        "You can trust Panda for top-tier commercial roofing solutions across the East Coast."
-      ],
-      "facts": [
-        [
-          "Building",
-          "Medical treatment facility"
-        ],
-        [
-          "Work",
-          "Full roof replacement"
-        ],
-        [
-          "Crew",
-          "GAF Presidential Master Elite team"
-        ]
-      ],
-      "service": [
-        "Commercial roof replacement",
-        "/commercial-roofing/#commercial-roof-replacement"
-      ],
-      "cover": "/wp-content/uploads/2025/07/19-Dec-12-2024-03_02am-7DWo.jpg",
-      "position": "50% 40%",
-      "alt": "Panda crew in high-visibility vests working on the facility’s roof",
-      "photos": [
-        "/wp-content/uploads/2025/07/19-Dec-12-2024-03_02am-7DWo.jpg",
-        "/wp-content/uploads/2025/07/14-Dec-12-2024-01_55am-e6rD.jpg",
-        "/wp-content/uploads/2025/07/45-Apr-10-2025-09_37pm-i8Ke.jpg",
-        "/wp-content/uploads/2025/07/47-Apr-10-2025-09_37pm-pbjr.jpg",
-        "/wp-content/uploads/2025/07/42-Apr-10-2025-09_27pm-D9j1.jpg",
-        "/wp-content/uploads/2025/07/39-Apr-10-2025-09_26pm-bh1J.jpg",
-        "/wp-content/uploads/2025/07/34-Apr-10-2025-09_24pm-XCnn.jpg",
-        "/wp-content/uploads/2025/07/33-Apr-10-2025-09_23pm-XVai.jpg",
-        "/wp-content/uploads/2025/07/31-Apr-10-2025-09_23pm-PQ5H.jpg",
-        "/wp-content/uploads/2025/07/23-Mar-07-2025-12_46am-bdWn.jpg"
-      ]
-    },
-    {
-      "slug": "brookfield-properties",
-      "title": "Brookfield Properties",
-      "tag": "Commercial",
-      "group": "commercial",
-      "summary": "A 2-ply SBS torch-down roof installed under a paver terrace, with the pavers set back in place.",
-      "body": [
-        "Our team replaced this building’s roofing system with a durable 2-ply SBS torch-down membrane.",
-        "We carefully removed the existing pavers, installed the new roofing system across the entire elevation, and reinstalled the pavers. The worksite was kept clean with daily debris removal, and the work is backed by a two-year contractor warranty.",
-        "Any pavers damaged along the way were replaced from the existing stock on the main roof."
-      ],
-      "facts": [
-        [
-          "System",
-          "2-ply SBS torch-down membrane"
-        ],
-        [
-          "Scope",
-          "Pavers removed and reinstalled"
-        ],
-        [
-          "Cleanup",
-          "Daily debris removal"
-        ],
-        [
-          "Warranty",
-          "2-year contractor warranty"
-        ]
-      ],
-      "service": [
-        "Commercial roof types",
-        "/commercial-roofing/#commercial-roof-systems"
-      ],
-      "cover": "/wp-content/uploads/2025/07/22-Aug-09-2024-03_14am-FUCJ-1-scaled.jpg",
-      "position": "50% 60%",
-      "alt": "Finished paver terrace on the building’s roof after the new SBS membrane went in",
-      "photos": [
-        "/wp-content/uploads/2025/07/45-Aug-28-2024-04_15am-Qv1Q-scaled.jpg",
-        "/wp-content/uploads/2025/07/51-Aug-28-2024-05_32am-qkFt-scaled.jpg",
-        "/wp-content/uploads/2025/07/28-Aug-26-2024-12_21am-UcHY-scaled.jpg",
-        "/wp-content/uploads/2025/07/36-Aug-27-2024-04_02am-kn5V-scaled.jpg",
-        "/wp-content/uploads/2025/07/22-Aug-09-2024-03_14am-FUCJ-1-scaled.jpg",
-        "/wp-content/uploads/2025/07/1-Aug-09-2024-02_22am-io94-scaled.jpg",
-        "/wp-content/uploads/2025/07/6-Aug-09-2024-02_23am-4HwG-scaled.jpg"
-      ]
-    },
-    {
-      "slug": "expert-tpo-roofing",
-      "title": "Expert TPO Roofing",
-      "tag": "Commercial",
-      "group": "commercial",
-      "summary": "A bright white TPO system over tapered insulation, finished in just two days.",
-      "body": [
-        "Transform your commercial property with Panda Exteriors’ cutting-edge TPO roofing solution. For this project, our GAF Presidential Master Elite team installed a premium .060 white TPO roofing system, featuring tapered Q Panels insulation, R-10 Polyiso insulation and Den-deck cover board for optimal drainage and durability.",
-        "We included flashing for the parapet walls and scuppers, walkway pads at the entrance, and daily debris removal. Backed by a one-year contractor warranty and a 20-year manufacturer warranty, this project ensures long-lasting protection.",
-        "Completed in just two days: trust Panda Exteriors for seamless, high-quality roofing."
-      ],
-      "facts": [
-        [
-          "System",
-          ".060 white TPO"
-        ],
-        [
-          "Insulation",
-          "Tapered Q Panels, R-10 Polyiso, Den-deck cover board"
-        ],
-        [
-          "Time on site",
-          "2 days"
-        ],
-        [
-          "Warranty",
-          "1-year contractor, 20-year manufacturer"
-        ]
-      ],
-      "service": [
-        "Commercial roofing",
-        "/commercial-roofing/"
-      ],
-      "cover": "/wp-content/uploads/2025/07/down-net_http20250709-96-yidm03-scaled.jpg",
-      "position": "50% 45%",
-      "alt": "New white TPO rooftop with a city skyline and a cathedral in the background",
-      "photos": [
-        "/wp-content/uploads/2025/07/down-net_http20250709-70-rpl92v-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-122-gisi51-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-108-6rl95u-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-96-yidm03-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-138-e3gu1x-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-93-nmqqfk-scaled.jpg",
-        "/wp-content/uploads/2025/07/down-net_http20250709-85-ozg25g-scaled.jpg"
-      ]
-    },
-    {
-      "slug": "panda-exteriors-hq",
-      "title": "Panda Exteriors HQ",
-      "tag": "Commercial",
-      "group": "commercial",
-      "summary": "Our own Maryland headquarters, re-roofed by the only team we trust: ours.",
-      "body": [
-        "When it was time to replace the roof on our Maryland HQ, we turned to the only team we trust — our own!",
-        "From inspection to installation, our crew brought the same care and craftsmanship we give every homeowner. Check out the transformation in the video and see our team in action."
-      ],
-      "facts": [
-        [
-          "Building",
-          "Our headquarters"
-        ],
-        [
-          "Location",
-          "Maryland"
-        ],
-        [
-          "Work",
-          "Full roof replacement"
-        ]
-      ],
-      "service": [
-        "Commercial roof replacement",
-        "/commercial-roofing/#commercial-roof-replacement"
-      ],
-      "video": {
-        "id": "B8HSoz6pnM0",
-        "title": "Panda Exteriors Headquarters Roof Replacement"
-      },
-      "cover": "/wp-content/uploads/2025/07/DJI_20250722134618_0999_D.jpg",
-      "position": "50% 60%",
-      "alt": "Drone view of the Panda Exteriors headquarters building with its new roof",
-      "photos": [
-        "/wp-content/uploads/2025/07/DJI_20250722134707_0004_D.jpg",
-        "/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg",
-        "/wp-content/uploads/2025/07/DJI_20250722134549_0997_D.jpg",
-        "/wp-content/uploads/2025/07/DJI_20250722134618_0999_D.jpg"
-      ]
-    },
-    {
-      "slug": "chapel-branch-apartments",
-      "title": "Chapel Branch Apartments",
-      "tag": "Multi-family",
-      "group": "commercial",
-      "summary": "A multi-building apartment community, roofed by our GAF Presidential Master Elite team.",
-      "body": [
-        "Panda Exteriors is thrilled to contribute to the Chapel Branch Apartments, a multi-building roofing project.",
-        "Building One is complete, and Buildings Two and Three followed, with our GAF Presidential Master Elite team ensuring top-quality craftsmanship and durability on every roof.",
-        "Trust Panda Exteriors for exceptional roofing solutions across the East Coast."
-      ],
-      "facts": [
-        [
-          "Property",
-          "Apartment community"
-        ],
-        [
-          "Scope",
-          "Three buildings, new construction"
-        ],
-        [
-          "Crew",
-          "GAF Presidential Master Elite team"
-        ]
-      ],
-      "service": [
-        "Commercial roofing",
-        "/commercial-roofing/"
-      ],
-      "cover": "/wp-content/uploads/2025/07/10-Jul-14-2025-03_23pm-Qrvs.jpg",
-      "position": "50% 30%",
-      "alt": "New three-story apartment building at Chapel Branch, seen from a freshly shingled roof",
-      "photos": [
-        "/wp-content/uploads/2025/07/1-Jun-24-2025-09_32am-Qg47-scaled.jpg",
-        "/wp-content/uploads/2025/07/2-Jul-12-2025-02_36pm-yUzG.jpg",
-        "/wp-content/uploads/2025/07/3-Jul-14-2025-07_57am-5LCD.jpg",
-        "/wp-content/uploads/2025/07/4-Jul-14-2025-08_58am-pm3u-scaled.jpg",
-        "/wp-content/uploads/2025/07/5-Jul-14-2025-09_45am-7WgH.jpg",
-        "/wp-content/uploads/2025/07/6-Jul-14-2025-02_51pm-n5g1-scaled.jpg",
-        "/wp-content/uploads/2025/07/7-Jul-14-2025-02_54pm-SsVL-scaled.jpg",
-        "/wp-content/uploads/2025/07/8-Jul-14-2025-02_59pm-CVeg-scaled.jpg",
-        "/wp-content/uploads/2025/07/9-Jul-14-2025-03_21pm-z5uh-scaled.jpg",
-        "/wp-content/uploads/2025/07/10-Jul-14-2025-03_23pm-Qrvs.jpg"
-      ]
-    },
     {
       "slug": "panda-ext-15321",
       "title": "GAF Timberline Solar Roof",

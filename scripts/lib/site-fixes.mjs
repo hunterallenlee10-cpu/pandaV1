@@ -193,11 +193,15 @@
 //    glance", a photo grid with a viewer and more projects, plus a "Recent projects" row on
 //    the service pages each belongs to and every project listed on /past-projects/
 //    (project-pages.mjs, custom/projects/).
+//  - Commercial roofing, off the site on request: the commercial pages are removed
+//    (REMOVED_PAGES in config.mjs) and so is every menu entry, card and link to them; a link
+//    in running text keeps its words, and wording that offered commercial roofing says what
+//    Panda does for homes (noCommercial, COMMERCIAL_COPY).
 //  - Typos in headings and labels.
 import { collectMergedNav } from './merged-pages.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, SITE_ORIGIN, renamedPath } from './config.mjs';
+import { ROOT, SITE_ORIGIN, renamedPath, isRemovedPage, isRelinkedPage } from './config.mjs';
 import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, editText, textNodes, startTag, headEndOffset } from './html-edit.mjs';
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero, collectFormBadges, loadReviewWall } from './review-wall.mjs';
@@ -254,8 +258,6 @@ export const SITE_FIXES_FILES = {
   'gutter-guards-hero.webp': '/_custom/site-fixes/gutter-guards-hero.webp',
   // the photo behind /siding/'s hero (services-hero.mjs)
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
-  // the photo behind /commercial-roofing/'s hero (services-hero.mjs)
-  'commercial-hero.webp': '/_custom/site-fixes/commercial-hero.webp',
   // the still behind the home hero's video, shown until the video plays
   'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
   // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
@@ -263,7 +265,7 @@ export const SITE_FIXES_FILES = {
   'about-team-640.webp': '/_custom/site-fixes/about-team-640.webp',
   // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
   // (roofing-replacement-page.mjs), 480 and 960 px wide
-  ...Object.fromEntries(['asphalt', 'metal', 'flat', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
+  ...Object.fromEntries(['asphalt', 'metal', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
   // the photos of /siding/'s "Siding Replacements" and "Siding Types" cards (GRID_CARD_FIXES)
@@ -365,8 +367,6 @@ const SERVICE_CARDS = [
     text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
   { group: 'Solar', title: 'GAF Solar Shingles', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
-  { group: 'Commercial', title: 'Commercial Roofing', href: '/commercial-roofing/', img: ['/wp-content/uploads/2025/04/hero-commercial-roofing.jpg', 1400, 800],
-    text: 'Flat roof replacements for businesses, from inspection to final walkthrough.' },
   { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
     text: 'New siding that refreshes how your home looks and protects it from the weather.' },
   { group: 'Exterior', title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
@@ -376,8 +376,8 @@ const SERVICE_CARDS = [
 ];
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
-  text: 'Asphalt shingles, metal and flat roofs, in the colors and styles that suit your home.' };
-const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/storm-damage/', '/roofing/attic-insulation/', '/commercial-roofing/'].map(
+  text: 'Asphalt shingles, metal and solar shingles, in the colors and styles that suit your home.' };
+const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/storm-damage/', '/roofing/attic-insulation/'].map(
   (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)
 );
 // Service card grids: the photo for each card, by the page it links to (the same photos as
@@ -385,16 +385,12 @@ const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/storm-damag
 const photoFor = (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)?.img;
 const GRID_PHOTOS = {
   '/roofing/': photoFor('/storm-damage/'),
-  '/commercial-roofing/': photoFor('/commercial-roofing/'),
   '/solar/': photoFor('/solar/'),
   '/solar/solar-panel-installations/': photoFor('/solar/'),
   '/solar/gaf-solar-roof/': photoFor('/solar/gaf-solar-roof/'),
   '/siding/': photoFor('/siding/'),
   '/gutters/': photoFor('/gutters/'),
   '/gutters/gutter-guards/': photoFor('/gutters/gutter-guards/'),
-  // a flat roof Panda replaced (Patient First), and a metal commercial roof
-  '/commercial-roofing/roof-replacement/': ['/wp-content/uploads/2025/04/Patient-First.jpg', 1200, 675],
-  '/commercial-roofing/roof-types/': ['/wp-content/uploads/2025/04/Commerical-Roofing-Project.jpg', 1000, 667],
 };
 // Photos of siding for /siding/'s two cards, which showed drawn renderings (the siding page's
 // hero picture, and a roof types one). No siding job is among Panda's photos, so both are
@@ -413,23 +409,14 @@ const SIDING_TYPES_PHOTO = ['/_custom/site-fixes/siding-fiber-cement.webp', 1200
 const GRID_CARD_FIXES = [
   { page: '/gutters/', title: 'Gutter Installations', from: ['/powerwash/'], href: '/contact-us/', cta: 'Get a free estimate', img: photoFor('/gutters/') },
   { page: '/siding/', title: 'Siding Replacements', from: ['/window-replacement/'], href: '/contact-us/', cta: 'Get a free estimate', img: SIDING_INSTALL_PHOTO },
-  // The site restructure merged these cards' pages into the page they are on (MERGED_PAGES
-  // in config.mjs): they lead to the sections that took in what those pages said.
-  { page: '/commercial-roofing/', title: 'Roofing Replacement', from: ['/commercial-roofing/roof-replacement/', '/commerical-roofing/roof-replacement/', '/commercial-roofing/'], href: '#commercial-roof-replacement', cta: 'How we replace commercial roofs', img: GRID_PHOTOS['/commercial-roofing/roof-replacement/'] },
-  { page: '/commercial-roofing/', title: 'Roofing Options', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/commercial-roofing/'], href: '#commercial-roof-systems', cta: 'Compare roof systems', img: GRID_PHOTOS['/commercial-roofing/roof-types/'] },
   { page: '/siding/', title: 'Siding Types', from: ['/commercial-roofing/roof-types/', '/commerical-roofing/roof-types/', '/contact-us/'], href: '#siding-types', cta: 'Compare siding types', img: SIDING_TYPES_PHOTO },
 ];
 const gridCardFix = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.from.includes(href));
 // (a card an earlier build already mended: its fix, by the address it now has)
 const mendedGridCard = (pathname, title, href) => GRID_CARD_FIXES.find((f) => f.page === pathname && f.title === title && f.href === href);
-// Card text that changes, by page: /commercial-roofing/'s "Roofing Options" offered GAF
-// shingles, solar panels and solar shingles (the residential roofing card's words) on a page
-// about flat roofs; it names the flat roof systems the page compares below.
-const GRID_CARD_TEXTS = {
-  '/commercial-roofing/': {
-    'Roofing Options': 'As a GAF Master Elite contractor, we install TPO, EPDM, Mod Bit and PVC flat roof systems. Whether you want something affordable or the top of the range, there is a flat roof system for your building and budget.',
-  },
-};
+// Card text that changes, by page (none at the moment: the one there was, on
+// /commercial-roofing/, went with that page).
+const GRID_CARD_TEXTS = {};
 const gridCardText = (pathname, title, text) => GRID_CARD_TEXTS[pathname]?.[title] || text;
 const TYPOS = [
   [/\bExperts Your Can Trust\b/g, 'Experts You Can Trust'],
@@ -454,13 +441,11 @@ const TYPOS = [
 const REPAIRS_PAGE = /^(?:https?:\/\/(?:www\.)?pandaexteriors\.com)?\/roofing\/repairs\/?(?:[?#].*)?$/;
 const REPAIR_COPY = [
   // "About Our Team", on most pages
-  [/From roof repairs and solar panel installations to commercial roof replacement and maintenance/g, 'From full roof replacements and solar panel installations to commercial roofing'],
+  [/From roof repairs and solar panel installations to commercial roof replacement and maintenance/g, 'From full roof replacements to solar panel installations'],
   // home page, and the company description in every page's structured data
-  [/Whether you need expert roof repairs, a full commercial roof replacement/g, 'Whether you need a new roof for your home, a full commercial roof replacement'],
+  [/Whether you need expert roof repairs, a full commercial roof replacement, or/g, 'Whether you need a new roof for your home or'],
   [/From repairs to complete roof replacements, Panda Exteriors/g, 'From free roof inspections to complete roof replacements, Panda Exteriors'],
-  // /commercial-roofing/
-  [/delivers expert roof repairs, replacements, and solar shingle installations/g, 'delivers expert roof replacements and solar shingle installations'],
-  // /roofing/, /commercial-roofing/
+  // /roofing/
   [/comprehensive repair and replacement services/g, 'comprehensive replacement and installation services'],
   // /roofing/types/
   [/Whether you need a complete replacement or a(?:\s|&nbsp;)+roof repair for your East Coast home, you(['’]|&#8217;)ll benefit/g, 'When you replace the roof on your East Coast home, you$1ll benefit'],
@@ -476,6 +461,35 @@ const REPAIR_COPY = [
   // Roof Repairs card's text.
   [/In addition to new roof installations, our team has experience repairing issues with existing roofs\./g, 'Environmentally friendly insulation that keeps your home comfortable all year.'],
 ];
+
+// Commercial roofing is off the site (on request): wording that offered it, or Panda's work
+// for businesses, says what Panda does for homes. Matched in the page source like REPAIR_COPY
+// (the captured words, and the words an earlier build left), in visible text, the
+// structured data and the page title and share titles.
+const COMMERCIAL_COPY = [
+  // "About Our Team", on most pages
+  [/From full roof replacements and solar panel installations to commercial roofing/g, 'From full roof replacements to solar panel installations'],
+  // home page, and the company description in every page's structured data
+  [/Whether you need a new roof for your home, a full commercial roof replacement, or/g, 'Whether you need a new roof for your home or'],
+  // the home page's title (and its share titles and structured data)
+  [/Residential And Commercial Roofing Experts/g, 'Residential Roofing Experts'],
+  // home page
+  [/on every home or business we work\b/g, 'on every home we work'],
+  // /past-projects/
+  [/the homes and businesses we(['’]|&#8217;|&apos;)ve helped protect/g, 'the homes we$1ve helped protect'],
+  // blog posts
+  [/to keep your commercial roof at peak performance/g, 'to keep your roof at peak performance'],
+  [/The price of residential and commercial solar has dropped/g, 'The price of residential solar has dropped'],
+  [/roofing solutions for homes and businesses across the East Coast/g, 'roofing solutions for homes across the East Coast'],
+  [/solar roofs across homes and businesses in the Mid-Atlantic/g, 'solar roofs across homes in the Mid-Atlantic'],
+  [/Installing a solar system in your home or business is/g, 'Installing a solar system in your home is'],
+  [/the right one for your home or business\b/g, 'the right one for your home'],
+];
+// WP Rocket's lazy background rules for the commercial pages' blocks (.commercial,
+// .commercial-types, .commercial-replacement), left in every page's head after those blocks
+// went: in its stylesheet and in the list its script reads.
+const COMMERCIAL_BG_CSS = /\.commercial(?:-types|-replacement)?\{--wpr-bg-[0-9a-f-]+: url\('[^']*'\);\}/g;
+const COMMERCIAL_BG_JSON = /,\{"selector":"\.commercial(?:-types|-replacement)?","style":"(?:[^"\\]|\\.)*","hash":"[0-9a-f-]+","url":"(?:[^"\\]|\\.)*"\}/g;
 
 const ancestors = (n) => {
   const out = [];
@@ -733,6 +747,61 @@ function noRoofRepairs(doc, html, ed, changes) {
     }
   }
   if (removed || unwrapped) changes.push(`roof repairs: links to the removed page (${removed} removed with their menu or list entry, ${unwrapped} kept as plain words)`);
+}
+
+// Commercial roofing, off the site on request (the pages are in REMOVED_PAGES, config.mjs):
+// every link to a page removed on request that a built page still has (the header menu's
+// "Commercial", the footer's, service and project cards, blog cards, "Related service",
+// links in blog posts) goes with its menu entry or card; a link in running text keeps its
+// words. A full build takes those links out when it assembles the pages (03-build.mjs);
+// this does it for pages already built. The wording is edited with the typos
+// (COMMERCIAL_COPY).
+const removedHref = (href) => {
+  if (!href || href.startsWith('#') || /^(mailto|tel|javascript):/i.test(href)) return false;
+  try {
+    const u = new URL(href, SITE_ORIGIN);
+    if (u.hostname.replace(/^www\./, '') !== new URL(SITE_ORIGIN).hostname.replace(/^www\./, '')) return false;
+    if (/^\/(wp-json|wp-content|_custom|_external)\//.test(u.pathname)) return false;
+    const p = renamedPath(u.pathname);
+    return isRemovedPage(p) && !isRelinkedPage(p);
+  } catch {
+    return false;
+  }
+};
+// The card or list entry a link stands for (the link alone when it is in running text).
+const CARD_CLASSES = ['pfix-marquee__item', 'pfix-svc-grid__item', 'ppj-card', 'pfix-blog-card', 'ppx-card', 'pfix-rt-type', 'ppj-glance__row', 'service-card', 'pfix-sv-hero__service'];
+function noCommercial(doc, html, ed, changes) {
+  const free = (n) => n.sourceCodeLocation && !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
+  let removed = 0;
+  let unwrapped = 0;
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && removedHref(attr(c, 'href')))) {
+    if (!free(a)) continue;
+    const parent = a.parentNode;
+    const label = clean(textOf(a));
+    // A header menu entry or a footer link: its own box, holding nothing but the link.
+    const sole = parent && (parent.tagName === 'li' || hasClass(parent, 'li') || hasClass(parent, 'Link')) && clean(textOf(parent)) === label;
+    const card = [a, ...ancestors(a).slice(0, 4)].find((n) => CARD_CLASSES.some((c) => hasClass(n, c)));
+    const target = card || (sole ? parent : null) || (hasClass(a, 'swiper-slide') || hasClass(a, 'service-link-card') || hasClass(a, 'pfix-svc') ? a : null);
+    if (target) {
+      if (!free(target)) continue;
+      ed.outer(target, '');
+      removed++;
+    } else if (a.sourceCodeLocation.endTag) {
+      const { startTag, endTag } = a.sourceCodeLocation;
+      ed.replace(startTag.startOffset, startTag.endOffset, '');
+      ed.replace(endTag.startOffset, endTag.endOffset, '');
+      unwrapped++;
+    }
+  }
+  // The estimate forms' service list: "Commercial roofing".
+  let options = 0;
+  for (const o of findAll(doc, (c) => c.tagName === 'option' && /^commercial roofing$/i.test(clean(textOf(c))))) {
+    if (!free(o)) continue;
+    ed.outer(o, '');
+    options++;
+  }
+  if (removed || unwrapped) changes.push(`commercial: links to removed pages (${removed} removed with their menu entry or card, ${unwrapped} kept as plain words)`);
+  if (options) changes.push(`commercial: "Commercial roofing" taken out of ${options} estimate form service list(s)`);
 }
 
 // /about/, /podcast/ ("Customer-Oriented Exterior Remodeling Services in the Mid-Atlantic")
@@ -1582,6 +1651,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // Roof repairs: sections, cards and links (the wording is edited with the typos below).
   noRoofRepairs(doc, html, ed, changes);
+  // Commercial roofing: menu entries, cards and links to the removed pages (the wording too, below).
+  noCommercial(doc, html, ed, changes);
 
   // Typos in visible text (not in URLs or attributes), and wording that offered roof
   // repairs (REPAIR_COPY). Skips text already being edited.
@@ -1589,7 +1660,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   const skip = new Set(['script', 'style', 'noscript', 'textarea', 'template']);
   const fixedTypos = new Set();
   let repairCopy = 0;
-  const repairWording = (s) => REPAIR_COPY.reduce((x, [re, to]) => x.replace(re, (...m) => (repairCopy++, to.replace(/\$1/g, m[1] ?? ''))), s);
+  let commercialCopy = 0;
+  const commercialWording = (s) => COMMERCIAL_COPY.reduce((x, [re, to]) => x.replace(re, (...m) => (commercialCopy++, to.replace(/\$1/g, typeof m[1] === 'string' ? m[1] : ''))), s);
+  const repairWording = (s) => commercialWording(REPAIR_COPY.reduce((x, [re, to]) => x.replace(re, (...m) => (repairCopy++, to.replace(/\$1/g, m[1] ?? ''))), s));
   const walkText = (n) => {
     if (n.tagName && skip.has(n.tagName)) return;
     if (n.nodeName === '#text') {
@@ -1607,8 +1680,33 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   for (const s of findAll(doc, (c) => c.tagName === 'script' && attr(c, 'type') === 'application/ld+json')) {
     for (const t of s.childNodes || []) if (t.nodeName === '#text' && t.sourceCodeLocation && !ed.overlaps(t.sourceCodeLocation.startOffset, t.sourceCodeLocation.endOffset)) editText(ed, html, t, repairWording);
   }
+  // The page title and share titles.
+  for (const t of findAll(doc, (c) => c.tagName === 'title')) {
+    for (const x of t.childNodes || []) if (x.nodeName === '#text' && x.sourceCodeLocation && !ed.overlaps(x.sourceCodeLocation.startOffset, x.sourceCodeLocation.endOffset)) editText(ed, html, x, commercialWording);
+  }
+  for (const m of findAll(doc, (c) => c.tagName === 'meta' && /^(og:title|twitter:title|og:description|twitter:description|description)$/.test(attr(c, 'property') || attr(c, 'name') || ''))) {
+    const was = attr(m, 'content') || '';
+    const now = commercialWording(was);
+    if (now !== was && !ed.overlaps(m.sourceCodeLocation.startOffset, m.sourceCodeLocation.endOffset)) ed.retag(m, m.attrs.map((a) => (a.name === 'content' ? { name: 'content', value: now } : a)));
+  }
+  // WP Rocket's lazy background rules for the removed commercial blocks.
+  let bgRules = 0;
+  // (The stylesheet is in a noscript, which parses as plain text.)
+  for (const el of findAll(doc, (c) => c.tagName === 'style' || c.tagName === 'noscript' || (c.tagName === 'script' && !attr(c, 'src')))) {
+    for (const x of el.childNodes || []) {
+      const l = x.sourceCodeLocation;
+      if (x.nodeName !== '#text' || !l || ed.overlaps(l.startOffset, l.endOffset)) continue;
+      const src = html.slice(l.startOffset, l.endOffset);
+      const re = el.tagName === 'script' ? COMMERCIAL_BG_JSON : COMMERCIAL_BG_CSS;
+      if (!re.test(src)) continue;
+      re.lastIndex = 0;
+      ed.replace(l.startOffset, l.endOffset, src.replace(re, () => (bgRules++, '')));
+    }
+  }
   if (fixedTypos.size) changes.push(`typos: ${[...fixedTypos].join('; ')}`);
   if (repairCopy) changes.push(`roof repairs: ${repairCopy} sentence(s) that offered repairs reworded`);
+  if (commercialCopy) changes.push(`commercial: ${commercialCopy} sentence(s) or title(s) that offered commercial roofing reworded`);
+  if (bgRules) changes.push(`commercial: ${bgRules} lazy background rule(s) of the removed commercial blocks taken out`);
 
   return used;
 }

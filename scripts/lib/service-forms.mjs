@@ -5,7 +5,7 @@
 // Five9, and on page load asked every visitor for their location to fill in the address.
 //
 // Each card now has a form for its page (custom/site-fixes/service-forms.json): the siding,
-// gutter, solar, commercial and attic insulation pages get one for their service, the
+// gutter, solar and attic insulation pages get one for their service, the
 // roofing pages keep the roof replacement offer with a roofing form, and every other page
 // gets the general form ("default"), which asks what the visitor needs. Each has its own
 // heading, line and button, the contact fields and questions about the job, with the

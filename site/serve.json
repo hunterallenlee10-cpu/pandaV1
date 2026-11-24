@@ -2,17 +2,17 @@
   "redirects": [
     {
       "source": "/commerical-roofing",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/",
       "type": 301
     },
     {
       "source": "/commerical-roofing/roof-replacement",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/replacement/",
       "type": 301
     },
     {
       "source": "/commerical-roofing/roof-types",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/types/",
       "type": 301
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "source": "/commercial-capabilities",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/",
       "type": 301
     },
     {
@@ -102,12 +102,12 @@
     },
     {
       "source": "/commercial-roofing/roof-replacement",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/replacement/",
       "type": 301
     },
     {
       "source": "/commercial-roofing/roof-types",
-      "destination": "/commercial-roofing/",
+      "destination": "/roofing/types/",
       "type": 301
     },
     {
@@ -323,6 +323,46 @@
     {
       "source": "/blog/winter-roof-replacement",
       "destination": "/blog/yes-you-can-replace-your-roof-in-winter-pros-cons-and-how-panda-exteriors-makes-it-work/",
+      "type": 301
+    },
+    {
+      "source": "/blog/commercial-roofing-industry-and-the-future",
+      "destination": "/blog/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/brookfield-properties",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/chapel-branch-apartments",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/expert-tpo-roofing",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/linear-accelerator-roof-replacement",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/blog/project/panda-exteriors-hq",
+      "destination": "/past-projects/",
+      "type": 301
+    },
+    {
+      "source": "/commercial-roofing",
+      "destination": "/roofing/",
+      "type": 301
+    },
+    {
+      "source": "/blog/often-overlooked-roofing-issues-and-items",
+      "destination": "/blog/",
       "type": 301
     }
   ],

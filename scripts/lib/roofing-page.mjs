@@ -1,7 +1,7 @@
 // The Roofing page (/roofing/): the sections its other modules don't cover, and "Our Process"
-// on /commercial-roofing/ too.
+// on /solar/ too.
 //
-//  - "Our Process" (/roofing/, /commercial-roofing/, the same section and words; /solar/, the
+//  - "Our Process" (/roofing/; /solar/, the
 //    same section with its own three solar steps): three blue boxes with centred white text beside the heading and
 //    paragraph, over a faded Panda mascot (the section's background picture), with no way to
 //    act on it. It becomes a charcoal-green band like the other redesigned pages' "how it
@@ -22,7 +22,7 @@ import { hasClass, classes, esc, find } from './html-edit.mjs';
 export const ROOFING_PATH = '/roofing/';
 // The pages with "Our Process".
 const SOLAR_PATH = '/solar/';
-const PROCESS_PATHS = [ROOFING_PATH, '/commercial-roofing/', SOLAR_PATH];
+const PROCESS_PATHS = [ROOFING_PATH, SOLAR_PATH];
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
 const FORM_ID = 'pfix-lead-1';
@@ -44,7 +44,7 @@ const ICONS = {
 // The section's own words.
 const PROCESS = {
   title: 'Our Process',
-  text: 'At Panda Exteriors, our goal is to guide you through every step of your project, so you don’t have to stress during your renovations. From start to finish, our team will be there to ensure you get the best care for your East Coast home or business property.',
+  text: 'At Panda Exteriors, our goal is to guide you through every step of your project, so you don’t have to stress during your renovations. From start to finish, our team will be there to ensure you get the best care for your East Coast home.',
   steps: [
     ['Free Initial Consultation & Quote', 'To kick things off, our team will come assess your property and come up with a plan of action that works within your schedule and budget. We’ll also provide a free, accurate quote, so you know exactly what to expect from the very start!'],
     ['Efficient Exterior Services', 'No matter what part of your exterior needs work, you can count on our team to deliver. We offer comprehensive replacement and installation services for all areas of your exterior, so you can have peace of mind knowing your property is in good hands regardless of the project.'],
@@ -92,7 +92,7 @@ function processHtml(p = PROCESS) {
   );
 }
 
-/** /roofing/, /commercial-roofing/, /solar/: "Our Process"; /roofing/: the "About Our Team" block's colors. */
+/** /roofing/, /solar/: "Our Process"; /roofing/: the "About Our Team" block's colors. */
 export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, changes = []) {
   if (!PROCESS_PATHS.includes(pathname)) return false;
   const free = (n) => !ed.overlaps(n.sourceCodeLocation.startOffset, n.sourceCodeLocation.endOffset);
@@ -105,7 +105,7 @@ export function collectRoofingPage(doc, html, ed, { pathname = '' } = {}, change
     const { startOffset, endOffset } = process.sourceCodeLocation;
     if (html.slice(startOffset, endOffset) !== block) {
       ed.outer(process, block);
-      changes.push(`${{ [ROOFING_PATH]: 'roofing', [SOLAR_PATH]: 'solar' }[pathname] || 'commercial roofing'} page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)`);
+      changes.push(`${{ [ROOFING_PATH]: 'roofing', [SOLAR_PATH]: 'solar' }[pathname]} page process: the heading, paragraph, estimate and call buttons beside the three steps as a numbered timeline, on charcoal green (was blue boxes over a faded mascot)`);
     }
     done = true;
   }

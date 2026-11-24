@@ -12,7 +12,7 @@
 //    words, as the icon cards /roofing/'s signs use (service-pages.mjs's renderSigns), with
 //    three more from /roofing/ (age, granules, sagging) and Panda's guides on the blog;
 //  - "Roofing Styles for Your New Roof": the band's paragraph on GAF's roofing styles over the
-//    four roof types as small cards (their words from roofing-types-page.mjs), each with a
+//    three roof types as small cards (their words from roofing-types-page.mjs), each with a
 //    photo of that kind of roof (roofing-types-page.mjs's ROOF_PHOTOS) and leading to its card
 //    on /roofing/types/;
 //  - after the testimonials, the offers band the other service pages have (offers-page.mjs).
@@ -69,7 +69,7 @@ const SIGNS = {
   ],
 };
 
-// The band's paragraph on GAF's roofing styles, over the four roof types.
+// The band's paragraph on GAF's roofing styles, over the three roof types.
 const STYLES = {
   eyebrow: 'Choose your new roof',
   title: 'Roofing Styles for Your New Roof',
@@ -136,7 +136,7 @@ export function collectRoofingReplacementPage(doc, html, ed, { pathname = '', si
     const { startOffset, endOffset } = old.sourceCodeLocation;
     if (html.slice(startOffset, endOffset) !== block) {
       ed.outer(old, block);
-      changes.push('roof replacement page: six signs as icon cards (was three white cards on lime) and the four roof styles');
+      changes.push('roof replacement page: six signs as icon cards (was three white cards on lime) and the three roof styles');
     }
     done = true;
   }

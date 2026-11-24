@@ -12,8 +12,8 @@ pass rate) are in [`docs/capture-summary.md`](docs/capture-summary.md).
 
 The copy contains what a visitor can reach by clicking through the site. As captured that was **172 pages** (39 main
 pages, 114 blog posts and listing pages, and the 19 project pages the site links to); after the
-[site restructure](#site-restructure) it is **125 pages** (40 main pages, among them 11 new ones and the site check;
-64 blog posts with their 11 listing pages; and 10 project pages), plus the 404 page, feed,
+[site restructure](#site-restructure) and the removal of everything about commercial roofing it is **117 pages** (39
+main pages, among them 11 new ones and the site check; 62 blog posts with their 11 listing pages; and 5 project pages), plus the 404 page, feed,
 sitemaps, icons and every file those pages use. Deliberately left out (listed in `docs/url-exclusions.csv`):
 
 - **17 city sections** (`/baltimore-md/`, `/charlotte-nc/`, … `/wilmington-de/`). Each is a separate WordPress
@@ -59,8 +59,25 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
 - **Commercial Capabilities**, removed on request. `/commercial-capabilities/` (titled "Commercial Roofing Services",
   like `/commercial-roofing/`) showed the case-study map picture; nothing linked to it (it was listed in the sitemap).
   It is left out the same way (its sitemap entry and the 19 files only it used, mostly sizes of that picture, go too),
-  and its old address redirects to `/commercial-roofing/`. Its fix (links over the picture's QR codes, listed under
+  and its old address redirects to `/roofing/`. Its fix (links over the picture's QR codes, listed under
   it) went with it, so a build that keeps it shows the page as the live site does.
+- **Commercial roofing**, removed on request (the owner wants nothing about it on the site). Left out the same way:
+  `/commercial-roofing/` (and the two pages merged into it, `/commercial-roofing/roof-types/` and
+  `/commercial-roofing/roof-replacement/`), the blog posts "Commercial Roofing Industry and the Future" and "Often
+  Overlooked Roofing Issues and Items" (about commercial roofs), and the five commercial and multi-family project pages
+  (Linear Accelerator Roof Replacement, Brookfield Properties, Expert TPO Roofing, Panda Exteriors HQ, Chapel Branch
+  Apartments). Their old addresses redirect to `/roofing/` (the two sub-pages to `/roofing/types/` and
+  `/roofing/replacement/`), `/blog/` and `/past-projects/`; the live site's `/commerical-roofing/` addresses follow.
+  The rest is handled by the site fixes (`noCommercial` and `COMMERCIAL_COPY` in `scripts/lib/site-fixes.mjs`): the
+  header menu's and footer's "Commercial", the Commercial service card, the `/services/` hero chip, the Commercial tab
+  of the project galleries and its photos, the FAQ's commercial roofing questions, "Commercial roofing" in the estimate
+  forms, the office pages' services, the "Commercial & multi-family" project filter, and the Flat Roofing type
+  (offered "for commercial-style roofs": TPO, EPDM, Mod Bit, PVC) on `/roofing/types/` and `/roofing/replacement/`,
+  which now compare three roof types. Wording that offered commercial roofing or work for businesses (the "About Our
+  Team" paragraph, the home page and its title, the company description in every page's structured data, a few
+  blog sentences) now says what Panda does for homes. `/past-projects/` shows five favorites (the two other home
+  projects in place of the three commercial ones). A customer review about a flat roof on a historic home, and the
+  rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
   now lead to the Refer & Earn page about the Panda Exteriors app (`/referrals/`), like the menu on every other page
