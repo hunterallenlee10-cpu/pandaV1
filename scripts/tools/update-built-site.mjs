@@ -17,7 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { PATHS, ROOT, SITE_ORIGIN, SITE_FIXES, SMOOTH_SCROLL, MEDIA_PAGE, SITE_MAP_PAGE } from '../lib/config.mjs';
 import { applyCustomizations, SMOOTH_SCROLL_DIR, SMOOTH_SCROLL_FILES } from '../lib/customize.mjs';
-import { SITE_FIXES_DIR, SITE_FIXES_FILES } from '../lib/site-fixes.mjs';
+import { SITE_FIXES_DIR, SITE_FIXES_FILES, REPLACED_FILES } from '../lib/site-fixes.mjs';
 import { REVIEWS_DIR, REVIEWS_FILES } from '../lib/reviews.mjs';
 import { REVIEW_WALL_FILES, REVIEW_WALL_DATA, reviewWallJson } from '../lib/review-wall.mjs';
 import { PROJECT_GALLERY_DIR, PROJECT_GALLERY_FILES } from '../lib/project-gallery.mjs';
@@ -199,10 +199,11 @@ if (mediaUsed) {
   }
 }
 
-// The files only the removed pages used, their sitemap entries, and their redirects.
+// The files only the removed pages used (and pictures a site fix replaced, once nothing uses
+// them: REPLACED_FILES), their sitemap entries, and their redirects.
 if (!only) {
-  const pruned = pruneUnusedFiles(SITE, removedPages.used, { dryRun });
-  if (pruned.files.length) console.log(`${dryRun ? 'would remove' : 'removed'} ${pruned.files.length} file(s) only removed pages used (${fmtBytes(pruned.bytes)})`);
+  const pruned = pruneUnusedFiles(SITE, new Set([...removedPages.used, ...(SITE_FIXES ? REPLACED_FILES : [])]), { dryRun });
+  if (pruned.files.length) console.log(`${dryRun ? 'would remove' : 'removed'} ${pruned.files.length} file(s) only removed pages used or a site fix replaced (${fmtBytes(pruned.bytes)})`);
   const sitemaps = editSitemaps(SITE, SITE_ORIGIN, newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), { dryRun });
   if (sitemaps.length) console.log(`${dryRun ? 'would edit' : 'edited'} ${sitemaps.join(', ')}`);
   const redirectFiles = writeRedirectFiles(SITE, { dryRun });

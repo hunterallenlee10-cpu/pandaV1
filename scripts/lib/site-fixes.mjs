@@ -30,14 +30,15 @@
 //  - Home hero video: YouTube's own loading screen (spinner, play button, logo, or "Video
 //    unavailable" where autoplay is blocked) showed behind the heading, and the 90% black
 //    overlay sat under the video, so bright frames washed out the white text. A still of
-//    a Panda job (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
+//    a home Panda re-roofed (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
 //    fades in over it only once it is playing (site-fixes.js), and the overlay is above
 //    the video, darkest behind the heading. Phones (no video) get the still too.
 //  - "What Makes Panda the Best?" (home page): three floating cards with orange circle
 //    pictures of two sizes and orange headings broken at different points (so the rules
-//    and text under them sat at three heights) become three ruled rows, each claim beside
-//    its proof: a photo of the crew at work, the six partner brands' logos, and the three
-//    GAF badges.
+//    and text under them sat at three heights) become a stone panel with the heading and
+//    the numbers (jobs, Google rating, states, offices) over three cards, each claim with
+//    its proof: the crew re-roofing a home (with "Meet our team"), the three GAF badges on
+//    charcoal green, and the six partner brands' logos.
 //  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
 //    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
 //    (1140 px above), so they ran off the right of the screen (the blog text was cut
@@ -212,6 +213,7 @@ import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
+import { collectCareersPage, CAREERS_FILES } from './careers-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
@@ -263,6 +265,8 @@ export const SITE_FIXES_FILES = {
   // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
   'home-hero-poster-800.webp': '/_custom/site-fixes/home-hero-poster-800.webp',
   'about-team-640.webp': '/_custom/site-fixes/about-team-640.webp',
+  // the closer photo in the About page's mission collage (about-page.mjs)
+  'about-crew.webp': '/_custom/site-fixes/about-crew.webp',
   // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
   // (roofing-replacement-page.mjs), 480 and 960 px wide
   ...Object.fromEntries(['asphalt', 'metal', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
@@ -273,9 +277,8 @@ export const SITE_FIXES_FILES = {
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
   // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
   'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
-  // two photos /careers/ loaded as 1.4 MB and 0.8 MB camera files (launch.mjs)
-  'careers-install.webp': '/_custom/site-fixes/careers-install.webp',
-  'careers-project.webp': '/_custom/site-fixes/careers-project.webp',
+  // /careers/'s hero (two sizes) and "Our Three Pillars" photo (careers-page.mjs)
+  ...CAREERS_FILES,
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
@@ -323,15 +326,19 @@ const googleRating = () => Number(loadReviewWall().place.rating).toFixed(1);
 
 // /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
-// The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
-const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
+// The still behind the home hero's video: a drone photo of a finished Panda job, a two-story home
+// with a new red tile roof (/wp-content/uploads/2025/07/Website-Map-7-May-22-2025-05_46am-iYjP.jpg,
+// 1280 and 800 px). It was a drone photo of an office building and its parking lot (0999_D).
+const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1280, height: 720 };
 // "What Makes Panda the Best?" (home page): what each claim's row shows beside it, in the
-// order of the cards. Experience: the crew roofing a four-story building (/about/'s photo).
+// order of the cards. Experience: Panda's crew re-roofing a home (the /past-projects/ hero; the
+// photo of a four-story apartment build it had was commercial-type work).
 const BEST_PHOTO = {
-  src: '/_custom/site-fixes/about-team.webp',
-  width: 1100,
-  height: 825,
-  alt: 'A Panda Exteriors crew roofing a new four-story building, with a Panda truck parked in front',
+  src: '/_custom/past-projects/photos/hero-1920.jpg',
+  webp: [['/_custom/past-projects/photos/hero-960.webp', 960], ['/_custom/past-projects/photos/hero-1920.webp', 1920]],
+  width: 1920,
+  height: 1080,
+  alt: 'A Panda Exteriors crew re-roofing a two-story home with dormers',
 };
 // Products: the brands the card names, roofing first. Andersen, CertainTeed and James Hardie
 // are the logos already on the site (with .webp copies); GAF is from Wikimedia Commons, ProVia
@@ -351,6 +358,74 @@ const BEST_BADGES = [
   ['/wp-content/uploads/2025/04/brand-gaf-pledge.png', 'Diamond Pledge'],
   ['/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png', 'Metal Certified'],
 ];
+// "What Makes Panda the Best?" (home page): a soft panel with the heading and the numbers
+// (jobs, Google rating, states, offices, as on /about/), then three cards: the experience
+// claim over the crew at work (with "Meet our team"), the certification claim on charcoal
+// green with the GAF badges, and the products claim with the partner brands' logos.
+const WHY_ICONS = {
+  years: '<path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/>',
+  badge: '<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  box: '<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+};
+const whyIcon = (k) => `<span class="pfix-wpb__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${WHY_ICONS[k]}</svg></span>`;
+function whyPandaNumbers() {
+  try {
+    const { states, areas } = loadUsMap();
+    const jobs = states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
+    const rating = Number(loadReviewWall()?.place?.rating) || 0;
+    // (Washington, D.C. is on the map with the states; it is named, not counted as one.)
+    const dc = states.some((s) => s.code === 'DC');
+    return { jobs, states: states.length - (dc ? 1 : 0), dc, offices: areas.length, rating };
+  } catch {
+    return {};
+  }
+}
+// (divs with list roles: the site's stylesheet sets li { display: list-item !important } and
+// ul { margin-left: 20px !important; padding-left: 20px !important }.)
+function whyPandaBlock(heading, items, siteDir) {
+  const n = whyPandaNumbers();
+  const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
+  const img = (src, attrs) =>
+    `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
+  const stat = (value, label) => `<div role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
+  const stats = [
+    n.jobs ? stat(`${fmt(n.jobs)}`, 'Jobs completed') : '',
+    n.rating ? stat(`${esc(n.rating.toFixed(1))}<i aria-hidden="true">★</i>`, 'Google rating') : '',
+    n.states ? stat(n.states, n.dc ? 'States + D.C.' : 'States served') : '',
+    n.offices ? stat(n.offices, 'Local offices') : '',
+  ].join('');
+  const [exp, products, certified] = items;
+  const claim = (it, icon) =>
+    `${whyIcon(icon)}<h4 class="pfix-wpb__title">${esc(it.title)}</h4><p class="pfix-wpb__text">${esc(it.text)}</p>`;
+  return (
+    `<section class="pfix-wpb" aria-labelledby="pfix-wpb-title">` +
+    `<div class="pfix-wpb__head"><div class="pfix-wpb__intro"><p class="pfix-wpb__eyebrow">Why homeowners choose Panda</p>` +
+    `<h3 class="pfix-wpb__heading" id="pfix-wpb-title">${esc(heading)}</h3></div>` +
+    (stats ? `<div class="pfix-wpb__stats" role="list" aria-label="Panda Exteriors in numbers">${stats}</div>` : '') +
+    `</div>` +
+    `<div class="pfix-wpb__grid" role="list">` +
+    // Experience: the crew at work, the claim on a dark fade over the photo.
+    `<article class="pfix-wpb__card pfix-wpb__card--photo" role="listitem" data-claim="0">` +
+    `<picture class="pfix-wpb__photo"><source type="image/webp" srcset="${BEST_PHOTO.webp.map(([s, w]) => `${s} ${w}w`).join(', ')}" sizes="(min-width: 992px) 640px, 100vw">` +
+    `<img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></picture>` +
+    `<div class="pfix-wpb__body">${claim(exp, 'years')}` +
+    `<a class="pfix-wpb__link" href="/about/">Meet our team<span aria-hidden="true"> →</span></a></div></article>` +
+    // Certified: the GAF badges on charcoal green.
+    `<article class="pfix-wpb__card pfix-wpb__card--dark" role="listitem" data-claim="2"><div class="pfix-wpb__body">${claim(certified, 'badge')}</div>` +
+    `<div class="pfix-wpb__badges" role="list" aria-label="GAF certifications">` +
+    BEST_BADGES.map(([src, label]) => `<div role="listitem">${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></div>`).join('') +
+    `</div></article>` +
+    // Products: the partner brands' logos.
+    `<article class="pfix-wpb__card pfix-wpb__card--brands" role="listitem" data-claim="1"><div class="pfix-wpb__body">${claim(products, 'box')}</div>` +
+    `<div class="pfix-wpb__logos" role="list" aria-label="Brands we partner with">` +
+    BEST_BRANDS.map(
+      (b) =>
+        `<div role="listitem" style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</div>`
+    ).join('') +
+    `</div></article>` +
+    `</div></section>`
+  );
+}
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
 const SA_MAP_ID = 'service-map';
@@ -374,6 +449,37 @@ const SERVICE_CARDS = [
   { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
     text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
 ];
+// The home page's "Our Services": the four main services, with the words and photos of
+// their cards on /services/ (one row of four on wide screens, two by two below).
+const HOME_SERVICE_CARDS = [
+  { title: 'Roofing', href: '/roofing/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+    text: 'We offer full-service roofing care to ensure you get the protection you need for your home as quickly as possible.' },
+  { title: 'Solar', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+    text: 'At Panda Exteriors, we work with top brands to offer quality solar panels that will harness energy from the sun to power your home throughout the year.' },
+  { title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
+    text: 'Our contractors have decades of experience with siding installations across the East Coast, so your home looks and works better than ever.' },
+  { title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
+    text: 'Our gutter products are designed to blend in with your home exterior, so you don’t have to worry about them detracting from your curb appeal.' },
+];
+// The pictures of the old home cards (the service's name drawn in), unused once the section is
+// rebuilt: npm run update:site deletes them when no page uses them any more.
+export const REPLACED_FILES = [
+  ...['Roofing-Home.png', 'Solar-Roofing-Home.png', 'Commercial-Roofing-Home.png'].flatMap((f) => [
+    `wp-content/uploads/2025/04/${f}`,
+    `wp-content/uploads/2025/04/${f}.webp`,
+  ]),
+  // and the photos of commercial work the About and Careers pages showed (about-page.mjs,
+  // careers-page.mjs): crews on a flat commercial roof, the lighter copies of two careers photos
+  // (a flat roof beside a church, and the new homes now in the careers hero)
+  ...['0814d5a8-0065-43ba-9b1f-06520da4e690-3.png', '0814d5a8-0065-43ba-9b1f-06520da4e690-3-300x184.png'].flatMap((f) => [
+    `wp-content/uploads/2025/03/${f}`,
+    `wp-content/uploads/2025/03/${f}.webp`,
+  ]),
+  '_custom/site-fixes/careers-install.webp',
+  '_custom/site-fixes/careers-project.webp',
+];
+const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
+const HOME_SERVICES_INTRO = 'Upgrade your entire home exterior with the help of our trained and certified roofing, solar, siding and gutter crews!';
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
   text: 'Asphalt shingles, metal and solar shingles, in the colors and styles that suit your home.' };
@@ -924,6 +1030,62 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
   return done;
 }
 
+// The home page's "Our Services" ("East Coast Roofing and Solar Installation"): three cards
+// with the service's name drawn into the picture (Roofing, Solar Roofing, Commercial
+// Roofing). With Commercial off the site, two of them sat in a row of three with a gap
+// where the third was. It becomes the site's photo cards for the four main services
+// (HOME_SERVICE_CARDS), in the section's orange, with "See all our services" under them,
+// and the heading and intro name all four. A page built before gets its cards rendered
+// again from the list.
+function homeServices(doc, html, ed, { pathname, siteDir }, changes) {
+  if (pathname !== '/') return false;
+  const section = find(doc, (c) => hasClass(c, 'Services-section'));
+  if (!section || ed.overlaps(section.sourceCodeLocation.startOffset, section.sourceCodeLocation.endOffset)) return false;
+  const exists = fileExists(siteDir);
+  const cards = HOME_SERVICE_CARDS.filter((s) => exists(s.img[0]));
+  if (cards.length < HOME_SERVICE_CARDS.length) {
+    console.warn(`site-fixes: ${pathname}: no photo for ${HOME_SERVICE_CARDS.filter((s) => !cards.includes(s)).map((s) => s.title).join(', ')}, services left as is`);
+    return false;
+  }
+  const out =
+    `<div class="pfix-svc-grid pfix-svc-grid--home" role="list">` +
+    cards.map((s) => `<div class="pfix-svc-grid__item" role="listitem">${serviceCard(s, exists)}</div>`).join('') +
+    `</div>` +
+    `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`;
+  const old = find(section, (c) => hasClass(c, 'Roofing-crads'));
+  const built = find(section, (c) => hasClass(c, 'pfix-svc-grid'));
+  let done = false;
+  if (old) {
+    ed.outer(old, out);
+    done = true;
+  } else if (built) {
+    const all = find(section, (c) => hasClass(c, 'pfix-services__all'));
+    const from = built.sourceCodeLocation.startOffset;
+    const to = (all || built).sourceCodeLocation.endOffset;
+    if (html.slice(from, to) !== out) {
+      ed.replace(from, to, out);
+      done = true;
+    }
+  } else return false;
+  if (!hasClass(section, 'pfix-services')) ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm', 'pfix-home-services']));
+  const strong = find(section, (c) => c.tagName === 'strong' && hasClass(c, 'primary-color'));
+  if (strong && clean(textOf(strong)) !== HOME_SERVICES_HEADING) {
+    ed.inner(strong, esc(HOME_SERVICES_HEADING));
+    done = true;
+  }
+  const intro = find(section, (c) => c.tagName === 'p' && hasClass(c, 'para-2') && !ancestors(c).some((a) => hasClass(a, 'pfix-svc-grid') || hasClass(a, 'Roofing-crads')));
+  if (intro && clean(textOf(intro)) !== HOME_SERVICES_INTRO) {
+    ed.inner(intro, esc(HOME_SERVICES_INTRO));
+    done = true;
+  }
+  if (done)
+    changes.push(
+      `home services: ${cards.length} photo cards (${cards.map((s) => s.title).join(', ')}) with "See all our services", ` +
+        `heading "${HOME_SERVICES_HEADING}" (were 2 picture cards in a row of 3 with Commercial gone)`
+    );
+  return done;
+}
+
 /** Collects the fixes for one page into the editor. Returns which fix assets the page needs. */
 export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }, changes) {
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
@@ -1193,49 +1355,41 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // would otherwise retag the row it replaces.
   // (The service pages' card grids share the class: .Service-cards, left to their own fixes.)
   const plainText = (n) => (n ? clean(textOf(n)).replace(/\s+/g, ' ').trim() : '');
-  for (const row of findAll(doc, (c) => (hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards')) || hasClass(c, 'pfix-best'))) {
-    const built = hasClass(row, 'pfix-best');
-    const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, built ? 'pfix-best__item' : 'team-card'));
-    const items = cards.map((card) => ({
-      title: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__title' : 'team-heading'))),
-      text: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__text' : 'team-para'))).replace(/\s*These brands include .+$/, ''),
-    }));
-    if (items.length !== 3 || items.some((i) => !i.title || !i.text)) continue;
-    if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
-    const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
-    const img = (src, attrs) =>
-      `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
-    const evidence = [
-      `<figure class="pfix-proof__photo"><img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></figure>`,
-      `<ul class="pfix-proof__grid pfix-proof__logos" aria-label="Brands we partner with">` +
-        BEST_BRANDS.map((b) => `<li style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</li>`).join('') +
-        `</ul>`,
-      `<ul class="pfix-proof__grid pfix-proof__badges" aria-label="GAF certifications">` +
-        BEST_BADGES.map(([src, label]) => `<li>${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></li>`).join('') +
-        `</ul>`,
-    ];
-    const label = built
-      ? null
-      : row.parentNode && (row.parentNode.childNodes || []).filter((k) => k.tagName).find((k, i, all) => all[i + 1] === row && hasClass(k, 'para-bold'));
-    const labelled = built || !!label;
-    ed.outer(
-      row,
-      `<div class="pfix-proof" role="list"${labelled ? ' aria-labelledby="pfix-best-label"' : ''}>` +
-        items
-          .map(
-            ({ title, text }, i) =>
-              `<div class="pfix-proof__row pfix-proof__row--${['photo', 'logos', 'badges'][i]}" role="listitem">` +
-              `<div class="pfix-proof__claim"><h4 class="pfix-proof__title">${esc(title)}</h4><p class="pfix-proof__text">${esc(text)}</p></div>` +
-              `<div class="pfix-proof__evidence">${evidence[i]}</div></div>`
-          )
-          .join('') +
-        `</div>`
-    );
-    if (label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
-      ed.outer(label, `<h3 class="pfix-best-label" id="pfix-best-label">${esc(plainText(label))}</h3>`);
+  // The three claims, from the page's cards or from an earlier version of this fix:
+  // [block, title class, text class, card class].
+  const WHY_SOURCES = [
+    [(c) => hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards'), 'team-heading', 'team-para', 'team-card'],
+    [(c) => hasClass(c, 'pfix-best'), 'pfix-best__title', 'pfix-best__text', 'pfix-best__item'],
+    [(c) => hasClass(c, 'pfix-proof'), 'pfix-proof__title', 'pfix-proof__text', 'pfix-proof__row'],
+    [(c) => c.tagName === 'section' && hasClass(c, 'pfix-wpb'), 'pfix-wpb__title', 'pfix-wpb__text', 'pfix-wpb__card'],
+  ];
+  for (const [is, titleCls, textCls, cardCls] of WHY_SOURCES) {
+    for (const row of findAll(doc, is)) {
+      const cards = findAll(row, (k) => k !== row && hasClass(k, cardCls)).sort((a, b) => Number(attr(a, 'data-claim') || 0) - Number(attr(b, 'data-claim') || 0));
+      const items = cards.map((card) => ({
+        title: plainText(find(card, (c) => hasClass(c, titleCls))),
+        text: plainText(find(card, (c) => hasClass(c, textCls))).replace(/\s*These brands include .+$/, ''),
+      }));
+      if (items.length !== 3 || items.some((i) => !i.title || !i.text)) continue;
+      if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
+      // The line above the cards ("What Makes Panda the Best?"), or the heading an earlier
+      // version made of it; it moves into the block.
+      const siblings = row.parentNode ? (row.parentNode.childNodes || []).filter((k) => k.tagName) : [];
+      const before = siblings[siblings.indexOf(row) - 1];
+      const label = before && (hasClass(before, 'para-bold') || hasClass(before, 'pfix-best-label')) ? before : null;
+      const heading =
+        plainText(find(row, (c) => hasClass(c, 'pfix-wpb__heading'))) || (label && plainText(label)) || 'What Makes Panda the Best?';
+      const out = whyPandaBlock(heading, items, siteDir);
+      const loc = row.sourceCodeLocation;
+      const from = label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset) ? label.sourceCodeLocation.startOffset : loc.startOffset;
+      if (html.slice(from, loc.endOffset) === out) continue;
+      ed.replace(from, loc.endOffset, out);
+      changes.push(
+        'why panda: a panel with the numbers (jobs, rating, states, offices) and three cards: the crew re-roofing a home, ' +
+          'the GAF badges on charcoal green and the partner brands (was three ruled rows with a photo of an apartment build)'
+      );
+      used.css = true;
     }
-    changes.push('why panda: each claim beside its proof (the crew at work, the partner brands’ logos, the GAF badges) in three ruled rows (was three floating cards with orange circles and headings)');
-    used.css = true;
   }
 
   // Blocks with a fixed desktop width wider than their column at 1120–1199 px (1143 px
@@ -1593,6 +1747,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /about/: the hero introduces the company and "Our Mission" is a headline, three points
   // and a photo collage (about-page.mjs).
   if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /careers/: home photos in place of commercial work, and the photo strip as a mosaic of
+  // Panda's home projects (careers-page.mjs).
+  if (collectCareersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /faqs/: the hero gets a question search and topic chips, and the questions become
   // accordions grouped by topic beside a topic menu (faq-page.mjs).
   if (collectFaqPage(doc, html, ed, { pathname, siteOrigin }, changes)) {
@@ -1614,6 +1771,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  // The home page's "Our Services": the four main services as photo cards.
+  if (homeServices(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /siding/, /gutters/, /roofing/: what the job involves, signs it's time, how it works,
   // questions.
   if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;

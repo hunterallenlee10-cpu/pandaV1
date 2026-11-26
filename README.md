@@ -76,7 +76,32 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   which now compare three roof types. Wording that offered commercial roofing or work for businesses (the "About Our
   Team" paragraph, the home page and its title, the company description in every page's structured data, a few
   blog sentences) now says what Panda does for homes. `/past-projects/` shows five favorites (the two other home
-  projects in place of the three commercial ones). A customer review about a flat roof on a historic home, and the
+  projects in place of the three commercial ones). Card grids that a missing card left with a gap are laid out
+  again: the home page's "Our Services" (two picture cards in a row of three) becomes photo cards for Roofing,
+  Solar, Siding and Gutters, one row of four with "See all our services", under the heading "Roofing, Solar, Siding
+  and Gutters" (`homeServices`, `HOME_SERVICE_CARDS`); a service-card grid of four is one row of four, and of five
+  (`/services/`) two large cards over three (counted in CSS, so a grid adapts when a card comes or goes); and the
+  seven offices on `/service-areas/` centre a short last row. On `/past-projects/`, "Browse all of our projects"
+  listed the same five homes as the favorites above it, so it is left out while the favorites show every project
+  (`archiveShown` in `scripts/lib/project-pages.mjs`), and "See all past projects" on the project and service pages
+  leads to the favorites (`#ppx`). The old home cards' pictures (`Roofing-Home.png`, `Solar-Roofing-Home.png`,
+  `Commercial-Roofing-Home.png` and their `.webp` copies) are deleted by `npm run update:site` once no page uses
+  them (`REPLACED_FILES`). The home page's "What Makes Panda the Best?" (three ruled rows, the first beside a photo of
+  a four-story apartment build) is a stone panel with the heading and the numbers the About page shows (jobs, Google
+  rating, states + D.C., offices; from the US map and the review data), over three cards: the crew re-roofing a home
+  (the `/past-projects/` hero photo, with "Meet our team"), the GAF badges on charcoal green and the partner brands'
+  logos (`whyPandaBlock`, `.pfix-wpb`).
+  Photos of commercial work are swapped for homes: the About page's mission collage (a four-story apartment build,
+  and crews on a flat commercial roof) shows a Panda crew re-roofing a two-story home in red tile and a closer look
+  at them on that roof (`about-team.webp`, `about-crew.webp`), and the still behind the home hero's video (an office
+  building and its parking lot) shows that home finished (`home-hero-poster.webp`); all three are crops of drone
+  photos of the Spanish tile project already on the site.
+  `/careers/` the same way (`scripts/lib/careers-page.mjs`): its hero (a drone photo of an office complex and its
+  parking lot) shows Panda crews shingling new homes with a crane lifting the GAF bundles, "Our Three Pillars" (crews
+  on a flat commercial roof) a Panda roofer in a Panda hoodie, and "Real Work. Real Results." (eight photos, five of
+  them camera files a lazy loader often never showed, leaving an empty band, and some of commercial work) is a mosaic
+  of Panda's home projects: one large photo of a crew re-roofing a home and eight smaller ones, each a link to its
+  project page with its name. The photos and copies only those sections used are deleted (`REPLACED_FILES`). A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
@@ -544,7 +569,7 @@ Most of these problems are on the live site too.
   previews too: "Roof Replacement (Project 11425)", "Colonial Home Roof Replacement", "Ranch Home Roof Replacement");
   pages with words keep them (Brookfield's proposal wording is now in the past tense, and the solar page no longer
   promises the 30% federal tax credit). Every project is now reachable in context: `/past-projects/` lists all of them
-  under the favorites ("Browse all of our projects", with Homes / Commercial & multi-family / Solar filters), and the
+  under the favorites ("Browse all of our projects", with type filters, while it lists any project the favorites don't), and the
   service pages each belongs to show it in a "Recent projects" row above their testimonials (`/roofing/residential/`,
   `/roofing/replacement/`, `/roofing/types/`, the three commercial pages, `/solar/gaf-solar-roof/`,
   `/gutters/gutter-guards/`). The Site Map now finds no page that can't be reached by clicking. The five "Panda Ext-…"

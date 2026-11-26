@@ -600,6 +600,23 @@
 .ppj .ppj-cards--one {
   grid-template-columns: 1fr;
 }
+/* "Browse all of our projects": the cards keep their column width and a short last row
+   (five projects, or a filter's few) is centred instead of leaving a gap on the right. */
+@media (min-width: 640px) {
+  .ppj-archive .ppj-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ppj-archive .ppj-cards > .ppj-card {
+    flex: 0 0 calc((100% - 22px) / 2);
+  }
+}
+@media (min-width: 1024px) {
+  .ppj-archive .ppj-cards > .ppj-card {
+    flex-basis: calc((100% - 2 * 26px) / 3);
+  }
+}
 /* "More projects" and three-project rows: three across from tablets up. */
 @media (min-width: 760px) {
   .ppj .ppj-related .ppj-cards,
