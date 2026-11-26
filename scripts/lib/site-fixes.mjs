@@ -207,7 +207,7 @@ import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, ed
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero, collectFormBadges, loadReviewWall } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
-import { loadUsMap, JOBS_TOTAL, TOTAL_COMPLETED } from './us-map.mjs';
+import { loadUsMap, JOBS_TOTAL, TOTAL_COMPLETED, statesServed } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
@@ -374,8 +374,8 @@ function whyPandaNumbers() {
     const jobs = states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
     const rating = Number(loadReviewWall()?.place?.rating) || 0;
     // (Washington, D.C. is on the map with the states; it is named, not counted as one.)
-    const dc = states.some((s) => s.code === 'DC');
-    return { jobs, states: states.length - (dc ? 1 : 0), dc, offices: areas.length, rating };
+    const ss = statesServed(states);
+    return { jobs, states: ss.n, statesLabel: ss.label, offices: areas.length, rating };
   } catch {
     return {};
   }
@@ -391,7 +391,7 @@ function whyPandaBlock(heading, items, siteDir) {
   const stats = [
     n.jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '',
     n.rating ? stat(`${esc(n.rating.toFixed(1))}<i aria-hidden="true">★</i>`, 'Google rating') : '',
-    n.states ? stat(n.states, n.dc ? 'States + D.C.' : 'States served') : '',
+    n.states ? stat(n.states, n.statesLabel) : '',
     n.offices ? stat(n.offices, 'Local offices') : '',
   ].join('');
   const [exp, products, certified] = items;
@@ -626,10 +626,20 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   const h1 = text && find(text, (c) => c.tagName === 'h1');
   if (hero && hasClass(hero, 'pfix-sa-hero')) {
-    // Built already: the total jobs follow JOBS_TOTAL (us-map.mjs).
+    // Built already: the total jobs follow JOBS_TOTAL, and the states statesServed (us-map.mjs).
+    const ss = statesServed();
     for (const t of textNodes(hero)) {
-      if (!/We’ve completed [\d,]+ jobs in/.test(t.value)) continue;
-      if (editText(ed, html, t, (v) => v.replace(/We’ve completed [\d,]+ jobs in/, `We’ve completed ${JOBS_TOTAL.words} jobs in`))) changes.push(`service areas hero: "We’ve completed ${JOBS_TOTAL.words} jobs"`);
+      const re = /We’ve completed .+? jobs in .+? states(?: and Washington, D\.C)?\.+/;
+      if (!re.test(t.value)) continue;
+      const fix = (v) => v.replace(re, `We’ve completed ${JOBS_TOTAL.words} jobs in ${ss.sentence}`);
+      if (editText(ed, html, t, fix)) changes.push(`service areas hero: "We’ve completed ${JOBS_TOTAL.words} jobs in ${ss.words}"`);
+    }
+    for (const s of findAll(hero, (c) => hasClass(c, 'pfix-sa-hero__stat') && /^States\b/.test(clean(textOf(find(c, (x) => x.tagName === 'span') || { childNodes: [] }))))) {
+      const b = find(s, (x) => x.tagName === 'b');
+      const label = find(s, (x) => x.tagName === 'span');
+      if (b && clean(textOf(b)) !== String(ss.n)) ed.inner(b, String(ss.n));
+      if (label && clean(textOf(label)) !== ss.label) ed.inner(label, esc(ss.label));
+      if ((b && clean(textOf(b)) !== String(ss.n)) || (label && clean(textOf(label)) !== ss.label)) changes.push(`service areas hero: ${ss.n} ${ss.label}`);
     }
     for (const s of findAll(hero, (c) => hasClass(c, 'pfix-sa-hero__stat') && /^Jobs completed$/.test(clean(textOf(find(c, (x) => x.tagName === 'span') || { childNodes: [] }))))) {
       const b = find(s, (x) => x.tagName === 'b');
@@ -665,12 +675,12 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
     esc(`Local exterior remodelers with ${offices} offices on the East Coast`) +
     `</h1>` +
     `<p class="pfix-sa-hero__sub">${esc(
-      `${jobs ? `We’ve completed ${JOBS_TOTAL.words} jobs in ${states.length} states.` : `We work in ${states.length} states.`} ` +
+      `${jobs ? `We’ve completed ${JOBS_TOTAL.words} jobs in ${statesServed(states).sentence}` : `We work in ${statesServed(states).sentence}`} ` +
         `Our local offices are in ${andList(officeStates)}.`
     )}</p>` +
     `<div class="pfix-sa-hero__stats" role="list">` +
     (jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '') +
-    stat(states.length, 'States') +
+    stat(statesServed(states).n, statesServed(states).label) +
     stat(offices, 'Local offices') +
     stat(`${googleRating()}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
     `</div>` +
@@ -698,7 +708,7 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   if (headEnd >= 0) ed.replace(headEnd, headEnd, `<link rel="preload" as="image" type="image/webp" href="${SA_HERO_PHOTO}.webp" fetchpriority="high">`);
 
   changes.push(
-    `service areas hero: says where Panda works (${fmt(jobs)} jobs, ${states.length} states, ${offices} offices), ` +
+    `service areas hero: says where Panda works (${fmt(jobs)} jobs, ${statesServed(states).words}, ${offices} offices), ` +
       `with state chips that zoom the map, call and map buttons and a sharp drone photo (was a stretched roof strip)`
   );
   return true;

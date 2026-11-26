@@ -217,6 +217,15 @@ export function renderCompactMap({ theme = 'orange', uid = 'pmap' } = {}) {
   );
 }
 
+// How many states Panda serves: Washington, D.C. is on the map with the states, and is named,
+// not counted as one ("19 states and Washington, D.C.", a "19 / States + D.C." stat).
+export function statesServed(states = loadUsMap().states) {
+  const dc = states.some((s) => s.code === 'DC');
+  const n = states.length - (dc ? 1 : 0);
+  const words = dc ? `${n} states and Washington, D.C.` : `${n} states`;
+  // (sentence: the words ending a sentence, with one full stop)
+  return { n, dc, label: dc ? 'States + D.C.' : 'States served', words, sentence: words.endsWith('.') ? words : `${words}.` };
+}
 export const TOTAL_COMPLETED = `${JOBS_TOTAL.words[0].toUpperCase()}${JOBS_TOTAL.words.slice(1)} jobs completed`;
 /** Large interactive map: state buttons zoom the map and update the panel next to it. */
 export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/', ctaText = 'Get a free estimate' } = {}) {

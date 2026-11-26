@@ -107,7 +107,9 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   page's "What Makes Panda the Best?", the `/service-areas/` hero and the large map's panel (`/past-projects/`,
   `/service-areas/`), which says "Over 10,000 jobs completed" for all areas and goes back to it from a state. They
   were the sum of the map's per-state counts (9,900), which only covers jobs recorded by state; those counts stay on
-  the states and the office cards. A customer review about a flat roof on a historic home, and the
+  the states and the office cards. The states are counted the same way everywhere too (`statesServed` in `us-map.mjs`): Washington, D.C. is
+  named, not counted as a state, so the About page and the `/service-areas/` hero say "19 States + D.C." and "in 19
+  states and Washington, D.C." as the home page and the map already did (they said 20 states). A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
