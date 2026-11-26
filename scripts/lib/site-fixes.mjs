@@ -386,6 +386,12 @@ const HOME_SERVICE_CARDS = [
   { title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
     text: 'Our gutter products are designed to blend in with your home exterior, so you don’t have to worry about them detracting from your curb appeal.' },
 ];
+// The pictures of the old home cards (the service's name drawn in), unused once the section is
+// rebuilt: npm run update:site deletes them when no page uses them any more.
+export const REPLACED_FILES = ['Roofing-Home.png', 'Solar-Roofing-Home.png', 'Commercial-Roofing-Home.png'].flatMap((f) => [
+  `wp-content/uploads/2025/04/${f}`,
+  `wp-content/uploads/2025/04/${f}.webp`,
+]);
 const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
 const HOME_SERVICES_INTRO = 'Upgrade your entire home exterior with the help of our trained and certified roofing, solar, siding and gutter crews!';
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).

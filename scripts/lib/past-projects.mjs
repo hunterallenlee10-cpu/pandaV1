@@ -18,7 +18,7 @@
 //
 // Under the favorites, "Browse all of our projects" lists every project page with type
 // filters (renderArchive in project-pages.mjs, custom/projects/), so none is left linked
-// from the Site Map alone.
+// from the Site Map alone; it is left out while the favorites already show every project.
 //
 // Applied in two places, so a full build and an update of a built page agree:
 //  - customize.mjs, while it turns the page's Google Maps widget into the US map (full

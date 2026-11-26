@@ -228,7 +228,7 @@ function pageHtml(p, siteDir) {
   const related =
     `<section class="ppj-related" aria-labelledby="ppj-related-title"><div class="ppj__inner">` +
     `<div class="ppj-head ppj-head--row"><div><p class="ppj-eyebrow">${esc(d.related.eyebrow)}</p><h2 class="ppj-h2" id="ppj-related-title">${esc(d.related.title)}</h2></div>` +
-    `<a class="ppj-more" href="${esc(d.related.more[1])}">${esc(d.related.more[0])} ${ICONS.arrow}</a></div>` +
+    `<a class="ppj-more" href="${esc(d.related.more[1] === `/past-projects/#${d.archive.id}` ? allProjectsHref() : d.related.more[1])}">${esc(d.related.more[0])} ${ICONS.arrow}</a></div>` +
     `<div class="ppj-cards">${picks.map((x) => card(x, siteDir)).join('')}</div>` +
     `</div></section>`;
 
@@ -315,8 +315,22 @@ export function collectProjectPage(doc, html, ed, { pathname = '', siteDir } = {
 }
 
 // ----------------------------------------------------------------- /past-projects/
-/** "Browse all of our projects": every project, with type filters (projects.js). */
+// "Browse all of our projects" is shown only when it lists a project the favorites above it
+// don't (custom/past-projects/favorites.json): with the commercial projects gone, both listed
+// the same five homes. Without it, "See all past projects" leads to the favorites.
+const FAVORITES_FILE = path.join(ROOT, 'custom', 'past-projects', 'favorites.json');
+const slugOf = (href) => String(href).split('/').filter(Boolean).pop();
+export function archiveShown() {
+  const fav = fs.existsSync(FAVORITES_FILE) ? JSON.parse(fs.readFileSync(FAVORITES_FILE, 'utf8')).projects.map((p) => slugOf(p.href)) : [];
+  return projectsData().projects.some((p) => !fav.includes(p.slug));
+}
+/** Where "See all past projects" leads: the full list, or the favorites when there is none. */
+export const allProjectsHref = () => `/past-projects/#${archiveShown() ? projectsData().archive.id : 'ppx'}`;
+
+/** "Browse all of our projects": every project, with type filters (projects.js); '' when
+ *  the favorites already show every project. */
 export function renderArchive(siteDir) {
+  if (!archiveShown()) return '';
   const d = projectsData();
   const a = d.archive;
   const count = (key) => (key === 'all' ? d.projects.length : d.projects.filter((p) => p.group === key).length);
@@ -360,7 +374,7 @@ export function collectProjectStrip(doc, html, ed, { pathname = '', siteDir } = 
     `<section class="ppj ppj-strip" aria-labelledby="ppj-strip-title"><div class="ppj__inner">` +
     `<div class="ppj-head ppj-head--row"><div><p class="ppj-eyebrow">${esc(strip.eyebrow || 'Our work')}</p>` +
     `<h2 class="ppj-h2" id="ppj-strip-title">${esc(strip.title)}</h2>${strip.intro ? `<p class="ppj-head__intro">${esc(strip.intro)}</p>` : ''}</div>` +
-    `<a class="ppj-more" href="/past-projects/#${esc(projectsData().archive.id)}">See all past projects ${ICONS.arrow}</a></div>` +
+    `<a class="ppj-more" href="${esc(allProjectsHref())}">See all past projects ${ICONS.arrow}</a></div>` +
     `<div class="ppj-cards${one ? ' ppj-cards--one' : ` ppj-cards--${projects.length}`}">${projects.map((p) => card(p, siteDir, { feature: one })).join('')}</div>` +
     `</div></section>`;
   const current = find(doc, (c) => c.tagName === 'section' && hasClass(c, 'ppj-strip'));

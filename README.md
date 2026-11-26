@@ -80,9 +80,13 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   again: the home page's "Our Services" (two picture cards in a row of three) becomes photo cards for Roofing,
   Solar, Siding and Gutters, one row of four with "See all our services", under the heading "Roofing, Solar, Siding
   and Gutters" (`homeServices`, `HOME_SERVICE_CARDS`); a service-card grid of four is one row of four, and of five
-  (`/services/`) two large cards over three (counted in CSS, so a grid adapts when a card comes or goes); and
-  "Browse all of our projects" on `/past-projects/` and the seven offices on `/service-areas/` centre a short last
-  row. A customer review about a flat roof on a historic home, and the
+  (`/services/`) two large cards over three (counted in CSS, so a grid adapts when a card comes or goes); and the
+  seven offices on `/service-areas/` centre a short last row. On `/past-projects/`, "Browse all of our projects"
+  listed the same five homes as the favorites above it, so it is left out while the favorites show every project
+  (`archiveShown` in `scripts/lib/project-pages.mjs`), and "See all past projects" on the project and service pages
+  leads to the favorites (`#ppx`). The old home cards' pictures (`Roofing-Home.png`, `Solar-Roofing-Home.png`,
+  `Commercial-Roofing-Home.png` and their `.webp` copies) are deleted by `npm run update:site` once no page uses
+  them (`REPLACED_FILES`). A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
@@ -550,7 +554,7 @@ Most of these problems are on the live site too.
   previews too: "Roof Replacement (Project 11425)", "Colonial Home Roof Replacement", "Ranch Home Roof Replacement");
   pages with words keep them (Brookfield's proposal wording is now in the past tense, and the solar page no longer
   promises the 30% federal tax credit). Every project is now reachable in context: `/past-projects/` lists all of them
-  under the favorites ("Browse all of our projects", with Homes / Commercial & multi-family / Solar filters), and the
+  under the favorites ("Browse all of our projects", with type filters, while it lists any project the favorites don't), and the
   service pages each belongs to show it in a "Recent projects" row above their testimonials (`/roofing/residential/`,
   `/roofing/replacement/`, `/roofing/types/`, the three commercial pages, `/solar/gaf-solar-roof/`,
   `/gutters/gutter-guards/`). The Site Map now finds no page that can't be reached by clicking. The five "Panda Ext-…"
