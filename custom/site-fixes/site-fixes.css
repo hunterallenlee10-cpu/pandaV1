@@ -1236,6 +1236,11 @@ a.bde-social-share-button:hover {
 }
 /* /about/, /podcast/, /roofing/: the same row of photo cards in place of the icon-card
    slider, in that section's orange (the site's buttons and headings) instead of green. */
+/* Long section headings ("Customer-Oriented Exterior Remodeling Services in the Mid-Atlantic")
+   broke as "…in the Mid-" / "Atlantic": lines of even length, and the hyphenated word kept whole. */
+.pfix-services--warm h2.heading-2 {
+  text-wrap: balance;
+}
 /* The intro's padding (Bootstrap's pb-3, !important) left a wide gap above the cards. */
 .pfix-services--warm .Team-text-container,
 .pfix-services--warm .Team-text-container p:last-child {

@@ -146,8 +146,8 @@ export function unnestLinks(html) {
 // The header logo offered sizes up to 2,337 px and told browsers it fills the screen, so a
 // 90 px logo arrived as a 110-150 KB file on every page.
 const RESPONSIVE = {
-  '/_custom/site-fixes/home-hero-poster.webp': { srcset: '/_custom/site-fixes/home-hero-poster-800.webp 800w, /_custom/site-fixes/home-hero-poster.webp 1500w', sizes: '100vw' },
-  '/_custom/site-fixes/about-team.webp': { srcset: '/_custom/site-fixes/about-team-640.webp 640w, /_custom/site-fixes/about-team.webp 1100w', sizes: '(max-width: 767px) 100vw, 560px' },
+  '/_custom/site-fixes/home-hero-poster.webp': { srcset: '/_custom/site-fixes/home-hero-poster-800.webp 800w, /_custom/site-fixes/home-hero-poster.webp 1280w', sizes: '100vw' },
+  '/_custom/site-fixes/about-team.webp': { srcset: '/_custom/site-fixes/about-team-640.webp 640w, /_custom/site-fixes/about-team.webp 960w', sizes: '(max-width: 767px) 100vw, 560px' },
 };
 const LOGO_SIZES = '90px';
 // Photos sent as camera files (/careers/: 1.4 MB and 0.8 MB): a copy at the size the page shows.

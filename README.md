@@ -90,7 +90,12 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   a four-story apartment build) is a stone panel with the heading and the numbers the About page shows (jobs, Google
   rating, states + D.C., offices; from the US map and the review data), over three cards: the crew re-roofing a home
   (the `/past-projects/` hero photo, with "Meet our team"), the GAF badges on charcoal green and the partner brands'
-  logos (`whyPandaBlock`, `.pfix-wpb`). A customer review about a flat roof on a historic home, and the
+  logos (`whyPandaBlock`, `.pfix-wpb`).
+  Photos of commercial work are swapped for homes: the About page's mission collage (a four-story apartment build,
+  and crews on a flat commercial roof) shows a Panda crew re-roofing a two-story home in red tile and a closer look
+  at them on that roof (`about-team.webp`, `about-crew.webp`), and the still behind the home hero's video (an office
+  building and its parking lot) shows that home finished (`home-hero-poster.webp`); all three are crops of drone
+  photos of the Spanish tile project already on the site. A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they

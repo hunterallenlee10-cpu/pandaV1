@@ -30,7 +30,7 @@
 //  - Home hero video: YouTube's own loading screen (spinner, play button, logo, or "Video
 //    unavailable" where autoplay is blocked) showed behind the heading, and the 90% black
 //    overlay sat under the video, so bright frames washed out the white text. A still of
-//    a Panda job (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
+//    a home Panda re-roofed (custom/site-fixes/home-hero-poster.webp) now fills the hero, the video
 //    fades in over it only once it is playing (site-fixes.js), and the overlay is above
 //    the video, darkest behind the heading. Phones (no video) get the still too.
 //  - "What Makes Panda the Best?" (home page): three floating cards with orange circle
@@ -264,6 +264,8 @@ export const SITE_FIXES_FILES = {
   // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
   'home-hero-poster-800.webp': '/_custom/site-fixes/home-hero-poster-800.webp',
   'about-team-640.webp': '/_custom/site-fixes/about-team-640.webp',
+  // the closer photo in the About page's mission collage (about-page.mjs)
+  'about-crew.webp': '/_custom/site-fixes/about-crew.webp',
   // a photo of each roof type in /roofing/replacement/'s "Roofing Styles for Your New Roof"
   // (roofing-replacement-page.mjs), 480 and 960 px wide
   ...Object.fromEntries(['asphalt', 'metal', 'solar'].flatMap((k) => [480, 960].map((w) => [`roof-type-${k}-${w}.webp`, `/_custom/site-fixes/roof-type-${k}-${w}.webp`]))),
@@ -324,8 +326,10 @@ const googleRating = () => Number(loadReviewWall().place.rating).toFixed(1);
 
 // /service-areas/ hero: the drone photo of the Laurel, MD office and the homes around it
 // (already on the site, with a .webp copy). site-fixes.css uses the same file.
-// The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
-const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
+// The still behind the home hero's video: a drone photo of a finished Panda job, a two-story home
+// with a new red tile roof (/wp-content/uploads/2025/07/Website-Map-7-May-22-2025-05_46am-iYjP.jpg,
+// 1280 and 800 px). It was a drone photo of an office building and its parking lot (0999_D).
+const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1280, height: 720 };
 // "What Makes Panda the Best?" (home page): what each claim's row shows beside it, in the
 // order of the cards. Experience: Panda's crew re-roofing a home (the /past-projects/ hero; the
 // photo of a four-story apartment build it had was commercial-type work).

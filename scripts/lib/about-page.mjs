@@ -12,9 +12,10 @@
 //    first paragraph ends on (the work is only as good as the team), keeps that paragraph, and
 //    sets what the second one promised as three points (trained, certified and licensed; no
 //    sales pressure; no cut corners) and the areas it named as a line of places, beside a
-//    photo collage: a Panda truck at a job while the crew roofs the building (about-team.webp,
-//    a smaller copy of a photo already on the site), the section's old photo, and a "30+ years
-//    of combined experience" badge.
+//    photo collage: a Panda crew re-roofing a two-story home in red tile, seen from above
+//    (about-team.webp), a closer look at the crew on that roof (about-crew.webp), and a "30+
+//    years of combined experience" badge. (The collage first showed a four-story apartment
+//    build and crews on a flat commercial roof: commercial roofing is off the site.)
 //
 // Every word comes from the page itself, the map's data or the Google rating. Applied by
 // site-fixes.mjs; both sections are rendered again on every run (they are found by their
@@ -32,13 +33,14 @@ const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 const FORM_ID = 'pfix-lead-1';
 // The photos are in custom/site-fixes/ (SITE_FIXES_FILES). The hero's (site-fixes.css sets it
 // as the hero's background, and it is preloaded) is a webp copy of
-// /wp-content/uploads/2025/03/eaf2e8a6-efc7-47c5-8d45-932796dd33bc-1-min.png; the mission's is
-// a 1,100 px copy of /wp-content/uploads/2025/07/3-Jul-14-2025-07_57am-5LCD.jpg. With them,
-// the section's own photo of a crew on a roof.
+// /wp-content/uploads/2025/03/eaf2e8a6-efc7-47c5-8d45-932796dd33bc-1-min.png; the mission's two
+// are crops of drone photos of the Spanish tile project already on the site:
+// /wp-content/uploads/2025/07/Website-Map-5-May-22-2025-04_21am-NpDB.jpg (960 x 720, and 640 px
+// for phones) and …-Website-Map-6-May-22-2025-04_22am-tg7o.jpg (640 x 393).
 export const ABOUT_HERO_PHOTO = '/_custom/site-fixes/about-hero.webp';
 export const ABOUT_TEAM_PHOTO = '/_custom/site-fixes/about-team.webp';
+export const ABOUT_CREW_PHOTO = '/_custom/site-fixes/about-crew.webp';
 const customFile = (url) => path.join(ROOT, 'custom', 'site-fixes', path.basename(url));
-const MISSION_PHOTO = { src: '/wp-content/uploads/2025/03/0814d5a8-0065-43ba-9b1f-06520da4e690-3.png', width: 534, height: 328 };
 const MISSION_ID = 'our-mission';
 
 const svg = (body) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${body}</svg>`;
@@ -118,10 +120,9 @@ function missionSection() {
     `<p class="pfix-ab-mission__places">${ICONS.pin}<span>Serving ${PLACES.map((p) => `<b>${esc(p)}</b>`).join(', ')} and neighborhoods across the East Coast</span></p>` +
     `</div>` +
     `<div class="pfix-ab-mission__media">` +
-    `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--main"><img src="${ABOUT_TEAM_PHOTO}" alt="A Panda Exteriors truck at a job site while the crew roofs the building" width="1100" height="825" loading="lazy" decoding="async"></figure>` +
-    `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--inset"><picture>` +
-    `<source type="image/webp" srcset="${MISSION_PHOTO.src}.webp">` +
-    `<img src="${MISSION_PHOTO.src}" alt="A Panda Exteriors crew laying out a new roof" width="${MISSION_PHOTO.width}" height="${MISSION_PHOTO.height}" loading="lazy" decoding="async"></picture></figure>` +
+    `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--main"><img src="${ABOUT_TEAM_PHOTO}" alt="A Panda Exteriors crew re-roofing a two-story home with red tile, seen from above" width="960" height="720" loading="lazy" decoding="async"></figure>` +
+    `<figure class="pfix-ab-mission__photo pfix-ab-mission__photo--inset">` +
+    `<img src="${ABOUT_CREW_PHOTO}" alt="A Panda Exteriors roofer laying red roof tiles around a skylight" width="640" height="393" loading="lazy" decoding="async"></figure>` +
     `<div class="pfix-ab-mission__badge"><b>30+</b><span>years of combined experience</span></div>` +
     `</div>` +
     `</div></section>`
