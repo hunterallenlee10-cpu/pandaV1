@@ -150,10 +150,9 @@ const RESPONSIVE = {
   '/_custom/site-fixes/about-team.webp': { srcset: '/_custom/site-fixes/about-team-640.webp 640w, /_custom/site-fixes/about-team.webp 960w', sizes: '(max-width: 767px) 100vw, 560px' },
 };
 const LOGO_SIZES = '90px';
-// Photos sent as camera files (/careers/: 1.4 MB and 0.8 MB): a copy at the size the page shows.
+// Pictures sent far larger than shown: a copy at the size the page shows. (The two careers photos
+// once here are replaced by careers-page.mjs.)
 const LIGHTER = {
-  '/wp-content/uploads/2025/07/down-net_http20250709-70-rpl92v.jpg': '/_custom/site-fixes/careers-install.webp',
-  '/wp-content/uploads/2025/07/1-Jun-24-2025-09_32am-Qg47.jpg': '/_custom/site-fixes/careers-project.webp',
   '/wp-content/uploads/2025/07/bighead-1402x1536.png': '/wp-content/uploads/2025/07/bighead-274x300.png',
 };
 // A picture's lighter copy: the one named above, or the .webp WordPress made beside it

@@ -95,7 +95,13 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   and crews on a flat commercial roof) shows a Panda crew re-roofing a two-story home in red tile and a closer look
   at them on that roof (`about-team.webp`, `about-crew.webp`), and the still behind the home hero's video (an office
   building and its parking lot) shows that home finished (`home-hero-poster.webp`); all three are crops of drone
-  photos of the Spanish tile project already on the site. A customer review about a flat roof on a historic home, and the
+  photos of the Spanish tile project already on the site.
+  `/careers/` the same way (`scripts/lib/careers-page.mjs`): its hero (a drone photo of an office complex and its
+  parking lot) shows Panda crews shingling new homes with a crane lifting the GAF bundles, "Our Three Pillars" (crews
+  on a flat commercial roof) a Panda roofer in a Panda hoodie, and "Real Work. Real Results." (eight photos, five of
+  them camera files a lazy loader often never showed, leaving an empty band, and some of commercial work) is a mosaic
+  of Panda's home projects: one large photo of a crew re-roofing a home and eight smaller ones, each a link to its
+  project page with its name. The photos and copies only those sections used are deleted (`REPLACED_FILES`). A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they

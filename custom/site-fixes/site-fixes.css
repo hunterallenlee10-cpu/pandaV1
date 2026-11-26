@@ -11592,3 +11592,88 @@ body:not(.wp-admin) .xai-weather-ribbon {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* /careers/ "Real Work. Real Results." (careers-page.mjs): a mosaic of Panda's home projects,
+   the first photo two tiles wide and two tall, each tile a link to its project with the
+   project's name on a dark fade. Four across on computers, two below 1024 px (phones too:
+   the page's own rule made it one column of nine squares). */
+.pcv2-gallery-grid.pfix-cw-gallery {
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+.pfix-cw-gallery a.pfix-cw-tile {
+  display: block;
+  border-radius: 16px;
+  background: #1c1c1e;
+  color: #ffffff;
+  text-decoration: none;
+  isolation: isolate;
+}
+.pfix-cw-gallery a.pfix-cw-tile--big {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.pfix-cw-gallery a.pfix-cw-tile img {
+  display: block;
+}
+.pfix-cw-gallery a.pfix-cw-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.78) 100%);
+  pointer-events: none;
+}
+.pfix-cw-gallery .pfix-cw-tile__label {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  left: 14px;
+  z-index: 1;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.pfix-cw-gallery .pfix-cw-tile__label > span {
+  display: inline-block;
+  color: #9acd32;
+  transition: transform 0.2s ease;
+}
+.pfix-cw-gallery a.pfix-cw-tile--big .pfix-cw-tile__label {
+  right: 22px;
+  bottom: 20px;
+  left: 22px;
+  font-size: 20px;
+}
+.pfix-cw-gallery a.pfix-cw-tile:hover .pfix-cw-tile__label > span,
+.pfix-cw-gallery a.pfix-cw-tile:focus-visible .pfix-cw-tile__label > span {
+  transform: translateX(4px);
+}
+.pfix-cw-gallery a.pfix-cw-tile:focus-visible {
+  outline: 3px solid #9acd32;
+  outline-offset: 3px;
+}
+@media (max-width: 1023.98px) {
+  .pcv2-gallery-grid.pfix-cw-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+}
+@media (max-width: 639.98px) {
+  .pfix-cw-gallery .pfix-cw-tile__label {
+    right: 10px;
+    bottom: 9px;
+    left: 10px;
+    font-size: 12.5px;
+  }
+  .pfix-cw-gallery a.pfix-cw-tile--big .pfix-cw-tile__label {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-cw-gallery .pfix-cw-tile__label > span {
+    transition: none;
+  }
+}

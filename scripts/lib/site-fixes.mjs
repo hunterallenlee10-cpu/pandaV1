@@ -213,6 +213,7 @@ import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
 import { renderPastProjects } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
+import { collectCareersPage, CAREERS_FILES } from './careers-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
 import { collectReferralsPage } from './referrals-page.mjs';
 import { collectGalleryPage } from './gallery-page.mjs';
@@ -276,9 +277,8 @@ export const SITE_FIXES_FILES = {
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
   // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
   'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
-  // two photos /careers/ loaded as 1.4 MB and 0.8 MB camera files (launch.mjs)
-  'careers-install.webp': '/_custom/site-fixes/careers-install.webp',
-  'careers-project.webp': '/_custom/site-fixes/careers-project.webp',
+  // /careers/'s hero (two sizes) and "Our Three Pillars" photo (careers-page.mjs)
+  ...CAREERS_FILES,
 };
 // Fixes that change a whole section or message, by the start of their change note.
 export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
@@ -463,10 +463,21 @@ const HOME_SERVICE_CARDS = [
 ];
 // The pictures of the old home cards (the service's name drawn in), unused once the section is
 // rebuilt: npm run update:site deletes them when no page uses them any more.
-export const REPLACED_FILES = ['Roofing-Home.png', 'Solar-Roofing-Home.png', 'Commercial-Roofing-Home.png'].flatMap((f) => [
-  `wp-content/uploads/2025/04/${f}`,
-  `wp-content/uploads/2025/04/${f}.webp`,
-]);
+export const REPLACED_FILES = [
+  ...['Roofing-Home.png', 'Solar-Roofing-Home.png', 'Commercial-Roofing-Home.png'].flatMap((f) => [
+    `wp-content/uploads/2025/04/${f}`,
+    `wp-content/uploads/2025/04/${f}.webp`,
+  ]),
+  // and the photos of commercial work the About and Careers pages showed (about-page.mjs,
+  // careers-page.mjs): crews on a flat commercial roof, the lighter copies of two careers photos
+  // (a flat roof beside a church, and the new homes now in the careers hero)
+  ...['0814d5a8-0065-43ba-9b1f-06520da4e690-3.png', '0814d5a8-0065-43ba-9b1f-06520da4e690-3-300x184.png'].flatMap((f) => [
+    `wp-content/uploads/2025/03/${f}`,
+    `wp-content/uploads/2025/03/${f}.webp`,
+  ]),
+  '_custom/site-fixes/careers-install.webp',
+  '_custom/site-fixes/careers-project.webp',
+];
 const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
 const HOME_SERVICES_INTRO = 'Upgrade your entire home exterior with the help of our trained and certified roofing, solar, siding and gutter crews!';
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
@@ -1736,6 +1747,9 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // /about/: the hero introduces the company and "Our Mission" is a headline, three points
   // and a photo collage (about-page.mjs).
   if (collectAboutPage(doc, html, ed, { pathname }, changes)) used.css = true;
+  // /careers/: home photos in place of commercial work, and the photo strip as a mosaic of
+  // Panda's home projects (careers-page.mjs).
+  if (collectCareersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /faqs/: the hero gets a question search and topic chips, and the questions become
   // accordions grouped by topic beside a topic menu (faq-page.mjs).
   if (collectFaqPage(doc, html, ed, { pathname, siteOrigin }, changes)) {
