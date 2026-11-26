@@ -24,7 +24,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { hasClass, classes, esc, find, textOf, clean, headEndOffset } from './html-edit.mjs';
-import { loadUsMap } from './us-map.mjs';
+import { loadUsMap, JOBS_TOTAL, statesServed } from './us-map.mjs';
 import { loadReviewWall } from './review-wall.mjs';
 
 export const ABOUT_PATH = '/about/';
@@ -67,7 +67,7 @@ function numbers() {
   const { states, areas } = loadUsMap();
   const jobs = states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
   const { place } = loadReviewWall();
-  return { jobs, states: states.length, offices: areas.length, rating: Number(place.rating) || 0 };
+  return { jobs, states: statesServed(states), offices: areas.length, rating: Number(place.rating) || 0 };
 }
 
 function heroText() {
@@ -75,13 +75,13 @@ function heroText() {
   const stat = (value, label) => `<div class="pfix-ab-hero__stat" role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
   return (
     `<p class="pfix-ab-hero__eyebrow">About Panda Exteriors</p>` +
-    `<h1 class="pfix-ab-hero__title">${n.jobs ? esc(`The team behind ${fmt(n.jobs)} jobs across the East Coast`) : 'The team behind your new exterior'}</h1>` +
+    `<h1 class="pfix-ab-hero__title">${n.jobs ? esc(`The team behind ${JOBS_TOTAL.words} jobs across the East Coast`) : 'The team behind your new exterior'}</h1>` +
     `<p class="pfix-ab-hero__sub">Roofing, solar, siding and gutters from trained, certified and licensed crews, ` +
     `with ${n.offices} local offices, no sales pressure and no corners cut.</p>` +
     `<div class="pfix-ab-hero__stats" role="list">` +
-    (n.jobs ? stat(fmt(n.jobs), 'Jobs completed') : '') +
+    (n.jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '') +
     stat(n.offices, 'Local offices') +
-    stat(n.states, 'States served') +
+    stat(n.states.n, n.states.label) +
     (n.rating ? stat(`${esc(n.rating.toFixed(1))}${STAR}`, 'Google rating') : '') +
     `</div>` +
     `<div class="pfix-ab-hero__ctas">` +
@@ -151,7 +151,7 @@ export function collectAboutPage(doc, html, ed, { pathname = '' } = {}, changes 
       if (headEnd >= 0 && !html.includes(preload)) ed.replace(headEnd, headEnd, preload);
       const n = numbers();
       changes.push(
-        `about page hero: introduces the company (${fmt(n.jobs)} jobs, ${n.offices} offices, ${n.states} states, ${n.rating} Google rating), with estimate and call buttons and its credentials, over a photo of a Panda roofer (was "About Us" over an office ceiling)`
+        `about page hero: introduces the company (${fmt(n.jobs)} jobs, ${n.offices} offices, ${n.states.words}, ${n.rating} Google rating), with estimate and call buttons and its credentials, over a photo of a Panda roofer (was "About Us" over an office ceiling)`
       );
       done = true;
     }

@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, clean, textOf } from './html-edit.mjs';
-import { loadUsMap } from './us-map.mjs';
+import { loadUsMap, JOBS_TOTAL } from './us-map.mjs';
 import { loadReviewWall } from './review-wall.mjs';
 
 export const GALLERY_PATH = '/gallery/';
@@ -74,7 +74,7 @@ function heroHtml(cats) {
     `<div class="pfix-gl-hero__chips" role="list" aria-label="Photo categories">${cats.filter((c) => c.count).map(chip).join('')}</div>` +
     `<div class="pfix-gl-hero__stats" role="list">` +
     stat(fmt(total), 'Project photos') +
-    (jobs ? stat(fmt(jobs), 'Jobs completed') : '') +
+    (jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '') +
     (rating ? stat(`${esc(rating.toFixed(1))}${STAR}`, 'Google rating') : '') +
     `</div>` +
     `<div class="pfix-gl-hero__ctas">` +

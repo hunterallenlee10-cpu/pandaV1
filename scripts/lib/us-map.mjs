@@ -17,6 +17,11 @@ const fmt = (b) => b.map(r1).join(' ');
 const listJoin = (a) => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`);
 const fmtJobs = (n) => Number(n).toLocaleString('en-US');
 const jobsText = (n) => `${fmtJobs(n)} ${Number(n) === 1 ? 'job' : 'jobs'}`;
+// The total number of jobs the site states, as Panda puts it ("over 10,000 successful projects"
+// in "About Our Team", "10,000+" on /careers/). It is shown wherever a total is (the home page,
+// /about/, /service-areas/, the large map's panel) in place of the sum of the map's per-state
+// counts, which only covers the jobs recorded by state; those stay on the states and offices.
+export const JOBS_TOTAL = { short: '10,000+', words: 'over 10,000' };
 // us-map.css has fill colours for this many job bands.
 const MAX_TIERS = 5;
 
@@ -212,6 +217,16 @@ export function renderCompactMap({ theme = 'orange', uid = 'pmap' } = {}) {
   );
 }
 
+// How many states Panda serves: Washington, D.C. is on the map with the states, and is named,
+// not counted as one ("19 states and Washington, D.C.", a "19 / States + D.C." stat).
+export function statesServed(states = loadUsMap().states) {
+  const dc = states.some((s) => s.code === 'DC');
+  const n = states.length - (dc ? 1 : 0);
+  const words = dc ? `${n} states and Washington, D.C.` : `${n} states`;
+  // (sentence: the words ending a sentence, with one full stop)
+  return { n, dc, label: dc ? 'States + D.C.' : 'States served', words, sentence: words.endsWith('.') ? words : `${words}.` };
+}
+export const TOTAL_COMPLETED = `${JOBS_TOTAL.words[0].toUpperCase()}${JOBS_TOTAL.words.slice(1)} jobs completed`;
 /** Large interactive map: state buttons zoom the map and update the panel next to it. */
 export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/', ctaText = 'Get a free estimate' } = {}) {
   const map = loadUsMap();
@@ -235,7 +250,7 @@ export function renderExplorerMap({ uid = 'pmapx', ctaHref = '/contact-us/', cta
     `<p class="pmap__info-text" data-default="${esc(overviewText)}">${esc(overviewText)}</p>` +
     `<p class="pmap__info-offices" data-default="${esc(officesText)}"><span class="pmap__info-label">Local offices</span>` +
     `<span class="pmap__info-list">${esc(officesText)}</span></p>` +
-    (jobsTotal ? `<p class="pmap__info-jobs" data-default="${jobsTotal}">${esc(jobsText(jobsTotal))} completed</p>` : '') +
+    (jobsTotal ? `<p class="pmap__info-jobs" data-default="${jobsTotal}" data-default-text="${esc(TOTAL_COMPLETED)}">${esc(TOTAL_COMPLETED)}</p>` : '') +
     `<a class="pmap__cta" href="${esc(ctaHref)}">${esc(ctaText)}</a>` +
     `</div></div>` +
     legend(map) +

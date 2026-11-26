@@ -208,7 +208,10 @@
         text.textContent = text.getAttribute('data-default');
         list.textContent = offices.getAttribute('data-default');
         offices.hidden = !list.textContent;
-        if (jobsEl) jobsEl.textContent = fmtJobs(jobsEl.getAttribute('data-default')) + ' completed';
+        if (jobsEl) {
+          jobsEl.hidden = false;
+          jobsEl.textContent = jobsEl.getAttribute('data-default-text') || fmtJobs(jobsEl.getAttribute('data-default')) + ' completed';
+        }
         return;
       }
       var chip = chips.filter(function (c) {
