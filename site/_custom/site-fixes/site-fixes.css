@@ -547,191 +547,384 @@ a.bde-social-share-button:hover {
 .pfix-fit {
   max-width: 100% !important;
 }
-/* "What Makes Panda the Best?" (home page, site-fixes.mjs "why panda"): three rows under a
-   dark rule, each claim on the left and what backs it up on the right: the crew at work, the
-   partner brands' logos and the GAF badges, the last two in hairline grids. The photo and the
-   logos carry the colour; nothing moves on hover, as nothing in it is a link. Below 768 px
-   each claim sits above its proof. */
-h3.pfix-best-label {
-  margin: 0;
-  padding: clamp(32px, 4.5vw, 52px) 0 20px;
-  color: #1a2418;
+/* "What Makes Panda the Best?" (home page, site-fixes.mjs "why panda"): a soft stone panel
+   with the heading and the numbers, then three cards: the experience claim over a photo of
+   the crew re-roofing a home (the big card), the GAF badges on charcoal green and the
+   partner brands' logos. Two columns from 992 px, the photo full width over the two others
+   on tablets, one column on phones. */
+.pfix-wpb {
+  --why-ink: #15200f;
+  --why-muted: #59624f;
+  --why-orange: #f26924;
+  --why-lime: #9acd32;
+  --why-dark: #18261a;
+  --why-line: #e6e1d6;
+  margin: clamp(36px, 5vw, 60px) 0 clamp(8px, 2vw, 20px);
+  padding: clamp(22px, 4vw, 48px);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(242, 105, 36, 0.09), transparent 42%),
+    linear-gradient(180deg, #faf7f1 0%, #f3efe6 100%);
+  color: var(--why-ink);
   font-family: var(--robboto, Roboto), system-ui, sans-serif;
-  font-size: clamp(24px, 2.6vw, 30px);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.012em;
-  text-wrap: balance;
+  text-align: left;
 }
-.pfix-proof {
-  --pfix-proof-rule: #e2e5dd;
-  width: 100%;
-  margin: 0;
-  border-top: 2px solid #1a2418;
-  font-family: var(--robboto, Roboto), system-ui, sans-serif;
-}
-.pfix-proof *,
-.pfix-proof *::before,
-.pfix-proof *::after {
+.pfix-wpb *,
+.pfix-wpb *::before,
+.pfix-wpb *::after {
   box-sizing: border-box;
 }
-.pfix-proof__row {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(28px, 5vw, 72px);
-  align-items: center;
-  padding: clamp(28px, 3.4vw, 44px) 0;
-}
-.pfix-proof__row + .pfix-proof__row {
-  border-top: 1px solid var(--pfix-proof-rule);
-}
-.pfix-proof h4.pfix-proof__title {
-  margin: 0 0 12px;
+.pfix-wpb p {
+  margin: 0;
   padding: 0;
-  color: #1a2418;
-  font-family: inherit;
-  font-size: clamp(20px, 1.9vw, 24px);
+}
+/* ---- head: heading on the left, the numbers on the right */
+.pfix-wpb .pfix-wpb__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: clamp(22px, 3vw, 34px);
+}
+.pfix-wpb .pfix-wpb__eyebrow {
+  margin-bottom: 10px;
+  color: #c4521a;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.008em;
-  text-align: left;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pfix-wpb h3.pfix-wpb__heading {
+  margin: 0;
+  padding: 0;
+  color: var(--why-ink);
+  font-family: inherit;
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
-.pfix-proof p.pfix-proof__text {
-  max-width: 42ch;
-  margin: 0;
-  padding: 0;
-  color: #485244;
-  font-size: 16.5px;
-  line-height: 1.65;
-  text-align: left;
+.pfix-wpb .pfix-wpb__intro {
+  flex: 1 1 100%;
 }
-.pfix-proof__evidence {
-  min-width: 0;
-}
-/* The crew at work: a wide crop that keeps the roofers on the roof and the truck. */
-.pfix-proof figure.pfix-proof__photo {
-  margin: 0;
-  overflow: hidden;
-  border-radius: 10px;
-  background: #dfe3da;
-  aspect-ratio: 16 / 7.5;
-}
-.pfix-proof__photo img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 42%;
-}
-/* Logos and badges: cells divided by 1 px hairlines (the list's colour showing through the
-   gaps). (!important: the site's stylesheet indents every list, makes its items white list
-   items, and stretches every picture to the height of its box.) */
-.pfix-proof ul.pfix-proof__grid {
+.pfix-wpb .pfix-wpb__stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 !important;
-  padding: 0 !important;
+  flex: 1 1 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   overflow: hidden;
-  border: 1px solid var(--pfix-proof-rule);
-  border-radius: 10px;
-  background: var(--pfix-proof-rule);
-  list-style: none;
+  border: 1px solid var(--why-line);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px -20px rgba(40, 30, 10, 0.35);
 }
-.pfix-proof ul.pfix-proof__grid > li {
-  display: flex !important;
+.pfix-wpb .pfix-wpb__stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 24px;
+  border-left: 1px solid var(--why-line);
+}
+.pfix-wpb .pfix-wpb__stats > div:first-child {
+  border-left: 0;
+}
+.pfix-wpb .pfix-wpb__stats b {
+  color: var(--why-ink);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pfix-wpb .pfix-wpb__stats b i {
+  margin-left: 2px;
+  color: #f5a623;
+  font-size: 0.8em;
+  font-style: normal;
+}
+.pfix-wpb .pfix-wpb__stats span {
+  color: var(--why-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+/* ---- the cards */
+.pfix-wpb .pfix-wpb__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+.pfix-wpb .pfix-wpb__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 22px;
+}
+.pfix-wpb .pfix-wpb__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: clamp(22px, 2.4vw, 30px);
+}
+.pfix-wpb .pfix-wpb__icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 0;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background: rgba(242, 105, 36, 0.12);
+  color: var(--why-orange);
+}
+.pfix-wpb .pfix-wpb__icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pfix-wpb h4.pfix-wpb__title {
   margin: 0;
   padding: 0;
+  color: var(--why-ink);
+  font-family: inherit;
+  font-size: clamp(21px, 1.9vw, 25px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.pfix-wpb .pfix-wpb__text {
+  max-width: 46ch;
+  color: var(--why-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+/* Experience: the photo fills the card, the claim on a dark fade at the bottom. */
+.pfix-wpb .pfix-wpb__card--photo {
+  grid-row: 1 / span 2;
+  justify-content: flex-end;
+  min-height: 540px;
+  background: var(--why-dark);
+  box-shadow: 0 24px 50px -30px rgba(20, 30, 10, 0.6);
+}
+.pfix-wpb .pfix-wpb__photo,
+.pfix-wpb .pfix-wpb__photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.pfix-wpb .pfix-wpb__photo img {
+  transition: transform 0.8s ease;
+}
+.pfix-wpb .pfix-wpb__card--photo:hover .pfix-wpb__photo img {
+  transform: scale(1.04);
+}
+.pfix-wpb .pfix-wpb__card--photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 18, 8, 0) 30%, rgba(12, 18, 8, 0.55) 60%, rgba(12, 18, 8, 0.9) 100%);
+  pointer-events: none;
+}
+.pfix-wpb .pfix-wpb__card--photo .pfix-wpb__body {
+  z-index: 1;
+  padding-top: 0;
+}
+.pfix-wpb .pfix-wpb__card--photo .pfix-wpb__icon {
+  background: var(--why-orange);
+  color: #ffffff;
+}
+.pfix-wpb .pfix-wpb__card--photo h4.pfix-wpb__title {
+  color: #ffffff;
+  font-size: clamp(24px, 2.4vw, 32px);
+}
+.pfix-wpb .pfix-wpb__card--photo .pfix-wpb__text {
+  color: rgba(255, 255, 255, 0.86);
+}
+.pfix-wpb a.pfix-wpb__link,
+.pfix-wpb a.pfix-wpb__link:hover {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 11px 20px;
+  border-radius: 999px;
   background: #ffffff;
-  color: #1a2418 !important;
-  list-style: none;
+  color: var(--why-ink);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.pfix-proof ul.pfix-proof__grid > li::before,
-.pfix-proof ul.pfix-proof__grid > li::marker {
-  content: none;
+.pfix-wpb a.pfix-wpb__link:hover,
+.pfix-wpb a.pfix-wpb__link:focus-visible {
+  background: var(--why-orange);
+  color: #ffffff;
 }
-.pfix-proof__grid picture {
-  display: contents;
+.pfix-wpb a.pfix-wpb__link:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
 }
-.pfix-proof ul.pfix-proof__logos > li {
-  height: 96px;
-  padding: 0 18px;
+/* Certified: charcoal green, the badges in a row of glass tiles. */
+.pfix-wpb .pfix-wpb__card--dark {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(154, 205, 50, 0.18), transparent 50%),
+    var(--why-dark);
+  box-shadow: 0 24px 50px -32px rgba(20, 30, 10, 0.6);
 }
-.pfix-proof .pfix-proof__logos img {
-  display: block;
-  width: auto;
-  max-width: 82%;
-  height: var(--h, 30px) !important;
-  object-fit: contain;
+.pfix-wpb .pfix-wpb__card--dark .pfix-wpb__icon {
+  background: rgba(154, 205, 50, 0.16);
+  color: var(--why-lime);
 }
-.pfix-proof ul.pfix-proof__badges > li {
-  flex-direction: column;
+.pfix-wpb .pfix-wpb__card--dark h4.pfix-wpb__title {
+  color: #ffffff;
+}
+.pfix-wpb .pfix-wpb__card--dark .pfix-wpb__text {
+  color: rgba(255, 255, 255, 0.78);
+}
+.pfix-wpb .pfix-wpb__badges {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  padding: 20px 12px 16px;
+  margin-top: auto;
+  padding: 0 clamp(22px, 2.4vw, 30px) clamp(22px, 2.4vw, 30px);
 }
-.pfix-proof .pfix-proof__badges img {
-  display: block;
-  width: 92px;
-  max-width: 100%;
-  height: auto !important;
-}
-.pfix-proof__badges span {
-  color: #1a2418;
-  font-size: 13.5px;
-  font-weight: 600;
-  line-height: 1.3;
+.pfix-wpb .pfix-wpb__badges > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
   text-align: center;
 }
-/* Tablets: the claim keeps a little more room. */
+/* (!important: the page builder sets .breakdance img { height: 100% !important }) */
+.pfix-wpb .pfix-wpb__badges img {
+  display: block;
+  width: 76px;
+  max-width: 100%;
+  height: auto !important;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+}
+.pfix-wpb .pfix-wpb__badges span {
+  color: #e9f0dd;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+/* Products: white, the logos in soft tiles. */
+.pfix-wpb .pfix-wpb__card--brands {
+  border: 1px solid var(--why-line);
+  background: #ffffff;
+  box-shadow: 0 18px 40px -32px rgba(40, 30, 10, 0.5);
+}
+.pfix-wpb .pfix-wpb__logos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: auto;
+  padding: 0 clamp(22px, 2.4vw, 30px) clamp(22px, 2.4vw, 30px);
+}
+.pfix-wpb .pfix-wpb__logos > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #f7f5f0;
+}
+.pfix-wpb .pfix-wpb__logos img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: calc(var(--h, 32px) * 0.82) !important;
+  object-fit: contain;
+}
+/* Tablets: the photo across the top, the two other cards side by side under it. */
 @media (max-width: 991.98px) {
-  .pfix-proof__row {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-  }
-  .pfix-proof ul.pfix-proof__logos > li {
-    height: 80px;
-    padding: 0 12px;
-  }
-  .pfix-proof .pfix-proof__logos img {
-    height: calc(var(--h, 30px) * 0.82) !important;
-  }
-  .pfix-proof .pfix-proof__badges img {
-    width: 76px;
-  }
-}
-/* Phones: each claim above its proof. */
-@media (max-width: 767.98px) {
-  .pfix-proof__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    padding: 26px 0;
-  }
-  .pfix-proof p.pfix-proof__text {
-    max-width: none;
-    font-size: 16px;
-  }
-  .pfix-proof figure.pfix-proof__photo {
-    aspect-ratio: 16 / 9;
-  }
-  .pfix-proof ul.pfix-proof__logos > li {
-    height: 72px;
-  }
-  .pfix-proof ul.pfix-proof__badges > li {
-    padding: 16px 8px 14px;
-  }
-  .pfix-proof .pfix-proof__badges img {
-    width: 64px;
-  }
-  .pfix-proof__badges span {
-    font-size: 12.5px;
-  }
-}
-@media (max-width: 419.98px) {
-  .pfix-proof ul.pfix-proof__logos {
+  .pfix-wpb .pfix-wpb__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-wpb .pfix-wpb__card--photo {
+    grid-row: auto;
+    grid-column: 1 / -1;
+    min-height: 440px;
+  }
+  .pfix-wpb .pfix-wpb__logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Phones: one column; the numbers two by two. */
+@media (max-width: 639.98px) {
+  .pfix-wpb {
+    margin-right: -4px;
+    margin-left: -4px;
+    border-radius: 22px;
+  }
+  .pfix-wpb .pfix-wpb__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .pfix-wpb .pfix-wpb__card--photo {
+    min-height: 440px;
+  }
+  /* (the claim covers more of the photo: the fade starts higher and is darker) */
+  .pfix-wpb .pfix-wpb__card--photo::after {
+    background: linear-gradient(180deg, rgba(12, 18, 8, 0.05) 0%, rgba(12, 18, 8, 0.6) 38%, rgba(12, 18, 8, 0.92) 100%);
+  }
+  .pfix-wpb .pfix-wpb__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-wpb .pfix-wpb__stats > div {
+    padding: 12px 16px;
+  }
+  .pfix-wpb .pfix-wpb__stats > div:nth-child(3) {
+    border-left: 0;
+  }
+  .pfix-wpb .pfix-wpb__stats > div:nth-child(n + 3) {
+    border-top: 1px solid var(--why-line);
+  }
+  .pfix-wpb .pfix-wpb__badges img {
+    width: 60px;
+  }
+  .pfix-wpb .pfix-wpb__logos img {
+    height: calc(var(--h, 32px) * 0.62) !important;
+  }
+  .pfix-wpb .pfix-wpb__badges span {
+    font-size: 12px;
+  }
+  .pfix-wpb .pfix-wpb__logos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .pfix-wpb .pfix-wpb__logos > div {
+    min-height: 60px;
+    padding: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-wpb .pfix-wpb__photo img {
+    transition: none;
+  }
+  .pfix-wpb .pfix-wpb__card--photo:hover .pfix-wpb__photo img {
+    transform: none;
   }
 }
 /* Blog posts and offer pages: lists in the article were white on white (the site's stylesheet

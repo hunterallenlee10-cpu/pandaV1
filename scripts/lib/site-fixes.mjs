@@ -35,9 +35,10 @@
 //    the video, darkest behind the heading. Phones (no video) get the still too.
 //  - "What Makes Panda the Best?" (home page): three floating cards with orange circle
 //    pictures of two sizes and orange headings broken at different points (so the rules
-//    and text under them sat at three heights) become three ruled rows, each claim beside
-//    its proof: a photo of the crew at work, the six partner brands' logos, and the three
-//    GAF badges.
+//    and text under them sat at three heights) become a stone panel with the heading and
+//    the numbers (jobs, Google rating, states, offices) over three cards, each claim with
+//    its proof: the crew re-roofing a home (with "Meet our team"), the three GAF badges on
+//    charcoal green, and the six partner brands' logos.
 //  - From 1120 px the page builder gives some blocks their desktop width (1143 px rows,
 //    the 1198 px blog article), but the page's column stays 960 px wide up to 1200 px
 //    (1140 px above), so they ran off the right of the screen (the blog text was cut
@@ -326,12 +327,14 @@ const googleRating = () => Number(loadReviewWall().place.rating).toFixed(1);
 // The still behind the home hero's video (a drone photo of a Panda job, 0999_D).
 const HERO_POSTER = { src: '/_custom/site-fixes/home-hero-poster.webp', width: 1500, height: 844 };
 // "What Makes Panda the Best?" (home page): what each claim's row shows beside it, in the
-// order of the cards. Experience: the crew roofing a four-story building (/about/'s photo).
+// order of the cards. Experience: Panda's crew re-roofing a home (the /past-projects/ hero; the
+// photo of a four-story apartment build it had was commercial-type work).
 const BEST_PHOTO = {
-  src: '/_custom/site-fixes/about-team.webp',
-  width: 1100,
-  height: 825,
-  alt: 'A Panda Exteriors crew roofing a new four-story building, with a Panda truck parked in front',
+  src: '/_custom/past-projects/photos/hero-1920.jpg',
+  webp: [['/_custom/past-projects/photos/hero-960.webp', 960], ['/_custom/past-projects/photos/hero-1920.webp', 1920]],
+  width: 1920,
+  height: 1080,
+  alt: 'A Panda Exteriors crew re-roofing a two-story home with dormers',
 };
 // Products: the brands the card names, roofing first. Andersen, CertainTeed and James Hardie
 // are the logos already on the site (with .webp copies); GAF is from Wikimedia Commons, ProVia
@@ -351,6 +354,74 @@ const BEST_BADGES = [
   ['/wp-content/uploads/2025/04/brand-gaf-pledge.png', 'Diamond Pledge'],
   ['/wp-content/uploads/2025/05/GAF-Metal-Certified-Panda-Exteriors.png', 'Metal Certified'],
 ];
+// "What Makes Panda the Best?" (home page): a soft panel with the heading and the numbers
+// (jobs, Google rating, states, offices, as on /about/), then three cards: the experience
+// claim over the crew at work (with "Meet our team"), the certification claim on charcoal
+// green with the GAF badges, and the products claim with the partner brands' logos.
+const WHY_ICONS = {
+  years: '<path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/>',
+  badge: '<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+  box: '<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+};
+const whyIcon = (k) => `<span class="pfix-wpb__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${WHY_ICONS[k]}</svg></span>`;
+function whyPandaNumbers() {
+  try {
+    const { states, areas } = loadUsMap();
+    const jobs = states.reduce((n, s) => n + (Number(s.jobs) || 0), 0);
+    const rating = Number(loadReviewWall()?.place?.rating) || 0;
+    // (Washington, D.C. is on the map with the states; it is named, not counted as one.)
+    const dc = states.some((s) => s.code === 'DC');
+    return { jobs, states: states.length - (dc ? 1 : 0), dc, offices: areas.length, rating };
+  } catch {
+    return {};
+  }
+}
+// (divs with list roles: the site's stylesheet sets li { display: list-item !important } and
+// ul { margin-left: 20px !important; padding-left: 20px !important }.)
+function whyPandaBlock(heading, items, siteDir) {
+  const n = whyPandaNumbers();
+  const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
+  const img = (src, attrs) =>
+    `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
+  const stat = (value, label) => `<div role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
+  const stats = [
+    n.jobs ? stat(`${fmt(n.jobs)}`, 'Jobs completed') : '',
+    n.rating ? stat(`${esc(n.rating.toFixed(1))}<i aria-hidden="true">★</i>`, 'Google rating') : '',
+    n.states ? stat(n.states, n.dc ? 'States + D.C.' : 'States served') : '',
+    n.offices ? stat(n.offices, 'Local offices') : '',
+  ].join('');
+  const [exp, products, certified] = items;
+  const claim = (it, icon) =>
+    `${whyIcon(icon)}<h4 class="pfix-wpb__title">${esc(it.title)}</h4><p class="pfix-wpb__text">${esc(it.text)}</p>`;
+  return (
+    `<section class="pfix-wpb" aria-labelledby="pfix-wpb-title">` +
+    `<div class="pfix-wpb__head"><div class="pfix-wpb__intro"><p class="pfix-wpb__eyebrow">Why homeowners choose Panda</p>` +
+    `<h3 class="pfix-wpb__heading" id="pfix-wpb-title">${esc(heading)}</h3></div>` +
+    (stats ? `<div class="pfix-wpb__stats" role="list" aria-label="Panda Exteriors in numbers">${stats}</div>` : '') +
+    `</div>` +
+    `<div class="pfix-wpb__grid" role="list">` +
+    // Experience: the crew at work, the claim on a dark fade over the photo.
+    `<article class="pfix-wpb__card pfix-wpb__card--photo" role="listitem" data-claim="0">` +
+    `<picture class="pfix-wpb__photo"><source type="image/webp" srcset="${BEST_PHOTO.webp.map(([s, w]) => `${s} ${w}w`).join(', ')}" sizes="(min-width: 992px) 640px, 100vw">` +
+    `<img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></picture>` +
+    `<div class="pfix-wpb__body">${claim(exp, 'years')}` +
+    `<a class="pfix-wpb__link" href="/about/">Meet our team<span aria-hidden="true"> →</span></a></div></article>` +
+    // Certified: the GAF badges on charcoal green.
+    `<article class="pfix-wpb__card pfix-wpb__card--dark" role="listitem" data-claim="2"><div class="pfix-wpb__body">${claim(certified, 'badge')}</div>` +
+    `<div class="pfix-wpb__badges" role="list" aria-label="GAF certifications">` +
+    BEST_BADGES.map(([src, label]) => `<div role="listitem">${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></div>`).join('') +
+    `</div></article>` +
+    // Products: the partner brands' logos.
+    `<article class="pfix-wpb__card pfix-wpb__card--brands" role="listitem" data-claim="1"><div class="pfix-wpb__body">${claim(products, 'box')}</div>` +
+    `<div class="pfix-wpb__logos" role="list" aria-label="Brands we partner with">` +
+    BEST_BRANDS.map(
+      (b) =>
+        `<div role="listitem" style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</div>`
+    ).join('') +
+    `</div></article>` +
+    `</div></section>`
+  );
+}
 const SA_HERO_PHOTO = '/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg';
 const SA_HERO_CHIPS = 6; // states with the most jobs, as chips; the rest are "+N more"
 const SA_MAP_ID = 'service-map';
@@ -1269,49 +1340,41 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // would otherwise retag the row it replaces.
   // (The service pages' card grids share the class: .Service-cards, left to their own fixes.)
   const plainText = (n) => (n ? clean(textOf(n)).replace(/\s+/g, ' ').trim() : '');
-  for (const row of findAll(doc, (c) => (hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards')) || hasClass(c, 'pfix-best'))) {
-    const built = hasClass(row, 'pfix-best');
-    const cards = (row.childNodes || []).filter((k) => k.tagName && hasClass(k, built ? 'pfix-best__item' : 'team-card'));
-    const items = cards.map((card) => ({
-      title: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__title' : 'team-heading'))),
-      text: plainText(find(card, (c) => hasClass(c, built ? 'pfix-best__text' : 'team-para'))).replace(/\s*These brands include .+$/, ''),
-    }));
-    if (items.length !== 3 || items.some((i) => !i.title || !i.text)) continue;
-    if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
-    const webp = (src) => !siteDir || fs.existsSync(path.join(siteDir, `${src}.webp`));
-    const img = (src, attrs) =>
-      `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
-    const evidence = [
-      `<figure class="pfix-proof__photo"><img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></figure>`,
-      `<ul class="pfix-proof__grid pfix-proof__logos" aria-label="Brands we partner with">` +
-        BEST_BRANDS.map((b) => `<li style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</li>`).join('') +
-        `</ul>`,
-      `<ul class="pfix-proof__grid pfix-proof__badges" aria-label="GAF certifications">` +
-        BEST_BADGES.map(([src, label]) => `<li>${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></li>`).join('') +
-        `</ul>`,
-    ];
-    const label = built
-      ? null
-      : row.parentNode && (row.parentNode.childNodes || []).filter((k) => k.tagName).find((k, i, all) => all[i + 1] === row && hasClass(k, 'para-bold'));
-    const labelled = built || !!label;
-    ed.outer(
-      row,
-      `<div class="pfix-proof" role="list"${labelled ? ' aria-labelledby="pfix-best-label"' : ''}>` +
-        items
-          .map(
-            ({ title, text }, i) =>
-              `<div class="pfix-proof__row pfix-proof__row--${['photo', 'logos', 'badges'][i]}" role="listitem">` +
-              `<div class="pfix-proof__claim"><h4 class="pfix-proof__title">${esc(title)}</h4><p class="pfix-proof__text">${esc(text)}</p></div>` +
-              `<div class="pfix-proof__evidence">${evidence[i]}</div></div>`
-          )
-          .join('') +
-        `</div>`
-    );
-    if (label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset)) {
-      ed.outer(label, `<h3 class="pfix-best-label" id="pfix-best-label">${esc(plainText(label))}</h3>`);
+  // The three claims, from the page's cards or from an earlier version of this fix:
+  // [block, title class, text class, card class].
+  const WHY_SOURCES = [
+    [(c) => hasClass(c, 'team-cards') && !hasClass(c, 'Service-cards'), 'team-heading', 'team-para', 'team-card'],
+    [(c) => hasClass(c, 'pfix-best'), 'pfix-best__title', 'pfix-best__text', 'pfix-best__item'],
+    [(c) => hasClass(c, 'pfix-proof'), 'pfix-proof__title', 'pfix-proof__text', 'pfix-proof__row'],
+    [(c) => c.tagName === 'section' && hasClass(c, 'pfix-wpb'), 'pfix-wpb__title', 'pfix-wpb__text', 'pfix-wpb__card'],
+  ];
+  for (const [is, titleCls, textCls, cardCls] of WHY_SOURCES) {
+    for (const row of findAll(doc, is)) {
+      const cards = findAll(row, (k) => k !== row && hasClass(k, cardCls)).sort((a, b) => Number(attr(a, 'data-claim') || 0) - Number(attr(b, 'data-claim') || 0));
+      const items = cards.map((card) => ({
+        title: plainText(find(card, (c) => hasClass(c, titleCls))),
+        text: plainText(find(card, (c) => hasClass(c, textCls))).replace(/\s*These brands include .+$/, ''),
+      }));
+      if (items.length !== 3 || items.some((i) => !i.title || !i.text)) continue;
+      if (ed.overlaps(row.sourceCodeLocation.startOffset, row.sourceCodeLocation.endOffset)) continue;
+      // The line above the cards ("What Makes Panda the Best?"), or the heading an earlier
+      // version made of it; it moves into the block.
+      const siblings = row.parentNode ? (row.parentNode.childNodes || []).filter((k) => k.tagName) : [];
+      const before = siblings[siblings.indexOf(row) - 1];
+      const label = before && (hasClass(before, 'para-bold') || hasClass(before, 'pfix-best-label')) ? before : null;
+      const heading =
+        plainText(find(row, (c) => hasClass(c, 'pfix-wpb__heading'))) || (label && plainText(label)) || 'What Makes Panda the Best?';
+      const out = whyPandaBlock(heading, items, siteDir);
+      const loc = row.sourceCodeLocation;
+      const from = label && !ed.overlaps(label.sourceCodeLocation.startOffset, label.sourceCodeLocation.endOffset) ? label.sourceCodeLocation.startOffset : loc.startOffset;
+      if (html.slice(from, loc.endOffset) === out) continue;
+      ed.replace(from, loc.endOffset, out);
+      changes.push(
+        'why panda: a panel with the numbers (jobs, rating, states, offices) and three cards: the crew re-roofing a home, ' +
+          'the GAF badges on charcoal green and the partner brands (was three ruled rows with a photo of an apartment build)'
+      );
+      used.css = true;
     }
-    changes.push('why panda: each claim beside its proof (the crew at work, the partner brands’ logos, the GAF badges) in three ruled rows (was three floating cards with orange circles and headings)');
-    used.css = true;
   }
 
   // Blocks with a fixed desktop width wider than their column at 1120–1199 px (1143 px

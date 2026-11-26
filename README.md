@@ -86,7 +86,11 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   (`archiveShown` in `scripts/lib/project-pages.mjs`), and "See all past projects" on the project and service pages
   leads to the favorites (`#ppx`). The old home cards' pictures (`Roofing-Home.png`, `Solar-Roofing-Home.png`,
   `Commercial-Roofing-Home.png` and their `.webp` copies) are deleted by `npm run update:site` once no page uses
-  them (`REPLACED_FILES`). A customer review about a flat roof on a historic home, and the
+  them (`REPLACED_FILES`). The home page's "What Makes Panda the Best?" (three ruled rows, the first beside a photo of
+  a four-story apartment build) is a stone panel with the heading and the numbers the About page shows (jobs, Google
+  rating, states + D.C., offices; from the US map and the review data), over three cards: the crew re-roofing a home
+  (the `/past-projects/` hero photo, with "Meet our team"), the GAF badges on charcoal green and the partner brands'
+  logos (`whyPandaBlock`, `.pfix-wpb`). A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
