@@ -25,6 +25,7 @@ import { pastProjectsFiles, PAST_PROJECTS_FILES } from '../lib/past-projects.mjs
 import { projectsFiles, PROJECTS_FILES } from '../lib/project-pages.mjs';
 import { buildMediaPage, mediaFiles, MEDIA_PATH, MEDIA_FILES } from '../lib/media-page.mjs';
 import { BLOG_DIR, BLOG_FILES } from '../lib/blog.mjs';
+import { US_MAP_DIR, US_MAP_FILES } from '../lib/us-map.mjs';
 import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '../lib/site-map-page.mjs';
 import { syncCareersHeader, CAREERS_PATH } from '../lib/careers-header.mjs';
 import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../lib/new-pages.mjs';
@@ -157,6 +158,8 @@ const files = [
   ...Object.entries(PROJECT_GALLERY_FILES).map(([name, url]) => [path.join(PROJECT_GALLERY_DIR, name), url]),
   ...Object.entries(SMOOTH_SCROLL_FILES).map(([name, url]) => [path.join(SMOOTH_SCROLL_DIR, name), url]),
   ...Object.entries(BLOG_FILES).map(([name, url]) => [path.join(BLOG_DIR, name), url]),
+  // (the maps themselves are rebuilt only by 03-build.mjs; their script follows custom/us-map/)
+  ...Object.entries(US_MAP_FILES).map(([name, url]) => [path.join(US_MAP_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
 if (siteMap) files.push(...siteMapFiles());
 if (newPages.length) files.push(...newPagesFiles());

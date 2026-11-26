@@ -207,7 +207,7 @@ import { attr, classes, hasClass, esc, textOf, rawText, clean, findAll, find, ed
 import { collectReviewCarousels } from './reviews.mjs';
 import { collectReviewWall, collectReviewsHero, collectFormBadges, loadReviewWall } from './review-wall.mjs';
 import { collectProjectGalleries } from './project-gallery.mjs';
-import { loadUsMap } from './us-map.mjs';
+import { loadUsMap, JOBS_TOTAL, TOTAL_COMPLETED } from './us-map.mjs';
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
@@ -389,7 +389,7 @@ function whyPandaBlock(heading, items, siteDir) {
     `<picture>${webp(src) && /\.(png|jpe?g)$/.test(src) ? `<source type="image/webp" srcset="${esc(src)}.webp">` : ''}<img src="${esc(src)}" ${attrs} loading="lazy" decoding="async"></picture>`;
   const stat = (value, label) => `<div role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
   const stats = [
-    n.jobs ? stat(`${fmt(n.jobs)}`, 'Jobs completed') : '',
+    n.jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '',
     n.rating ? stat(`${esc(n.rating.toFixed(1))}<i aria-hidden="true">★</i>`, 'Google rating') : '',
     n.states ? stat(n.states, n.dc ? 'States + D.C.' : 'States served') : '',
     n.offices ? stat(n.offices, 'Local offices') : '',
@@ -626,7 +626,19 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
   const text = hero && find(hero, (c) => hasClass(c, 'text-section'));
   const h1 = text && find(text, (c) => c.tagName === 'h1');
   if (hero && hasClass(hero, 'pfix-sa-hero')) {
-    // Built already: its Google rating follows custom/reviews/google-reviews.json.
+    // Built already: the total jobs follow JOBS_TOTAL (us-map.mjs).
+    for (const t of textNodes(hero)) {
+      if (!/We’ve completed [\d,]+ jobs in/.test(t.value)) continue;
+      if (editText(ed, html, t, (v) => v.replace(/We’ve completed [\d,]+ jobs in/, `We’ve completed ${JOBS_TOTAL.words} jobs in`))) changes.push(`service areas hero: "We’ve completed ${JOBS_TOTAL.words} jobs"`);
+    }
+    for (const s of findAll(hero, (c) => hasClass(c, 'pfix-sa-hero__stat') && /^Jobs completed$/.test(clean(textOf(find(c, (x) => x.tagName === 'span') || { childNodes: [] }))))) {
+      const b = find(s, (x) => x.tagName === 'b');
+      if (b && clean(textOf(b)) !== JOBS_TOTAL.short) {
+        ed.inner(b, esc(JOBS_TOTAL.short));
+        changes.push(`service areas hero: jobs completed ${JOBS_TOTAL.short}`);
+      }
+    }
+    // Its Google rating follows custom/reviews/google-reviews.json.
     const star = find(hero, (c) => hasClass(c, 'pfix-sa-hero__star'));
     const before = star && (star.parentNode.childNodes || []).find((c) => c.nodeName === '#text' && /^\s*\d(\.\d)?\s*$/.test(c.value));
     if (before && before.value.trim() !== googleRating() && editText(ed, html, before, () => googleRating())) changes.push(`service areas hero: Google rating ${before.value.trim()} -> ${googleRating()}`);
@@ -653,11 +665,11 @@ function serviceAreasHero(doc, html, ed, { pathname, siteDir }, changes) {
     esc(`Local exterior remodelers with ${offices} offices on the East Coast`) +
     `</h1>` +
     `<p class="pfix-sa-hero__sub">${esc(
-      `${jobs ? `We’ve completed ${fmt(jobs)} jobs in ${states.length} states.` : `We work in ${states.length} states.`} ` +
+      `${jobs ? `We’ve completed ${JOBS_TOTAL.words} jobs in ${states.length} states.` : `We work in ${states.length} states.`} ` +
         `Our local offices are in ${andList(officeStates)}.`
     )}</p>` +
     `<div class="pfix-sa-hero__stats" role="list">` +
-    (jobs ? stat(fmt(jobs), 'Jobs completed') : '') +
+    (jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '') +
     stat(states.length, 'States') +
     stat(offices, 'Local offices') +
     stat(`${googleRating()}<span class="pfix-sa-hero__star" aria-hidden="true">★</span>`, 'Google rating') +
@@ -1771,6 +1783,17 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  // The large map's panel on a page built before (the maps are rebuilt only by 03-build.mjs):
+  // "All areas" shows the total jobs as the site states it (JOBS_TOTAL, us-map.mjs), and
+  // us-map.js shows the same when the map goes back to all areas.
+  for (const p of findAll(doc, (c) => c.tagName === 'p' && hasClass(c, 'pmap__info-jobs'))) {
+    const l = p.sourceCodeLocation;
+    if (ed.overlaps(l.startOffset, l.endOffset)) continue;
+    const out = `<p class="pmap__info-jobs" data-default="${esc(attr(p, 'data-default') || '')}" data-default-text="${esc(TOTAL_COMPLETED)}">${esc(TOTAL_COMPLETED)}</p>`;
+    if (html.slice(l.startOffset, l.endOffset) === out) continue;
+    ed.outer(p, out);
+    changes.push(`map panel: "${TOTAL_COMPLETED}"`);
+  }
   // The home page's "Our Services": the four main services as photo cards.
   if (homeServices(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /siding/, /gutters/, /roofing/: what the job involves, signs it's time, how it works,

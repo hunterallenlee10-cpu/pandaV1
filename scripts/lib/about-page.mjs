@@ -24,7 +24,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { hasClass, classes, esc, find, textOf, clean, headEndOffset } from './html-edit.mjs';
-import { loadUsMap } from './us-map.mjs';
+import { loadUsMap, JOBS_TOTAL } from './us-map.mjs';
 import { loadReviewWall } from './review-wall.mjs';
 
 export const ABOUT_PATH = '/about/';
@@ -75,11 +75,11 @@ function heroText() {
   const stat = (value, label) => `<div class="pfix-ab-hero__stat" role="listitem"><b>${value}</b><span>${esc(label)}</span></div>`;
   return (
     `<p class="pfix-ab-hero__eyebrow">About Panda Exteriors</p>` +
-    `<h1 class="pfix-ab-hero__title">${n.jobs ? esc(`The team behind ${fmt(n.jobs)} jobs across the East Coast`) : 'The team behind your new exterior'}</h1>` +
+    `<h1 class="pfix-ab-hero__title">${n.jobs ? esc(`The team behind ${JOBS_TOTAL.words} jobs across the East Coast`) : 'The team behind your new exterior'}</h1>` +
     `<p class="pfix-ab-hero__sub">Roofing, solar, siding and gutters from trained, certified and licensed crews, ` +
     `with ${n.offices} local offices, no sales pressure and no corners cut.</p>` +
     `<div class="pfix-ab-hero__stats" role="list">` +
-    (n.jobs ? stat(fmt(n.jobs), 'Jobs completed') : '') +
+    (n.jobs ? stat(JOBS_TOTAL.short, 'Jobs completed') : '') +
     stat(n.offices, 'Local offices') +
     stat(n.states, 'States served') +
     (n.rating ? stat(`${esc(n.rating.toFixed(1))}${STAR}`, 'Google rating') : '') +
