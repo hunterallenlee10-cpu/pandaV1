@@ -12,11 +12,18 @@
 //    the hero's photo. They become a mosaic of Panda's own home projects: one large photo of a
 //    crew re-roofing a home and eight smaller ones, each linking to its project page with the
 //    project's name on it, from the copies the project pages already use (720 px webp).
+//  - "The Proof Is in the Numbers": the two stats the rest of the site also shows read as it does:
+//    the jobs as JOBS_TOTAL (us-map.mjs; "Successful Projects Completed" -> "Jobs Completed") and
+//    "1,500+ Five-Star Customer Reviews" as the Google rating the home and About pages show
+//    (custom/reviews/google-reviews.json: 4.8 from 1,067 reviews). The other four (Inc. 5000,
+//    BBB, GAF, Glassdoor) are the page's own.
 //
 // Applied by site-fixes.mjs; the three are rendered again on every run, so `npm run update:site`
 // keeps them in step with this file and the project names in custom/projects/projects.json.
-import { find, hasClass, esc, classes } from './html-edit.mjs';
+import { find, findAll, hasClass, esc, classes, textOf, clean } from './html-edit.mjs';
 import { projectsData } from './project-pages.mjs';
+import { JOBS_TOTAL } from './us-map.mjs';
+import { loadReviewWall } from './review-wall.mjs';
 
 export const CAREERS_PATH = '/careers/';
 export const CAREERS_FILES = {
@@ -89,6 +96,23 @@ export function collectCareersPage(doc, html, ed, { pathname = '' } = {}, change
       changes.push(`careers photos: a mosaic of ${GALLERY.length} home project photos linking to their pages (were 8 photos, 5 that often never loaded, some of commercial work)`);
       done = true;
     }
+  }
+  // The numbers: [label it had or has, value, label].
+  const rating = Number(loadReviewWall()?.place?.rating) || 0;
+  const STATS = [
+    [/^(Successful Projects Completed|Jobs Completed)$/i, JOBS_TOTAL.short, 'Jobs Completed'],
+    ...(rating ? [[/^(Five-Star Customer Reviews|Google Rating)$/i, `${rating.toFixed(1)}★`, 'Google Rating']] : []),
+  ];
+  for (const card of findAll(doc, (c) => hasClass(c, 'pcv2-stat-card'))) {
+    const value = find(card, (c) => hasClass(c, 'pcv2-stat-value'));
+    const label = find(card, (c) => hasClass(c, 'pcv2-stat-label'));
+    if (!value || !label || !free(card)) continue;
+    const stat = STATS.find(([re]) => re.test(clean(textOf(label))));
+    if (!stat || (clean(textOf(value)) === stat[1] && clean(textOf(label)) === stat[2])) continue;
+    ed.inner(value, esc(stat[1]));
+    ed.inner(label, esc(stat[2]));
+    changes.push(`careers numbers: ${stat[1]} ${stat[2]}`);
+    done = true;
   }
   return done;
 }
