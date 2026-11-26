@@ -76,7 +76,13 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   which now compare three roof types. Wording that offered commercial roofing or work for businesses (the "About Our
   Team" paragraph, the home page and its title, the company description in every page's structured data, a few
   blog sentences) now says what Panda does for homes. `/past-projects/` shows five favorites (the two other home
-  projects in place of the three commercial ones). A customer review about a flat roof on a historic home, and the
+  projects in place of the three commercial ones). Card grids that a missing card left with a gap are laid out
+  again: the home page's "Our Services" (two picture cards in a row of three) becomes photo cards for Roofing,
+  Solar, Siding and Gutters, one row of four with "See all our services", under the heading "Roofing, Solar, Siding
+  and Gutters" (`homeServices`, `HOME_SERVICE_CARDS`); a service-card grid of four is one row of four, and of five
+  (`/services/`) two large cards over three (counted in CSS, so a grid adapts when a card comes or goes); and
+  "Browse all of our projects" on `/past-projects/` and the seven offices on `/service-areas/` centre a short last
+  row. A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they

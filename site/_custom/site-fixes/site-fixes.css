@@ -1164,13 +1164,66 @@ h3.pfix-best-label {
 .pfix-svc-grid .pfix-svc .pfix-svc__title {
   margin-top: 0;
 }
+/* Grids with a card count that doesn't fill rows of three (cards came off with
+   Commercial): four make one row of four (two by two on laptops), five make two large
+   cards over three (the first two are the main services). Counted with :has(), so any
+   grid adapts when a card is added or removed; without it, rows of three as before. */
+@media (min-width: 1200px) {
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(4):last-child) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(4):last-child) .pfix-svc .pfix-svc__body {
+    padding: 20px 20px 22px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(4):last-child) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 920px;
+  }
+}
+@media (min-width: 992px) {
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(5):last-child) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(5):last-child) > .pfix-svc-grid__item {
+    grid-column: span 2;
+  }
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(5):last-child) > .pfix-svc-grid__item:nth-child(-n + 2) {
+    grid-column: span 3;
+  }
+  .pfix-svc-grid:has(> .pfix-svc-grid__item:nth-child(5):last-child) > .pfix-svc-grid__item:nth-child(-n + 2) .pfix-svc__media {
+    aspect-ratio: 2 / 1;
+  }
+}
 @media (max-width: 991.98px) {
   .pfix-svc-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
   }
+  /* (five: the first card across both columns, then two by two) */
+  .pfix-svc-grid > .pfix-svc-grid__item:first-child:nth-last-child(5) {
+    grid-column: 1 / -1;
+  }
+  .pfix-svc-grid > .pfix-svc-grid__item:first-child:nth-last-child(5) .pfix-svc__media {
+    aspect-ratio: 2 / 1;
+  }
+}
+/* The home page's "Our Services": the cards under the section's two-line heading. */
+.pfix-home-services .pfix-svc-grid {
+  margin-top: 8px;
+}
+.pfix-home-services .pfix-services__all {
+  margin-top: 30px;
 }
 @media (max-width: 639.98px) {
+  .pfix-svc-grid > .pfix-svc-grid__item:first-child:nth-last-child(5) {
+    grid-column: auto;
+  }
+  .pfix-svc-grid > .pfix-svc-grid__item:first-child:nth-last-child(5) .pfix-svc__media {
+    aspect-ratio: 16 / 10;
+  }
   .pfix-svc-grid,
   .pfix-svc-grid.pfix-svc-grid--pair {
     grid-template-columns: minmax(0, 1fr);
@@ -10970,6 +11023,17 @@ h3.pfix-best-label {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 18px;
+}
+/* Seven offices: on wide screens four over three, the three centred (not a gap at the end). */
+@media (min-width: 1200px) {
+  .pfix-sa-offices__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .pfix-sa-offices__grid > * {
+    flex: 0 0 calc((100% - 3 * 18px) / 4);
+  }
 }
 .pfix-sa-offices a.pfix-sa-office {
   display: flex;

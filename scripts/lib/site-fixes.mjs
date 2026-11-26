@@ -374,6 +374,20 @@ const SERVICE_CARDS = [
   { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
     text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
 ];
+// The home page's "Our Services": the four main services, with the words and photos of
+// their cards on /services/ (one row of four on wide screens, two by two below).
+const HOME_SERVICE_CARDS = [
+  { title: 'Roofing', href: '/roofing/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+    text: 'We offer full-service roofing care to ensure you get the protection you need for your home as quickly as possible.' },
+  { title: 'Solar', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+    text: 'At Panda Exteriors, we work with top brands to offer quality solar panels that will harness energy from the sun to power your home throughout the year.' },
+  { title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
+    text: 'Our contractors have decades of experience with siding installations across the East Coast, so your home looks and works better than ever.' },
+  { title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
+    text: 'Our gutter products are designed to blend in with your home exterior, so you don’t have to worry about them detracting from your curb appeal.' },
+];
+const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
+const HOME_SERVICES_INTRO = 'Upgrade your entire home exterior with the help of our trained and certified roofing, solar, siding and gutter crews!';
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
   text: 'Asphalt shingles, metal and solar shingles, in the colors and styles that suit your home.' };
@@ -921,6 +935,62 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
     );
     done = true;
   }
+  return done;
+}
+
+// The home page's "Our Services" ("East Coast Roofing and Solar Installation"): three cards
+// with the service's name drawn into the picture (Roofing, Solar Roofing, Commercial
+// Roofing). With Commercial off the site, two of them sat in a row of three with a gap
+// where the third was. It becomes the site's photo cards for the four main services
+// (HOME_SERVICE_CARDS), in the section's orange, with "See all our services" under them,
+// and the heading and intro name all four. A page built before gets its cards rendered
+// again from the list.
+function homeServices(doc, html, ed, { pathname, siteDir }, changes) {
+  if (pathname !== '/') return false;
+  const section = find(doc, (c) => hasClass(c, 'Services-section'));
+  if (!section || ed.overlaps(section.sourceCodeLocation.startOffset, section.sourceCodeLocation.endOffset)) return false;
+  const exists = fileExists(siteDir);
+  const cards = HOME_SERVICE_CARDS.filter((s) => exists(s.img[0]));
+  if (cards.length < HOME_SERVICE_CARDS.length) {
+    console.warn(`site-fixes: ${pathname}: no photo for ${HOME_SERVICE_CARDS.filter((s) => !cards.includes(s)).map((s) => s.title).join(', ')}, services left as is`);
+    return false;
+  }
+  const out =
+    `<div class="pfix-svc-grid pfix-svc-grid--home" role="list">` +
+    cards.map((s) => `<div class="pfix-svc-grid__item" role="listitem">${serviceCard(s, exists)}</div>`).join('') +
+    `</div>` +
+    `<p class="pfix-services__all"><a href="/services/">See all our services<span aria-hidden="true"> →</span></a></p>`;
+  const old = find(section, (c) => hasClass(c, 'Roofing-crads'));
+  const built = find(section, (c) => hasClass(c, 'pfix-svc-grid'));
+  let done = false;
+  if (old) {
+    ed.outer(old, out);
+    done = true;
+  } else if (built) {
+    const all = find(section, (c) => hasClass(c, 'pfix-services__all'));
+    const from = built.sourceCodeLocation.startOffset;
+    const to = (all || built).sourceCodeLocation.endOffset;
+    if (html.slice(from, to) !== out) {
+      ed.replace(from, to, out);
+      done = true;
+    }
+  } else return false;
+  if (!hasClass(section, 'pfix-services')) ed.retag(section, withClass(section, ['pfix-services', 'pfix-services--warm', 'pfix-home-services']));
+  const strong = find(section, (c) => c.tagName === 'strong' && hasClass(c, 'primary-color'));
+  if (strong && clean(textOf(strong)) !== HOME_SERVICES_HEADING) {
+    ed.inner(strong, esc(HOME_SERVICES_HEADING));
+    done = true;
+  }
+  const intro = find(section, (c) => c.tagName === 'p' && hasClass(c, 'para-2') && !ancestors(c).some((a) => hasClass(a, 'pfix-svc-grid') || hasClass(a, 'Roofing-crads')));
+  if (intro && clean(textOf(intro)) !== HOME_SERVICES_INTRO) {
+    ed.inner(intro, esc(HOME_SERVICES_INTRO));
+    done = true;
+  }
+  if (done)
+    changes.push(
+      `home services: ${cards.length} photo cards (${cards.map((s) => s.title).join(', ')}) with "See all our services", ` +
+        `heading "${HOME_SERVICES_HEADING}" (were 2 picture cards in a row of 3 with Commercial gone)`
+    );
   return done;
 }
 
@@ -1614,6 +1684,8 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.js = true;
   }
   if (serviceGrids(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  // The home page's "Our Services": the four main services as photo cards.
+  if (homeServices(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /siding/, /gutters/, /roofing/: what the job involves, signs it's time, how it works,
   // questions.
   if (collectServicePage(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.css = true;
