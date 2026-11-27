@@ -182,7 +182,7 @@
         "title": "Storm damage? We’ll help you through the claim",
         "sub": "Most homeowners insurance policies cover sudden, storm-related roof damage. We inspect your roof for free, meet your adjuster and handle the roofing side of your claim, from the first photo to the final shingle.",
         "chips": [["search", "Free storm-damage inspection"], ["users", "We meet your adjuster"], ["roof", "Insurance-paid roof replacements"]],
-        "photo": ["/wp-content/uploads/2025/07/DJI_20250722134520_0995_D.jpg", 2000, 1125]
+        "photo": ["/_custom/site-fixes/storm-damage-hero.webp", 1280, 720]
       },
       "form": { "title": "Free Storm Inspection", "text": "We check your roof, gutters and attic, and photograph everything.", "button": "Book My Free Inspection" },
       "sections": [

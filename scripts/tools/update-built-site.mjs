@@ -62,6 +62,13 @@ const newFiles = new Set([...newPagePaths(), SITE_AUDIT_PATH].map((p) => path.jo
 const pages = listFiles(SITE, (f) => f.endsWith('.html') && !path.relative(SITE, f).startsWith('_raw') && !(MEDIA_PAGE && f === mediaFile) && !newFiles.has(f));
 const counts = {};
 const linked = new Set(); // the /_custom/ files the pages link
+function addLinked(html) {
+  for (const m of html.matchAll(/(?:href|src)="(\/_custom\/[^"?#]+)"/g)) linked.add(m[1]);
+  // and the ones in srcset lists (a picture's larger sizes)
+  for (const m of html.matchAll(/srcset="([^"]*)"/g)) for (const part of m[1].split(',')) if (part.trim().startsWith('/_custom/')) linked.add(part.trim().split(/\s+/)[0].replace(/[?#].*$/, ''));
+  // and backgrounds set in a style attribute (a new page's hero: style="--pnp-hero: url('…')")
+  for (const m of html.matchAll(/url\((?:&#39;|&quot;|['"])?(\/_custom\/[^'")&?#]+)/g)) linked.add(m[1]);
+}
 let changed = 0;
 for (const file of pages.sort()) {
   const url = pageUrl(file);
@@ -78,9 +85,7 @@ for (const file of pages.sort()) {
       if (!dryRun) fs.writeFileSync(file, out.html);
     }
   }
-  for (const m of out.html.matchAll(/(?:href|src)="(\/_custom\/[^"?#]+)"/g)) linked.add(m[1]);
-  // and the ones in srcset lists (a picture's larger sizes)
-  for (const m of out.html.matchAll(/srcset="([^"]*)"/g)) for (const part of m[1].split(',')) if (part.trim().startsWith('/_custom/')) linked.add(part.trim().split(/\s+/)[0].replace(/[?#].*$/, ''));
+  addLinked(out.html);
 }
 
 // The Media page, from the pages just updated (its header and footer come from one of them).
@@ -102,6 +107,7 @@ if (!only || newPagePaths().some((p) => only.has(p))) {
   newPages = buildNewPages({ siteDir: SITE, siteOrigin: SITE_ORIGIN });
   if (SITE_FIXES) for (const p of newPages) p.html = launchReady(p.html, { pathname: p.path });
   for (const p of newPages) {
+    addLinked(p.html);
     const file = path.join(SITE, p.path, 'index.html');
     if (fs.existsSync(file) && fs.readFileSync(file, 'utf8') === p.html) continue;
     changed++;
