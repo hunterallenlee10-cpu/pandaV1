@@ -49,6 +49,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, classes, esc, find, findAll, headEndOffset } from './html-edit.mjs';
+import { JOBS_TOTAL, statesServed } from './us-map.mjs';
 
 const PHONE = { href: 'tel:+18772138536', text: '(877) 213-8536' };
 // The hero's estimate form (service-forms.mjs).
@@ -77,6 +78,31 @@ const ICONS = {
 // background, by the page's modifier class), the photo it used to preload, and the words.
 export const SERVICES_HERO_PHOTO = '/_custom/site-fixes/services-hero.webp';
 const HEROES = {
+  // The home page: the same text column over its own background (a Panda job's video, with a
+  // still under it: site-fixes.mjs), which stays. Was a thin heading, a line about roofing
+  // and solar only and a picture of three award badges floating between two white lines.
+  '/': {
+    key: 'home',
+    from: 'hero',
+    anyBlock: true,
+    // (no photo of its own: the video's still is in the page, site-fixes.mjs)
+    photo: null,
+    eyebrow: 'Roofing · Solar · Siding · Gutters',
+    title: 'Professional Roofing Contractor Serving the East Coast',
+    sub: () =>
+      `Free, no-obligation estimates on new roofs, solar, siding and gutters from a GAF Master Elite contractor with ${JOBS_TOTAL.words} jobs completed in ${statesServed().sentence}`,
+    // The four services, in the order of the cards below (and the header's menu).
+    chips: [
+      ['roof', 'Roofing', '/roofing/', 'Replacement and repair'],
+      ['sun', 'Solar', '/solar/', 'Panels or GAF solar shingles'],
+      ['siding', 'Siding', '/siding/', 'Fiber cement and vinyl'],
+      ['gutter', 'Gutters', '/gutters/', 'Seamless gutters and guards'],
+    ],
+    // What the award badges picture said, in words (the badges themselves are in "What Makes
+    // Panda the Best?" below).
+    trust: ['GAF President’s Club', 'Inc. 5000 fastest-growing company'],
+    note: 'a line about all four services and the jobs completed, chips for each service, estimate and call buttons and the awards in words under them (was a heading, a line about roofing and solar only and a picture of award badges between two lines)',
+  },
   '/services/': {
     key: 'services',
     from: 'hero-section-service',
@@ -260,11 +286,13 @@ const HEROES = {
 };
 export const HERO_PATHS = Object.keys(HEROES);
 
+const val = (v) => (typeof v === 'function' ? v() : v);
+const CHECK = line('M5 12.5l4.2 4.2L19 7', 2.4);
 const heroText = (h) =>
   `<p class="pfix-sv-hero__eyebrow">${esc(h.eyebrow)}</p>` +
   `<h1 class="pfix-sv-hero__title">${esc(h.title)}</h1>` +
-  `<p class="pfix-sv-hero__sub">${esc(h.sub)}</p>` +
-  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options' }[h.key] || 'Gutter services'}">` +
+  `<p class="pfix-sv-hero__sub">${esc(val(h.sub))}</p>` +
+  `<nav class="pfix-sv-hero__services${h.chips.some((c) => c[3]) ? ' pfix-sv-hero__services--wide' : ''}" aria-label="${{ home: 'Our services', services: 'Our services', guards: 'Gutter guards', siding: 'Siding types', costs: 'Roofing costs', roofing: 'Roofing services', types: 'Roof types', replacement: 'Roof replacement', attic: 'Attic insulation', solar: 'Solar options', 'solar-shingles': 'Solar options' }[h.key] || 'Gutter services'}">` +
   h.chips
     .map(([icon, name, href, line2]) => `<a class="pfix-sv-hero__service" href="${esc(href)}">${ICONS[icon]}<span>${line2 ? `<b>${esc(name)}</b><small>${esc(line2)}</small>` : esc(name)}</span></a>`)
     .join('') +
@@ -273,6 +301,11 @@ const heroText = (h) =>
   `<a class="pfix-sv-hero__btn pfix-sv-hero__btn--primary" href="#${FORM_ID}">Get a free estimate${ICONS.arrow}</a>` +
   `<a class="pfix-sv-hero__btn pfix-sv-hero__btn--ghost" href="${PHONE.href}">${ICONS.phone}Call ${PHONE.text}</a>` +
   `</div>` +
+  (h.trust
+    ? `<div class="pfix-sv-hero__trust" role="list" aria-label="Awards and track record">` +
+      h.trust.map((t) => `<span role="listitem">${CHECK}${esc(val(t))}</span>`).join('') +
+      `</div>`
+    : '') +
   (h.brands
     ? `<div class="pfix-sv-hero__brands" role="list" aria-label="Brands we install">` +
       h.brands
@@ -294,7 +327,7 @@ const withClass = (n, add) => {
 export function collectServiceHero(doc, html, ed, { pathname = '', siteDir = '' } = {}, changes = []) {
   const h = HEROES[pathname];
   if (!h) return false;
-  const file = h.custom ? path.join(ROOT, 'custom', 'site-fixes', path.basename(h.photo)) : siteDir && path.join(siteDir, h.photo);
+  const file = !h.photo ? '' : h.custom ? path.join(ROOT, 'custom', 'site-fixes', path.basename(h.photo)) : siteDir && path.join(siteDir, h.photo);
   if (file && !fs.existsSync(file)) {
     console.warn(`${pathname} hero: the photo ${h.photo} is missing, hero left as is`);
     return false;
@@ -307,6 +340,10 @@ export function collectServiceHero(doc, html, ed, { pathname = '', siteDir = '' 
   const mark = ['pfix-sv-hero', `pfix-sv-hero--${h.key}`];
   if (!mark.every((c) => hasClass(hero, c))) ed.retag(hero, withClass(hero, mark));
   ed.inner(text, heroText(h));
+  if (!h.photo) {
+    changes.push(`${h.key} page hero: a label, the heading, ${h.note}`);
+    return true;
+  }
   // Preload the photo (instead of the one the page used to preload).
   const type = h.photo.endsWith('.webp') ? ' type="image/webp"' : '';
   const preload = `<link rel="preload" as="image"${type} href="${h.photo}" fetchpriority="high">`;

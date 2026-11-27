@@ -33,6 +33,9 @@ import { contactPage, officeMap } from './contact-page.mjs';
 import { COVERED, NOT_COVERED, CLAIM_STEPS } from './roofing-costs-page.mjs';
 import { loadUsMap } from './us-map.mjs';
 
+// A /_custom/ file that is in custom/ (copied to the site after the pages are made).
+const existsInCustom = (src) => src.startsWith('/_custom/') && fs.existsSync(path.join(ROOT, 'custom', decodeURIComponent(src.slice('/_custom/'.length))));
+
 export const NEW_PAGES_ON = (process.env.NEW_PAGES ?? (process.env.SITE_ORIGIN ? '0' : '1')) === '1';
 export const NEW_PAGES_DIR = path.join(ROOT, 'custom', 'new-pages');
 export const NEW_PAGES_FILES = { 'new-pages.css': '/_custom/new-pages/new-pages.css' };
@@ -299,7 +302,10 @@ function officePage({ path: pathname, office: o, vars }, siteDir) {
     `<a href="mailto:${EMAIL}">${ICONS.mail}${EMAIL}</a></p>` +
     (vars.jobsN >= c.minJobs ? `<p class="pnp-office-card__jobs"><b>${esc(vars.jobs)}</b> ${esc(t(c.jobs).replace(vars.jobs, '').trim())}</p>` : '') +
     `</div></div>`;
-  const h = { eyebrow: t(c.eyebrow), title: t(c.title), sub: t(c.sub) };
+  // (a photo of Panda's work behind the hero, if pages.json names one for this office and the
+  // site has it; the plain green otherwise)
+  const photo = (c.photos || {})[o.city];
+  const h = { eyebrow: t(c.eyebrow), title: t(c.title), sub: t(c.sub), photo: photo && (exists(photo) || existsInCustom(photo)) ? [photo] : null };
   const services = section(
     'cards',
     head('', t(c.servicesTitle), '', 'pnp-h-services') +

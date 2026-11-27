@@ -129,6 +129,26 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   inspector at the home is also the `/storm-damage/` hero in place of the drone photo of an office complex
   (`custom/site-fixes/storm-damage-hero.webp`); `update-built-site.mjs` now also copies files a page uses as a
   background in a style attribute, as that hero does. Roofing now has 35 photos, Solar 16.
+- **The home page, brought in line with the rest of the site.** Its hero (a thin heading, a line about roofing and
+  solar only and a picture of three award badges floating between two white lines) has the other heroes' text
+  column over its video: a label, the heading, a line about all four services and the jobs completed, a chip per
+  service, estimate and call buttons and the awards in words (`'/'` in `scripts/lib/services-hero.mjs`). "Experts
+  You Can Trust", a row of the same logos and badges as "What Makes Panda the Best?", is removed (the page showed
+  its badges four times), and "About Our Team" under the hero is one short paragraph instead of two long ones. The
+  six before/after sliders of "Looking For a Remodeler?" are labelled Before and After, move with the arrow keys as
+  well as by dragging (each is a range input over the photos), and run on one script in `site-fixes.js` instead
+  of six copies that logged every pointer move to the console.
+- **"Our Project Gallery"** (the home page, `/roofing/`, `/roofing/types/`, `/solar/`, `/siding/`, `/gutters/`)
+  shows the `/past-projects/` photo gallery's work photos (35 roofing, 16 solar, 4 gutters; `workPhotos` in
+  `scripts/lib/past-projects.mjs`) instead of the 17, 14 and 4 each page was built with and the community photos
+  (those are on the Charity & Community page). Its button reads "See All Project Photos" and goes to that gallery.
+- **Photos of Panda's work on `/financing/`, `/warranty/` and the office pages.** The financing hero (a drone shot of
+  a roof under tarps) is a finished home with dormers and a GAF solar roof, its "Finance Almost Any Exterior Project"
+  photo (a stock-looking house) the brick home with its new tile roof, and the warranty photo (the tarps again) new
+  shingles on a replaced roof, all from the project pages. The seven office pages (`/locations/…/`), which had a
+  plain green hero, each have one of Panda's project photos behind it (`offices.photos` in
+  `custom/new-pages/pages.json`). On `/past-projects/`, the fifth favorite, which spans the whole row, asks for its
+  1,440 px photo (it was given the 720 px one, stretched to 1,296 px).
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
   now lead to the Refer & Earn page about the Panda Exteriors app (`/referrals/`), like the menu on every other page

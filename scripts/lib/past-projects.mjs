@@ -41,8 +41,13 @@ import { isMergedPage } from './config.mjs';
 const PHOTO_GALLERY = path.join(ROOT, 'custom', 'site-fixes', 'photo-gallery.json');
 const COMMUNITY = 'Community and Charity';
 let gallery;
-function renderPhotoGallery(siteDir) {
-  if (!isMergedPage('/gallery/') || !fs.existsSync(PHOTO_GALLERY)) return '';
+/**
+ * Panda's work photos (photo-gallery.json without its Community and Charity photos), those of
+ * them that are in `siteDir`: { categories, photos } for renderProjectGallery. Also what every
+ * "Our Project Gallery" shows (site-fixes.mjs). null if there are none.
+ */
+export function workPhotos(siteDir) {
+  if (!fs.existsSync(PHOTO_GALLERY)) return null;
   gallery ??= JSON.parse(fs.readFileSync(PHOTO_GALLERY, 'utf8'));
   // (a photo of custom/past-projects/gallery/ counts once it is there: it is copied after the pages)
   const exists = (src) => {
@@ -51,12 +56,16 @@ function renderPhotoGallery(siteDir) {
   };
   const categories = gallery.categories.filter((c) => c.name !== COMMUNITY);
   const photos = gallery.photos.filter((p) => categories.some((c) => c.id === p.cat) && exists(p.full) && exists(p.src));
-  if (!photos.length) return '';
+  return photos.length ? { categories, photos } : null;
+}
+function renderPhotoGallery(siteDir) {
+  const work = isMergedPage('/gallery/') && workPhotos(siteDir);
+  if (!work) return '';
   return (
     `<div class="ppx__gallery" id="photo-gallery">` +
     `<div class="ppx__head"><p class="ppx__eyebrow">Photo gallery</p><h2 class="ppx__title" id="ppx-gallery-title">More photos from our crews</h2>` +
     `<p class="ppx__intro">New roofs, solar and gutters from Panda jobs across the East Coast. Pick a category, then select a photo to see it full size.</p></div>` +
-    renderProjectGallery({ categories, photos }, { uid: 'ppg-photos' }) +
+    renderProjectGallery(work, { uid: 'ppg-photos' }) +
     `</div>`
   );
 }
@@ -104,15 +113,22 @@ export function pastProjectsFiles() {
 const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 // How wide each card's photo is shown (the grid in past-projects.css): the first card is
 // half the row on computers, the second, fifth and sixth half the row, the third and
-// fourth a quarter; every card is the full width on phones and half on tablets.
-const SIZES = ['(min-width: 1024px) 600px, (min-width: 640px) 100vw, 100vw', '(min-width: 1024px) 600px, (min-width: 640px) 50vw, 100vw', '(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw'];
-const sizesFor = (i) => (i === 0 ? SIZES[0] : i === 2 || i === 3 ? SIZES[2] : SIZES[1]);
+// fourth a quarter (with five cards, the fifth the whole row: it was given 600 px, so a
+// 720 px photo was stretched to 1,296); every card is the full width on phones and half on
+// tablets.
+const SIZES = [
+  '(min-width: 1024px) 600px, (min-width: 640px) 100vw, 100vw',
+  '(min-width: 1024px) 600px, (min-width: 640px) 50vw, 100vw',
+  '(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw',
+  '(min-width: 1024px) 1300px, (min-width: 640px) 50vw, 100vw',
+];
+const sizesFor = (i, n) => (i === 0 ? SIZES[0] : i === 2 || i === 3 ? SIZES[2] : i === 4 && n === 5 ? SIZES[3] : SIZES[1]);
 
-function card(p, i) {
+function card(p, i, all) {
   const srcset = PHOTO_WIDTHS.map((w) => `${photoUrl(p, w, 'webp')} ${w}w`).join(', ');
   return (
     `<div class="ppx-card ppx-card--${i + 1}" role="listitem"><a class="ppx-card__link" href="${esc(p.href)}">` +
-    `<picture class="ppx-card__media"><source type="image/webp" srcset="${esc(srcset)}" sizes="${sizesFor(i)}">` +
+    `<picture class="ppx-card__media"><source type="image/webp" srcset="${esc(srcset)}" sizes="${sizesFor(i, all.length)}">` +
     `<img src="${esc(photoUrl(p, PHOTO_FALLBACK, 'jpg'))}" alt="${esc(p.alt || '')}"${p.position ? ` style="object-position: ${esc(p.position)}"` : ''}` +
     ` loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async"></picture>` +
     `<span class="ppx-card__body"><span class="ppx-card__tag">${esc(p.tag)}</span>` +

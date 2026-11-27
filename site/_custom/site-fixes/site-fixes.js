@@ -657,3 +657,17 @@
   frame.addEventListener('load', startAsking);
   startAsking();
 })();
+
+// "Looking For a Remodeler?" (home page, .pfix-ba): each slider's range input moves the line
+// between the before and after photos (dragged, tapped or with the arrow keys).
+(function () {
+  function move(input) {
+    var item = input.closest('.pfix-ba__item');
+    if (item) item.style.setProperty('--pfix-ba', input.value + '%');
+  }
+  document.addEventListener('input', function (e) {
+    if (e.target.classList && e.target.classList.contains('pfix-ba__range')) move(e.target);
+  });
+  // (a value the browser kept from before a reload)
+  document.querySelectorAll('.pfix-ba__range').forEach(move);
+})();

@@ -144,7 +144,7 @@ const range = (n) => [n.sourceCodeLocation.startOffset, n.sourceCodeLocation.end
  * three. `selected`: the category whose tab is shown first (by name; the first one if the
  * page has no such category). Returns true if the page now has a gallery.
  */
-export function collectProjectGalleries(doc, ed, changes = [], { selected = '' } = {}) {
+export function collectProjectGalleries(doc, ed, changes = [], { selected = '', photos: shared = null } = {}) {
   let count = 0;
   // The slider version only: /gallery/ shows the same photos as a full grid (.ee-gallery--grid).
   const isSlider = (c) => hasClass(c, 'Project-swipper') && find(c, (x) => hasClass(x, 'bde-gallery')) && find(c, (x) => hasClass(x, 'ee-gallery--slider'));
@@ -157,7 +157,9 @@ export function collectProjectGalleries(doc, ed, changes = [], { selected = '' }
     if (ed.overlaps(...range(box)) || inShowcase(box)) continue;
     const own = hasClass(box, 'ppg');
     const gallery = own ? box : find(box, (x) => hasClass(x, 'bde-gallery'));
-    const data = own ? readOwn(gallery) : readBreakdance(gallery);
+    // `shared`: the photos every such gallery shows (Panda's work photos, the same as the
+    // photo gallery of /past-projects/), in place of the few each page was built with.
+    const data = shared || (own ? readOwn(gallery) : readBreakdance(gallery));
     const used = data.categories.filter((c) => !LEFT_OUT.test(c.name) && data.photos.some((p) => p.cat === c.id));
     if (!used.length) continue;
     const uid = `ppg-${++count}`;
@@ -179,7 +181,7 @@ export function collectProjectGalleries(doc, ed, changes = [], { selected = '' }
         if (!ed.overlaps(...range(el))) ed.outer(el, '');
       }
     }
-    changes.push(`project gallery: ${n} photos in ${used.length} categories, same-size and centred, with tabs, arrows and a photo viewer (three sliders were started on it at once)`);
+    changes.push(`project gallery: ${n} photos in ${used.length} categories, same-size and centred, with tabs, arrows and a photo viewer (three sliders were started on it at once)${shared ? ', the photo gallery\'s work photos' : ''}`);
   }
   return count > 0;
 }
