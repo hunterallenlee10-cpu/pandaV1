@@ -27,7 +27,7 @@
         "cta": "Claim 10% off",
         "href": "/offers/#pfix-of-deal-roof",
         "fine": "Some restrictions apply.",
-        "img": ["/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg", 768, 432, "Panda Exteriors crew replacing the roof of a two-story home"]
+        "img": ["/_custom/past-projects/photos/hero-960.webp", 960, 540, "Panda Exteriors crew replacing the roof of a two-story home"]
       },
       {
         "key": "solar",
@@ -45,7 +45,7 @@
         "cta": "Claim $1,500 off",
         "href": "/offers/#pfix-of-deal-solar",
         "fine": "Terms and conditions apply.",
-        "img": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg", 768, 512, "Solar panels on the roof of a brick home"]
+        "img": ["/_custom/past-projects/gallery/video-solar-home-720.webp", 720, 405, "A two-story home with Panda solar panels on both roofs"]
       }
     ]
   },
@@ -92,15 +92,15 @@
   },
   "details": {
     "/blog/offer/10-off-roof-replacement/": {
-      "photo": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675],
+      "photo": ["/_custom/past-projects/photos/hero-1920.webp", 1920, 1080],
       "subtitle": "Get 10% off your roof replacement when you work with Panda Exteriors."
     },
     "/blog/offer/1500-off-solar-project/": {
-      "photo": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg", 1000, 667],
+      "photo": ["/_custom/past-projects/gallery/video-solar-home-1280.webp", 1280, 720],
       "subtitle": "Get $1,500 off your solar installation."
     },
     "/blog/offer/find-out-about-our-no-interest-financial-options/": {
-      "photo": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
+      "photo": ["/_custom/past-projects/photos/panda-ext-15321-1440.webp", 1440, 810],
       "subtitle": "Get the home remodeling work you need completed without breaking the budget. Service Finance, LLC"
     },
     "/blog/offer/our-installation-work-is-completed-by-certified-professionals/": {

@@ -473,6 +473,53 @@
   font-weight: 700;
 }
 
+/* At a glance, under the story: the facts as tiles. The card beside the story starts with
+   the related service. */
+.ppj .ppj-facts {
+  margin-top: 32px;
+}
+.ppj .ppj-facts__title {
+  margin-bottom: 12px;
+  color: var(--ppj-ink);
+  font-size: 18px;
+  font-weight: 800;
+}
+.ppj .ppj-facts__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+@media (min-width: 640px) {
+  .ppj .ppj-facts__list {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+.ppj .ppj-facts__list > div {
+  padding: 14px 16px;
+  border: 1px solid var(--ppj-line);
+  border-radius: 12px;
+  background: var(--ppj-bg);
+}
+.ppj .ppj-facts__list dt {
+  margin: 0 0 4px;
+  color: var(--ppj-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ppj .ppj-facts__list dd {
+  margin: 0;
+  color: var(--ppj-ink);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.ppj .ppj-glance > a.ppj-glance__service:first-child {
+  margin-top: 0;
+}
+
 /* ------------------------------------------------------------ photos */
 .ppj .ppj-photos {
   padding: clamp(48px, 7vw, 96px) 0;
@@ -505,14 +552,28 @@
   border-radius: 14px;
   background: #dfe5d6;
 }
-.ppj a.ppj-photo.is-tall {
-  grid-row: span 2;
-}
 /* The first photo leads the grid as a large tile. */
 @media (min-width: 640px) {
   .ppj a.ppj-photo:first-child {
     grid-column: span 2;
     grid-row: span 2;
+  }
+}
+/* The last photos run two columns wide where the row would otherwise end short
+   (project-pages.mjs works out which, for each grid width). */
+@media (max-width: 639.98px) {
+  .ppj a.ppj-photo.is-wide-sm {
+    grid-column: span 2;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .ppj a.ppj-photo.is-wide-md {
+    grid-column: span 2;
+  }
+}
+@media (min-width: 1024px) {
+  .ppj a.ppj-photo.is-wide-lg {
+    grid-column: span 2;
   }
 }
 .ppj a.ppj-photo picture,

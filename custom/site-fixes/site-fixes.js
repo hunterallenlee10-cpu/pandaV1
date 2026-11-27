@@ -671,3 +671,21 @@
   // (a value the browser kept from before a reload)
   document.querySelectorAll('.pfix-ba__range').forEach(move);
 })();
+
+// Click-to-play videos (youtube.mjs, .pfix-yt): a still of the video until it is clicked,
+// then YouTube's player in its place, playing.
+(function () {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('button.pfix-yt');
+    if (!btn) return;
+    var frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(btn.getAttribute('data-yt')) + '?autoplay=1&rel=0&playsinline=1';
+    frame.title = btn.getAttribute('data-title') || 'Video';
+    frame.className = 'pfix-yt-player';
+    frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    frame.setAttribute('allowfullscreen', '');
+    frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    btn.replaceWith(frame);
+    frame.focus();
+  });
+})();

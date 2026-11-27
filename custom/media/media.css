@@ -1220,3 +1220,90 @@ body.breakdance .pmedia .pmedia-hero__title {
     transform: none;
   }
 }
+
+/* /podcast/ (collectPodcastPage): the page's head as a hero on a dark green band that runs on
+   behind the player: the show's name, its description, play and Apple Podcasts buttons and
+   its cover art. (The band reaches the screen's edges from the page's centred container.) */
+.Service-container.pmedia-pod {
+  position: relative;
+  padding-top: clamp(40px, 6vw, 80px) !important;
+  padding-bottom: clamp(40px, 6vw, 80px) !important;
+  background: #16201a;
+  box-shadow: 0 0 0 100vmax #16201a;
+  clip-path: inset(0 -100vmax);
+}
+.pmedia-pod .pmedia-pod__head {
+  width: 100%;
+  max-width: none;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+.pmedia-pod__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .pmedia-pod__hero {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 56px;
+  }
+}
+.pmedia-pod__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.pmedia-pod .pmedia-kicker {
+  color: var(--pm-lime);
+}
+.pmedia-pod h1.pmedia-pod__title {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: clamp(40px, 5.4vw, 64px) !important;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02 !important;
+}
+.pmedia-pod .pmedia-pod__lead {
+  max-width: 640px;
+  margin: 0;
+  color: var(--pm-night-muted);
+  font-size: 17px;
+  line-height: 1.65;
+}
+.pmedia-pod__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+.pmedia-pod__ctas .pmedia-btn .pmedia-icon {
+  width: 18px;
+  height: 18px;
+}
+.pmedia-pod__cover {
+  justify-self: start;
+  width: min(260px, 60vw);
+}
+.pmedia-pod__cover img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 22px;
+  box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+@media (max-width: 899.98px) {
+  .pmedia-pod__cover {
+    display: none;
+  }
+}
+.pmedia-pod .pmedia-podcast {
+  scroll-margin-top: 140px;
+  background:
+    radial-gradient(760px 420px at 95% -10%, rgba(154, 205, 50, 0.16), transparent 65%),
+    var(--pm-night);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}

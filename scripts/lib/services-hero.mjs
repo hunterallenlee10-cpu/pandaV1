@@ -190,7 +190,8 @@ const HEROES = {
   '/roofing/': {
     key: 'roofing',
     from: 'roofing-hero',
-    photo: '/wp-content/uploads/2025/04/hero-roofing.jpg',
+    photo: '/_custom/past-projects/photos/hero-1920.webp',
+    oldPreload: '/wp-content/uploads/2025/04/hero-roofing.jpg',
     eyebrow: 'Roofing',
     title: 'Expert Roofing Services for Your East Coast Home',
     sub: 'Leave your roofing project in the hands of our GAF Master Elite Contractors: quality GAF products, certified crews and the best warranties to protect your investment.',
@@ -209,7 +210,8 @@ const HEROES = {
   '/solar/': {
     key: 'solar',
     from: 'solar',
-    photo: '/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg.webp',
+    photo: '/_custom/past-projects/gallery/video-solar-home-1280.webp',
+    oldPreload: '/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg.webp',
     eyebrow: 'Solar panels',
     title: 'Solar Panel Installation for Your East Coast Home',
     sub: 'Lower your energy bills with quality solar panels on the roof you already have, designed around your energy use and budget, with a free, no-obligation quote.',

@@ -220,6 +220,9 @@ import { collectGalleryPage } from './gallery-page.mjs';
 import { collectCharityPage } from './charity-page.mjs';
 import { collectContactPage, contactPage, officeMap } from './contact-page.mjs';
 import { officePagePath, NEW_PAGES_ON } from './new-pages.mjs';
+import { collectFooter } from './footer.mjs';
+const PODCAST_PATH = '/podcast/';
+import { YT_FILES, youtubeFacade, youtubeId } from './youtube.mjs';
 import { collectCustomerServicePage } from './customer-service-page.mjs';
 import { collectNotFoundPage } from './not-found-page.mjs';
 import { collectLegalPage } from './legal-page.mjs';
@@ -261,6 +264,8 @@ export const SITE_FIXES_FILES = {
   // the photo behind /siding/'s hero (services-hero.mjs)
   'siding-hero.webp': '/_custom/site-fixes/siding-hero.webp',
   // the still behind the home hero's video, shown until the video plays
+  // the stills of the click-to-play videos (youtubeFacades)
+  ...YT_FILES,
   'home-hero-poster.webp': '/_custom/site-fixes/home-hero-poster.webp',
   // (and smaller copies of the two for phones: launch.mjs adds them as srcset)
   'home-hero-poster-800.webp': '/_custom/site-fixes/home-hero-poster-800.webp',
@@ -273,7 +278,6 @@ export const SITE_FIXES_FILES = {
   // the photo beside /roofing/'s "What Goes Into Every New Roof" (service-pages.mjs)
   'roofing-ridge.webp': '/_custom/site-fixes/roofing-ridge.webp',
   // the photos of /siding/'s "Siding Replacements" and "Siding Types" cards (GRID_CARD_FIXES)
-  'siding-install.webp': '/_custom/site-fixes/siding-install.webp',
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
   // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
   'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
@@ -284,7 +288,7 @@ export const SITE_FIXES_FILES = {
   ...CAREERS_FILES,
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|before\/after sliders|home page|about section|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|footer|videos|project gallery|before\/after sliders|home page|about section|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -435,19 +439,19 @@ const SA_MAP_ID = 'service-map';
 // /service-areas/ "Our Reliable Exterior Remodeling Services": one card per service page,
 // with a photo the site already has for it (a .webp copy is used where there is one).
 const SERVICE_CARDS = [
-  { group: 'Roofing', title: 'Roof Replacement', href: '/roofing/replacement/', img: ['/wp-content/uploads/2025/04/Roof-Replacement-768x432.jpg', 768, 432],
+  { group: 'Roofing', title: 'Roof Replacement', href: '/roofing/replacement/', img: ['/_custom/past-projects/photos/hero-960.webp', 960, 540],
     text: 'GAF Master Elite certified crews replace worn-out roofs quickly and stand behind the work.' },
-  { group: 'Roofing', title: 'Storm Damage', href: '/storm-damage/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+  { group: 'Roofing', title: 'Storm Damage', href: '/storm-damage/', img: ['/_custom/past-projects/gallery/video-hail-inspection-home-720.webp', 720, 405],
     text: 'A free storm-damage inspection, and help with your insurance claim from start to finish.' },
   { group: 'Roofing', title: 'Attic Insulation', href: '/roofing/attic-insulation/', img: ['/wp-content/uploads/2025/04/Attic-Insulation.jpg', 1200, 799],
     text: 'Environmentally friendly insulation that keeps your home comfortable all year.' },
-  { group: 'Solar', title: 'Solar Panels', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+  { group: 'Solar', title: 'Solar Panels', href: '/solar/', img: ['/_custom/past-projects/gallery/video-solar-home-720.webp', 720, 405],
     text: 'Solar panel systems that lower your utility bills and can qualify for tax incentives.' },
   { group: 'Solar', title: 'GAF Solar Shingles', href: '/solar/gaf-solar-roof/', img: ['/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1-768x432.jpg', 768, 432],
     text: 'Solar shingles that work as your roof and your power source, in one install.' },
-  { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
+  { group: 'Exterior', title: 'Siding', href: '/siding/', img: ['/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/after5-768x576.jpg', 768, 576],
     text: 'New siding that refreshes how your home looks and protects it from the weather.' },
-  { group: 'Exterior', title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
+  { group: 'Exterior', title: 'Gutters', href: '/gutters/', img: ['/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/acf49852-a7c4-4610-88a6-4db1708d98d2-768x512.jpg', 768, 512],
     text: 'Complete gutter systems that carry rainwater away from your roof and foundation.' },
   { group: 'Exterior', title: 'Gutter Guards', href: '/gutters/gutter-guards/', img: ['/wp-content/uploads/2025/04/gutter-installation-768x506.jpg', 768, 506],
     text: 'Guards that stop clogs and pests and cut down on gutter cleaning.' },
@@ -455,13 +459,13 @@ const SERVICE_CARDS = [
 // The home page's "Our Services": the four main services, with the words and photos of
 // their cards on /services/ (one row of four on wide screens, two by two below).
 const HOME_SERVICE_CARDS = [
-  { title: 'Roofing', href: '/roofing/', img: ['/wp-content/uploads/2025/04/hero-roofing.jpg', 1400, 800],
+  { title: 'Roofing', href: '/roofing/', img: ['/_custom/past-projects/photos/spanish-tile-720.webp', 720, 405],
     text: 'We offer full-service roofing care to ensure you get the protection you need for your home as quickly as possible.' },
-  { title: 'Solar', href: '/solar/', img: ['/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1-768x512.jpg', 768, 512],
+  { title: 'Solar', href: '/solar/', img: ['/_custom/past-projects/gallery/video-solar-home-720.webp', 720, 405],
     text: 'At Panda Exteriors, we work with top brands to offer quality solar panels that will harness energy from the sun to power your home throughout the year.' },
-  { title: 'Siding', href: '/siding/', img: ['/wp-content/uploads/2025/03/Group-9560-1.png', 1450, 768],
+  { title: 'Siding', href: '/siding/', img: ['/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/after5-768x576.jpg', 768, 576],
     text: 'Our contractors have decades of experience with siding installations across the East Coast, so your home looks and works better than ever.' },
-  { title: 'Gutters', href: '/gutters/', img: ['/wp-content/uploads/2025/04/Gutter-System.jpg', 1200, 800],
+  { title: 'Gutters', href: '/gutters/', img: ['/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/acf49852-a7c4-4610-88a6-4db1708d98d2-768x512.jpg', 768, 512],
     text: 'Our gutter products are designed to blend in with your home exterior, so you don’t have to worry about them detracting from your curb appeal.' },
 ];
 // The pictures of the old home cards (the service's name drawn in), unused once the section is
@@ -479,6 +483,7 @@ export const REPLACED_FILES = [
     `wp-content/uploads/2025/03/${f}.webp`,
   ]),
   '_custom/site-fixes/careers-install.webp',
+  '_custom/site-fixes/siding-install.webp',
   '_custom/site-fixes/careers-project.webp',
 ];
 const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
@@ -493,7 +498,8 @@ const ROOFING_CARDS = ['/roofing/replacement/', '/roofing/types/', '/storm-damag
 // the rows above where there is one).
 const photoFor = (href) => [...SERVICE_CARDS, ROOF_TYPES_CARD].find((s) => s.href === href)?.img;
 const GRID_PHOTOS = {
-  '/roofing/': photoFor('/storm-damage/'),
+  // (Roofing: a finished Panda roof, as on the home page's card)
+  '/roofing/': HOME_SERVICE_CARDS.find((c) => c.href === '/roofing/').img,
   '/solar/': photoFor('/solar/'),
   '/solar/solar-panel-installations/': photoFor('/solar/'),
   '/solar/gaf-solar-roof/': photoFor('/solar/gaf-solar-roof/'),
@@ -502,13 +508,13 @@ const GRID_PHOTOS = {
   '/gutters/gutter-guards/': photoFor('/gutters/gutter-guards/'),
 };
 // Photos of siding for /siding/'s two cards, which showed drawn renderings (the siding page's
-// hero picture, and a roof types one). No siding job is among Panda's photos, so both are
-// from Wikimedia Commons, 1200 x 800 (custom/site-fixes/): a volunteer nailing lap siding
-// over house wrap at a Habitat for Humanity build ("U.S. Army 1st Sgt. Benton Gil measures
-// the length of a house before installing its sidings…", by Capt. Elizabeth Brown, U.S.
-// Army, public domain), and a home in blue fiber cement lap siding ("Fiber cement
-// siding.jpg" by Wikideas1, CC0).
-const SIDING_INSTALL_PHOTO = ['/_custom/site-fixes/siding-install.webp', 1200, 800];
+// hero picture, and a roof types one). "Siding Replacements": a Panda siding job, the home's
+// new white vinyl siding (the "after" photo of one of the home page's before/after sliders).
+// "Siding Types": a home in blue fiber cement lap siding, from Wikimedia Commons ("Fiber
+// cement siding.jpg" by Wikideas1, CC0; 1200 x 800, custom/site-fixes/), there being no
+// fiber cement job among Panda's photos. (Before, "Siding Replacements" was a Habitat for
+// Humanity volunteer, also from Wikimedia Commons, deleted with REPLACED_FILES.)
+const SIDING_INSTALL_PHOTO = ['/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/after2-768x576.jpg', 768, 576];
 const SIDING_TYPES_PHOTO = ['/_custom/site-fixes/siding-fiber-cement.webp', 1200, 800];
 // Cards whose link went nowhere (404 on the live site too) or to the wrong page: by the
 // page they are on, their title and the addresses they had (live, or in an earlier build).
@@ -536,6 +542,9 @@ const TYPOS = [
   [/\bis a East Coast exterior remodeling company\b/g, 'is an East Coast exterior remodeling company'],
   // the region Panda serves is called the East Coast everywhere (footer, map band, blog posts)
   [/\bNortheast(?:ern)?\b/g, 'East Coast'],
+  // /about/, /podcast/: "Customer-Oriented Exterior Remodeling Services in the Mid-Atlantic"
+  // (Panda works from Florida to Massachusetts; the search and share titles keep their words)
+  [/\bServices in the Mid-Atlantic\b/g, 'Services on the East Coast'],
   // "Our Process" (/roofing/, /commercial-roofing/): a dropped first letter, and a missing "and"
   [/\bo matter what part of your exterior needs work\b/g, 'No matter what part of your exterior needs work'],
   [/\bworks within your schedule a budget\b/g, 'works within your schedule and budget'],
@@ -733,6 +742,11 @@ function serviceCard(s, exists) {
 }
 // (a site-fixes file counts once it is in custom/site-fixes/: a full build copies those after
 // the pages)
+// "About Our Team" above the footer on most pages.
+const ABOUT_TEAM_TEXT =
+  `Panda Exteriors is a local exterior remodeling company serving the East Coast, from Florida to Massachusetts. ` +
+  `Our GAF Master Elite crews have completed ${JOBS_TOTAL.words} jobs, and as a BBB A-rated business we make your project easy: ` +
+  `reach out for a free estimate today.`;
 // The home page's "About Our Team" (under the hero), in one short paragraph.
 const HOME_ABOUT =
   `<p class="oxy-text-2-130 oxy-text para-2">Panda Exteriors is a local exterior remodeling company serving the East Coast, from Florida to Massachusetts. ` +
@@ -798,6 +812,26 @@ function beforeAfter(doc, html, ed, { siteDir }, changes) {
       : 'before/after sliders: rendered again'
   );
   return true;
+}
+
+// YouTube videos in the pages (the home page's and /services/' "Top Roofing Choice" video,
+// /roofing/replacement/'s, the GAF solar roof blog post's, /careers/'): each was a YouTube
+// player loaded with the page, and on /roofing/replacement/ a muted autoplay loop that can
+// show YouTube's "Video unavailable" screen. Each becomes a click-to-play still (youtube.mjs).
+// The home page's background video is left as it is; a copy in <noscript> stays a player.
+function youtubeFacades(doc, ed, changes) {
+  let n = 0;
+  for (const f of findAll(doc, (c) => c.tagName === 'iframe')) {
+    const id = youtubeId(attr(f, 'data-lazy-src') || attr(f, 'src') || '');
+    if (!id || ancestors(f).some((a) => hasClass(a, 'video') && hasClass(a, 'oxy-html-code'))) continue;
+    if (ed.overlaps(f.sourceCodeLocation.startOffset, f.sourceCodeLocation.endOffset)) continue;
+    const facade = youtubeFacade(id, attr(f, 'title') || '');
+    if (!facade) continue;
+    ed.outer(f, facade);
+    n++;
+  }
+  if (n) changes.push(`videos: ${n} YouTube player(s) -> a still with a play button that loads the player when clicked`);
+  return n > 0;
 }
 
 // The button under "Our Project Gallery": "View All Galleries" (to the top of /past-projects/,
@@ -1028,7 +1062,7 @@ function teamServicesCarousel(doc, html, ed, { pathname, siteDir }, changes) {
   let done = false;
   for (const section of findAll(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => hasClass(x, 'roof-swiper')))) {
     const box = find(section, (c) => hasClass(c, 'Logo-container') && find(c, (x) => hasClass(x, 'roof-swiper')));
-    if (!box) continue;
+    if (!box || ed.overlaps(section.sourceCodeLocation.startOffset, section.sourceCodeLocation.endOffset)) continue;
     const roofing = pathname.startsWith('/roofing/');
     const row = serviceCardsRow(roofing ? ROOFING_CARDS : SERVICE_CARDS, { pathname, siteDir });
     if (!row.count) continue;
@@ -1080,11 +1114,13 @@ function serviceGrids(doc, html, ed, { pathname, siteDir }, changes) {
       done = true;
     }
     const fix = gridCardFix(pathname, title, href) || mendedGridCard(pathname, title, href);
-    const media = fix && find(a, (c) => hasClass(c, 'pfix-svc__media'));
+    // (its photo: the fix's, or the one for the page it links to, which may have changed)
+    const want = fix ? fix.img : GRID_PHOTOS[href];
+    const media = want && find(a, (c) => hasClass(c, 'pfix-svc__media'));
     const img = media && find(media, (c) => c.tagName === 'img');
-    if (img && attr(img, 'src') !== fix.img[0] && exists(fix.img[0])) {
-      ed.inner(media, serviceCardPicture(fix.img, exists));
-      changes.push(`services grid: card photo: "${title}" -> ${fix.img[0]}`);
+    if (img && attr(img, 'src') !== want[0] && exists(want[0])) {
+      ed.inner(media, serviceCardPicture(want, exists));
+      changes.push(`services grid: card photo: "${title}" -> ${want[0]}`);
       done = true;
     }
     if (!fix || fix.href === href) continue;
@@ -1215,6 +1251,30 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
   // blog's new design (blog.mjs, custom/blog/). First, so the fixes below leave the post hero,
   // its hidden copy, the share buttons and "Related Posts" it replaces be.
   if (collectBlogPages(doc, html, ed, { pathname, siteDir, siteOrigin }, changes)) used.blog = true;
+
+  // The footer: every service, page and office, the rating and call and estimate buttons
+  // (footer.mjs). Before the site restructure's footer link swaps, which then leave it be.
+  if (collectFooter(doc, html, ed, { pathname }, changes)) used.css = true;
+
+  // /podcast/: the sections it shared with the company pages (the Inc. 5000 award, the row of
+  // services and the map band) go, so the page is the podcast, its reviews and the estimate
+  // form. First, so the fixes below leave them be (customize.mjs leaves its map band alone).
+  if (pathname === PODCAST_PATH) {
+    const heading = (re) => (c) => /^h[1-6]$/.test(c.tagName) && re.test(clean(textOf(c)));
+    const body = find(doc, (c) => c.tagName === 'body');
+    const blocks = (body?.childNodes || []).filter((c) => c.tagName === 'div');
+    const extras = [
+      ['the Inc. 5000 award', (c) => hasClass(c, 'awards-bg') || (hasClass(c, 'service-section') && find(c, heading(/Inc\. 5000/)))],
+      ['the row of services', (c) => hasClass(c, 'Team-section') && find(c, heading(/Exterior Remodeling Services/))],
+      ['the map band', (c) => (hasClass(c, 'Client-section') || hasClass(c, 'pmap-section')) && find(c, heading(/Local East Coast/))],
+    ];
+    for (const [what, is] of extras) {
+      const box = blocks.find(is);
+      if (!box || ed.overlaps(box.sourceCodeLocation.startOffset, box.sourceCodeLocation.endOffset)) continue;
+      ed.outer(box, '');
+      changes.push(`podcast page: ${what} removed (the company pages have it)`);
+    }
+  }
 
   // The site restructure: menu entries of merged pages out, the new pages in (merged-pages.mjs).
   collectMergedNav(doc, html, ed, changes);
@@ -1377,6 +1437,12 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.pastProjects = true;
     used.projects = true;
     if (pathname === '/past-projects/') used.gallery = true;
+  }
+
+  // YouTube players -> click-to-play stills (youtubeFacades).
+  if (youtubeFacades(doc, ed, changes)) {
+    used.css = true;
+    used.js = true;
   }
 
   // Home page: the before/after sliders (beforeAfter).
@@ -1702,6 +1768,23 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push(`about section colors: charcoal green background, lime button (white on lime was hard to read) (${about.length})`);
     used.css = true;
   }
+
+  // "About Our Team" (the block beside the estimate form above the footer, on most pages): two
+  // paragraphs saying Panda is "ready to tackle any project", then that it is BBB A-rated and
+  // a GAF Master Elite contractor -> one, with the jobs and where Panda works, as on the home
+  // page's "About Our Team".
+  let aboutText = 0;
+  for (const col of findAll(doc, (c) => hasClass(c, 'Local-text-col') && ancestors(c).some((a) => hasClass(a, 'Request-Container')))) {
+    const heading = col.childNodes.find((c) => /^h[1-6]$/.test(c.tagName));
+    if (!heading || clean(textOf(heading)) !== 'About Our Team') continue;
+    const ps = col.childNodes.filter((c) => c.tagName === 'p' && hasClass(c, 'local-text'));
+    if (!ps.length || ps.some((x) => ed.overlaps(x.sourceCodeLocation.startOffset, x.sourceCodeLocation.endOffset))) continue;
+    if (ps.length === 1 && clean(textOf(ps[0])) === ABOUT_TEAM_TEXT) continue;
+    ed.inner(ps[0], `\n${esc(ABOUT_TEAM_TEXT)}\n`);
+    for (const x of ps.slice(1)) ed.outer(x, '');
+    aboutText++;
+  }
+  if (aboutText) changes.push('about section: one paragraph with the jobs and where Panda works (were two older ones)');
 
   // The white version of "About Our Team" (/roofing/, /roofing/types/, /reviews/, /faqs/): its
   // styled h2 was empty, with the words in a bare h2 inside it (in the page as captured; a

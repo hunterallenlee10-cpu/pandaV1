@@ -264,7 +264,7 @@
               "icon": "sun",
               "name": "Solar Panels",
               "tag": "Mounted on your existing roof",
-              "img": ["/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg", 1000, 667],
+              "img": ["/_custom/past-projects/gallery/video-solar-home-1280.webp", 1280, 720],
               "alt": "Rows of solar panels mounted on a home’s tiled roof",
               "text": "Panels on racks, mounted on top of your current roof and placed to catch the most sunlight.",
               "points": [

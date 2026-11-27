@@ -9,9 +9,10 @@
 // Replacement". Now:
 //  - each page has a hero on the site's dark green (the project's type, its name, a line
 //    about it, an estimate button and a button down to the photos, beside its best photo),
-//    the project's story beside an "At a glance" card (what was done, the materials, the
-//    warranty, how long it took, and the service page it belongs to), its video if it has
-//    one, the photos as a grid that opens the project gallery's photo viewer, three more
+//    the project's story with "At a glance" under it (what was done, the materials, the
+//    warranty, how long it took) beside a card with the service page it belongs to and the
+//    estimate buttons, its video if it has one, the photos as a grid led by the finished
+//    home that opens the project gallery's photo viewer, three more
 //    projects, and a closing estimate band;
 //  - /past-projects/ lists every project under the favorites ("Browse all of our
 //    projects", with Homes / Solar filters);
@@ -30,6 +31,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT } from './config.mjs';
 import { attr, hasClass, esc, find, findAll, headEndOffset } from './html-edit.mjs';
+import { youtubeFacade } from './youtube.mjs';
 
 export const PROJECTS_DIR = path.join(ROOT, 'custom', 'projects');
 export const PROJECTS_FILES = { 'projects.css': '/_custom/projects/projects.css', 'projects.js': '/_custom/projects/projects.js' };
@@ -173,12 +175,21 @@ function pageHtml(p, siteDir) {
 
   const video = p.video
     ? `<div class="ppj-video"><p class="ppj-video__label">${ICONS.play}Watch the project</p>` +
-      `<div class="ppj-video__frame"><iframe src="https://www.youtube-nocookie.com/embed/${esc(p.video.id)}?rel=0" title="${esc(p.video.title)}" loading="lazy"` +
-      ` allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`
+      `<div class="ppj-video__frame">${
+        // (a click-to-play still where there is one: youtube.mjs)
+        youtubeFacade(p.video.id, p.video.title) ||
+        `<iframe src="https://www.youtube-nocookie.com/embed/${esc(p.video.id)}?rel=0" title="${esc(p.video.title)}" loading="lazy"` +
+          ` allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+      }</div></div>`
     : '';
+  // "At a glance" under the story (as tiles), and the card beside it with the related service
+  // and the estimate buttons: with the facts in the card, it ran far below the two short
+  // paragraphs most projects have, leaving a tall blank space beside it.
+  const glance =
+    `<div class="ppj-facts" aria-labelledby="ppj-glance-title"><p class="ppj-facts__title" id="ppj-glance-title">At a glance</p>` +
+    `<dl class="ppj-facts__list">${p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>`;
   const facts =
-    `<aside class="ppj-glance" aria-labelledby="ppj-glance-title"><p class="ppj-glance__title" id="ppj-glance-title">At a glance</p>` +
-    `<dl class="ppj-glance__list">${p.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` +
+    `<aside class="ppj-glance" aria-label="Planning something similar?">` +
     `<a class="ppj-glance__service" href="${esc(p.service[1])}"><small>Related service</small><span>${esc(p.service[0])}</span>${ICONS.arrow}</a>` +
     `<div class="ppj-glance__cta"><p>Planning something similar?</p>` +
     `<a class="ppj-btn ppj-btn--primary ppj-btn--block" href="${esc(d.cta.button[1])}">${esc(d.cta.button[0])}</a>` +
@@ -189,17 +200,30 @@ function pageHtml(p, siteDir) {
     `<div class="ppj-story__text"><p class="ppj-eyebrow">The project</p>` +
     `<h2 class="ppj-h2" id="ppj-story-title">About this project</h2>` +
     p.body.map((t) => `<p>${esc(t)}</p>`).join('') +
+    glance +
     video +
     `</div>${facts}</div></section>`;
 
+  // The photos: the finished home (the hero's photo) leads as the large tile, then the rest in
+  // the job's order, every tile the same height (a tall photo is cropped to it; the viewer
+  // shows it whole). Where the tiles would leave the last row short (a blank slot at the end,
+  // or two), the last ones run two columns wide, per grid width (4, 3 and 2 columns;
+  // projects.css).
+  const ordered = [p.cover, ...p.photos.filter((x) => x !== p.cover)].filter((x) => p.photos.includes(x));
+  const wide = (cols, lead) => {
+    const cells = ordered.length + (lead ? 3 : 0);
+    const short = (cols - (cells % cols)) % cols;
+    return new Set(Array.from({ length: Math.min(short, ordered.length - 1) }, (_, k) => ordered.length - 1 - k));
+  };
+  const wideAt = { lg: wide(4, true), md: wide(3, true), sm: wide(2, false) };
   const tile = (src, i) => {
     const size = photoSize(src, siteDir);
     const full = exists(siteDir, `${src}.webp`) ? `${src}.webp` : src;
     const thumb = thumbUrl(src);
-    const alt = `${p.title}: photo ${i + 1} of ${n}`;
-    const tall = size && size.h > size.w * 1.1;
+    const alt = i === 0 ? `${p.title}: the finished project, photo 1 of ${n}` : `${p.title}: photo ${i + 1} of ${n}`;
+    const cls = ['ppj-photo', ...Object.entries(wideAt).filter(([, set]) => set.has(i)).map(([k]) => `is-wide-${k}`)].filter(Boolean).join(' ');
     return (
-      `<a class="ppj-photo${tall ? ' is-tall' : ''}" href="${esc(full)}"${size ? ` data-size="${size.w}x${size.h}"` : ''} data-caption="${esc(p.title)}">` +
+      `<a class="${cls}" href="${esc(full)}"${size ? ` data-size="${size.w}x${size.h}"` : ''} data-caption="${esc(p.title)}">` +
       `<picture>${exists(siteDir, thumb) ? `<source type="image/webp" srcset="${esc(thumb)}">` : ''}` +
       `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"></picture>` +
       `<span class="ppj-photo__zoom">${ICONS.expand}</span></a>`
@@ -210,7 +234,7 @@ function pageHtml(p, siteDir) {
     `<div class="ppj-head"><p class="ppj-eyebrow">Gallery</p><h2 class="ppj-h2" id="ppj-photos-title">Project photos</h2>` +
     `<p class="ppj-head__intro">${n} photo${n === 1 ? '' : 's'} from the job. Select one to see it full size.</p></div>` +
     // project-gallery.js opens these in its photo viewer.
-    `<div class="ppj-photos__grid" data-ppg-wall="${esc(p.title)}">${p.photos.map(tile).join('')}</div>` +
+    `<div class="ppj-photos__grid" data-ppg-wall="${esc(p.title)}">${ordered.map(tile).join('')}</div>` +
     `</div></section>`;
 
   // Three more projects: the same kind first (named projects before the job-number ones,
