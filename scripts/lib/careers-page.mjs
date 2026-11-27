@@ -12,18 +12,16 @@
 //    the hero's photo. They become a mosaic of Panda's own home projects: one large photo of a
 //    crew re-roofing a home and eight smaller ones, each linking to its project page with the
 //    project's name on it, from the copies the project pages already use (720 px webp).
-//  - "The Proof Is in the Numbers": the two stats the rest of the site also shows read as it does:
-//    the jobs as JOBS_TOTAL (us-map.mjs; "Successful Projects Completed" -> "Jobs Completed") and
-//    "1,500+ Five-Star Customer Reviews" as the Google rating the home and About pages show
-//    (custom/reviews/google-reviews.json: 4.8 from 1,067 reviews). The other four (Inc. 5000,
-//    BBB, GAF, Glassdoor) are the page's own.
+//  - "The Proof Is in the Numbers": the jobs read as the rest of the site gives them, JOBS_TOTAL
+//    (us-map.mjs; "Successful Projects Completed" -> "Jobs Completed"). The other five are the
+//    page's own ("1,500+ Five-Star Customer Reviews" counts reviews on every site, not just
+//    Google's).
 //
 // Applied by site-fixes.mjs; the three are rendered again on every run, so `npm run update:site`
 // keeps them in step with this file and the project names in custom/projects/projects.json.
 import { find, findAll, hasClass, esc, classes, textOf, clean } from './html-edit.mjs';
 import { projectsData } from './project-pages.mjs';
 import { JOBS_TOTAL } from './us-map.mjs';
-import { loadReviewWall } from './review-wall.mjs';
 
 export const CAREERS_PATH = '/careers/';
 export const CAREERS_FILES = {
@@ -98,11 +96,7 @@ export function collectCareersPage(doc, html, ed, { pathname = '' } = {}, change
     }
   }
   // The numbers: [label it had or has, value, label].
-  const rating = Number(loadReviewWall()?.place?.rating) || 0;
-  const STATS = [
-    [/^(Successful Projects Completed|Jobs Completed)$/i, JOBS_TOTAL.short, 'Jobs Completed'],
-    ...(rating ? [[/^(Five-Star Customer Reviews|Google Rating)$/i, `${rating.toFixed(1)}★`, 'Google Rating']] : []),
-  ];
+  const STATS = [[/^(Successful Projects Completed|Jobs Completed)$/i, JOBS_TOTAL.short, 'Jobs Completed']];
   for (const card of findAll(doc, (c) => hasClass(c, 'pcv2-stat-card'))) {
     const value = find(card, (c) => hasClass(c, 'pcv2-stat-value'));
     const label = find(card, (c) => hasClass(c, 'pcv2-stat-label'));
