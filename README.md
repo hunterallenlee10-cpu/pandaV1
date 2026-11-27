@@ -149,6 +149,29 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   plain green hero, each have one of Panda's project photos behind it (`offices.photos` in
   `custom/new-pages/pages.json`). On `/past-projects/`, the fifth favorite, which spans the whole row, asks for its
   1,440 px photo (it was given the 720 px one, stretched to 1,296 px).
+- **Panda's own photos in place of stock ones.** The service cards (the home page's "Our Services", the `/services/`
+  grid, the services row on `/about/`, `/podcast/` and the roofing pages), the `/offers/` cards and offer pages, the
+  `/solar-options/` panels card, the `/roofing/` and `/solar/` hero photos and two service-page photos showed stock
+  images (a suburban house, a European solar home, a drawn siding house, a gutter close-up). They show Panda's work
+  instead: the crew re-roofing a home, the tile-roof home, the hail inspection, the home with Panda solar panels, the
+  green and white siding jobs from the before/after sliders and Panda's gutter photos. Attic insulation and gutter
+  guards keep theirs (there is no Panda photo of either), and the Wikimedia photo of a volunteer siding a house is
+  deleted.
+- **The footer** (`scripts/lib/footer.mjs`), on every page but `/careers/`: the logo, a line about all four services,
+  the Google rating, call and estimate buttons, the social links, then Services, Company, Help and the seven offices
+  with their phone numbers (was three short lists without siding, past projects, careers or the offices, and a line
+  saying Panda specializes "in roofing and solar"). "About Our Team" above it is one shorter paragraph, and "…Services
+  in the Mid-Atlantic" on `/about/` and `/podcast/` reads "…Services on the East Coast" (the search and share titles
+  keep their wording).
+- **Project pages:** the photo grid leads with the finished home and has no empty slots (tiles are one height; the
+  last ones run wide where a row would end short), and "At a glance" sits under the story as tiles, beside a shorter
+  card with the related service and the estimate buttons (the tall card left a blank gap beside the story).
+- **Videos:** the YouTube players on the home page and `/services/`, `/roofing/replacement/`, `/careers/`, the GAF
+  solar project and its blog post are a still of the video with a play button until clicked
+  (`scripts/lib/youtube.mjs`, stills in `custom/site-fixes/yt/`), so no YouTube code loads with the page.
+- **`/podcast/`** opens with a hero on a dark band (the show's name, description, cover art and play and Apple
+  Podcasts buttons) running on behind the player, and drops the sections it shared with the company pages (the
+  Inc. 5000 award, the services row and the map band).
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
   now lead to the Refer & Earn page about the Panda Exteriors app (`/referrals/`), like the menu on every other page

@@ -6817,12 +6817,12 @@ a.bde-social-share-button:hover {
   background-position: 50% 45%;
 }
 .hero-section.pfix-sv-hero--roofing {
-  background-image: url("/wp-content/uploads/2025/04/hero-roofing.jpg");
-  background-position: 50% 55%;
+  background-image: url("/_custom/past-projects/photos/hero-1920.webp");
+  background-position: 50% 45%;
 }
 .hero-section.pfix-sv-hero--solar {
-  background-image: url("/wp-content/uploads/2025/03/8a443005-9df9-4777-839c-45cf7d4b9f2e-1.jpg.webp");
-  background-position: 50% 40%;
+  background-image: url("/_custom/past-projects/gallery/video-solar-home-1280.webp");
+  background-position: 50% 35%;
 }
 .hero-section.pfix-sv-hero--solar-shingles {
   background-image: url("/wp-content/uploads/2025/05/GAF-Solar-Shingle-Installation-1.jpg.webp");
@@ -11829,4 +11829,284 @@ body:not(.wp-admin) .xai-weather-ribbon {
   .pfix-ba {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* The footer (footer.mjs): the logo, a line, the rating, call and estimate buttons and the
+   social links, then Services, Company, Help and the seven offices. */
+.footer .footer-grid:has(> .pfix-ft) {
+  display: block !important;
+  padding-top: 56px !important;
+  padding-bottom: 40px !important;
+}
+.pfix-ft {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) repeat(3, minmax(0, 0.8fr)) minmax(0, 1.1fr);
+  gap: 40px 28px;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+.pfix-ft a {
+  color: inherit;
+  text-decoration: none;
+}
+.pfix-ft__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.pfix-ft__logo img {
+  display: block;
+  width: 84px !important;
+  height: auto !important;
+}
+.pfix-ft__about {
+  max-width: 330px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+.pfix-ft a.pfix-ft__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+.pfix-ft__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #fbbc04;
+}
+.pfix-ft__stars svg {
+  width: 17px;
+  height: 17px;
+}
+.pfix-ft__stars b {
+  color: #ffffff;
+  font-size: 16px;
+}
+.pfix-ft a.pfix-ft__rating:hover {
+  color: #ffffff;
+}
+.pfix-ft__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pfix-ft a.pfix-ft__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.pfix-ft a.pfix-ft__btn svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.pfix-ft a.pfix-ft__btn--call {
+  background: #9acd32;
+  color: #14180f;
+}
+.pfix-ft a.pfix-ft__btn--call:hover {
+  background: #b5e05a;
+}
+.pfix-ft a.pfix-ft__btn--estimate {
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+.pfix-ft a.pfix-ft__btn--estimate:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.pfix-ft__social {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 0 !important;
+}
+/* (room to tap each icon on phones) */
+@media (max-width: 767.98px) {
+  .pfix-ft__social > a {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+.pfix-ft__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pfix-ft__head svg {
+  width: 16px;
+  height: 16px;
+  color: #9acd32;
+}
+.pfix-ft__links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.pfix-ft__links a:hover,
+.pfix-ft a.pfix-ft__office-name:hover,
+.pfix-ft a.pfix-ft__office-tel:hover {
+  color: #c3ea79;
+}
+.pfix-ft a:focus-visible {
+  outline: 2px solid #c3ea79;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.pfix-ft__offices {
+  display: grid;
+  gap: 10px;
+}
+.pfix-ft__office {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  column-gap: 8px;
+  row-gap: 0;
+}
+.pfix-ft__office-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+.pfix-ft__hq {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(154, 205, 50, 0.18);
+  color: #c3ea79;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.pfix-ft__office-tel {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+@media (max-width: 1199.98px) {
+  .pfix-ft {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .pfix-ft__brand,
+  .pfix-ft__col--offices {
+    grid-column: 1 / -1;
+  }
+  .pfix-ft__about {
+    max-width: 560px;
+  }
+  .pfix-ft__offices {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767.98px) {
+  .footer .footer-grid:has(> .pfix-ft) {
+    padding-top: 40px !important;
+  }
+  .pfix-ft {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 20px;
+  }
+  .pfix-ft__offices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-ft__links {
+    gap: 2px;
+  }
+  .pfix-ft__links a {
+    padding: 6px 0;
+  }
+}
+
+/* Click-to-play videos (youtube.mjs): the video's still with YouTube's play button; the
+   player takes the same box once clicked (site-fixes.js). */
+button.pfix-yt,
+iframe.pfix-yt-player {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: inherit;
+  background: #0d110b;
+  cursor: pointer;
+}
+.breakdance button.pfix-yt img,
+button.pfix-yt img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100% !important;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.25s ease;
+}
+button.pfix-yt .pfix-yt__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 51px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease;
+}
+button.pfix-yt .pfix-yt__play svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+button.pfix-yt:hover img {
+  transform: scale(1.03);
+  filter: brightness(0.92);
+}
+button.pfix-yt:hover .pfix-yt__play {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+button.pfix-yt:focus-visible {
+  outline: 3px solid #9acd32;
+  outline-offset: 3px;
+}
+/* Boxes that already hold the player at 16:9 (their own padding or aspect ratio). */
+.ee-video-container > button.pfix-yt,
+.ee-video-container > iframe.pfix-yt-player,
+.ppj-video__frame > button.pfix-yt,
+.ppj-video__frame > iframe.pfix-yt-player,
+.pcv2-video > button.pfix-yt,
+.pcv2-video > iframe.pfix-yt-player,
+.wp-has-aspect-ratio .wp-block-embed__wrapper > button.pfix-yt,
+.wp-has-aspect-ratio .wp-block-embed__wrapper > iframe.pfix-yt-player {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  aspect-ratio: auto;
+}
+.youtube-video > button.pfix-yt,
+.youtube-video > iframe.pfix-yt-player {
+  border-radius: 12px;
 }

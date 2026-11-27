@@ -424,13 +424,29 @@ export function renderMedia({ posts, podcast }) {
 // The player on /podcast/: the newest episode with every episode beside it, then the ways
 // to watch. A dark card, like the podcast half of the Media page.
 const renderPodcastCard = (podcast) =>
-  `<div class="pmedia pmedia-podcast" data-pmedia-podcast>` +
+  `<div class="pmedia pmedia-podcast" id="pmedia-pod-player" data-pmedia-podcast>` +
   `<div class="pmedia-podcast__grid">` +
   `<div class="pmedia-podcast__main">${renderPlayer(podcast)}</div>` +
   `<div class="pmedia-podcast__side"><h3 class="pmedia-block__title">Every episode <span class="pmedia-count">${podcast.episodes.length}</span></h3>` +
   `<div class="pmedia-podcast__list">${renderEpisodeList(podcast, { list: true })}</div></div>` +
   `</div>` +
   `<div class="pmedia-block"><h3 class="pmedia-block__title">How to watch</h3>${renderWays(podcast)}</div>` +
+  `</div>`;
+
+// The Podcast page's hero (collectPodcastPage).
+const renderPodcastHero = ({ show, episodes }) =>
+  `<div class="pmedia pmedia-pod__hero">` +
+  `<div class="pmedia-pod__text">` +
+  `<p class="pmedia-kicker">${ICONS.mic}Video podcast · ${episodes.length} episode${episodes.length === 1 ? '' : 's'}</p>` +
+  `<h1 class="pmedia-pod__title">${esc(show.title)}</h1>` +
+  `<p class="pmedia-pod__lead">${esc((show.description || [])[0] || '')}</p>` +
+  `<div class="pmedia-pod__ctas">` +
+  `<a class="pmedia-btn pmedia-btn--green" href="#pmedia-pod-player">${ICONS.play}Play the newest episode</a>` +
+  `<a class="pmedia-btn pmedia-btn--ghost" href="${esc(show.apple)}" target="_blank" rel="noopener">${ICONS.podcast}Listen on Apple Podcasts<span class="pmedia-sr"> (opens in a new tab)</span></a>` +
+  `</div></div>` +
+  (show.cover
+    ? `<div class="pmedia-pod__cover"><picture><source type="image/webp" srcset="${esc(asset(webp(show.cover)))}"><img src="${esc(asset(show.cover))}" alt="${esc(show.title)} podcast cover art" width="600" height="600" decoding="async"></picture></div>`
+    : '') +
   `</div>`;
 
 const DEAD_PLAYER = /^https?:\/\/(?:www\.)?(?:podopshost|mypodops)\.com\//;
@@ -465,7 +481,21 @@ export function collectPodcastPage(doc, html, ed, changes) {
     // The intro beside the heading, in the same section as the player.
     let section = box.parentNode;
     while (section && !hasClass(section, 'Service-container')) section = section.parentNode;
-    const intro = section && find(section, (c) => c.tagName === 'p' && !isInside(c, box));
+    // The page's head (a plain heading, the intro and an Apple Podcasts badge above the player)
+    // -> a hero on the player's dark band: the show's name, its description, its cover art and
+    // buttons to play the newest episode and to follow it on Apple Podcasts.
+    const head = section && (section.childNodes || []).find((c) => c.tagName && hasClass(c, 'Flex-text') && !isInside(box, c) && (find(c, (x) => x.tagName === 'h1') || hasClass(c, 'pmedia-pod__head')));
+    if (head && !ed.overlaps(head.sourceCodeLocation.startOffset, head.sourceCodeLocation.endOffset)) {
+      const hero = renderPodcastHero(podcast);
+      const loc = head.sourceCodeLocation;
+      if (!hasClass(head, 'pmedia-pod__head') || html.slice(loc.startTag.endOffset, loc.endTag.startOffset) !== hero) {
+        ed.retag(head, head.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: [...new Set([...a.value.split(/\s+/), 'pmedia-pod__head'])].join(' ') } : a)));
+        ed.inner(head, hero);
+        changes.push('podcast page: a hero with the show, its cover art and play and Apple Podcasts buttons (was a plain heading, the intro and a badge)');
+      }
+      if (!hasClass(section, 'pmedia-pod')) ed.retag(section, section.attrs.map((a) => (a.name === 'class' ? { name: 'class', value: `${a.value} pmedia-pod` } : a)));
+    }
+    const intro = !head && section && find(section, (c) => c.tagName === 'p' && !isInside(c, box));
     const text = (show.description || [])[0];
     if (intro && text && clean(textOf(intro)) !== text) {
       ed.inner(intro, `\n${esc(text)}\n`);

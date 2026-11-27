@@ -119,7 +119,7 @@ export function collectMergedNav(doc, html, ed, changes) {
     for (const a of findAll(footer, (c) => c.tagName === 'a')) {
       const label = clean(textOf(a));
       const swap = FOOTER_SWAP.find(([from]) => from === label);
-      if (!swap) continue;
+      if (!swap || ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
       ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: swap[2] } : x)));
       ed.inner(a, `\n${esc(swap[1])}\n`);
       swaps.add(swap);

@@ -190,7 +190,8 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   const pathname = pageUrl ? new URL(pageUrl).pathname : '';
 
   if (map) {
-    for (const band of findAll(doc, isMapBand)) customizeBand(ed, html, band, uid(), changes.map);
+    // (not on /podcast/, whose band the site fixes take out)
+    if (!(fixes && pathname === '/podcast/')) for (const band of findAll(doc, isMapBand)) customizeBand(ed, html, band, uid(), changes.map);
 
     // The Google Maps widget (Past Projects): it lives in one HTML-code block.
     const widget = find(doc, (c) => hasClass(c, 'custom-project') && find(c, (x) => attr(x, 'id') === 'map-container' || attr(x, 'id') === 'mapclusterer'));
