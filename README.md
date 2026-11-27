@@ -111,7 +111,16 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   named, not counted as a state, so the About page and the `/service-areas/` hero say "19 States + D.C." and "in 19
   states and Washington, D.C." as the home page and the map already did (they said 20 states). `/careers/`'s "10,000+ Successful Projects
   Completed" reads "10,000+ Jobs Completed" like the others; its "1,500+ Five-Star Customer Reviews" (reviews on every
-  site, not just Google) and its other numbers are its own. A customer review about a flat roof on a historic home, and the
+  site, not just Google) and its other numbers are its own.
+- **More photos in the `/past-projects/` photo gallery** ("More photos from our crews"), from Panda's own media
+  library (its public list of uploads, `/wp-json/wp/v2/media`; nothing logged in): 15 photos of Panda's home jobs that
+  were not on the site, 14 under Roofing (now 31) and 1 under Solar (now 15). A crew re-roofing a home and a drone view
+  of a re-roof lead the Roofing photos; the others show a townhouse roof replacement from tear-off to new decking,
+  brick townhouses with their new roofs and the wear found on inspections; the Solar one is a crew installing GAF
+  Timberline Solar shingles. They are webp copies (720 px tiles, 1,280 px in the viewer) in
+  `custom/past-projects/gallery/`, listed in `custom/site-fixes/photo-gallery.json` with each original's address as
+  `source`. Left out of the library's photos: commercial and multi-family work, bathroom remodels (Panda Bath is off
+  the site), stock images and graphics; the before/after pairs are already on the home page's sliders. A customer review about a flat roof on a historic home, and the
   rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
