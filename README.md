@@ -76,7 +76,9 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   which now compare three roof types. Wording that offered commercial roofing or work for businesses (the "About Our
   Team" paragraph, the home page and its title, the company description in every page's structured data, a few
   blog sentences) now says what Panda does for homes. `/past-projects/` shows five favorites (the two other home
-  projects in place of the three commercial ones). Card grids that a missing card left with a gap are laid out
+  projects in place of the three commercial ones). A customer review about a flat roof on a historic home, and the
+  rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
+- **Sections that looked off without Commercial.** Card grids that a missing card left with a gap are laid out
   again: the home page's "Our Services" (two picture cards in a row of three) becomes photo cards for Roofing,
   Solar, Siding and Gutters, one row of four with "See all our services", under the heading "Roofing, Solar, Siding
   and Gutters" (`homeServices`, `HOME_SERVICE_CARDS`); a service-card grid of four is one row of four, and of five
@@ -91,11 +93,11 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   rating, states + D.C., offices; from the US map and the review data), over three cards: the crew re-roofing a home
   (the `/past-projects/` hero photo, with "Meet our team"), the GAF badges on charcoal green and the partner brands'
   logos (`whyPandaBlock`, `.pfix-wpb`).
-  Photos of commercial work are swapped for homes: the About page's mission collage (a four-story apartment build,
+- **Photos of commercial work swapped for homes.** the About page's mission collage (a four-story apartment build,
   and crews on a flat commercial roof) shows a Panda crew re-roofing a two-story home in red tile and a closer look
   at them on that roof (`about-team.webp`, `about-crew.webp`), and the still behind the home hero's video (an office
   building and its parking lot) shows that home finished (`home-hero-poster.webp`); all three are crops of drone
-  photos of the Spanish tile project already on the site.
+  photos of the Spanish tile project already on the site. And
   `/careers/` the same way (`scripts/lib/careers-page.mjs`): its hero (a drone photo of an office complex and its
   parking lot) shows Panda crews shingling new homes with a crane lifting the GAF bundles, "Our Three Pillars" (crews
   on a flat commercial roof) a Panda roofer in a Panda hoodie, and "Real Work. Real Results." (eight photos, five of
@@ -120,8 +122,13 @@ sitemaps, icons and every file those pages use. Deliberately left out (listed in
   Timberline Solar shingles. They are webp copies (720 px tiles, 1,280 px in the viewer) in
   `custom/past-projects/gallery/`, listed in `custom/site-fixes/photo-gallery.json` with each original's address as
   `source`. Left out of the library's photos: commercial and multi-family work, bathroom remodels (Panda Bath is off
-  the site), stock images and graphics; the before/after pairs are already on the home page's sliders. A customer review about a flat roof on a historic home, and the
-  rubber-roof lifespan in "How long does a roof really last?", are about homes and stay.
+  the site), stock images and graphics; the before/after pairs are already on the home page's sliders.
+  Five more are frames of Panda's own YouTube videos (the 1,280 x 720 stills YouTube publishes for each video; the
+  videos themselves cannot be downloaded from here): a Panda inspector checking a home for hail damage (three
+  frames), the ridge vent of a new GAF roof, and a home with Panda solar panels, each with its video as `source`. The
+  inspector at the home is also the `/storm-damage/` hero in place of the drone photo of an office complex
+  (`custom/site-fixes/storm-damage-hero.webp`); `update-built-site.mjs` now also copies files a page uses as a
+  background in a style attribute, as that hero does. Roofing now has 35 photos, Solar 16.
 - **Refer a Future Panda**, removed on request. `/referral/` was the employee referral form (a bonus for referring
   someone Panda hires). The careers page's "Refer & Earn" menu link and "Refer a Friend" footer link led there; they
   now lead to the Refer & Earn page about the Panda Exteriors app (`/referrals/`), like the menu on every other page

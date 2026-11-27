@@ -277,6 +277,9 @@ export const SITE_FIXES_FILES = {
   'siding-fiber-cement.webp': '/_custom/site-fixes/siding-fiber-cement.webp',
   // /careers/'s awards picture, which the page carried three times as 310 KB of text (launch.mjs)
   'careers-awards.webp': '/_custom/site-fixes/careers-awards.webp',
+  // /storm-damage/'s hero: a Panda inspector at a home, a frame of Panda's hail-inspection video
+  // (YouTube fi7Q3EbmcuE); it was the drone photo of an office complex
+  'storm-damage-hero.webp': '/_custom/site-fixes/storm-damage-hero.webp',
   // /careers/'s hero (two sizes) and "Our Three Pillars" photo (careers-page.mjs)
   ...CAREERS_FILES,
 };
