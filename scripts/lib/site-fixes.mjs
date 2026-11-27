@@ -211,7 +211,7 @@ import { loadUsMap, JOBS_TOTAL, TOTAL_COMPLETED, statesServed } from './us-map.m
 import { collectServicePage, servicePage } from './service-pages.mjs';
 import { collectServiceForms } from './service-forms.mjs';
 import { collectOffersPage, collectOfferDetailPage, collectOffersStrip } from './offers-page.mjs';
-import { renderPastProjects } from './past-projects.mjs';
+import { renderPastProjects, workPhotos } from './past-projects.mjs';
 import { collectAboutPage } from './about-page.mjs';
 import { collectCareersPage, CAREERS_FILES } from './careers-page.mjs';
 import { collectFaqPage } from './faq-page.mjs';
@@ -284,7 +284,7 @@ export const SITE_FIXES_FILES = {
   ...CAREERS_FILES,
 };
 // Fixes that change a whole section or message, by the start of their change note.
-export const SECTION_FIXES = /^(testimonials|project gallery|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
+export const SECTION_FIXES = /^(testimonials|project gallery|before\/after sliders|home page|about section|hero awards picture|hero video|why panda|gallery tile|logo carousel|award badges|removed on request|service areas hero|services carousel|services grid|service page|service form|referrals page|about section colors|about heading|awards section|offers page|offer page|favorite projects|reviews page|about page|faq page|gallery page|charity page|contact page|customer service page|services page|gutters page|offers band|gutter guards page|guards page|solar page|solar-shingles page|solar shingles page|roofing costs page|costs page|roofing page|commercial roofing page|commercial page|blog listing|blog post|not found page|legal page|project page|project row)/;
 
 // The badges shown where the award badges picture was (files already on the site): the
 // three GAF certifications on top, the two Inc. 5000 awards below. The GAF President's
@@ -733,6 +733,87 @@ function serviceCard(s, exists) {
 }
 // (a site-fixes file counts once it is in custom/site-fixes/: a full build copies those after
 // the pages)
+// The home page's "About Our Team" (under the hero), in one short paragraph.
+const HOME_ABOUT =
+  `<p class="oxy-text-2-130 oxy-text para-2">Panda Exteriors is a local exterior remodeling company serving the East Coast, from Florida to Massachusetts. ` +
+  `Our crews have completed ${JOBS_TOTAL.words} jobs and earned more than 1,500 five-star reviews, and our mission is simple: ` +
+  `<em>a better customer experience</em> on every home we work on.</p>`;
+
+// "Looking For a Remodeler?" (home page): six before/after sliders. As delivered each had its
+// own copy of a script that logged every pointer move to the console, worked with a mouse or
+// finger only (not the keyboard), never showed its Before and After labels, put the photos'
+// ids on the page six times over. They become one row of sliders: before on the left (as
+// before), after on the right, both labelled, each
+// a range input over the photos (dragged, tapped or moved with the arrow keys; site-fixes.js
+// moves the line).
+const BA_DIR = '/_external/wordpressmu-1425697-5386286.cloudwaysapps.com/wp-content/uploads/2025/04/';
+// [before photo, after photo, what was done] (the files of the fourth are named the other way
+// round on the live site: "before4" has the panels; the page showed it this way round too).
+const BA_PAIRS = [
+  ['solar-before', 'solar-after', 'solar panels'],
+  ['after4', 'before4', 'solar panels'],
+  ['before2', 'after2', 'new siding'],
+  ['before6', 'after6', 'a new roof'],
+  ['before3', 'after3', 'a new roof'],
+  ['before5', 'after5', 'new siding'],
+];
+const BA_SIZES = '(min-width: 1320px) 410px, (min-width: 768px) 33vw, 100vw';
+const BA_HANDLE = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function beforeAfterRow(siteDir) {
+  const has = (f) => !siteDir || fs.existsSync(path.join(siteDir, `${BA_DIR}${f}.jpg`));
+  const pairs = BA_PAIRS.filter(([b, a]) => has(b) && has(a));
+  if (!pairs.length) return '';
+  const img = (f, cls, alt) =>
+    `<img class="pfix-ba__img pfix-ba__img--${cls}" src="${BA_DIR}${f}.jpg" srcset="${BA_DIR}${f}-768x576.jpg 768w, ${BA_DIR}${f}.jpg 800w" sizes="${BA_SIZES}" width="800" height="600" alt="${esc(alt)}" loading="lazy" decoding="async" draggable="false">`;
+  return (
+    `<div class="pfix-ba" role="list">` +
+    pairs
+      .map(
+        ([b, a, what], i) =>
+          `<figure class="pfix-ba__item" role="listitem">` +
+          img(a, 'after', `After: the home with ${what} by Panda Exteriors`) +
+          img(b, 'before', 'Before: the same home') +
+          `<span class="pfix-ba__label pfix-ba__label--before" aria-hidden="true">Before</span>` +
+          `<span class="pfix-ba__label pfix-ba__label--after" aria-hidden="true">After</span>` +
+          `<span class="pfix-ba__handle" aria-hidden="true">${BA_HANDLE}</span>` +
+          `<input class="pfix-ba__range" type="range" min="0" max="100" value="50" aria-label="Project ${i + 1}, ${esc(what)}: slide to compare before and after">` +
+          `</figure>`
+      )
+      .join('') +
+    `</div>`
+  );
+}
+function beforeAfter(doc, html, ed, { siteDir }, changes) {
+  const row = beforeAfterRow(siteDir);
+  if (!row) return false;
+  const old = find(doc, (c) => hasClass(c, 'bde-columns') && find(c, (x) => hasClass(x, 'comparison')) && ancestors(c).some((a) => hasClass(a, 'Slideer-section')));
+  const built = find(doc, (c) => hasClass(c, 'pfix-ba'));
+  const box = old || built;
+  if (!box || ed.overlaps(box.sourceCodeLocation.startOffset, box.sourceCodeLocation.endOffset)) return false;
+  if (!old && html.slice(box.sourceCodeLocation.startOffset, box.sourceCodeLocation.endOffset) === row) return false;
+  ed.outer(box, row);
+  changes.push(
+    old
+      ? 'before/after sliders: labelled Before and After, work with the keyboard, one script instead of six copies logging to the console'
+      : 'before/after sliders: rendered again'
+  );
+  return true;
+}
+
+// The button under "Our Project Gallery": "View All Galleries" (to the top of /past-projects/,
+// there being one gallery) -> "See All Project Photos", to that page's photo gallery.
+const GALLERY_BUTTON = ['See All Project Photos', '/past-projects/#photo-gallery'];
+function galleryButton(doc, ed, changes) {
+  for (const a of findAll(doc, (c) => c.tagName === 'a' && hasClass(c, 'Button') && /^(View All Galleries|See All Project Photos)$/.test(clean(textOf(c))))) {
+    const text = find(a, (c) => hasClass(c, 'Button-text-'));
+    if (!text || ed.overlaps(a.sourceCodeLocation.startOffset, a.sourceCodeLocation.endOffset)) continue;
+    if (clean(textOf(text)) === GALLERY_BUTTON[0] && attr(a, 'href') === GALLERY_BUTTON[1]) continue;
+    ed.retag(a, a.attrs.map((x) => (x.name === 'href' ? { name: 'href', value: GALLERY_BUTTON[1] } : x)));
+    ed.inner(text, `\n${GALLERY_BUTTON[0]}\n`);
+    changes.push(`project gallery button: "${GALLERY_BUTTON[0]}" to the photo gallery (was "View All Galleries")`);
+  }
+}
+
 const fileExists = (siteDir) => (src) =>
   !siteDir ||
   fs.existsSync(path.join(siteDir, src)) ||
@@ -1282,7 +1363,13 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // "Our Project Gallery": the slider started three times over -> one tidy gallery
   // (project-gallery.mjs, custom/project-gallery/).
-  if (collectProjectGalleries(doc, ed, changes, { selected: servicePage(pathname)?.gallery })) used.gallery = true;
+  // Every one shows Panda's work photos (the photo gallery of /past-projects/: 35 roofing, 16
+  // solar, 4 gutters), not the 17 roofing, 14 solar and 4 gutters each page was built with nor
+  // the community photos (the Charity & Community page has those), and its button goes to them.
+  if (collectProjectGalleries(doc, ed, changes, { selected: servicePage(pathname)?.gallery, photos: workPhotos(siteDir) })) {
+    used.gallery = true;
+    galleryButton(doc, ed, changes);
+  }
 
   // /past-projects/: the grid of every project -> six favorites above the map
   // (past-projects.mjs; a full build puts them there while it adds the map, customize.mjs).
@@ -1290,6 +1377,34 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     used.pastProjects = true;
     used.projects = true;
     if (pathname === '/past-projects/') used.gallery = true;
+  }
+
+  // Home page: the before/after sliders (beforeAfter).
+  if (pathname === '/' && beforeAfter(doc, html, ed, { siteDir }, changes)) {
+    used.css = true;
+    used.js = true;
+  }
+
+  // Home page: "Experts You Can Trust", a row of the same brand logos and badges that
+  // "What Makes Panda the Best?" shows above it (the fourth time the page showed its badges),
+  // removed. Before the logo carousel fix below, which would edit inside it.
+  if (pathname === '/') {
+    const heading = (c) => /^h[1-6]$/.test(c.tagName) && /^Experts You(r)? Can Trust$/.test(clean(textOf(c)));
+    for (const box of findAll(doc, (c) => hasClass(c, 'Client-Logo-section') && find(c, heading))) {
+      if (ed.overlaps(box.sourceCodeLocation.startOffset, box.sourceCodeLocation.endOffset)) continue;
+      ed.outer(box, '');
+      changes.push('removed on request: the "Experts You Can Trust" logo row (the same logos and badges as "What Makes Panda the Best?")');
+    }
+    // "About Our Team" under the hero: two long paragraphs (about 170 words, the awards and
+    // numbers the hero and the section below now show) -> one short one.
+    for (const team of findAll(doc, (c) => hasClass(c, 'Team-section') && find(c, (x) => x.tagName === 'h2' && clean(textOf(x)) === 'About Our Team'))) {
+      const box = find(team, (c) => hasClass(c, 'Team-text-container'));
+      if (!box || ed.overlaps(box.sourceCodeLocation.startOffset, box.sourceCodeLocation.endOffset)) continue;
+      const loc = box.sourceCodeLocation;
+      if (html.slice(loc.startTag.endOffset, loc.endTag.startOffset) === HOME_ABOUT) continue;
+      ed.inner(box, HOME_ABOUT);
+      changes.push('about section: one short paragraph (were two long ones repeating the awards and numbers shown around it)');
+    }
   }
 
   // "Experts You Can Trust": the logo carousel (started by the site's own script for
@@ -1334,6 +1449,10 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
     changes.push('award badges: the other GAF certifications (Diamond Pledge, Metal Certified) added beside President’s Club and the Inc. 5000 badges');
     used.css = true;
   }
+
+  // Home hero: the text column as on the other heroes (services-hero.mjs). Before the fix
+  // below, which then finds no award badges picture in it.
+  if (pathname === '/' && collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
 
   // Home hero: the award badges picture between two white lines (.logo-container, 260 px
   // wide) kept its fixed 562 px width above phone size -> lines and picture share one
@@ -1753,7 +1872,7 @@ export function collectSiteFixes(doc, html, ed, { pageUrl, siteDir, siteOrigin }
 
   // /services/, /gutters/, /siding/, /roofing-costs/, /roofing/, the solar pages: the hero gets service chips and estimate and call buttons
   // (services-hero.mjs).
-  if (collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
+  if (pathname !== '/' && collectServiceHero(doc, html, ed, { pathname, siteDir }, changes)) used.css = true;
   // /gutters/, /siding/, /roofing/, /solar/: "Why work with us" as icon cards, and a spot for the hero's chip (gutters-page.mjs).
   if (collectGuttersPage(doc, html, ed, { pathname }, changes)) used.css = true;
   // /gutters/gutter-guards/: the benefits as icon cards, how it works, questions, a band for

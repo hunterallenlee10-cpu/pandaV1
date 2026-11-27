@@ -11677,3 +11677,156 @@ body:not(.wp-admin) .xai-weather-ribbon {
     transition: none;
   }
 }
+
+/* Home hero (services-hero.mjs): the awards and jobs in words under the buttons. */
+.pfix-sv-hero .pfix-sv-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.pfix-sv-hero .pfix-sv-hero__trust > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pfix-sv-hero .pfix-sv-hero__trust svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: #a6d84a;
+}
+/* The home hero's text column over its video: as tall as the form beside it, text centred. */
+@media (min-width: 1024px) {
+  .hero.pfix-sv-hero--home .hero-text-col {
+    display: flex;
+    align-items: center;
+  }
+}
+/* Phones: the home hero's four service chips two by two, names only. */
+@media (max-width: 767.98px) {
+  .pfix-sv-hero--home .pfix-sv-hero__services.pfix-sv-hero__services--wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pfix-sv-hero--home .pfix-sv-hero__services--wide a.pfix-sv-hero__service small {
+    display: none;
+  }
+}
+
+/* "Looking For a Remodeler?" (home page): before/after sliders, three to a row. The before
+   photo sits over the after one, cut off at the line (--pfix-ba); a see-through range input
+   covers both, so dragging, tapping and the arrow keys all move the line (site-fixes.js). */
+.pfix-ba {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin: 8px 0 0;
+}
+.pfix-ba__item {
+  --pfix-ba: 50%;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  background: #1d2a17;
+  box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.55);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.breakdance .pfix-ba__item img.pfix-ba__img,
+.pfix-ba__item img.pfix-ba__img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100% !important;
+  object-fit: cover;
+  pointer-events: none;
+}
+.pfix-ba__item img.pfix-ba__img--before {
+  clip-path: inset(0 calc(100% - var(--pfix-ba)) 0 0);
+}
+.pfix-ba__label {
+  position: absolute;
+  top: 12px;
+  z-index: 2;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(15, 20, 13, 0.72);
+  color: #ffffff;
+  font: 700 12px/1.2 var(--robboto, Roboto), system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.pfix-ba__label--before {
+  left: 12px;
+}
+.pfix-ba__label--after {
+  right: 12px;
+  background: #f26b21;
+}
+.pfix-ba__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pfix-ba);
+  z-index: 2;
+  width: 3px;
+  margin-left: -1.5px;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+.pfix-ba__handle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1d2a17;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+}
+.pfix-ba__range {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: pan-y;
+}
+.pfix-ba__item:has(.pfix-ba__range:focus-visible) {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+.pfix-ba__item:has(.pfix-ba__range:focus-visible) .pfix-ba__handle svg {
+  background: #f26b21;
+  color: #ffffff;
+}
+@media (max-width: 991.98px) {
+  .pfix-ba {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+@media (max-width: 575.98px) {
+  .pfix-ba {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

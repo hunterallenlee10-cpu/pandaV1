@@ -10,7 +10,7 @@
         "title": "Get the work you need without breaking the budget",
         "sub": "Spread the cost of your new roof, solar, siding or gutters with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
         "chips": [["card", "Delayed payments"], ["coin", "No-interest loans"], ["check", "Free quote"]],
-        "photo": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675]
+        "photo": ["/_custom/past-projects/photos/panda-ext-15321-1440.webp", 1440, 810]
       },
       "form": { "title": "Free Estimate", "text": "Ask about financing at your free consultation." },
       "sections": [
@@ -37,8 +37,8 @@
             "During your free consultation, one of our local roofing and solar contractors goes over your project, your financing options and a free quote with you."
           ],
           "list": ["Roof replacements", "Solar panels and GAF solar roofs", "Siding", "Gutters and gutter guards", "Attic insulation"],
-          "img": ["/wp-content/uploads/2025/04/hero-roofing.jpg", 1400, 800],
-          "alt": "A home with a new roof installed by Panda Exteriors"
+          "img": ["/_custom/past-projects/photos/spanish-tile-1440.webp", 1280, 720],
+          "alt": "A two-story brick home with the new tile roof Panda Exteriors installed"
         },
         {
           "type": "steps",
@@ -136,8 +136,8 @@
           ],
           "list": ["Covers our workmanship for two years after installation, or longer on some products", "Faults corrected by repair at no additional cost to you", "Doesn’t cover product defects: those are covered by the product warranties", "Doesn’t cover damage from accident, misuse, abuse or improper maintenance"],
           "note": "Products should be inspected before installation and any defects reported at that time; installation constitutes acceptance of the products. The proper finishing, care and maintenance of the products are the owner’s responsibility, and important to keep them performing year after year.",
-          "img": ["/wp-content/uploads/2025/04/Roof-Replacement.jpg", 1200, 675],
-          "alt": "Panda Exteriors crew installing a new roof"
+          "img": ["/_custom/past-projects/photos/roof-replacement-1440.webp", 1440, 810],
+          "alt": "New architectural shingles on a roof Panda Exteriors replaced"
         },
         {
           "type": "cards",
@@ -383,6 +383,16 @@
       ["clock", "One-day installs", "Most roof replacements are done in as little as one day, from tear-off to clean-up."],
       ["card", "Flexible financing", "Delayed payments and even no-interest loans for qualified homeowners."]
     ],
+    "_photos": "Each office's hero photo, by city: Panda's own work (the /past-projects/ photos), a different one per office.",
+    "photos": {
+      "Laurel": "/_custom/past-projects/photos/hero-1920.webp",
+      "Dover": "/_custom/past-projects/photos/panda-ext-15321-1440.webp",
+      "Tampa": "/_custom/past-projects/gallery/video-solar-home-1280.webp",
+      "Marlton": "/_custom/past-projects/photos/spanish-tile-1440.webp",
+      "Charlotte": "/_custom/past-projects/photos/roof-replacement-1440.webp",
+      "King of Prussia": "/_custom/past-projects/gallery/down-net-http20251007-180-ot6e12-1280.webp",
+      "Reston": "/_custom/past-projects/gallery/8def799e-46a1-42ef-bb20-5853e376d2e0-1280.webp"
+    },
     "othersTitle": "Our other offices",
     "cta": { "title": "Ready for a free estimate in {state}?", "text": "Call the {city} office or our main line, or fill in the form." }
   }
