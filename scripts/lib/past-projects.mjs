@@ -44,7 +44,11 @@ let gallery;
 function renderPhotoGallery(siteDir) {
   if (!isMergedPage('/gallery/') || !fs.existsSync(PHOTO_GALLERY)) return '';
   gallery ??= JSON.parse(fs.readFileSync(PHOTO_GALLERY, 'utf8'));
-  const exists = (src) => !siteDir || fs.existsSync(path.join(siteDir, decodeURIComponent(src.split(/[?#]/)[0])));
+  // (a photo of custom/past-projects/gallery/ counts once it is there: it is copied after the pages)
+  const exists = (src) => {
+    const p = decodeURIComponent(src.split(/[?#]/)[0]);
+    return !siteDir || fs.existsSync(path.join(siteDir, p)) || (p.startsWith(GALLERY_URL) && fs.existsSync(path.join(GALLERY_DIR, p.slice(GALLERY_URL.length))));
+  };
   const categories = gallery.categories.filter((c) => c.name !== COMMUNITY);
   const photos = gallery.photos.filter((p) => categories.some((c) => c.id === p.cat) && exists(p.full) && exists(p.src));
   if (!photos.length) return '';
@@ -58,6 +62,11 @@ function renderPhotoGallery(siteDir) {
 }
 
 export const PAST_PROJECTS_DIR = path.join(ROOT, 'custom', 'past-projects');
+// Photos added to the photo gallery from Panda's media library (photo-gallery.json lists them,
+// each with the original's address as "source"): webp copies, 720 px for the tiles and 1,280 px
+// for the viewer. Their originals are not in the capture, so the copies are made by hand.
+const GALLERY_DIR = path.join(PAST_PROJECTS_DIR, 'gallery');
+const GALLERY_URL = '/_custom/past-projects/gallery/';
 export const PAST_PROJECTS_FILES = { 'past-projects.css': '/_custom/past-projects/past-projects.css' };
 export const PAST_PROJECTS_PATH = '/past-projects/';
 // Photo widths made by the tool (webp), and the width of the jpg fallback.
@@ -86,7 +95,8 @@ export function photoJobs() {
 /** Everything the showcase uses: [file on disk, address on the site]. */
 export function pastProjectsFiles() {
   const photos = photoJobs().flatMap((j) => j.sizes.map(([w, ext]) => `photos/${j.slug}-${w}.${ext}`));
-  return [...Object.entries(PAST_PROJECTS_FILES), ...photos.map((rel) => [rel, `/_custom/past-projects/${rel}`])]
+  const gallery = fs.existsSync(GALLERY_DIR) ? fs.readdirSync(GALLERY_DIR).filter((f) => /\.webp$/.test(f)).map((f) => `gallery/${f}`) : [];
+  return [...Object.entries(PAST_PROJECTS_FILES), ...[...photos, ...gallery].map((rel) => [rel, `/_custom/past-projects/${rel}`])]
     .map(([rel, url]) => [path.join(PAST_PROJECTS_DIR, rel), url])
     .filter(([file]) => fs.existsSync(file));
 }
