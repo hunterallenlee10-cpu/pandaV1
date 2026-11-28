@@ -1,0 +1,13 @@
+{
+  "_help": "The contractor license line in every page's footer (scripts/lib/footer.mjs). Put each state's number in \"number\" and run `npm run update:site`; a state with an empty number shows \"TODO\" in its place, so nothing unverified is published as a license number. Remove a state's entry to leave it out of the line.",
+  "label": "Licensed and insured",
+  "items": [
+    { "state": "MD", "label": "MD MHIC", "number": "" },
+    { "state": "VA", "label": "VA", "number": "" },
+    { "state": "PA", "label": "PA", "number": "" },
+    { "state": "NJ", "label": "NJ", "number": "" },
+    { "state": "DE", "label": "DE", "number": "" },
+    { "state": "NC", "label": "NC", "number": "" },
+    { "state": "FL", "label": "FL", "number": "" }
+  ]
+}

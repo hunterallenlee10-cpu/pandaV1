@@ -12,6 +12,9 @@
 //
 // Applied by site-fixes.mjs (before the site restructure's footer link swaps); rendered again
 // on every run, so `npm run update:site` keeps it in step with this file and the data.
+import fs from 'node:fs';
+import path from 'node:path';
+import { ROOT } from './config.mjs';
 import { find, hasClass, esc } from './html-edit.mjs';
 import { contactPage } from './contact-page.mjs';
 import { officePagePath, isNewPage, NEW_PAGES_ON } from './new-pages.mjs';
@@ -61,6 +64,19 @@ const PIN = svg('M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12a
 
 const tel = (phone) => `tel:+1${phone.replace(/\D/g, '')}`;
 
+// The license line under the lists: a number per state (custom/site-fixes/licenses.json).
+// A state whose number has not been supplied yet says TODO, so nothing unverified is
+// published as a license number.
+let licenseData;
+const licenses = () => (licenseData ??= JSON.parse(fs.readFileSync(path.join(ROOT, 'custom', 'site-fixes', 'licenses.json'), 'utf8')));
+function licenseLine() {
+  const { label, items = [] } = licenses();
+  if (!items.length) return '';
+  const item = (l) =>
+    `<span class="pfix-ft__license" role="listitem">${esc(l.label)} #${l.number ? esc(l.number) : '<span class="pfix-ft__todo" data-todo="license">TODO</span>'}</span>`;
+  return `<div class="pfix-ft__licenses"><span class="pfix-ft__licenses-label">${esc(label)}</span><span class="pfix-ft__licenses-list" role="list" aria-label="Contractor license numbers by state">${items.map(item).join('')}</span></div>`;
+}
+
 /** The footer's upper part, with the page's own social links (`social`: their markup). */
 export function renderFooter(social = '') {
   const { place } = loadReviewWall();
@@ -96,13 +112,15 @@ export function renderFooter(social = '') {
     LISTS.map(list).join('') +
     `<div class="pfix-ft__col pfix-ft__col--offices"><p class="pfix-ft__head">${PIN}Our offices</p>` +
     `<div class="pfix-ft__offices" role="list">${offices.map(office).join('')}</div></div>` +
+    licenseLine() +
     `</div>`
   );
 }
 
 /** Every page's footer: its upper part -> renderFooter. Returns true if it changed. */
 export function collectFooter(doc, html, ed, { pathname = '' } = {}, changes = []) {
-  const footer = find(doc, (c) => c.tagName === 'div' && hasClass(c, 'footer') && hasClass(c, 'bg-black'));
+  // (a <footer> on the home page: home-page.mjs)
+  const footer = find(doc, (c) => ['div', 'footer'].includes(c.tagName) && hasClass(c, 'footer') && hasClass(c, 'bg-black'));
   const grid = footer && find(footer, (c) => hasClass(c, 'footer-grid'));
   if (!grid) return false;
   const loc = grid.sourceCodeLocation;
