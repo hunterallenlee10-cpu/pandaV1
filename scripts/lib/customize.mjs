@@ -32,6 +32,7 @@ import { collectMediaNav, collectPodcastPage, MEDIA_FILES } from './media-page.m
 import { BLOG_FILES } from './blog.mjs';
 import { relinkMerged } from './merged-pages.mjs';
 import { launchReady } from './launch.mjs';
+import { siteNav, homePage } from './home-page.mjs';
 import { attr, classes, hasClass, esc, textOf, clean, findAll, find, startTag, makeEditor, editText, textNodes, isInside, headEndOffset } from './html-edit.mjs';
 
 // Lenis smooth scrolling, on every page: the library, its stylesheet and the site's setup.
@@ -282,5 +283,15 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   // Launch readiness, last (launch.mjs): the WordPress install's dead scripts out, analytics
   // for the live domain only, the forms' settings, names for links and pictures.
   if (fixes) out = launchReady(out, { pathname, siteDir }, changes.fixes);
+  // The header menu's top level (every page), then the home page's SEO, structure and new
+  // sections (home-page.mjs).
+  if (fixes) {
+    const nav = siteNav(out);
+    if (nav !== out) {
+      changes.fixes.push('header menu: Services, Storm Damage, Financing, Service Areas, Reviews and About on the top level; Projects, Offers, Careers and Media under About');
+      out = nav;
+    }
+    if (pathname === '/') out = homePage(out, { siteDir }, changes.fixes);
+  }
   return { html: out, changes };
 }

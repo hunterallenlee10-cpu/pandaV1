@@ -32,6 +32,7 @@ import { buildNewPages, newPagePaths, newPagesFiles, NEW_PAGES_DATE } from '../l
 import { removeBuiltPages, pruneUnusedFiles, editSitemaps, editFeed, writeRedirectFiles } from '../lib/restructure.mjs';
 import { syncSitemaps } from '../lib/sitemaps.mjs';
 import { launchReady } from '../lib/launch.mjs';
+import { homeFiles, HOME_FILES } from '../lib/home-page.mjs';
 import { syncHostHeaders } from '../lib/hosting.mjs';
 import { listFiles, args, writeFile, fmtBytes } from '../lib/util.mjs';
 
@@ -167,6 +168,8 @@ const files = [
   // (the maps themselves are rebuilt only by 03-build.mjs; their script follows custom/us-map/)
   ...Object.entries(US_MAP_FILES).map(([name, url]) => [path.join(US_MAP_DIR, name), url]),
 ].filter(([, url]) => linked.has(url));
+// The home page's stylesheet and script (custom/home/).
+if (linked.has(HOME_FILES['home.css'])) files.push(...homeFiles());
 if (siteMap) files.push(...siteMapFiles());
 if (newPages.length) files.push(...newPagesFiles());
 // The review wall and the reviews hero on /reviews/: their stylesheet, script and photos

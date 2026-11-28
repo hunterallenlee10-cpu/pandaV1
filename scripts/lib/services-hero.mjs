@@ -88,7 +88,8 @@ const HEROES = {
     // (no photo of its own: the video's still is in the page, site-fixes.mjs)
     photo: null,
     eyebrow: 'Roofing · Solar · Siding · Gutters',
-    title: 'Professional Roofing Contractor Serving the East Coast',
+    // (names the service and the states: scripts/lib/home-page.mjs has the rest of the page's SEO)
+    title: 'Roof Replacement and Storm Damage Roofing in Maryland, Virginia, Pennsylvania, New Jersey and Beyond',
     sub: () =>
       `Free, no-obligation estimates on new roofs, solar, siding and gutters from a GAF Master Elite contractor with ${JOBS_TOTAL.words} jobs completed in ${statesServed().sentence}`,
     // The four services, in the order of the cards below (and the header's menu).

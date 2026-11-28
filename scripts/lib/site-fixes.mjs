@@ -412,24 +412,24 @@ function whyPandaBlock(heading, items, siteDir) {
     `</div>` +
     `<div class="pfix-wpb__grid" role="list">` +
     // Experience: the crew at work, the claim on a dark fade over the photo.
-    `<article class="pfix-wpb__card pfix-wpb__card--photo" role="listitem" data-claim="0">` +
+    `<div class="pfix-wpb__card pfix-wpb__card--photo" role="listitem" data-claim="0">` +
     `<picture class="pfix-wpb__photo"><source type="image/webp" srcset="${BEST_PHOTO.webp.map(([s, w]) => `${s} ${w}w`).join(', ')}" sizes="(min-width: 992px) 640px, 100vw">` +
     `<img src="${BEST_PHOTO.src}" alt="${esc(BEST_PHOTO.alt)}" width="${BEST_PHOTO.width}" height="${BEST_PHOTO.height}" loading="lazy" decoding="async"></picture>` +
     `<div class="pfix-wpb__body">${claim(exp, 'years')}` +
-    `<a class="pfix-wpb__link" href="/about/">Meet our team<span aria-hidden="true"> →</span></a></div></article>` +
+    `<a class="pfix-wpb__link" href="/about/">Meet our team<span aria-hidden="true"> →</span></a></div></div>` +
     // Certified: the GAF badges on charcoal green.
-    `<article class="pfix-wpb__card pfix-wpb__card--dark" role="listitem" data-claim="2"><div class="pfix-wpb__body">${claim(certified, 'badge')}</div>` +
+    `<div class="pfix-wpb__card pfix-wpb__card--dark" role="listitem" data-claim="2"><div class="pfix-wpb__body">${claim(certified, 'badge')}</div>` +
     `<div class="pfix-wpb__badges" role="list" aria-label="GAF certifications">` +
     BEST_BADGES.map(([src, label]) => `<div role="listitem">${img(src, `alt="" width="120" height="120"`)}<span>GAF ${esc(label)}</span></div>`).join('') +
-    `</div></article>` +
+    `</div></div>` +
     // Products: the partner brands' logos.
-    `<article class="pfix-wpb__card pfix-wpb__card--brands" role="listitem" data-claim="1"><div class="pfix-wpb__body">${claim(products, 'box')}</div>` +
+    `<div class="pfix-wpb__card pfix-wpb__card--brands" role="listitem" data-claim="1"><div class="pfix-wpb__body">${claim(products, 'box')}</div>` +
     `<div class="pfix-wpb__logos" role="list" aria-label="Brands we partner with">` +
     BEST_BRANDS.map(
       (b) =>
         `<div role="listitem" style="--h:${b.h}px">${b.webp ? img(b.src, `alt="${esc(b.name)}" width="${b.width}" height="${b.height}"`) : `<img src="${b.src}" alt="${esc(b.name)}" width="${b.width}" height="${b.height}" loading="lazy" decoding="async">`}</div>`
     ).join('') +
-    `</div></article>` +
+    `</div></div>` +
     `</div></section>`
   );
 }
@@ -486,7 +486,7 @@ export const REPLACED_FILES = [
   '_custom/site-fixes/siding-install.webp',
   '_custom/site-fixes/careers-project.webp',
 ];
-const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters';
+const HOME_SERVICES_HEADING = 'Roofing, Solar, Siding and Gutters Across the East Coast';
 const HOME_SERVICES_INTRO = 'Upgrade your entire home exterior with the help of our trained and certified roofing, solar, siding and gutter crews!';
 // The roofing pages' row: the roofing cards above plus Roof Types (which only they link).
 const ROOF_TYPES_CARD = { group: 'Roofing', title: 'Roof Types', href: '/roofing/types/', img: ['/wp-content/uploads/2025/04/roofing-types-and-materials.jpg', 1200, 806],
