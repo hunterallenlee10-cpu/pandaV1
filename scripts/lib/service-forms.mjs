@@ -40,8 +40,13 @@ export function serviceForm(pathname) {
   return key ? { key, ...f } : null;
 }
 
-/** One form; `n` tells the page's forms apart (ids). */
-export function renderServiceForm(f, pathname, n) {
+// Pages whose forms are asked in two steps (the home page): ZIP code and the questions about
+// the job first, then the contact details. The request is the same as the one-step form's:
+// the same field names, with the ZIP code sent as the end of "address" (custom/home/home.js).
+const TWO_STEP_PAGES = ['/'];
+
+/** One form; `n` tells the page's forms apart (ids). `steps`: in two steps (TWO_STEP_PAGES). */
+export function renderServiceForm(f, pathname, n, { steps = TWO_STEP_PAGES.includes(renamedPath(pathname)) } = {}) {
   const id = (name) => `pfix-lead-${n}-${name}`;
   const field = (name, type, label, autocomplete, required = true) =>
     `<label class="pfix-lead__field"><span class="pfix-lead__sr">${esc(label)}</span>` +
@@ -58,6 +63,60 @@ export function renderServiceForm(f, pathname, n) {
   };
   const consent = (name, text) =>
     `<label class="pfix-lead__consent"><input type="checkbox" name="${name}" id="${id(name)}"><span>${text}</span></label>`;
+  const consents =
+    consent(
+      'sms_consent',
+      'I agree to receive automated Customer Care text messages from Panda Exteriors at the phone number provided. Consent is not a condition to purchase. Msg &amp; data rates may apply. Msg frequency varies. Reply HELP for help and STOP to cancel. I also agree to Panda Exteriors’s <a href="/terms-and-conditions/" target="_blank">Terms of Use</a> and <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.'
+    ) + consent('email_consent', 'I agree to receive automated Customer Care email messages from Panda Exteriors at the email provided.');
+  // A field people never see: a request with it filled in comes from a bot (site-fixes.js).
+  const honeypot = `<div class="pfix-lead__hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>`;
+  const done =
+    // What the card says after a request: sent (the default), or one of the two below when
+    // nothing was sent, each with the phone number (site-fixes.js picks).
+    `<div class="pfix-lead__done" role="status" tabindex="-1" hidden>` +
+    `<p class="pfix-lead__done-title">Thanks<span data-pfix-lead-name></span>!</p>` +
+    `<p data-pfix-lead-msg="sent">We’ve got your request. A Panda Exteriors specialist will call you shortly to book your free estimate.</p>` +
+    `<p data-pfix-lead-msg="offline" hidden>Online estimate requests aren’t switched on yet, so this one didn’t reach us. Please give us a call and we’ll book your free estimate.</p>` +
+    `<p data-pfix-lead-msg="failed" hidden>Something went wrong on our side and your request didn’t reach us. Please give us a call and we’ll book your free estimate.</p>` +
+    `<a class="submit-btn pfix-lead__done-call" href="${PHONE.href}"><span data-pfix-lead-call="sent">Can’t wait? Call ${PHONE.text}</span><span data-pfix-lead-call="other" hidden>Call ${PHONE.text}</span></a>` +
+    `</div>`;
+  if (steps) {
+    // Step 1: ZIP code and what they need. Step 2: who they are, the street address, the
+    // consents and the button. "address" (hidden) is the street address and the ZIP code
+    // together, as the one-step form's single address field was. Without JavaScript both
+    // steps show, one under the other.
+    const plain = (key, type, label, autocomplete, extra = '') =>
+      `<label class="pfix-lead__field"><span class="pfix-lead__sr">${esc(label)}</span>` +
+      `<input type="${type}" id="${id(key)}" class="input-field" placeholder="${esc(label)}" autocomplete="${autocomplete}" required${extra}></label>`;
+    return (
+      `<div class="pfix-lead pfix-lead--steps" data-pfix-lead="${esc(f.key)}">` +
+      `<form class="pfix-lead__form cf7-container" id="pfix-lead-${n}" method="post" data-pfix-lead-form data-pfix-lead-steps novalidate>` +
+      `<input type="hidden" name="service" value="${esc(f.key)}"><input type="hidden" name="page" value="${esc(renamedPath(pathname))}">` +
+      `<input type="hidden" name="address" data-pfix-lead-address>` +
+      `<div class="pfix-lead__progress" data-pfix-lead-progress role="progressbar" aria-label="Estimate request progress" aria-valuemin="1" aria-valuemax="2" aria-valuenow="1" aria-valuetext="Step 1 of 2: your project">` +
+      `<span class="pfix-lead__progress-label" data-pfix-lead-progress-label>Step 1 of 2</span><span class="pfix-lead__progress-bar" aria-hidden="true"><span></span></span></div>` +
+      `<p class="pfix-lead__error" role="alert" hidden></p>` +
+      `<fieldset class="pfix-lead__step" data-pfix-lead-step="1"><legend class="pfix-lead__sr">Step 1 of 2: your project</legend>` +
+      plain('zip', 'text', 'ZIP code', 'postal-code', ' inputmode="numeric" maxlength="10" data-pfix-lead-zip') +
+      f.questions.map(question).join('') +
+      `<button type="button" class="submit-btn pfix-lead__next" data-pfix-lead-next>Next: your contact details</button>` +
+      `</fieldset>` +
+      `<fieldset class="pfix-lead__step" data-pfix-lead-step="2"><legend class="pfix-lead__sr">Step 2 of 2: your contact details</legend>` +
+      `<div class="name-row">${field('first_name', 'text', 'First name', 'given-name')}${field('last_name', 'text', 'Last name', 'family-name')}</div>` +
+      `<div class="name-row">${field('phone', 'tel', 'Phone', 'tel')}${field('email', 'email', 'Email', 'email')}</div>` +
+      (f.business ? field('business', 'text', 'Business name', 'organization', false) : '') +
+      plain('street', 'text', 'Street address, city', 'street-address', ' data-pfix-lead-street') +
+      consents +
+      honeypot +
+      `<button type="submit" class="submit-btn" data-pfix-lead-submit>${esc(f.button)}</button>` +
+      `<button type="button" class="pfix-lead__back" data-pfix-lead-back>Back to step 1</button>` +
+      `</fieldset>` +
+      `<noscript><p class="pfix-lead__call">Or call <a href="${PHONE.href}">${PHONE.text}</a> to book your free estimate.</p></noscript>` +
+      `</form>` +
+      done +
+      `</div>`
+    );
+  }
   return (
     `<div class="pfix-lead" data-pfix-lead="${esc(f.key)}">` +
     `<form class="pfix-lead__form cf7-container" id="pfix-lead-${n}" method="post" data-pfix-lead-form novalidate>` +
