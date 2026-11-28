@@ -828,8 +828,10 @@ from another page of the site (`/storm-damage/`, `/financing/`, `/warranty/`, `/
 Two parts are shared by every page:
 
 - **Header menu** (`siteNav`): the top level is Services, Storm Damage, Financing, Service Areas, Reviews and
-  About, beside the phone button. Projects, Offers, Careers and Media (Blog, Podcast) are in the About dropdown and
-  in the footer; every address still works.
+  About, beside the phone button. Financing opens what a project costs (Roofing Costs, Offers, Warranty) and
+  About opens the company (Projects, Careers, Charity & Community, Contact Us, Blog, Podcast), so buyers and
+  people curious about Panda each get a short list. FAQs, Refer & Earn, the Panda Shop and the Media page are in
+  the footer; every page and address stays.
 - **Footer license line** (`footer.mjs`, [`custom/site-fixes/licenses.json`](custom/site-fixes/licenses.json)): a
   number per state (MD MHIC, VA, PA, NJ, DE, NC, FL). A state whose number is empty shows "TODO", so nothing
   unverified is published as a license number. The office links are also tall enough to tap.

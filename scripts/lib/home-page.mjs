@@ -4,9 +4,10 @@
 //
 // Every page (siteNav):
 //  - Header menu: the top level is Services, Storm Damage, Financing, Service Areas, Reviews
-//    and About, beside the phone button (was eight entries, two of them dropdowns of two).
-//    Projects, Offers, Careers and Media (Blog, Podcast) are in the About dropdown; every
-//    address still works, and the footer lists them too.
+//    and About, beside the phone button (was eight entries). Financing opens what a project
+//    costs (Roofing Costs, Offers, Warranty); About opens the company (Projects, Careers,
+//    Charity & Community, Contact Us, Blog, Podcast). FAQs, Refer & Earn, the Panda Shop and
+//    the Media page are in the footer; every address still works.
 //
 // The home page (homePage), with its words in custom/home/home.json:
 //  - Head: a title and description that name the service, the states and the phone number,
@@ -69,26 +70,24 @@ const ownLink = (li) => (li.childNodes || []).find((c) => c.tagName === 'a');
 const hrefOf = (li) => attr(ownLink(li) || {}, 'href') || '';
 const subItem = (label, href) =>
   `<div class="oxy-container-840-100 oxy-container li"><a class="oxy-text-link-840-101 oxy-text-link Nav-Link Nav-Link-Hover" href="${esc(href)}" target="_self">\n${esc(label)}\n</a></div>`;
-// A dropdown inside a dropdown, like Roofing's inside Services.
-const subMenu = (label, href, items) =>
-  `<div class="oxy-container-974-126 oxy-container li has_dropdown" data-pfix-nav="media">\n` +
-  `<a class="oxy-container-link-854-100 oxy-container-link Nav-Link space-between Nav-Link-Flex-Right" href="${esc(href)}" target="_self"><div class="oxy-text-854-101 oxy-text Nav-Link Nav-Link-right">\n${esc(label)}\n</div><div class="oxy-html-code-854-102 oxy-html-code">\n<i class="fas fa-angle-right"></i>\n</div></a>\n` +
-  `<div class="oxy-container-974-128 oxy-container ul sub_menu">` +
-  `<div class="oxy-container-974-221 oxy-container li mobile-show"><a class="oxy-text-link-974-222 oxy-text-link Nav-Link Nav-Link-Hover" href="${esc(href)}" target="_self">\n${esc(label)}\n</a></div>` +
-  items.map(([l, h]) => subItem(l, h)).join('') +
-  `</div></div>`;
-// Entries moved into the About dropdown: [label, address] before its own entries, and after
-// Warranty (Media with its two pages, then Careers).
-const ABOUT_FIRST = [
-  ['Projects', '/past-projects/'],
+// The two dropdowns beside Services, each for one kind of visitor: [label, address].
+// Financing: what a project costs and what comes with it. About: the company.
+// FAQs, Refer & Earn and the Panda Shop are in the footer (footer.mjs), as is the Media page.
+const FINANCING = ['Financing', '/financing/'];
+const FINANCING_MENU = [
+  ['Roofing Costs', '/roofing-costs/'],
   ['Offers', '/offers/'],
+  ['Warranty', '/warranty/'],
 ];
-const MEDIA = ['Media', '/media/', [['Blog', '/blog/'], ['Podcast', '/podcast/']]];
-const CAREERS = ['Careers', '/careers/'];
-const TOP_NEW = [
-  ['Storm Damage', '/storm-damage/'],
-  ['Financing', '/financing/'],
+const ABOUT_MENU = [
+  ['Projects', '/past-projects/'],
+  ['Careers', '/careers/'],
+  ['Charity & Community', '/charity-and-community/'],
+  ['Contact Us', '/contact-us/'],
+  ['Blog', '/blog/'],
+  ['Podcast', '/podcast/'],
 ];
+const STORM = ['Storm Damage', '/storm-damage/'];
 
 /** The header menu's top level, on every page. Returns the page (changed or not). */
 export function siteNav(html) {
@@ -110,22 +109,17 @@ export function siteNav(html) {
       .replace(/href="[^"]*"/, `href="${href}"`)
       .replace(new RegExp(`(>\\s*)${areasLabel}(\\s*<)`), `$1${label}$2`)
       .replace(/\bservice_Area_Link\b/, 'pfix-nav-top');
-  // The About dropdown: its own entries (Financing is on the top level now), with the
-  // entries that left the top level.
-  const moved = new Set([...ABOUT_FIRST.map(([, h]) => h), CAREERS[1], MEDIA[1], '/financing/']);
-  const entries = (sub.childNodes || []).filter((c) => c.tagName && hasClass(c, 'li'));
-  const mobile = entries.filter((li) => hasClass(li, 'mobile-show')).map(src).join('');
-  const kept = entries.filter((li) => !hasClass(li, 'mobile-show') && !moved.has(hrefOf(li)) && !/recruiting\.paylocity\.com/.test(hrefOf(li)));
-  const after = kept.findIndex((li) => hrefOf(li) === '/warranty/') + 1 || kept.length;
-  const list = [
-    ...ABOUT_FIRST.map(([l, h]) => subItem(l, h)),
-    ...kept.slice(0, after).map(src),
-    subMenu(...MEDIA),
-    subItem(...CAREERS),
-    ...kept.slice(after).map(src),
-  ];
-  const aboutSrc = html.slice(loc(about).startOffset, loc(sub).startTag.endOffset) + mobile + list.join('\n') + html.slice(loc(sub).endTag.startOffset, loc(about).endOffset);
-  const out = [src(services), ...TOP_NEW.map(plain), areasSrc, src(reviews), aboutSrc].join('');
+  // A dropdown: About's own markup (its link, arrow and the entry phones show for the page
+  // itself) around the entries.
+  const open = html.slice(loc(about).startOffset, loc(sub).startTag.endOffset);
+  const close = html.slice(loc(sub).endTag.startOffset, loc(about).endOffset);
+  const phone = (sub.childNodes || []).filter((c) => c.tagName && hasClass(c, 'li') && hasClass(c, 'mobile-show')).map(src).join('');
+  const items = (list) => list.map(([l, h]) => subItem(l, h)).join('\n');
+  const aboutSrc = open + phone + items(ABOUT_MENU) + close;
+  // Financing's: a copy of About's with its own label, address and entries.
+  const relabel = (text, from, [label, href]) => text.replace(/href="\/about\/"/g, `href="${href}"`).replace(new RegExp(`(>\\s*)${from}(\\s*<)`, 'g'), `$1${label}$2`);
+  const financingSrc = relabel(open, 'About', FINANCING).replace(/\bAbout-menu\b/, 'pfix-nav-financing') + relabel(phone, 'About Us', FINANCING) + items(FINANCING_MENU) + close;
+  const out = [src(services), plain(STORM), financingSrc, areasSrc, src(reviews), aboutSrc].join('');
   const from = loc(menu).startTag.endOffset;
   const to = loc(menu).endTag.startOffset;
   return html.slice(from, to) === out ? html : html.slice(0, from) + out + html.slice(to);

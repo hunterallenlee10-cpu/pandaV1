@@ -288,7 +288,7 @@ export function applyCustomizations(html, { pageUrl, map = true, fixes = false, 
   if (fixes) {
     const nav = siteNav(out);
     if (nav !== out) {
-      changes.fixes.push('header menu: Services, Storm Damage, Financing, Service Areas, Reviews and About on the top level; Projects, Offers, Careers and Media under About');
+      changes.fixes.push('header menu: Services, Storm Damage, Financing, Service Areas, Reviews and About on the top level; costs, offers and warranty under Financing, the company pages under About');
       out = nav;
     }
     if (pathname === '/') out = homePage(out, { siteDir }, changes.fixes);
