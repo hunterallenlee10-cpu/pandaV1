@@ -791,6 +791,53 @@ Pages where a fix replaces a whole section or message are listed as "edited on p
 was last regenerated before the review carousels, project gallery, logo row, award badges and smooth scrolling were
 added; the next capture and build regenerates it.)
 
+### Home page: search, structure and conversion (`scripts/lib/home-page.mjs`)
+
+The home page's words for this are in [`custom/home/home.json`](custom/home/home.json); every fact in it comes
+from another page of the site (`/storm-damage/`, `/financing/`, `/warranty/`, `/roofing-costs/`,
+`/roofing/replacement/`, `/faqs/`, `/service-areas/`). Edit it and run `npm run update:site`.
+
+- **Head.** Title "Roof Replacement in MD, VA, PA, NJ | Panda Exteriors" (52 characters), a 157-character
+  description with the services, the states and the phone number, and the Open Graph and Twitter tags to match
+  ("Written by Rob Winters" and the article dates are gone).
+- **Structured data.** One JSON-LD `@graph` in place of Rank Math's (which described the page as an `Article` by a
+  `Person`): `RoofingContractor` (logo, phone, the states served from `custom/us-map/areas.json`, the Google
+  rating from `custom/reviews/google-reviews.json`, social profiles), the seven offices as locations of their own
+  with their phone numbers (same `@id` as their own pages), `WebSite`, `WebPage`, five `Service` entries and
+  `FAQPage`. The FAQ on the page and in the data are printed from one list, so they match word for word.
+- **Structure.** One `<h1>` naming the service and the states; headings in order with no skipped level; a skip
+  link; `<header>`, `<nav>`, `<main>` and `<footer>` in place of the page builder's `div`s (same classes).
+- **Leftovers removed.** A printed `[smartslider3 slider="3"]` shortcode, and a hidden row of five "video
+  testimonial" cards (Glenda S., Erica M., Joseph D., Joseph P., Glenda D.) that shared one cut-off quote and had
+  no video. No other page has a leftover shortcode.
+- **Pictures.** A description for every photo that had none, written from the photo; two aerial roof photos in
+  the gallery's Roofing tab said "Andersen Windows" and "Provia". Decorative pictures keep `alt=""`.
+- **Trust.** "4.8 on Google · 1,067 reviews" (from `google-reviews.json`), linked to `/reviews/`, under the hero's
+  buttons with the GAF badges and in both form cards.
+- **Estimate form in two steps** (`service-forms.mjs`, `custom/home/home.js`): ZIP code and "What do you need?",
+  then name, phone, email, street address, the consents and the button, with a progress bar. The request is the
+  one-step form's (same field names; the ZIP code is the end of `address`), the honeypot stays, and without
+  JavaScript both steps show at once. Only the home page's two forms.
+- **New sections** in the design of the pages from the site restructure: storm damage and insurance claims, how
+  it works, financing and warranty under the hero; the office pages by state under the map; eight questions as
+  `<details>` above the estimate form.
+- **Readable orange.** White text on the bright Panda orange is about 3:1; on the home page the surfaces that
+  carry white text use the deeper orange of the top bar (`#c2410c`, 5.2:1). It is one block at the end of
+  `custom/home/home.css`.
+
+Two parts are shared by every page:
+
+- **Header menu** (`siteNav`): the top level is Services, Storm Damage, Financing, Service Areas, Reviews and
+  About, beside the phone button. Projects, Offers, Careers and Media (Blog, Podcast) are in the About dropdown and
+  in the footer; every address still works.
+- **Footer license line** (`footer.mjs`, [`custom/site-fixes/licenses.json`](custom/site-fixes/licenses.json)): a
+  number per state (MD MHIC, VA, PA, NJ, DE, NC, FL). A state whose number is empty shows "TODO", so nothing
+  unverified is published as a license number. The office links are also tall enough to tap.
+
+Still needed from Panda (marked `TODO` in the files): the license numbers; a BBB badge logo file; real financing
+numbers for a monthly payment example; the GAF warranty tiers and their terms beyond the Golden Pledge; and, if
+the video testimonials are wanted back, each customer's video and their own words.
+
 ## Site restructure
 
 After an audit of every page, overlapping pages were merged, thin ones folded into the pages that cover the same
@@ -938,6 +985,7 @@ custom/media/              the Media page: podcast.json (the podcast's episodes)
 custom/blog/               the blog's design: blog.json (its topics and the listing pages' words), styles, script
 custom/site-map/           the Site Map's list of every page: styles, script (search and filters)
 custom/new-pages/          the pages added in the site restructure: pages.json (their words), styles
+custom/home/               the home page: home.json (head, headings, new sections, questions, photo descriptions), styles, the two-step form's script
 ```
 
 ## View it locally

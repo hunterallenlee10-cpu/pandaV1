@@ -236,6 +236,14 @@ function compare(s) {
 
 const RENDER = { cards, split, steps, covered, claimSteps, note, links, faq, showcase, compare };
 
+/** Sections in the new pages' design for another page (the home page: home-page.mjs):
+ *  [type, data] pairs -> their markup; `from` keeps their heading ids clear of the page's own. */
+export function renderSections(list, { from = 100, exists = () => true } = {}) {
+  uid = from;
+  return list.map(([type, s]) => RENDER[type](s, exists));
+}
+export const NEW_PAGE_ICONS = ICONS;
+
 function hero(h, form, pathname, exists, { aside = '', side = '' } = {}) {
   const f = serviceForm(pathname);
   const chips = (h.chips || [])

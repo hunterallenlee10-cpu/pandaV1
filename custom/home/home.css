@@ -1,0 +1,270 @@
+/* The home page's additions (scripts/lib/home-page.mjs): the skip link, the rating under the
+   hero's buttons, the two-step estimate form, and what the new sections add to the design
+   of the pages from the site restructure (custom/new-pages/new-pages.css, scoped to .pnp).
+   The site's own palette: Panda orange, lime and charcoal green. */
+
+/* Skip link: off screen until it has keyboard focus. */
+.phome-skip {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100000;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #14180f;
+  color: #ffffff;
+  font-family: var(--robboto, Roboto), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.phome-skip:focus {
+  color: #ffffff;
+  transform: none;
+  outline: 3px solid #f26924;
+  outline-offset: 2px;
+}
+.phome-main {
+  display: block;
+}
+.phome-main:focus {
+  outline: none;
+}
+
+/* The Google rating (and the GAF badges) under the hero's buttons. */
+.pfix-sv-hero .phome-rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 4px;
+}
+.pfix-sv-hero .phome-rating__link,
+.pfix-sv-hero .phome-rating__link:hover {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-height: 44px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  text-underline-offset: 3px;
+}
+.pfix-sv-hero .phome-rating__stars {
+  display: inline-flex;
+  gap: 2px;
+  color: #fbbc04;
+}
+.pfix-sv-hero .phome-rating__stars svg {
+  width: 18px;
+  height: 18px;
+}
+.pfix-sv-hero .phome-rating__text b {
+  font-weight: 700;
+}
+.pfix-sv-hero .phome-rating__badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.pfix-sv-hero .phome-rating__badges img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+@media (max-width: 767.98px) {
+  .pfix-sv-hero .phome-rating {
+    justify-content: center;
+  }
+}
+
+/* The estimate form in two steps (service-forms.mjs, home.js). Without JavaScript both
+   steps show, one under the other, and the step controls stay hidden. */
+.pfix-lead--steps .pfix-lead__step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.pfix-lead--steps .pfix-lead__step[hidden] {
+  display: none;
+}
+.pfix-lead--steps .pfix-lead__progress,
+.pfix-lead--steps .pfix-lead__next,
+.pfix-lead--steps .pfix-lead__back {
+  display: none;
+}
+.pfix-lead--steps .is-stepped .pfix-lead__progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.pfix-lead--steps .pfix-lead__progress-label {
+  flex: none;
+}
+.pfix-lead--steps .pfix-lead__progress-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.pfix-lead--steps .pfix-lead__progress-bar > span {
+  display: block;
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  background: #f26924;
+  transition: width 0.25s ease;
+}
+.pfix-lead--steps [aria-valuenow='2'] .pfix-lead__progress-bar > span {
+  width: 100%;
+}
+.pfix-lead--steps .is-stepped .pfix-lead__next {
+  display: block;
+}
+.pfix-lead--steps .is-stepped .pfix-lead__back {
+  display: block;
+  align-self: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  background: none;
+  color: #374151;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.pfix-lead--steps .pfix-lead__next:focus-visible,
+.pfix-lead--steps .pfix-lead__back:focus-visible,
+.pfix-lead--steps .submit-btn:focus-visible {
+  outline: 3px solid #14180f;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pfix-lead--steps .pfix-lead__progress-bar > span {
+    transition: none;
+  }
+}
+
+/* The new sections: a row of buttons and links at the foot of each, and the fine print. */
+.pnp.phome {
+  text-align: left;
+}
+.pnp.phome .phome-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 22px;
+  margin-top: clamp(22px, 3vw, 34px);
+}
+.pnp.phome .phome-foot .phome-fine {
+  flex: 0 0 100%;
+  max-width: none;
+  margin: 0;
+  text-align: center;
+}
+.pnp.phome .pnp-sec--orange .phome-fine,
+.pnp.phome .pnp-sec--steps .phome-fine {
+  color: rgba(255, 255, 255, 0.9);
+}
+.pnp.phome .pnp-faq + .phome-foot {
+  margin-top: 22px;
+}
+
+/* The offices by state, under the map. */
+.pnp.phome .phome-areas {
+  background: var(--pnp-bg);
+}
+.pnp.phome .phome-areas__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.pnp.phome .phome-areas__state {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--pnp-line);
+  border-radius: 16px;
+  background: #ffffff;
+}
+.pnp.phome .phome-areas__name {
+  margin: 0;
+  color: var(--pnp-ink);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.pnp.phome .phome-areas__link,
+.pnp.phome .phome-areas__link:hover {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--pnp-orange-ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 1023.98px) {
+  .pnp.phome .phome-areas__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 559.98px) {
+  .pnp.phome .phome-areas__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Readable text on orange (WCAG AA, 4.5:1). White on the bright Panda orange (#f26924,
+   #ff6600) is about 3:1, so on the home page the surfaces that carry white text use the
+   deeper orange the top bar and the links already use (#c2410c, 5.2:1), and orange text on
+   white uses it too. Remove this block to go back to the bright orange. */
+.phome-main .pfix-sv-hero a.pfix-sv-hero__btn--primary,
+.phome-main .pfix-lead .submit-btn,
+.phome-main .pnp .pnp-btn--primary,
+.phome-main .pfix-services .pfix-services__all a,
+.phome-main .pfix-of-btn--primary,
+.phome-main .pfix-ba__label--after,
+.phome-main a.Button-primary,
+.phome-main .pmap-section--orange {
+  background-color: #c2410c;
+}
+.phome-main .pfix-sv-hero a.pfix-sv-hero__btn--primary:hover,
+.phome-main .pfix-lead .submit-btn:hover,
+.phome-main .pnp .pnp-btn--primary:hover,
+.phome-main .pfix-services .pfix-services__all a:hover,
+.phome-main .pfix-of-btn--primary:hover,
+.phome-main a.Button-primary:hover {
+  background-color: #9a3412;
+}
+.phome-main .ppg {
+  --ppg-orange: #c2410c;
+}
+.phome-main .ppg .ppg__tab[aria-selected='true'] .ppg__tab-count {
+  background: rgba(0, 0, 0, 0.28);
+}
+.phome-main .Button-secondar .secondary-text {
+  color: #c2410c;
+}

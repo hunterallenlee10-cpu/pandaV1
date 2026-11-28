@@ -12110,3 +12110,42 @@ button.pfix-yt:focus-visible {
 .youtube-video > iframe.pfix-yt-player {
   border-radius: 12px;
 }
+
+/* The footer's license line (footer.mjs, custom/site-fixes/licenses.json): a number per
+   state under the lists; a state still waiting for its number says TODO. */
+.pfix-ft .pfix-ft__licenses {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.pfix-ft .pfix-ft__licenses-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+.pfix-ft .pfix-ft__licenses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+.pfix-ft .pfix-ft__todo {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+/* The footer's office links: tall enough to tap (24 px). */
+.pfix-ft .pfix-ft__office-name,
+.pfix-ft .pfix-ft__office-tel {
+  display: inline-block;
+  min-height: 24px;
+  line-height: 24px;
+}
+.pfix-ft .pfix-ft__office {
+  row-gap: 2px;
+  margin-bottom: 4px;
+}

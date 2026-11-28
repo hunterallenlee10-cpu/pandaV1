@@ -28,6 +28,7 @@ import { buildSiteMapPage, siteMapFiles, SITE_MAP_PATH, SITE_AUDIT_PATH } from '
 import { syncSitemaps } from './lib/sitemaps.mjs';
 import { syncCareersHeader } from './lib/careers-header.mjs';
 import { launchReady } from './lib/launch.mjs';
+import { homeFiles } from './lib/home-page.mjs';
 import { vercelHeaders, netlifyHeaders, serveHeaders } from './lib/hosting.mjs';
 import { extractForms, extractFromHtml } from './lib/extract.mjs';
 import { pageLocalPath, assetLocalPath, relToUrlPath } from './lib/paths.mjs';
@@ -383,6 +384,8 @@ const newPages = SITE_FIXES ? buildNewPages({ siteDir: OUT, siteOrigin: SITE_ORI
 for (const p of newPages) p.html = launchReady(p.html, { pathname: p.path });
 for (const p of newPages) put(path.posix.join(p.path.replace(/^\/|\/$/g, ''), 'index.html'), p.html, 'custom/new-pages');
 if (newPages.length) for (const [from, url] of newPagesFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/new-pages/${path.basename(from)}`);
+// The home page's stylesheet and script (custom/home/, home-page.mjs).
+if (SITE_FIXES) for (const [from, url] of homeFiles()) put(url.replace(/^\//, ''), fs.readFileSync(from), `custom/home/${path.basename(from)}`);
 if (newPages.length && fs.existsSync(path.join(OUT, 'page-sitemap.xml'))) {
   const file = path.join(OUT, 'page-sitemap.xml');
   fs.writeFileSync(file, addSitemapPages(fs.readFileSync(file, 'utf8'), newPagePaths().map((p) => ({ path: p, lastmod: NEW_PAGES_DATE })), SITE_ORIGIN));

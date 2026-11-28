@@ -72,7 +72,7 @@ export function collectMergedNav(doc, html, ed, changes) {
   const blocks = (body?.childNodes || []).filter((c) => c.tagName);
   const nav = blocks.find((c) => hasClass(c, 'nav'));
   // (On /contact-us/ the footer is inside the page's last section, not beside it.)
-  const footer = blocks.find((c) => hasClass(c, 'footer')) || find(body, (c) => c.tagName === 'div' && hasClass(c, 'footer'));
+  const footer = blocks.find((c) => hasClass(c, 'footer')) || find(body, (c) => ['div', 'footer'].includes(c.tagName) && hasClass(c, 'footer'));
   let removed = 0;
   let flattened = 0;
   let added = 0;

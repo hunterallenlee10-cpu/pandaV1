@@ -1,0 +1,133 @@
+{
+  "_help": "The home page's head, headings, new sections, questions and photo descriptions (scripts/lib/home-page.mjs). Every fact here comes from another page of the site: /storm-damage/, /financing/, /warranty/, /roofing-costs/, /roofing/replacement/, /faqs/ and /service-areas/. Edit and run `npm run update:site`. The FAQ list is printed on the page and in the FAQPage structured data from this one list, so the two always match word for word.",
+  "head": {
+    "title": "Roof Replacement in MD, VA, PA, NJ | Panda Exteriors",
+    "description": "Roof replacement, storm damage roofing and insurance claim help in MD, VA, PA, NJ and beyond. Free roof inspection from Panda Exteriors. Call (877) 213-8536."
+  },
+  "headings": {
+    "reviews": "Customer Reviews: Why Homeowners Choose Panda Exteriors",
+    "beforeAfter": "Before and After: Recent Roofing, Siding and Solar Projects",
+    "estimate": "Request Your Free Estimate"
+  },
+  "storm": {
+    "id": "storm-damage",
+    "eyebrow": "Storm damage and insurance claims",
+    "title": "Storm Damage Roofing and Insurance Claim Help",
+    "intro": "Most homeowners insurance policies cover sudden, storm-related roof damage. We inspect your roof for free, meet your adjuster and handle the roofing side of your claim, from the first photo to the final shingle.",
+    "items": [
+      ["search", "Free storm-damage inspection", "We inspect your roof, gutters and attic for obvious and hidden damage, and tell you honestly whether it looks cosmetic or claim-worthy."],
+      ["book", "Photo documentation", "We photograph everything, and bring the roofing facts, photos and a detailed estimate to your claim."],
+      ["users", "We meet your adjuster", "A Panda representative can be on the roof with the adjuster, pointing out the damage slope by slope, so nothing gets overlooked."],
+      ["roof", "Your new roof, installed", "Once the claim is approved, the insurance scope is our baseline. If tear-off uncovers hidden damage, we help submit a supplement for the extra work."]
+    ],
+    "note": "Your roofing advocate, not a public adjuster. You stay in control of your claim and talk to your insurance company; your insurance company decides what is covered.",
+    "cta": ["Book a free storm inspection", "#pfix-lead-1", "Roof inspection"],
+    "link": ["More about storm damage and insurance claims", "/storm-damage/"]
+  },
+  "process": {
+    "id": "how-it-works",
+    "eyebrow": "How it works",
+    "title": "How a Panda Roof Replacement Works",
+    "items": [
+      ["Free inspection", "Fill in the form or call us. We inspect your roof, gutters and attic, photograph everything and tell you honestly what we find."],
+      ["Insurance claim or quote", "If storm damage is behind your new roof, we meet your adjuster and help you through the claim. If not, you get a clear quote at no cost, and we go over flexible financing with you."],
+      ["Installation", "Our certified crew schedules your project. Most homes have a new roof in as little as one day; the exact timing depends on the size of your roof, the material and the weather."],
+      ["Warranty and final walkthrough", "Friendly customer service from your estimate to the final walkthrough. Your project is then backed by our 100% satisfaction guarantee, a two-year installation warranty and the manufacturers’ warranties."]
+    ]
+  },
+  "financing": {
+    "id": "financing",
+    "eyebrow": "Financing",
+    "title": "Roof Financing Through Service Finance, LLC",
+    "intro": "Spread the cost of your new roof, solar, siding or gutters with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans.",
+    "items": [
+      ["calendar", "Delayed payments", "Homeowners may qualify for delayed payments, so the work gets done now and the payments start later."],
+      ["coin", "No-interest loans", "Qualified homeowners can even get no-interest loans for their project."],
+      ["card", "Plans that fit your budget", "Loans with a variety of features, and affordable payment plans that fit into your budget."]
+    ],
+    "note": "The plans available to you depend on your approval.",
+    "link": ["See how financing works", "/financing/"]
+  },
+  "warranty": {
+    "id": "warranty",
+    "tone": "orange",
+    "eyebrow": "Warranty",
+    "title": "Roof Warranties: GAF Coverage and Panda Workmanship",
+    "intro": "Every project, from roofing to gutters, is backed by our 100% satisfaction guarantee, our installation warranty and the manufacturers’ warranties on the products we install.",
+    "items": [
+      ["shield", "100% satisfaction guarantee", "Every remodeling project is covered by our guarantee, so you can rest easy knowing your renovation will meet the highest standards."],
+      ["badge", "Two-year installation warranty", "If our workmanship proves faulty within two years of installation, we’ll correct it at no cost to you. Some products have a longer installation warranty."],
+      ["layers", "GAF manufacturer warranties", "As a GAF Master Elite contractor, a status held by less than 2% of roofing companies, we can offer GAF’s upgraded warranties, like the Golden Pledge, available only through Master Elite contractors."]
+    ],
+    "link": ["Read the warranty details", "/warranty/"]
+  },
+  "faq": {
+    "id": "faq",
+    "eyebrow": "Questions",
+    "title": "Roof Replacement Questions, Answered",
+    "link": ["See all frequently asked questions", "/faqs/"],
+    "items": [
+      ["How much does a new roof cost?", "Every roof is different. The price depends on the size and pitch of your roof, the material you choose, the condition of the decking underneath and the code items it needs. We’ll inspect your roof and give you a free, no-obligation estimate."],
+      ["Will my insurance pay for a new roof?", "Often, when the damage is sudden and storm-related: wind, hail, falling limbs or the weight of snow and ice. Old age and wear and tear usually aren’t covered. Your deductible and your type of coverage affect what you pay."],
+      ["How long does a roof replacement take?", "Our dedicated roofing contractors prioritize one-day roof replacements, so most homes have a new roof in as little as one day. The exact timing depends on the size of your roof, the material and the weather."],
+      ["Can I finance my new roof?", "Yes. Spread the cost with flexible financing through Service Finance, LLC. Homeowners may qualify for delayed payments and even no-interest loans."],
+      ["How long is the installation warranty?", "Two years after the products are installed, and longer for some products. Your contract has the precise length for each one."],
+      ["Which areas does Panda Exteriors serve?", "Panda Exteriors works across the East Coast from local offices in Maryland, Delaware, Florida, New Jersey, North Carolina, Pennsylvania and Virginia."],
+      ["Is your company licensed?", "Yes, we are fully licensed and insured."],
+      ["When is it time to replace my roof?", "The typical roof lasts about 15 years. It's essential to consider replacing your roof if it has sustained any storm damage or as it approaches its expected lifespan."]
+    ]
+  },
+  "areas": {
+    "title": "Panda Exteriors Offices by State",
+    "intro": "Each office has its own page, with its address, phone number and the work its team does.",
+    "link": ["See every area we serve", "/service-areas/"]
+  },
+  "services": [
+    ["Roof Replacement", "Roofing", "/roofing/replacement/", "We offer full-service roofing care to ensure you get the protection you need for your home as quickly as possible."],
+    ["Storm Damage Roofing and Insurance Claims", "Storm damage roofing", "/storm-damage/", "We inspect your roof for free, meet your adjuster and handle the roofing side of your claim, from the first photo to the final shingle."],
+    ["Solar Panels and GAF Solar Shingles", "Solar installation", "/solar-options/", "At Panda Exteriors, we work with top brands to offer quality solar panels that will harness energy from the sun to power your home throughout the year."],
+    ["Siding Installation", "Siding", "/siding/", "Our contractors have decades of experience with siding installations across the East Coast, so your home looks and works better than ever."],
+    ["Gutters and Gutter Guards", "Gutters", "/gutters/", "Our gutter products are designed to blend in with your home exterior, so you don’t have to worry about them detracting from your curb appeal."]
+  ],
+  "_alts": "Descriptions of the photos that had none (or a wrong one: two aerial roof photos were labelled \"Andersen Windows\" and \"Provia\"), written from the photos themselves. Keyed by a part of the file name.",
+  "alts": {
+    "81d39329-b673-4452-a2f0-a347560bb9ee": "Aerial view of a white two-story home with new gray shingle roofs and a back patio",
+    "96891d48-885d-4094-b407-fc974284efe8": "Drone view straight down on a home’s new charcoal shingle roof with two dormers",
+    "694afedf-c6fe-4b90-8570-79e890d68127": "A two-story home with gray siding and a new dark shingle roof, seen from above the back yard",
+    "7b69fcd8-65b6-4aab-aae7-86e3f83b83eb": "New dark shingles on the lower roof and dormer of a home with light vinyl siding",
+    "413c2219-552d-4b12-87c9-678d1474d06b": "Aerial view of a new dark shingle roof on a home surrounded by trees",
+    "31b7f16a-175c-4627-846a-c57fe99f9952": "Drone view straight down on a hip roof with new gray shingles",
+    "edefbb7f-d876-46b3-900b-f1fcea7523de": "Aerial view of a home with a new dark shingle roof, a white garage and red shutters",
+    "05263bfc-5259-40c9-9140-2608006392a0": "Aerial view of a two-story home with a new light gray shingle roof beside a curved path",
+    "9da8cba0-2517-4ee7-824d-675352ce7430": "Drone view straight down on a home’s new gray shingle roof",
+    "3ad61b8d-5214-4e4c-bf3a-f6d09c24a00b": "A two-story home with tan siding and new dark shingle roofs under a blue sky",
+    "8d6bac98-fe09-4b6c-b07c-9dd850f6fd5b": "Aerial view of a brick-front home with a new gray shingle roof",
+    "52f7465e-06b2-4c89-ae8d-afb4e872f80f": "A two-story home with a brick and blue-gray front, new dark shingle roofs and a white garage door",
+    "51db5f7a-c7fb-4157-ad48-c3d70a7d8d88": "Close drone view of new dark shingles along the edge of a roof",
+    "78fde7f5-b8e5-4280-b521-7c03899de4e2": "Aerial view of a white home with new black shingle roofs and a back deck",
+    "8e52ea15-23a7-402c-8eb6-3530da91a66f": "Drone view of a new gray shingle roof on a home with a rear deck",
+    "64a1d24f-293b-45d1-ad3b-09f98172422e": "Drone view straight down on a home’s new light gray shingle roof, between two neighboring homes",
+    "92afac41-ca39-4136-a2c8-494254a94d41": "Aerial view of a home with a new gray shingle roof and a front gable",
+    "d13cd5e4-38b6-4212-b137-b7c6901ca3ac": "A row of blue two-story homes, one with solar panels on its roof",
+    "e5c84bd4-4817-49d9-9596-4ea9dd6c44bb": "Low-profile solar on the dark shingle roof of a white home",
+    "bdae4029-b4f1-43b0-a9b2-54da47b8039c": "Solar arrays set into the dark roof of a gray home with black shutters",
+    "79eef9a0-66e0-4ae7-b38b-85bf95b03997": "An installer in a hard hat and gloves connecting solar shingles on a roof",
+    "f667aa4c-40d3-4a30-b736-94b4becffb47": "Aerial view of a home with solar shingles on three sections of its roof",
+    "51d2ed67-a432-4105-a85b-e500c856ba9d": "A crew installing solar shingles over GAF underlayment on a roof",
+    "91e9c94a-9804-4560-8b38-e3d5f29eefa8": "Drone view straight down on a roof with a strip of solar shingles",
+    "e78dfbe4-a4c7-4146-bad1-fc897a3af885": "A two-story green home with solar panels across its roof",
+    "c5bd9cd8-b146-4265-9304-2ac2ab727360": "Two Panda Exteriors installers in safety harnesses working on a solar roof",
+    "f3a7c528-b3b4-430a-b237-d3bd1cbd3f1c": "Panda Exteriors crew members wiring solar shingles on a roof",
+    "b21e3b44-c704-4337-8da8-24e85ab8c566": "Aerial winter view of a long home with solar panels across its roofs",
+    "b006cf5f-6333-4953-b38e-b853b4155f65": "Close-up of dark solar shingles laid flush with a roof",
+    "bb619468-96ce-410a-8d70-3540e29c746a": "Aerial view of a tan home with solar arrays on its dark shingle roof",
+    "61b178d3-d001-41d8-9287-04cd67257b83": "Three photos of installers fitting solar panels on a roof, with the Panda Solar logo",
+    "acf49852-a7c4-4610-88a6-4db1708d98d2": "A white gutter and downspout at the corner of a home’s roofline, against a blue sky",
+    "e988b397-30cf-46b1-94cf-8afac157f60c": "A white downspout running from the gutter down a porch column",
+    "f1e10b6a-f11e-401e-b0e5-53293f36d547": "Dark gutters and soffit along the eave of a roof",
+    "63497cd1-1125-4ffa-bab4-fac3f2defa9f": "Dark gutters and a downspout on a home with gray siding and brick",
+    "spanish-tile-720": "A two-story brick home with the new tile roof Panda Exteriors installed",
+    "video-solar-home-720": "A two-story home with Panda solar panels on both roofs",
+    "after5-768x576": "A split-level home with new olive green lap siding and white trim"
+  }
+}
