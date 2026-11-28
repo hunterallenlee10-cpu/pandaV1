@@ -41,6 +41,7 @@ const LISTS = [
     ['Careers', '/careers/'],
     ['Charity & Community', '/charity-and-community/'],
     ['Blog & Podcast', '/media/'],
+    ['Panda Shop', 'https://pandaexteriors.myshopify.com/'],
   ]],
   ['Help', [
     ['Contact Us', '/contact-us/'],
